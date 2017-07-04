@@ -1,0 +1,94 @@
+{
+	"name": "convert-markdown-to-html",
+	"displayName": "Convert Markdown to HTML",
+	"description": "Converts Markdown files and saves them as HTML",
+	"version": "0.1.0",
+	"publisher": "sakryukov",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"
+	},
+	"engines": {
+		"vscode": "^1.0.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"markdown"
+	],
+	"activationEvents": [
+		"onCommand:extension.Markdown.ConvertToHtml",
+		"onCommand:extension.Markdown.ConvertToHtml.All"
+	],
+	"main": "./extension",
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.Markdown.ConvertToHtml",
+				"title": "Markdown: Convert to HTML"
+			},
+			{
+				"command": "extension.Markdown.ConvertToHtml.All",
+				"title": "Markdown: Convert to HTML all .md files in workspace"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorTextFocus && resourceLangId == markdown",
+					"command": "extension.Markdown.ConvertToHtml",
+					"group": "markdown"
+				},
+				{
+					"when": "editorTextFocus",
+					"command": "extension.Markdown.ConvertToHtml.All",
+					"group": "markdown"
+				}
+				
+			],
+			"explorer/context": [
+				{
+					"command": "extension.Markdown.ConvertToHtml.All",
+					"group": "markdown"
+				}
+			]
+		},
+		"configuration": {
+			"type": "object",
+			"title": "Markdown convert to HTML configuration",
+			"properties": {
+				"markdown.extension.convertToHtml.reportSuccess": {
+					"type": "boolean",
+					"default": true
+				},
+				"markdown.extension.convertToHtml.showHtmlInBrowser": {
+					"type": "boolean",
+					"default": false
+				}
+			}
+		},
+		"configurationDefaults": {
+			"[markdown]": {
+				"editor.codeLens": true,
+				"editor.folding": false,
+				"editor.lineNumbers": "off",
+				"editor.wordWrap": "on"
+			}
+		}
+	},
+	"dependencies": {
+		"vscode": "^1.13.1"
+	},
+	"devDependencies": {
+		"vscode": "^1.13.1"
+	},
+	"extensionDependencies": [
+		"Microsoft.vscode-markdown"
+	],
+	"__metadata": {
+		"id": "2274c865-8de3-4905-b3ee-661afa12b4c5",
+		"publisherId": "d1ee7a62-4a9b-4f51-94ff-cb9d0dc5a6c9",
+		"publisherDisplayName": "Sergey A Kryukov"
+	}
+}

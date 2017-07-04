@@ -1,7 +1,7 @@
 # VS Code — Markdown to HTML
 
 This extension reads Markdown content from a currently active editor, converts it to HTML and saves it in a file.
-The extension depends on the extension "Markdown All in One" (`id="Microsoft.vscode-markdown"`) and augments it.
+The extension depends on the built-in extension "VS Code Markdown" (`id="Microsoft.vscode-markdown"`) and augments it.
 
 ## Usage
 
@@ -36,4 +36,4 @@ This is the fragment of the file "settings.json" file ([user or workspace settin
 }
 ```
 
-The extension also uses "markdown.styles" introduced by the extension "Markdown All in One". If one of more CSS files is defined, first file name is used in the generated HTML file as an *external style sheet*. The user is responsible for supplying the CSS file itself.
+The extension also uses "markdown.styles" option related to the extension "VS Code Markdown". If one of more CSS files is defined, first file name is used in the generated HTML file as an *external style sheet*. The user is responsible for supplying the CSS file itself.

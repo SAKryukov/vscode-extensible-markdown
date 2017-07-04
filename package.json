@@ -9,7 +9,7 @@
 		"url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"
 	},
 	"engines": {
-		"vscode": "^1.0.0"
+		"vscode": "^1.13.1"
 	},
 	"categories": [
 		"Other"

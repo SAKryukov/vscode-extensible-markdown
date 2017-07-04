@@ -35,7 +35,7 @@ exports.activate = function (context) {
     }; //getReportActions
 
     const convertText = function (text, fileName) {
-        var prefix = '<html>\n\t<head>\n\t\t<title>%s</title>\n\t\t<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n\t\t<link type="text/css" rel="stylesheet" href="%s" />\n\t</head>\n<body>\n\n';
+        let prefix = '<html>\n\t<head>\n\t\t<title>%s</title>\n\t\t<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n\t\t<link type="text/css" rel="stylesheet" href="%s" />\n\t</head>\n<body>\n\n';
         const suffix = '\n</body></html>';
         prefix = util.format(prefix,    
             util.format("Converted from: %s", path.basename(fileName)),
@@ -44,7 +44,7 @@ exports.activate = function (context) {
             path.dirname(fileName),
             path.basename(fileName,
                 path.extname(fileName))) + ".html";
-        var result = md.render(text);
+        let result = md.render(text);
         result = Utf8BOM + prefix + result + suffix;
         fs.writeFileSync(output, result);
         return output;
@@ -98,7 +98,7 @@ exports.activate = function (context) {
             else
                 vscode.window.showInformationMessage(count + " files converted to HTML");
         });
-    }); //disposableMultipleCommand
+    }); //disposableMultipleCommand 
 
     context.subscriptions.push(disposableSingleCommand);
     context.subscriptions.push(disposableMultipleCommand);

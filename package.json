@@ -2,7 +2,7 @@
 	"name": "convert-markdown-to-html",
 	"displayName": "Convert Markdown to HTML",
 	"description": "Converts Markdown files and saves them as HTML",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"publisher": "sakryukov",
 	"repository": {
 		"type": "git",

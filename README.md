@@ -1,5 +1,7 @@
 # VS Code — Markdown to HTML
 
+[![Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)
+
 This extension reads Markdown content from a currently active editor, converts it to HTML and saves it in a file.
 The extension depends on the built-in extension "VS Code Markdown" (`id="Microsoft.vscode-markdown"`) and augments it.
 

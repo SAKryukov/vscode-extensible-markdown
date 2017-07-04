@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.0.3
+
+* README fix: corrected linking to https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg and extension page
+
 ## Version 1.0.2
 
 * Cosmetic code and README fixes

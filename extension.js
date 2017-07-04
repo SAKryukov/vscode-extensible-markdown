@@ -82,16 +82,19 @@ exports.activate = function (context) {
         } //if
         vscode.workspace.findFiles("**/*.md").then(function (files) {
             let count = 0;
+            let lastInput = "";
+            let lastOutput = "";
             for (var index = 0; index < files.length; ++index) {
                 const fileName = files[index].fsPath;   
                 const text = fs.readFileSync(fileName, "utf8"); 
-                convertText(text, fileName);
+                lastInput = fileName;
+                lastOutput = convertText(text, fileName); 
                 ++count;
             } //loop
             if (count == 0)
                 vscode.window.showWarningMessage("No .md files found in the workspace");
             else if (count == 1)
-                vscode.window.showInformationMessage("One file converted to HTML");
+                successAction(lastInput, lastOutput);
             else
                 vscode.window.showInformationMessage(count + " files converted to HTML");
         });

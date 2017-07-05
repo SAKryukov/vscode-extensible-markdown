@@ -3,7 +3,7 @@ exports.activate = function (context) {
     const encoding = "utf8";
     const Utf8BOM = "\ufeff";
 
-    var vscode = require('vscode');
+    const vscode = require('vscode');
     const util = require('util');
     const fs = require('fs');
     const path = require('path');
@@ -51,9 +51,11 @@ exports.activate = function (context) {
                     cssCode = fs.readFileSync(absolute, encoding);
                 style += util.format(htmlTemplateSet.embeddedStyle, cssCode);
             } else {
-                let relative = path.relative(fileName, css[index]);
+                let relative = path.relative(
+                    path.dirname(fileName),
+                    path.join(vscode.workspace.rootPath, css[index]));
                 style += util.format(htmlTemplateSet.style, relative);
-            } //if
+            } //if5
             if (index < css.length - 1) style += "\n";
         } //loop
         result = util.format(htmlTemplateSet.html,
@@ -88,14 +90,10 @@ exports.activate = function (context) {
             return;
         } //if
         let saveWorkingDir = path.resolve();
-        process.chdir(vscode.workspace.rootPath);
-        action(
-            function() { process.chdir(saveWorkingDir); }, // cleanUp
-            getSettings() // settings
-        );
+        action(getSettings());
     }; //command
 
-    const convertOne = function (cleanUp, settings) {
+    const convertOne = function (settings) {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage("Open Markdown file (.md)");
@@ -108,11 +106,10 @@ exports.activate = function (context) {
                 editor.document.fileName,
                 settings.css,
                 settings.embedCss);
-        cleanUp();
         successAction(editor.document.fileName, outputFileName, settings);
     } //convertOne
 
-    const convertSet = function (cleanUp, settings) {
+    const convertSet = function (settings) {
         vscode.workspace.findFiles("**/*.md").then(function (files) {
             let count = 0;
             let lastInput = "";
@@ -124,7 +121,6 @@ exports.activate = function (context) {
                 lastOutput = convertText(text, fileName, settings.css, settings.embedCss);
                 ++count;
             } //loop
-            cleanUp();
             if (settings.reportSuccess)
                 if (count == 0)
                     vscode.window.showWarningMessage("No .md files found in the workspace");

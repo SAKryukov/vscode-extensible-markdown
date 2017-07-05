@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.1.1
+
+* Fixed a bug in a relative path to CSS files
+
 ## Version 1.1.0
 
 * Implemented new settings option: "markdown.extension.convertToHtml.embedCss"

@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 1.1.0
+
+* Implemented new settings option: "markdown.extension.convertToHtml.embedCss"
+* Multiple CSS files listed in "markdown.styles" option are supported
+* For CSS files, path relative to HTML path is calculated 
+
 ## Version 1.0.3
 
 * README fix: corrected linking to https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg and extension page

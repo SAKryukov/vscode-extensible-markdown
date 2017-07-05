@@ -17,10 +17,13 @@ The HTML file is saved to the same directory as original Markdown file.
 
 ## Settings
 
-The extension introduces two options:   
+The extension introduces three options:   
 
-- "markdown.extension.convertToHtml.reportSuccess" shows the message upon successful conversion, reports the names of the input and output files.
-- "markdown.extension.convertToHtml.showHtmlInBrowser" opens generated HTML file in the default browser.
+- "markdown.extension.convertToHtml.reportSuccess" shows the message upon successful conversion, reports the names of the input and output files
+- "markdown.extension.convertToHtml.showHtmlInBrowser" opens generated HTML file in the default browser
+- "markdown.extension.convertToHtml.embedCss" used to embed CSS code found in CSS files in generated HTML
+
+The option "markdown.extension.convertToHtml.showHtmlInBrowser" is inapplicable to the command "Markdown: Convert to HTML all .md files in workspace": if a set of files is converted, none of those files is shown in a HTML browser.
 
 This is the fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):
 
@@ -28,8 +31,11 @@ This is the fragment of the file "settings.json" file ([user or workspace settin
 {
     "markdown.extension.convertToHtml.reportSuccess": true, // default
     "markdown.extension.convertToHtml.showHtmlInBrowser": false, // default
+    "markdown.extension.convertToHtml.embedCss": false, // default
     "markdown.styles": [
-        "style.css" // same style to be used for preview and converted file
+        // same styles used for preview are used in converted HTML files:
+        "styles.css", 
+        "moreStyles.css"
     ],
 
     // ...
@@ -38,4 +44,5 @@ This is the fragment of the file "settings.json" file ([user or workspace settin
 }
 ```
 
-The extension also uses "markdown.styles" option related to the extension "VS Code Markdown". If one of more CSS files is defined, first file name is used in the generated HTML file as an *external style sheet*. The user is responsible for supplying the CSS file itself.
+The extension also uses "markdown.styles" option related to the extension "VS Code Markdown".
+If one of more CSS files is defined, they are used in the generated HTML files as *external* or *embedded* style sheets, depending on the option "markdown.extension.convertToHtml.embedCss". The user is responsible for supplying the CSS files themselves.

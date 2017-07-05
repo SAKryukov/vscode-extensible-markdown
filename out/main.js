@@ -41,7 +41,6 @@ exports.activate = function (context) {
     }; //getSettings
 
     const convertText = function (text, fileName, css, embedCss) {
-        vscode.window.showInformationMessage(vscode.workspace.rootPath);
         let result = markdownIt.render(text);
         let style = "";
         for (index = 0; index < css.length; ++index) {
@@ -70,9 +69,8 @@ exports.activate = function (context) {
         return output;
     }; //convertText
 
-    const successAction = function (input, output) {
-        const actions = getSettings();
-        if (actions.reportSuccess) {
+    const successAction = function (input, output, settings) {
+        if (settings.reportSuccess) {
             vscode.window.showInformationMessage(
                 util.format('Directory: "%s"', path.dirname(output)))
             vscode.window.showInformationMessage(
@@ -80,7 +78,7 @@ exports.activate = function (context) {
                     path.basename(input),
                     path.basename(output)));
         } //if
-        if (actions.showHtmlInBrowser)
+        if (settings.showHtmlInBrowser)
             require('child_process').exec(output);
     }; //successAction
 
@@ -111,7 +109,7 @@ exports.activate = function (context) {
                 settings.css,
                 settings.embedCss);
         cleanUp();
-        successAction(editor.document.fileName, outputFileName);
+        successAction(editor.document.fileName, outputFileName, settings);
     } //convertOne
 
     const convertSet = function (cleanUp, settings) {
@@ -127,12 +125,13 @@ exports.activate = function (context) {
                 ++count;
             } //loop
             cleanUp();
-            if (count == 0)
-                vscode.window.showWarningMessage("No .md files found in the workspace");
-            else if (count == 1)
-                successAction(lastInput, lastOutput);
-            else
-                vscode.window.showInformationMessage(count + " files converted to HTML");
+            if (settings.reportSuccess)
+                if (count == 0)
+                    vscode.window.showWarningMessage("No .md files found in the workspace");
+                else if (count == 1)
+                    successAction(lastInput, lastOutput, settings);
+                else
+                    vscode.window.showInformationMessage(count + " files converted to HTML");
         });
     } //convertSet
 

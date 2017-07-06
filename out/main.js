@@ -16,7 +16,7 @@ exports.activate = function (context) {
             notFoundCss: fs.readFileSync(path.join(__dirname + "/template-not-found-css.txt"), encoding)
         }
     })();
-    
+
     const markdownIt = (function () {
         const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
         if (!extension) return;
@@ -54,7 +54,7 @@ exports.activate = function (context) {
                 const relative = path.relative(
                     path.dirname(fileName),
                     path.join(vscode.workspace.rootPath, css[index]))
-                        .replace(/\\/g, '/');
+                    .replace(/\\/g, '/');
                 style += util.format(htmlTemplateSet.style, relative);
             } //if5
             if (index < css.length - 1) style += "\n";
@@ -85,12 +85,17 @@ exports.activate = function (context) {
             require('child_process').exec(output);
     }; //successAction
 
-    const command = function(action) {
-        if (!vscode.workspace.rootPath) {
-            vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
-            return;
-        } //if
-        action(getSettings());
+    const command = function (action) {
+        try {
+            if (!vscode.workspace.rootPath) {
+                vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
+                return;
+            } //if
+            action(getSettings());
+        } catch (ex) {
+            console.log(ex);
+            vscode.window.showErrorMessage(ex.toString() + " Markdown conversion failed.");
+        } //exception
     }; //command
 
     const convertOne = function (settings) {

@@ -54,6 +54,7 @@ exports.activate = function (context) {
                 let relative = path.relative(
                     path.dirname(fileName),
                     path.join(vscode.workspace.rootPath, css[index]));
+                relative = relative.replace(/\\/g, '/');
                 style += util.format(htmlTemplateSet.style, relative);
             } //if5
             if (index < css.length - 1) style += "\n";

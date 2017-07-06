@@ -45,16 +45,16 @@ exports.activate = function (context) {
         let style = "";
         for (index = 0; index < css.length; ++index) {
             if (embedCss) {
-                let absolute = path.join(vscode.workspace.rootPath, css[index]);
+                const absolute = path.join(vscode.workspace.rootPath, css[index]);
                 let cssCode = util.format(htmlTemplateSet.notFoundCss, absolute);
                 if (fs.existsSync(absolute))
                     cssCode = fs.readFileSync(absolute, encoding);
                 style += util.format(htmlTemplateSet.embeddedStyle, cssCode);
             } else {
-                let relative = path.relative(
+                const relative = path.relative(
                     path.dirname(fileName),
-                    path.join(vscode.workspace.rootPath, css[index]));
-                relative = relative.replace(/\\/g, '/');
+                    path.join(vscode.workspace.rootPath, css[index]))
+                        .replace(/\\/g, '/');
                 style += util.format(htmlTemplateSet.style, relative);
             } //if5
             if (index < css.length - 1) style += "\n";
@@ -90,7 +90,6 @@ exports.activate = function (context) {
             vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
             return;
         } //if
-        let saveWorkingDir = path.resolve();
         action(getSettings());
     }; //command
 

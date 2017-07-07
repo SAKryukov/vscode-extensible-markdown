@@ -2,7 +2,7 @@
 	"name": "convert-markdown-to-html",
 	"displayName": "Convert Markdown to HTML",
 	"description": "Converts Markdown files and saves them as HTML",
-	"version": "1.1.1",
+	"version": "2.0.0",
 	"publisher": "sakryukov",
 	"repository": {
 		"type": "git",
@@ -45,7 +45,6 @@
 					"command": "extension.Markdown.ConvertToHtml.All",
 					"group": "markdown"
 				}
-				
 			],
 			"explorer/context": [
 				{
@@ -69,6 +68,43 @@
 				"markdown.extension.convertToHtml.embedCss": {
 					"type": "boolean",
 					"default": false
+				},
+				"markdown.extension.convertToHtml.options.headingId": {
+					"type": "boolean",
+					"default": true
+				},
+				"markdown.extension.convertToHtml.options.allowHTML": {
+					"type": "boolean",
+					"default": true
+				},
+				"markdown.extension.convertToHtml.options.linkify": {
+					"type": "boolean",
+					"default": false
+				},
+				"markdown.extension.convertToHtml.options.br": {
+					"type": "boolean",
+					"default": true
+				},
+				"markdown.extension.convertToHtml.options.typographer": {
+					"type": "boolean",
+					"default": true
+				},
+				"markdown.extension.convertToHtml.options.smartQuotes": {
+					"type": "string",
+					"default": "“”‘’"
+				},
+				"markdown.extension.convertToHtml.options.additionalPlugins": {
+					"type": "object",
+					"default": {
+						"absolutePath": null,
+						"relativePath": null,
+						"plugins": [
+							{
+								"name": null,
+								"enable": true
+							}
+						]
+					}
 				}
 			}
 		},

@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 2.0.0
+
+* New feature introduced: user-installed additional markdown-it plug-ins
+
+## Version 1.2.0
+
+* Some "markdown-it" options and "markdown-it-named-headers" plug-in exposed as optional: 6 new options added to extension settings
+* Fixed CSS relative path in generated HTML: on Windows, backslash separator replaced with /
+
 ## Version 1.1.1
 
 * Fixed a bug in a relative path to CSS files

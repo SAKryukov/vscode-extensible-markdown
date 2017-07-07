@@ -2,6 +2,7 @@ exports.activate = function (context) {
 
     const encoding = "utf8";
     const Utf8BOM = "\ufeff";
+    const defaultSmartQuotes = '""' + "''";
 
     const vscode = require('vscode');
     const util = require('util');
@@ -17,33 +18,34 @@ exports.activate = function (context) {
         }
     })();
 
-    const markdownIt = (function () {
-        const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
-        if (!extension) return;
-        extensionPath = path.join(extension.extensionPath, "node_modules", "/");
-        const named = require(extensionPath + "markdown-it-named-headers");
-        const md = require(extensionPath + "markdown-it")()
-            .set({ html: true, breaks: true, typographer: true })
-            .use(named);
-        return md;
-    })();
+    let markdownIt;
 
     const getSettings = function () { // see package.json, "configuration":
         const thisExtensionSection =
             vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
+        const thisMarkdownItOptionSection =
+            vscode.workspace.getConfiguration("markdown.extension.convertToHtml.options");
         const sharedSection = vscode.workspace.getConfiguration("markdown");
         return {
             reportSuccess: thisExtensionSection["reportSuccess"],
             showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
             embedCss: thisExtensionSection["embedCss"],
-            css: sharedSection["styles"]
+            css: sharedSection["styles"],
+            // options:
+            headingId: thisMarkdownItOptionSection["headingId"],
+            allowHTML: thisMarkdownItOptionSection["allowHTML"],
+            linkify: thisMarkdownItOptionSection["linkify"],
+            br: thisMarkdownItOptionSection["br"],
+            typographer: thisMarkdownItOptionSection["typographer"],
+            smartQuotes: thisMarkdownItOptionSection["smartQuotes"],
+            additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"]
         }
     }; //getSettings
 
     const convertText = function (text, fileName, css, embedCss) {
         let result = markdownIt.render(text);
         let style = "";
-        for (index = 0; index < css.length; ++index) {
+        for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
                 const absolute = path.join(vscode.workspace.rootPath, css[index]);
                 let cssCode = util.format(htmlTemplateSet.notFoundCss, absolute);
@@ -87,11 +89,75 @@ exports.activate = function (context) {
 
     const command = function (action) {
         try {
+            const settings = getSettings();
+            optionSet = (function () {
+                let result = {};
+                result.html = settings.allowHTML;
+                result.typographer = settings.typographer;
+                result.linkify = settings.linkify;
+                result.breaks = settings.br;
+                result.typographer = settings.typographer;
+                if (settings.typographer) {
+                    if (!settings.smartQuotes)
+                        result.quotes = defaultSmartQuotes;
+                    else if (!settings.smartQuotes.length)
+                        result.quotes = defaultSmartQuotes;
+                    else if (settings.smartQuotes.length < defaultSmartQuotes.length)
+                        result.quotes = defaultSmartQuotes;
+                    else
+                        result.quotes = settings.smartQuotes;
+                } //if settings.typographer
+                return result;
+            })(); //optionSet
+            additionalPlugins = (function () {
+                let result = [];
+                if (!settings.additionalPlugins) return result;
+                if (!settings.additionalPlugins.plugins) return result;
+                if (!settings.additionalPlugins.plugins.length) return result;
+                if (settings.additionalPlugins.plugins.length < 1) return result;
+                let effectiveParentPath = settings.additionalPlugins.absolutePath;
+                if (!effectiveParentPath) {
+                    let relativePath = settings.additionalPlugins.relativePath;
+                    if (!relativePath) return result;
+                    relativePath = relativePath.toString();
+                    effectiveParentPath = path.join(vscode.workspace.rootPath, relativePath);
+                } //if 
+                if (!effectiveParentPath) return result;
+                if (!fs.existsSync(effectiveParentPath.toString())) return result;
+                for (let pluginDataProperty in settings.additionalPlugins.plugins) {
+                    const pluginData = settings.additionalPlugins.plugins[pluginDataProperty];
+                    if (!pluginData.name) continue;
+                    effectivePath =
+                        path.join(effectiveParentPath.toString(), pluginData.name.toString());
+                    if (!fs.existsSync(effectivePath)) continue;
+                    if (!pluginData.enable) continue;
+                    result.push(effectivePath);
+                } // loop settings.additionaPlugins.plugins
+                return result;
+            }()); //additionalPlugins
+            markdownIt = (function () { // modify, depending in settings
+                const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
+                if (!extension) return;
+                extensionPath = path.join(extension.extensionPath, "node_modules", "/");
+                const named = require(extensionPath + "markdown-it-named-headers");
+                md = require(extensionPath + "markdown-it")().set(optionSet);
+                if (settings.headingId) md = md.use(named);
+                for (let pluginData in additionalPlugins) {
+                    let plugin;
+                    try {
+                        plugin = require(additionalPlugins[pluginData]);
+                    } catch (requireException) {
+                        continue;
+                    } //exception
+                    md = md.use(plugin);
+                } // using additionalPlugins
+                return md;
+            })();
             if (!vscode.workspace.rootPath) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
                 return;
             } //if
-            action(getSettings());
+            action(settings);
         } catch (ex) {
             console.log(ex);
             vscode.window.showErrorMessage(ex.toString() + " Markdown conversion failed.");
@@ -119,7 +185,7 @@ exports.activate = function (context) {
             let count = 0;
             let lastInput = "";
             let lastOutput = "";
-            for (var index = 0; index < files.length; ++index) {
+            for (let index = 0; index < files.length; ++index) {
                 const fileName = files[index].fsPath;
                 const text = fs.readFileSync(fileName, encoding);
                 lastInput = fileName;

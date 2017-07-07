@@ -30,6 +30,7 @@ exports.activate = function (context) {
             reportSuccess: thisExtensionSection["reportSuccess"],
             showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
             embedCss: thisExtensionSection["embedCss"],
+            titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
             css: sharedSection["styles"],
             // options:
             headingId: thisMarkdownItOptionSection["headingId"],
@@ -42,7 +43,20 @@ exports.activate = function (context) {
         }
     }; //getSettings
 
-    const convertText = function (text, fileName, css, embedCss) {
+    const titleFinder = function(text, settings) {
+        if (!settings.titleLocatorRegex) return null;
+        try {
+            const regexp = new RegExp(settings.titleLocatorRegex);
+            const found = text.match(regexp);
+            if (!found) return null;
+            if (found.length < 2) return null; // match itself + group inside
+            return found[1];     
+        } catch(ex) {
+            return null;
+        } //exception
+    }; //titleFinder
+
+    const convertText = function (text, fileName, title, css, embedCss) {
         let result = markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
@@ -62,7 +76,8 @@ exports.activate = function (context) {
             if (index < css.length - 1) style += "\n";
         } //loop
         result = util.format(htmlTemplateSet.html,
-            util.format("Converted from: %s", path.basename(fileName)),
+            title ?
+                title : util.format("Converted from: %s", path.basename(fileName)),
             style,
             result);
         const output = path.join(
@@ -171,10 +186,12 @@ exports.activate = function (context) {
             return;
         } //if no editor
         if (editor.document.languageId != "markdown") return;
+        const text = editor.document.getText(); 
         const outputFileName =
             convertText(
-                editor.document.getText(),
+                text,
                 editor.document.fileName,
+                titleFinder(text, settings),
                 settings.css,
                 settings.embedCss);
         successAction(editor.document.fileName, outputFileName, settings);
@@ -189,7 +206,12 @@ exports.activate = function (context) {
                 const fileName = files[index].fsPath;
                 const text = fs.readFileSync(fileName, encoding);
                 lastInput = fileName;
-                lastOutput = convertText(text, fileName, settings.css, settings.embedCss);
+                lastOutput = convertText(
+                    text,
+                    fileName,
+                    titleFinder(text, settings),
+                    settings.css,
+                    settings.embedCss);
                 ++count;
             } //loop
             if (settings.reportSuccess)

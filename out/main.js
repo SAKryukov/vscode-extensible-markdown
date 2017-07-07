@@ -91,7 +91,7 @@ exports.activate = function (context) {
         try {
             const settings = getSettings();
             optionSet = (function () {
-                let result = {};
+                let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
                 result.html = settings.allowHTML;
                 result.typographer = settings.typographer;
                 result.linkify = settings.linkify;
@@ -131,7 +131,7 @@ exports.activate = function (context) {
                         path.join(effectiveParentPath.toString(), pluginData.name.toString());
                     if (!fs.existsSync(effectivePath)) continue;
                     if (!pluginData.enable) continue;
-                    result.push(effectivePath);
+                    result.push({name: effectivePath, options: pluginData.options});
                 } // loop settings.additionaPlugins.plugins
                 return result;
             }()); //additionalPlugins
@@ -145,11 +145,11 @@ exports.activate = function (context) {
                 for (let pluginData in additionalPlugins) {
                     let plugin;
                     try {
-                        plugin = require(additionalPlugins[pluginData]);
+                        plugin = require(additionalPlugins[pluginData].name);
                     } catch (requireException) {
                         continue;
                     } //exception
-                    md = md.use(plugin);
+                    md = md.use(plugin, additionalPlugins[pluginData].options);
                 } // using additionalPlugins
                 return md;
             })();

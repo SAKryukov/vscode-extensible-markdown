@@ -29,21 +29,34 @@ The option "markdown.extension.convertToHtml.showHtmlInBrowser" is inapplicable 
 
 ### Markdown-it Options
 
-The extension is based on the "VS Code Markdown" extension, which supplied node.js module "markdown-it" with the plug-in "markdown-it-named-headers". Most of these options are exposed to the user of the extension:
+The extension is based on the "VS Code Markdown" extension, which supplies node.js module ["markdown-it"](https://www.npmjs.com/package/markdown-it) with the plug-in ["markdown-it-named-headers"](https://www.npmjs.com/package/markdown-it-named-headers). Since v.2.0.0, most of the module options are exposed to the user of the extension:
 
 | Name | Default | Description |
 | --- | --- | --- |
 | markdown.extension.convertToHtml.options.allowHTML | true | If true, allows HTML formatting, otherwise HTML code is rendered as text |
 | markdown.extension.convertToHtml.options.headingId | true | Generates attribute `id` for h1.. h6 elements, which is controlled by the use of the plug-in "markdown-it-named-headers" |
-| markdown.extension.convertToHtml.options.linkify | false | Renders "Link-like" text as anchor |
-| markdown.extension.convertToHtml.options.br | true | End-of-line handling |
-| markdown.extension.convertToHtml.options.typographer | true | *Typographer* option is used |
+| markdown.extension.convertToHtml.options.linkify | false | Renders "Link-like" text as link |
+| markdown.extension.convertToHtml.options.br | true | [New line](https://en.wikipedia.org/wiki/Newline) handling: if true, line separators are replaced with the HTML *element* `br` |
+| markdown.extension.convertToHtml.options.typographer | true | [*Typographer*](#Typographer) option is used |
 | markdown.extension.convertToHtml.options.smartQuotes | “”‘’ | If typographer option is true, replaces `""` and `''` characters |
-| markdown.extension.convertToHtml.options.smartQuotes | see [below](#settings-default-value) | Descriptor of additional markdown-it plug-ins |
+| markdown.extension.convertToHtml.options.smartQuotes | see [below](#additional-plug-ins-settings) | Descriptor of [additional markdown-it plug-ins](#additional-plug-ins) |
 
 The value of the option "markdown.extension.convertToHtml.options.smartQuotes" should have four characters, otherwise the characters `""` and `''` are rendered as is, as if the option value was `""''`. It can be used to turn off "smart quotes" feature when other typographer processing is enabled.
 
 Note that selection of "markdown-it" options can render generated HTML files different from the  preview based on "VS Code Markdown" extension. For example, this preview presently does not enable "linkify" and "typographer".
+
+### Typographer
+
+Typographer substitution rules:
+
+    - +- → ±
+    - ... → …
+    - --- → — (em dash)
+    - -- → – (en dash)
+    - "…": depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two first characters
+    - '…': depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two last characters
+
+### Settings Sample
 
 This is the sample fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):
 
@@ -77,6 +90,15 @@ This is the sample fragment of the file "settings.json" file ([user or workspace
             {
                 "name": "markdown-it-sup",
                 "enable": true
+            },
+            {
+                "name": "markdown-it-table-of-contents",
+                "options": { // content of this object depends on plug-in:
+                    "includeLevel": [2, 3, 4],
+                    "containerClass": "toc",
+                    "listType": "ul"
+                },
+                "enable": true
             }
         ]
     },
@@ -98,9 +120,21 @@ If one of more CSS files is defined, they are used in the generated HTML files a
 
 ## Additional Plug-ins
 
+Since v. 2.0.0, additional ["markdown-it"](https://www.npmjs.com/package/markdown-it) [plug-ins](https://www.npmjs.com/browse/keyword/markdown-it-plugin) can be installed by the extension users and configured for the use with Visual Studio Code.
+
 ### Installation
 
-### Settings: Default Value
+All ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-ins can be installed using [node.js](https://nodejs.org) [npm](https://www.npmjs.com) without installation of the ["markdown-it"](https://www.npmjs.com/package/markdown-it) module itself, as it is already installed with Visual Studio Code. It is assumed that all such plug-ins are installed in the same `"node_modules"` directory. The "convert-markdown-to-html" does not require installation of plug-ins to the same directory as any of the ["markdown-it"](https://www.npmjs.com/package/markdown-it). It is recommended to install it plug-ins separately.
+
+Initial installation of plug-ins requires installation of [node.js](https://nodejs.org), but node.js is not required after the plug-ins are installed. Plug-ins can be installed *locally* (recommended):
+
+```
+npm install --save a-name-of-markdown-it-plug-in
+```
+
+### Additional Plug-Ins, Settings
+
+Additional plug-ins are set up with one single option: ["markdown.extension.convertToHtml.options.additionalPlugins"](#markdown-it-options).
 
 This is how default value is shown in "package.json:
 ```Json
@@ -111,14 +145,15 @@ This is how default value is shown in "package.json:
                         "plugins": [
                             {
                                 "name": null,
-                                "enable": true
+                                "enable": true,
+                                "options": {}
                             }
                         ]
                     }
 // ...
 ```
-Main purpose of such default-value object is to provide the user a placeholder for structured plug-in descriptor data. The sample of the "settings.json" is shown above.
+Main purpose of such default-value object is to provide the user a placeholder for structured plug-in descriptor data. The sample of the "settings.json" is shown [above](#settings-sample).
 
-First, the settings specify path to the directory where the set of additional plug-ins is installed, either "absolutePath" or "relativePath". There is no need to include both properties, but it if happens, "absolutePath" is considered first. If it is not defined (more exactly, evaluates to "false" in conditional expression), "relativePath" is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it's checked up if effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name `node_modules"`.
+First, the settings specify path to the directory where the set of additional plug-ins is installed, either "absolutePath" or "relativePath". There is no need to include both properties, but it if happens, "absolutePath" is considered first. If it is not defined (more exactly, evaluates to "false" in conditional expression), "relativePath" is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it's checked up if effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name `"node_modules"`.
 
 For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (`require`) each plugin, if its directory exists and the property "enable" is evaluates to `true`. If loading fails, the command execution continues with next plug-in. If a plug-in is successfully loaded, it's used by markdown-it.

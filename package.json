@@ -96,12 +96,13 @@
 				"markdown.extension.convertToHtml.options.additionalPlugins": {
 					"type": "object",
 					"default": {
-						"absolutePath": null,
-						"relativePath": null,
+						"absolutePath": "",
+						"relativePath": "",
 						"plugins": [
 							{
-								"name": null,
-								"enable": true
+								"name": "",
+								"enable": true,
+								"options": {}
 							}
 						]
 					}

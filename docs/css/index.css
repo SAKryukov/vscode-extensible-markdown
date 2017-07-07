@@ -1,6 +1,10 @@
-        p.title { font-size: 160%; text-align: center; }
-        div.toc > ul, div > ul > li > ul { list-style-type: none; }
+        p.title { font-size: 240%; text-align: center; }
+	div.toc ul { list-style-type: none; }
         pre, code { color: darkRed; padding:0; font-family: 'Consolas', sans-serif }
         pre { background-color: lightGray; }
         html, body, p { font-family: 'Verdana', 'Ububtu', serif; }
         blockquote { margin-left: 2em; }
+	th, td { border: thin solid black; padding-left: 1em; padding-right: 1em; }
+	th { border-bottom: solid black 2px; }
+	th { background-color: lightGray; font-weight: normal; font-size: 100%; }
+	table { border: solid black 2px; border-collapse: collapse; }

@@ -2,7 +2,7 @@
 
 ## Version 2.0.0
 
-* New feature introduced: user-installed additional markdown-it plug-ins
+* New feature introduced: user-installed additional markdown-it plug-ins, configurable through the "settings.json" of the extension
 
 ## Version 1.2.0
 

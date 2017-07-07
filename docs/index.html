@@ -56,6 +56,11 @@ Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as p
 <td>false</td>
 <td>Used to embed CSS code found in CSS files in generated HTML</td>
 </tr>
+<tr>
+<td>markdown.extension.convertToHtml.titleLocatorRegex</td>
+<td>&lt;p class=“title”&gt;(.*?)&lt;/p&gt;</td>
+<td>Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML <code>head</code> <code>title</code> element</td>
+</tr>
 </tbody>
 </table>
 <p>The option “markdown.extension.convertToHtml.showHtmlInBrowser” is inapplicable to the command “Markdown: Convert to HTML all .md files in workspace”: if a set of files is converted, none of those files is shown in a Web browser.</p>

@@ -1,7 +1,7 @@
 {
 	"name": "convert-markdown-to-html",
-	"displayName": "Modular Markdown to HTML File Converter",
-	"description": "Converts Markdown files and saves them as HTML",
+	"displayName": "Extensible Markdown Converter",
+	"description": "Converts Markdown and saves HTML //SA???",
 	"version": "2.0.0",
 	"publisher": "sakryukov",
 	"repository": {
@@ -71,7 +71,7 @@
 				},
 				"markdown.extension.convertToHtml.titleLocatorRegex": {
 					"type": "string",
-					"default": "\\<p class\\=\"title\"\\>(.*?)\\<\\/p\\>"
+					"default": "^(.*?)\\[\\]\\(title\\)"
 				},
 				"markdown.extension.convertToHtml.options.headingId": {
 					"type": "boolean",

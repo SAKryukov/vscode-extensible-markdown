@@ -1,4 +1,4 @@
-<p class="title">VSCode: Comprehensive Markdown-it</p>
+VSCode: Extensible Markdown Converter[](title)
 
 [![Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
 
@@ -81,9 +81,12 @@ This is the sample fragment of the file "settings.json" file ([user or workspace
     "markdown.extension.convertToHtml.reportSuccess": true, // default
     "markdown.extension.convertToHtml.showHtmlInBrowser": false, // default
     "markdown.extension.convertToHtml.embedCss": false, // default
+    "markdown.extension.convertToHtml.titleLocatorRegex": // default
+        "^(.*?)\\[\\]\\(title\\)",        
     // markdown-it options, all defaults:  
     "markdown.extension.convertToHtml.options.allowHTML": true,
-    // "markdown-it-named-headers" plug-in, adds id attributes to h1 .. h6 elements:
+    // "markdown-it-named-headers" plug-in,
+    // adds id attributes to h1 .. h6 elements:
     "markdown.extension.convertToHtml.options.headingId": true,
     // converts "link-like" text: for ex., "http://my.com" ->
     // <a href="http://my.com">"http://my.com"</a>: 

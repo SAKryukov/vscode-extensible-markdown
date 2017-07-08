@@ -1,11 +1,11 @@
 ﻿<html>
 <head>
-    <title>VSCode: Comprehensive Markdown-it</title>
+    <title>Converted from: index.md</title>
     <link href="css/index.css" rel="stylesheet">
 </head>
 <body>
 
-<p class="title">VSCode: Comprehensive Markdown-it</p>
+<p>VSCode: Extensible Markdown Converter<a href="title"></a></p>
 <p><a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html"><img src="https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg" alt="Latest Release" /></a></p>
 <p>This is the Visual Studio Code <em>extension</em> supporting <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>. The extension depends on the built-in extension “VS Code Markdown” (<code>id=&quot;Microsoft.vscode-markdown&quot;</code>) and augments it. It reads Markdown content from a currently active editor, converts it to HTML and saves it in a file.</p>
 <p><strong>Since v. 2.0.0, due to the mechanism of user-installed <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> plug-ins and customization design, this extension can be used as an alternative and replacement for all other optional Markdown extensions.</strong></p>
@@ -130,9 +130,12 @@ Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as p
     &quot;markdown.extension.convertToHtml.reportSuccess&quot;: true, // default
     &quot;markdown.extension.convertToHtml.showHtmlInBrowser&quot;: false, // default
     &quot;markdown.extension.convertToHtml.embedCss&quot;: false, // default
+    &quot;markdown.extension.convertToHtml.titleLocatorRegex&quot;: // default
+        &quot;^(.*?)\\[\\]\\(title\\)&quot;,        
     // markdown-it options, all defaults:  
     &quot;markdown.extension.convertToHtml.options.allowHTML&quot;: true,
-    // &quot;markdown-it-named-headers&quot; plug-in, adds id attributes to h1 .. h6 elements:
+    // &quot;markdown-it-named-headers&quot; plug-in,
+    // adds id attributes to h1 .. h6 elements:
     &quot;markdown.extension.convertToHtml.options.headingId&quot;: true,
     // converts &quot;link-like&quot; text: for ex., &quot;http://my.com&quot; -&gt;
     // &lt;a href=&quot;http://my.com&quot;&gt;&quot;http://my.com&quot;&lt;/a&gt;: 

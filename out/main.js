@@ -148,7 +148,7 @@ exports.activate = function (context) {
                     if (!fs.existsSync(effectivePath)) continue;
                     if (!pluginData.enable) continue;
                     result.push({name: effectivePath, options: pluginData.options});
-                } // loop settings.additionaPlugins.plugins
+                } // loop settings.additionalPlugins.plugins
                 return result;
             }()); //additionalPlugins
             markdownIt = (function () { // modify, depending in settings

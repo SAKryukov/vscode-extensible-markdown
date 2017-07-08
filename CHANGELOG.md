@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.1.0
+
+* Minor code fixes: turned on JavaScript strict mode; it revealed some undeclared variables, fixed; none of those problems were functional
+* Added forgotten and important <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> element to the HTML template
+
 ## Version 2.0.0
 
 * New feature introduced: user-installed additional markdown-it plug-ins, configurable through the "settings.json" of the extension

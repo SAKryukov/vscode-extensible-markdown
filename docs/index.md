@@ -39,7 +39,7 @@ Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, ea
 | markdown.extension.convertToHtml.reportSuccess | true | Shows the message upon successful conversion, reports the names of the input and output files |
 | markdown.extension.convertToHtml.showHtmlInBrowser | false | Opens generated HTML file in the default browser |
 | markdown.extension.convertToHtml.embedCss | false | Used to embed CSS code found in CSS files in generated HTML |
-| markdown.extension.convertToHtml.titleLocatorRegex | \<p class\="title"\>(.*?)\<\/p\> | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
+| markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)\\[\\]\\(title\\) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
 
 The option "markdown.extension.convertToHtml.showHtmlInBrowser" is inapplicable to the command "Markdown: Convert to HTML all .md files in workspace": if a set of files is converted, none of those files is shown in a Web browser.
 

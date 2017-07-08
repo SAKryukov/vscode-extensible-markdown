@@ -1,7 +1,20 @@
 ﻿<html>
 <head>
     <title>VSCode: Extensible Markdown Converter</title>
-    <link href="css/index.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+	body > p:first-child { font-size: 240%; text-align: center; }
+	div.toc ul { list-style-type: none; }
+        pre, code { color: darkRed; padding:0; font-family: 'Consolas', sans-serif }
+        pre { background-color: lightGray; }
+        html, body, p { font-family: 'Verdana', 'Ububtu', serif; }
+        blockquote { margin-left: 2em; }
+	th, td { border: thin solid black; padding-left: 1em; padding-right: 1em; }
+	th { border-bottom: solid black 2px; }
+	th { background-color: lightGray; font-weight: normal; font-size: 100%; }
+	table { border: solid black 2px; border-collapse: collapse; }
+
+    </style>
 </head>
 <body>
 
@@ -179,7 +192,7 @@ If one of more CSS files is defined, they are used in the generated HTML files a
 <h3 id="detecting-document-title">Detecting Document Title</h3>
 <p>To use the typographer,  <a href="#markdown-it-options">“markdown-it” option</a> “markdown.extension.convertToHtml.titleLocatorRegex” should define the <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a> pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
 If the pattern match is successfully found in the Markdown document, it is written to the <code>title</code> element of the HTML <code>head</code> element. If the match is not found, the text “Converted from: &lt;input-file-name&gt;” is used as the title.</p>
-<p>It’s important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules allow to render this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the <code>title</code> element.</p>
+<p>It’s important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the <code>title</code> element.</p>
 <p>Let’s see how default value of the “markdown.extension.convertToHtml.titleLocatorRegex” works.</p>
 <p>By default, the following regular expression is used:</p>
 <pre><code>^\(*.?)\[\]\(title\)
@@ -210,12 +223,14 @@ If the pattern match is successfully found in the Markdown document, it is writt
 <p>Typographer substitution rules:</p>
 <ol>
 <li><code>+-</code> → ±</li>
-<li><code>...</code> → …</li>
+<li><code>...</code> → … (single character, <a href="https://en.wikipedia.org/wiki/Ellipsis">ellipsis</a>)</li>
 <li><code>---</code> → — (<a href="https://en.wikipedia.org/wiki/Dash#Em_dash">em dash</a>)</li>
 <li><code>--</code> → – (<a href="https://en.wikipedia.org/wiki/Dash#En_dash">en dash</a>)</li>
 <li><code>&quot;…&quot;</code>: depends on “markdown.extension.convertToHtml.options.smartQuotes” value, two first characters</li>
 <li><code>'…'</code>: depends on “markdown.extension.convertToHtml.options.smartQuotes” value, two last characters</li>
 </ol>
+<p>Two last patterns are more complicated. They match the text taken in a <em>pair</em> of <a href="https://en.wikipedia.org/wiki/Quotation_mark#Summary_table">quotation marks</a>, either <code>&quot;&quot;</code> or <code>''</code>. Importantly, they should be balanced, to get processed.</p>
+<p>The value of the option “markdown.extension.convertToHtml.options.smartQuotes” should be a string with four characters. If the values resolved to false in a <em>conditional expression</em> (undefined, null) or contain less than four characters, no replacement is performed — this is the way to turn the feature off, even if other typographer substitutions are enabled. For languages such as English, Hindi, Indonesian, etc., it should be <code>“”‘’</code> (default); for many European languages and languages using Cyrillic system, it’s <code>«»‹›</code>, <code>«»“”</code> or the like (second pair highly polymorphic and rarely used), and so on.</p>
 <h2 id="additional-plug-ins">Additional Plug-ins</h2>
 <p>Since v. 2.0.0, additional <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">plug-ins</a> can be installed by the users of the extension and configured for the use with Visual Studio Code.</p>
 <h3 id="installation">Installation</h3>

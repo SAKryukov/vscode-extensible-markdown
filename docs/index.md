@@ -135,7 +135,7 @@ If one of more CSS files is defined, they are used in the generated HTML files a
 To use the typographer,  ["markdown-it" option](#markdown-it-options) "markdown.extension.convertToHtml.titleLocatorRegex" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
 If the pattern match is successfully found in the Markdown document, it is written to the `title` element of the HTML `head` element. If the match is not found, the text "Converted from: \<input-file-name\>" is used as the title.
 
-It's important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules allow to render this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the `title` element.
+It's important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the `title` element.
 
 Let's see how default value of the "markdown.extension.convertToHtml.titleLocatorRegex" works.
 
@@ -185,11 +185,15 @@ To use the typographer,  ["markdown-it" option](#markdown-it-options) "markdown.
 Typographer substitution rules:
 
 1. `+-` → ±
-1. `...` → …
+1. `...` → … (single character, [ellipsis](https://en.wikipedia.org/wiki/Ellipsis))
 1. `---` → — ([em dash](https://en.wikipedia.org/wiki/Dash#Em_dash))
 1. `--` → – ([en dash](https://en.wikipedia.org/wiki/Dash#En_dash))
 1. `"…"`: depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two first characters
 1. `'…'`: depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two last characters
+
+Two last patterns are more complicated. They match the text taken in a *pair* of [quotation marks](https://en.wikipedia.org/wiki/Quotation_mark#Summary_table), either `""` or `''`. Importantly, they should be balanced, to get processed.
+
+The value of the option "markdown.extension.convertToHtml.options.smartQuotes" should be a string with four characters. If the values resolved to false in a *conditional expression* (undefined, null) or contain less than four characters, no replacement is performed — this is the way to turn the feature off, even if other typographer substitutions are enabled. For languages such as English, Hindi, Indonesian, etc., it should be `“”‘’` (default); for many European languages and languages using Cyrillic system, it's `«»‹›`, `«»“”` or the like (second pair highly polymorphic and rarely used), and so on.
 
 ## Additional Plug-ins
 

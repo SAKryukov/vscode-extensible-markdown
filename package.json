@@ -1,7 +1,7 @@
 {
 	"name": "convert-markdown-to-html",
 	"displayName": "Extensible Markdown Converter",
-	"description": "Converts Markdown and saves HTML //SA???",
+	"description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
 	"version": "2.0.0",
 	"publisher": "sakryukov",
 	"repository": {

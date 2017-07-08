@@ -63,17 +63,6 @@ The value of the option "markdown.extension.convertToHtml.options.smartQuotes" s
 
 Note that selection of "markdown-it" options can render generated HTML files different from the  preview based on "VS Code Markdown" extension. For example, this preview presently does not enable "linkify" and "typographer".
 
-### Typographer
-
-Typographer substitution rules:
-
-1. `+-` → ±
-1. `...` → …
-1. `---` → — ([em dash](https://en.wikipedia.org/wiki/Dash#Em_dash))
-1. `--` → – ([en dash](https://en.wikipedia.org/wiki/Dash#En_dash))
-1. `"…"`: depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two first characters
-1. `'…'`: depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two last characters
-
 ### Settings Sample
 
 This is the sample fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):
@@ -138,6 +127,69 @@ This is the sample fragment of the file "settings.json" file ([user or workspace
 
 The extension also uses "markdown.styles" option related to the extension "VS Code Markdown".
 If one of more CSS files is defined, they are used in the generated HTML files as *external* or *embedded* style sheets, depending on the option "markdown.extension.convertToHtml.embedCss". The user is responsible for supplying the CSS files themselves.
+
+## Using Settings
+
+### Detecting Document Title
+
+To use the typographer,  ["markdown-it" option](#markdown-it-options) "markdown.extension.convertToHtml.titleLocatorRegex" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
+If the pattern match is successfully found in the Markdown document, it is written to the `title` element of the HTML `head` element. If the match is not found, the text "Converted from: \<input-file-name\>" is used as the title.
+
+It's important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules allow to render this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the `title` element.
+
+Let's see how default value of the "markdown.extension.convertToHtml.titleLocatorRegex" works.
+
+By default, the following regular expression is used:
+
+```
+^\(*.?)\[\]\(title\)
+```
+
+It means that first occurrence of the text between beginning of line ("^" in [regular expressions](https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended)) and "[](title)" will make a match. The *group* "(*.?)" (marked by round brackets) means that the arbitrary text in between will be detected as the match.
+
+For example, this line in source Markdown document
+
+```
+My Article Name[](title)
+```
+will create two matches:
+
+0. My Article Name\[\](title)
+1. My Article Name
+
+The text of the second match corresponds to the group "(*.?)". It will be rendered as an HTML paragraph and written as the text values of its `title` element. Only the first occurrence of the matching text will be handled this way. 
+
+In practice, this particular regular expression is useful to use the very first *paragraph* in the document to produce the title string. It can be taken into account in the CSS, to render this paragraph accordingly. For example, the special CSS properties can be applied to the paragraph defined by the [child selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors) combined with the [first-child](https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child) [pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
+
+CSS line example:
+
+```
+body > p:first-child { font-size: 240%; text-align: center; }
+```
+Alternatively, the heading element of some level (level 1, for example) could be used as a title. It will require the following regular expression:
+
+```
+^\# (*.?)\[\]\(title\)
+```
+Note the blank space between "#" and (*.?).
+
+Matching Markdown would be:<br/>
+```
+# My Article Name[](title)
+```
+
+### Typographer
+
+To use the typographer,  ["markdown-it" option](#markdown-it-options) "markdown.extension.convertToHtml.options.typographer" should be set to true (default).
+
+Typographer substitution rules:
+
+1. `+-` → ±
+1. `...` → …
+1. `---` → — ([em dash](https://en.wikipedia.org/wiki/Dash#Em_dash))
+1. `--` → – ([en dash](https://en.wikipedia.org/wiki/Dash#En_dash))
+1. `"…"`: depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two first characters
+1. `'…'`: depends on "markdown.extension.convertToHtml.options.smartQuotes" value, two last characters
 
 ## Additional Plug-ins
 

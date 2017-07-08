@@ -173,7 +173,7 @@ This is how default value is shown in "package.json:
                     }
 // ...
 ```
-Main purpose of such default-value object is to provide the user a placeholder for structured plug-in descriptor data. The sample of the "settings.json" is shown [above](#settings-sample).
+Main purpose of such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the "settings.json" is shown [above](#settings-sample).
 
 First, the settings specify path to the directory where the set of additional plug-ins is installed, either "absolutePath" or "relativePath". There is no need to include both properties, but it if happens, "absolutePath" is considered first. If it is not defined (more exactly, evaluates to "false" in conditional expression), "relativePath" is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it's checked up if effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name `"node_modules"`.
 

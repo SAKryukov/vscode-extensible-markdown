@@ -209,7 +209,7 @@ If one of more CSS files is defined, they are used in the generated HTML files a
                     }
 // ...
 </code></pre>
-<p>Main purpose of such default-value object is to provide the user a placeholder for structured plug-in descriptor data. The sample of the “settings.json” is shown <a href="#settings-sample">above</a>.</p>
+<p>Main purpose of such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the “settings.json” is shown <a href="#settings-sample">above</a>.</p>
 <p>First, the settings specify path to the directory where the set of additional plug-ins is installed, either “absolutePath” or “relativePath”. There is no need to include both properties, but it if happens, “absolutePath” is considered first. If it is not defined (more exactly, evaluates to “false” in conditional expression), “relativePath” is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it’s checked up if effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name <code>&quot;node_modules&quot;</code>.</p>
 <p>For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (<code>require</code>) each plugin, if its directory exists and the property “enable” is evaluates to <code>true</code>. If loading fails, the command execution continues with next plug-in. If a plug-in is successfully loaded, it’s used by markdown-it, with options specified by the “options” object, which can be omitted.</p>
 

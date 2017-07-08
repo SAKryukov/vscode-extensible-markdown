@@ -1,3 +1,4 @@
+"use strict";
 exports.activate = function (context) {
 
     const encoding = "utf8";
@@ -105,7 +106,7 @@ exports.activate = function (context) {
     const command = function (action) {
         try {
             const settings = getSettings();
-            optionSet = (function () {
+            const optionSet = (function () {
                 let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
                 result.html = settings.allowHTML;
                 result.typographer = settings.typographer;
@@ -124,7 +125,7 @@ exports.activate = function (context) {
                 } //if settings.typographer
                 return result;
             })(); //optionSet
-            additionalPlugins = (function () {
+            const additionalPlugins = (function () {
                 let result = [];
                 if (!settings.additionalPlugins) return result;
                 if (!settings.additionalPlugins.plugins) return result;
@@ -142,7 +143,7 @@ exports.activate = function (context) {
                 for (let pluginDataProperty in settings.additionalPlugins.plugins) {
                     const pluginData = settings.additionalPlugins.plugins[pluginDataProperty];
                     if (!pluginData.name) continue;
-                    effectivePath =
+                    const effectivePath =
                         path.join(effectiveParentPath.toString(), pluginData.name.toString());
                     if (!fs.existsSync(effectivePath)) continue;
                     if (!pluginData.enable) continue;
@@ -153,9 +154,9 @@ exports.activate = function (context) {
             markdownIt = (function () { // modify, depending in settings
                 const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
                 if (!extension) return;
-                extensionPath = path.join(extension.extensionPath, "node_modules", "/");
+                const extensionPath = path.join(extension.extensionPath, "node_modules", "/");
                 const named = require(extensionPath + "markdown-it-named-headers");
-                md = require(extensionPath + "markdown-it")().set(optionSet);
+                let md = require(extensionPath + "markdown-it")().set(optionSet);
                 if (settings.headingId) md = md.use(named);
                 for (let pluginData in additionalPlugins) {
                     let plugin;

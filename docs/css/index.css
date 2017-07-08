@@ -1,4 +1,5 @@
 	body > p:first-child { font-size: 240%; text-align: center; }
+	body > p:nth-child(2) { text-align: right; }
 	div.toc ul { list-style-type: none; }
         pre, code { color: darkRed; padding:0; font-family: 'Consolas', sans-serif }
         pre { background-color: lightGray; }

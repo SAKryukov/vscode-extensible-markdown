@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style type="text/css">
 	body > p:first-child { font-size: 240%; text-align: center; }
+	body > p:nth-child(2) { text-align: right; }
 	div.toc ul { list-style-type: none; }
         pre, code { color: darkRed; padding:0; font-family: 'Consolas', sans-serif }
         pre { background-color: lightGray; }
@@ -13,12 +14,12 @@
 	th { border-bottom: solid black 2px; }
 	th { background-color: lightGray; font-weight: normal; font-size: 100%; }
 	table { border: solid black 2px; border-collapse: collapse; }
-
     </style>
 </head>
 <body>
 
 <p>VSCode: Extensible Markdown Converter<a href="title"></a></p>
+<p><a href="https://www.SAKryukov.org"><em>Sergey A Kryukov</em></a></p>
 <p><a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html"><img src="https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg" alt="Latest Release" /></a></p>
 <p>This package is the Visual Studio Code <em>extension</em> supporting <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>. The extension depends on the built-in extension “VS Code Markdown” (<code>id=&quot;Microsoft.vscode-markdown&quot;</code>) and adds important function: it reads Markdown content from a currently active editor and converts to an HTML file.</p>
 <p>Since v. 2.0.0, the user can extend Markdown features by installing any of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> that are <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">abundantly available</a> in the <a href="https://www.npmjs.com">npm package registry</a>. All the packages can be configured from a single source: “settings.json”, <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a>.</p>

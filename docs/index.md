@@ -31,7 +31,7 @@ All files found in a currently opened workspace can be converted at once with th
 
 Alternatively, open the Command Palette ("Ctrl+Shift+P"/"Cmd+Shift+P" or F1) and search for the command "Markdown: Convert to HTML" or "Markdown: Convert to HTML all .md files in workspace".
 
-The HTML file is saved to the same directory as original Markdown file.
+The HTML file is saved to the same directory as original Markdown file, if not specified otherwise [by settings](#special-markdown-extension-convertToHtml-outputPath).
 
 ### Preview
 
@@ -71,9 +71,13 @@ Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, ea
 | markdown.extension.convertToHtml.reportSuccess | true | Shows the message upon successful conversion, reports the names of the input and output files |
 | markdown.extension.convertToHtml.showHtmlInBrowser | false | Opens generated HTML file in the default browser |
 | markdown.extension.convertToHtml.embedCss | false | Used to embed CSS code found in CSS files in generated HTML |
+| markdown.extension.convertToHtml.outputPath | `""` | Specifies output path for generated HTL files, relative to current workspace |
 | markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)\\[\\]\\(title\\) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
 
-The option "markdown.extension.convertToHtml.showHtmlInBrowser" is inapplicable to the command "Markdown: Convert to HTML all .md files in workspace": if a set of files is converted, none of those files is shown in a Web browser.
+The option "`markdown.extension.convertToHtml.showHtmlInBrowser`" is inapplicable to the command "Markdown: Convert to HTML all .md files in workspace": if a set of files is converted, none of those files is shown in a Web browser.
+
+<i id="special-markdown-extension-convertToHtml-outputPath"></i>
+The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its value resolves to false (empty string, `null`, `undefined`). If defined, it specify the path relative to current workspace directory. The effective target directory may not exist — in this case, error message is shown. If it exists, all files are saved in the same directory. In this case, it's possible that the HTML files with identical base names but different locations overwrite one another. The user is responsible for suitability of the file names. 
 
 ### Markdown-it Options
 
@@ -89,7 +93,7 @@ The extension is based on the "VS Code Markdown" extension, which supplies node.
 | markdown.extension.convertToHtml.options.smartQuotes | `“”‘’` | If typographer option is true, replaces `""` and `''` characters |
 | markdown.extension.convertToHtml.options.additionalPlugins | see [below](#customization-of-additional-plug-ins) | Descriptor of [additional markdown-it plug-ins](#additional-plug-ins) |
 
-The value of the option "markdown.extension.convertToHtml.options.smartQuotes" should have four characters, otherwise the characters `""` and `''` are rendered as is, as if the option value was `""''`. It can be used to turn off "smart quotes" feature when other typographer processing is enabled.
+The value of the option "`markdown.extension.convertToHtml.options.smartQuotes`" should have four characters, otherwise the characters `""` and `''` are rendered as is, as if the option value was `""''`. It can be used to turn off "smart quotes" feature when other typographer processing is enabled.
 
 Note that selection of "markdown-it" options can render generated HTML files different from the  preview based on "VS Code Markdown" extension. For example, this preview presently does not enable "linkify" and "typographer".
 
@@ -102,6 +106,7 @@ This is the sample fragment of the file "settings.json" file ([user or workspace
     "markdown.extension.convertToHtml.reportSuccess": true, // default
     "markdown.extension.convertToHtml.showHtmlInBrowser": false, // default
     "markdown.extension.convertToHtml.embedCss": false, // default
+    "markdown.extension.convertToHtml.outputPath": "" // default
     "markdown.extension.convertToHtml.titleLocatorRegex": // default
         "^(.*?)\\[\\]\\(title\\)",        
     // markdown-it options, all defaults:  
@@ -155,19 +160,19 @@ This is the sample fragment of the file "settings.json" file ([user or workspace
 }
 ```
 
-The extension also uses "markdown.styles" option related to the extension "VS Code Markdown".
-If one of more CSS files is defined, they are used in the generated HTML files as *external* or *embedded* style sheets, depending on the option "markdown.extension.convertToHtml.embedCss". The user is responsible for supplying the CSS files themselves.
+The extension also uses "`markdown.styles`" option related to the extension "VS Code Markdown".
+If one of more CSS files is defined, they are used in the generated HTML files as *external* or *embedded* style sheets, depending on the option "`markdown.extension.convertToHtml.embedCss`". The user is responsible for supplying the CSS files themselves.
 
 ## Using Settings
 
 ### Detecting Document Title
 
-To use the typographer,  ["markdown-it" option](#markdown-it-options) "markdown.extension.convertToHtml.titleLocatorRegex" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
+To use the typographer,  ["markdown-it" option](#markdown-it-options) "`markdown.extension.convertToHtml.titleLocatorRegex`" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
 If the pattern match is successfully found in the Markdown document, it is written to the `title` element of the HTML `head` element. If the match is not found, the text "Converted from: \<input-file-name\>" is used as the title.
 
 It's important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the `title` element.
 
-Let's see how default value of the "markdown.extension.convertToHtml.titleLocatorRegex" works.
+Let's see how default value of the "`markdown.extension.convertToHtml.titleLocatorRegex`" works.
 
 By default, the following regular expression is used:
 
@@ -210,7 +215,7 @@ Matching Markdown would be:<br/>
 
 ### Typographer
 
-To use the typographer,  ["markdown-it" option](#markdown-it-options) "markdown.extension.convertToHtml.options.typographer" should be set to true (default).
+To use the typographer,  ["markdown-it" option](#markdown-it-options) "`markdown.extension.convertToHtml.options.typographer`" should be set to true (default).
 
 Typographer substitution rules:
 
@@ -223,7 +228,7 @@ Typographer substitution rules:
 
 Two last patterns are more complicated. They match the text taken in a *pair* of [quotation marks](https://en.wikipedia.org/wiki/Quotation_mark#Summary_table), either `""` or `''`. Importantly, they should be balanced, to get processed.
 
-The value of the option "markdown.extension.convertToHtml.options.smartQuotes" should be a string with four characters. If the values resolved to false in a *conditional expression* (undefined, null) or contain less than four characters, no replacement is performed — this is the way to turn the feature off, even if other typographer substitutions are enabled. For languages such as English, Hindi, Indonesian, etc., it should be `“”‘’` (default); for many European languages and languages using Cyrillic system, it's `«»‹›`, `«»“”` or the like (second pair highly polymorphic and rarely used), and so on.
+The value of the option "`markdown.extension.convertToHtml.options.smartQuotes`" should be a string with four characters. If the values resolved to false in a *conditional expression* (undefined, null) or contain less than four characters, no replacement is performed — this is the way to turn the feature off, even if other typographer substitutions are enabled. For languages such as English, Hindi, Indonesian, etc., it should be `“”‘’` (default); for many European languages and languages using Cyrillic system, it's `«»‹›`, `«»“”` or the like (second pair highly polymorphic and rarely used), and so on.
 
 ## Additional Plug-ins
 
@@ -241,7 +246,7 @@ npm install --save a-name-of-markdown-it-plug-in
 
 ### Customization of Additional Plug-Ins
 
-Additional plug-ins are set up with one single "setting.json" option: ["markdown.extension.convertToHtml.options.additionalPlugins"](#markdown-it-options).
+Additional plug-ins are set up with one single "setting.json" option: ["`markdown.extension.convertToHtml.options.additionalPlugins`"](#markdown-it-options).
 
 This is how default value is shown in "package.json":
 ```Json

@@ -18,23 +18,43 @@
 		"markdown"
 	],
 	"activationEvents": [
+		"onCommand:extension.markdown.ShowPreview",
+		"onCommand:extension.markdown.ShowSidePreview",
 		"onCommand:extension.Markdown.ConvertToHtml",
 		"onCommand:extension.Markdown.ConvertToHtml.All"
 	],
 	"main": "./out/main.js",
-	"contributes": {
+	"contributes": {		
 		"commands": [
 			{
+				"command": "extension.markdown.ShowPreview",
+				"title": "Markdown: Open &Preview"
+			},
+			{
+				"command": "extension.markdown.ShowSidePreview",
+				"title": "Markdown: Open Preview to the &Side"
+			},
+			{
 				"command": "extension.Markdown.ConvertToHtml",
-				"title": "Markdown: Convert to HTML"
+				"title": "Markdown: Convert to &HTML"
 			},
 			{
 				"command": "extension.Markdown.ConvertToHtml.All",
-				"title": "Markdown: Convert to HTML all .md files in workspace"
+				"title": "Markdown: Convert to HTML all .md files in &Workspace"
 			}
 		],
 		"menus": {
 			"editor/context": [
+				{
+					"when": "editorTextFocus && resourceLangId == markdown",
+					"command": "extension.markdown.ShowPreview",
+					"group": "markdownPreview"
+				},
+				{
+					"when": "editorTextFocus && resourceLangId == markdown",
+					"command": "extension.markdown.ShowSidePreview",
+					"group": "markdownPreview"
+				},
 				{
 					"when": "editorTextFocus && resourceLangId == markdown",
 					"command": "extension.Markdown.ConvertToHtml",

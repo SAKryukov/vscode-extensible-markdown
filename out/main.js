@@ -4,6 +4,7 @@ exports.activate = function (context) {
     const encoding = "utf8";
     const Utf8BOM = "\ufeff";
     const defaultSmartQuotes = '""' + "''";
+    const previewAuthority = "extensible-markdown-preview";
 
     const vscode = require('vscode');
     const util = require('util');
@@ -57,8 +58,8 @@ exports.activate = function (context) {
         } //exception
     }; //titleFinder
 
-    const convertText = function (text, fileName, title, css, embedCss) {
-        let result = markdownIt.render(text);
+    const transcodeText = function (text, fileName, title, css, embedCss) {
+        const result = markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
@@ -76,11 +77,15 @@ exports.activate = function (context) {
             } //if5
             if (index < css.length - 1) style += "\n";
         } //loop
-        result = util.format(htmlTemplateSet.html,
+        return util.format(htmlTemplateSet.html,
             title ?
                 title : util.format("Converted from: %s", path.basename(fileName)),
             style,
             result);
+    }; //transcodeText
+
+    const convertText = function (text, fileName, title, css, embedCss) {
+        let result = transcodeText(text, fileName, title, css, embedCss);
         const output = path.join(
             path.dirname(fileName),
             path.basename(fileName,
@@ -103,7 +108,7 @@ exports.activate = function (context) {
             require('child_process').exec(output);
     }; //successAction
 
-    const command = function (action) {
+    const command = function (action, previewSourceTextEditor) {
         try {
             const settings = getSettings();
             const optionSet = (function () {
@@ -173,14 +178,14 @@ exports.activate = function (context) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
                 return;
             } //if
-            action(settings);
+            return action(settings, previewSourceTextEditor);
         } catch (ex) {
             console.log(ex);
             vscode.window.showErrorMessage(ex.toString() + " Markdown conversion failed.");
         } //exception
     }; //command
 
-    const convertOne = function (settings) {
+    const convertOne = function (settings, previewSourceTextEditor) {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage("Open Markdown file (.md)");
@@ -198,7 +203,18 @@ exports.activate = function (context) {
         successAction(editor.document.fileName, outputFileName, settings);
     } //convertOne
 
-    const convertSet = function (settings) {
+    const previewOne = function (settings, previewSourceTextEditor) {
+        if (!previewSourceTextEditor)
+            vscode.window.showErrorMessage("Open Markdown file (.md)");
+        const text = previewSourceTextEditor.document.getText();
+        return transcodeText(
+            text,
+            "", "",
+            settings.css,
+            true);
+    } //previewOne
+
+    const convertSet = function (settings, previewSourceTextEditor) {
         vscode.workspace.findFiles("**/*.md").then(function (files) {
             let count = 0;
             let lastInput = "";
@@ -225,6 +241,54 @@ exports.activate = function (context) {
         });
     } //convertSet
 
+    const previewUri =
+        vscode.Uri.parse(util.format("%s://authority/%s", previewAuthority, previewAuthority));
+        
+    const TextDocumentContentProvider = (function () {
+        function TextDocumentContentProvider() {
+            this.changeSourceHandler = new vscode.EventEmitter();
+        } //TextDocumentContentProvider
+        TextDocumentContentProvider.prototype.provideTextDocumentContent = function (uri) {
+            if (this.currentSourceTextEditor)
+                return command(previewOne, this.currentSourceTextEditor);
+        }; //TextDocumentContentProvider.prototype.provideTextDocumentContent
+        Object.defineProperty(TextDocumentContentProvider.prototype, "onDidChange", {
+            get: function () { return this.changeSourceHandler.event; }, enumerable: true, configurable: true});
+        TextDocumentContentProvider.prototype.update = function (uri) {
+            this.changeSourceHandler.fire(uri);
+        }; //TextDocumentContentProvider.prototype.update
+        return TextDocumentContentProvider;
+    }()); //TextDocumentContentProvider
+
+    const provider = new TextDocumentContentProvider();
+    
+    vscode.workspace.onDidChangeTextDocument(function (e) {
+        if (e.document === vscode.window.activeTextEditor.document) {
+            provider.update(previewUri);
+        }
+    }); //vscode.workspace.onDidChangeTextDocument
+    vscode.workspace.onDidChangeTextDocument(function (e) {
+        provider.update(previewUri);
+    }); //vscode.workspace.onDidChangeTextDocument
+
+    const previewCommand = function (columns) {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) return;
+        const fileName = editor.document.fileName;
+        if (!fileName) fileName = "unsaved";
+        provider.currentSourceTextEditor = editor;
+        return vscode.commands.executeCommand(
+            "vscode.previewHtml", previewUri, columns,
+            util.format("Preview '%s'", path.basename(fileName)));
+    }; //previewCommand
+
+    const registration = vscode.workspace.registerTextDocumentContentProvider(previewAuthority, provider);
+    context.subscriptions.push(vscode.commands.registerCommand("extension.markdown.ShowPreview", function () {
+        previewCommand(vscode.ViewColumn.One);
+    }), registration);
+    context.subscriptions.push(vscode.commands.registerCommand("extension.markdown.ShowSidePreview", function () {
+        previewCommand(vscode.ViewColumn.Two);
+    }), registration);
     context.subscriptions.push(
         vscode.commands.registerCommand('extension.Markdown.ConvertToHtml', function () {
             command(convertOne);

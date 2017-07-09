@@ -286,7 +286,7 @@ exports.activate = function (context) {
     context.subscriptions.push(vscode.commands.registerCommand("extension.markdown.ShowPreview", function () {
         previewCommand(vscode.ViewColumn.One);
     }), registration);
-    context.subscriptions.push(vscode.commands.registerCommand("extension.markdown.ShowSidePreview", function () {
+    context.subscriptions.push(vscode.commands.registerCommand("extension.markdown.ShowPreviewToSide", function () {
         previewCommand(vscode.ViewColumn.Two);
     }), registration);
     context.subscriptions.push(

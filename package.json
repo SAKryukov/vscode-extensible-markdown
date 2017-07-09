@@ -19,7 +19,7 @@
 	],
 	"activationEvents": [
 		"onCommand:extension.markdown.ShowPreview",
-		"onCommand:extension.markdown.ShowSidePreview",
+		"onCommand:extension.markdown.ShowPreviewToSide",
 		"onCommand:extension.Markdown.ConvertToHtml",
 		"onCommand:extension.Markdown.ConvertToHtml.All"
 	],
@@ -31,7 +31,7 @@
 				"title": "Markdown: Open &Preview"
 			},
 			{
-				"command": "extension.markdown.ShowSidePreview",
+				"command": "extension.markdown.ShowPreviewToSide",
 				"title": "Markdown: Open Preview to the &Side"
 			},
 			{
@@ -52,7 +52,7 @@
 				},
 				{
 					"when": "editorTextFocus && resourceLangId == markdown",
-					"command": "extension.markdown.ShowSidePreview",
+					"command": "extension.markdown.ShowPreviewToSide",
 					"group": "markdownPreview"
 				},
 				{

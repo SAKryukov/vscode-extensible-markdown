@@ -33,6 +33,7 @@ exports.activate = function (context) {
             showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
             embedCss: thisExtensionSection["embedCss"],
             titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
+            outputPath: thisExtensionSection["outputPath"],
             css: sharedSection["styles"],
             // options:
             headingId: thisMarkdownItOptionSection["headingId"],
@@ -84,12 +85,16 @@ exports.activate = function (context) {
             result);
     }; //transcodeText
 
-    const convertText = function (text, fileName, title, css, embedCss) {
+    const convertText = function (text, fileName, title, css, embedCss, outputPath) {
         let result = transcodeText(text, fileName, title, css, embedCss);
+        const effectiveOutputPath = outputPath ?
+            path.join(vscode.workspace.rootPath, outputPath) : path.dirname(fileName);
+        if (!fs.existsSync(effectiveOutputPath))
+            vscode.window.showErrorMessage(util.format("Path not found: %s", effectiveOutputPath));  
         const output = path.join(
-            path.dirname(fileName),
+            effectiveOutputPath,
             path.basename(fileName,
-                path.extname(fileName))) + ".html";
+            path.extname(fileName))) + ".html";
         result = Utf8BOM + result;
         fs.writeFileSync(output, result);
         return output;
@@ -201,7 +206,8 @@ exports.activate = function (context) {
                 editor.document.fileName,
                 titleFinder(text, settings),
                 settings.css,
-                settings.embedCss);
+                settings.embedCss,
+                settings.outputPath);
         successAction(editor.document.fileName, outputFileName, settings);
     } //convertOne
 
@@ -230,7 +236,8 @@ exports.activate = function (context) {
                     fileName,
                     titleFinder(text, settings),
                     settings.css,
-                    settings.embedCss);
+                    settings.embedCss,
+                    settings.outputPath);
                 ++count;
             } //loop
             if (settings.reportSuccess)
@@ -264,7 +271,7 @@ exports.activate = function (context) {
     }()); //TextDocumentContentProvider
 
     const provider = new TextDocumentContentProvider();
-
+    
     vscode.workspace.onDidChangeTextDocument(function (e) {
         if (e.document === vscode.window.activeTextEditor.document)
             provider.update(previewUri);

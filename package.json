@@ -89,6 +89,10 @@
                     "type": "boolean",
                     "default": false
                 },
+                "markdown.extension.convertToHtml.outputPath": {
+                    "type": "string",
+                    "default": ""
+                },
                 "markdown.extension.convertToHtml.titleLocatorRegex": {
                     "type": "string",
                     "default": "^(.*?)\\[\\]\\(title\\)"

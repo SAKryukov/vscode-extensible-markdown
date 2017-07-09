@@ -24,12 +24,59 @@
 <p>This package is the Visual Studio Code <em>extension</em> supporting <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>. The extension depends on the built-in extension “VS Code Markdown” (<code>id=&quot;Microsoft.vscode-markdown&quot;</code>) and adds important function: it reads Markdown content from a currently active editor and converts to an HTML file.</p>
 <p>Since v. 2.0.0, the user can extend Markdown features by installing any of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> that are <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">abundantly available</a> in the <a href="https://www.npmjs.com">npm package registry</a>. All the packages can be configured from a single source: “settings.json”, <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a>.</p>
 <p>That said, there is no a need for different Markdown extensions. It’s quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.</p>
-<p><div class="toc"><ul><li><a href="#usage">Usage</a></li><li><a href="#settings">Settings</a><ul><li><a href="#three-levels-of-settings">Three Levels of Settings</a></li><li><a href="#general-options">General Options</a></li><li><a href="#markdown-it-options">Markdown-it Options</a></li><li><a href="#settings-sample">Settings Sample</a></li></ul></li><li><a href="#using-settings">Using Settings</a><ul><li><a href="#detecting-document-title">Detecting Document Title</a></li><li><a href="#typographer">Typographer</a></li></ul></li><li><a href="#additional-plug-ins">Additional Plug-ins</a><ul><li><a href="#installation">Installation</a></li><li><a href="#customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
+<p><div class="toc"><ul><li><a href="#features">Features</a></li><li><a href="#usage">Usage</a><ul><li><a href="#preview">Preview</a></li></ul></li><li><a href="#settings">Settings</a><ul><li><a href="#three-levels-of-settings">Three Levels of Settings</a></li><li><a href="#general-options">General Options</a></li><li><a href="#markdown-it-options">Markdown-it Options</a></li><li><a href="#settings-sample">Settings Sample</a></li></ul></li><li><a href="#using-settings">Using Settings</a><ul><li><a href="#detecting-document-title">Detecting Document Title</a></li><li><a href="#typographer">Typographer</a></li></ul></li><li><a href="#additional-plug-ins">Additional Plug-ins</a><ul><li><a href="#installation">Installation</a></li><li><a href="#customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;</li>
+<li>Support of the same CSS files configured for the extension “VS Code Markdown” and used in preview;</li>
+<li>Optional embedding of CSS in HTML;</li>
+<li>Optional Detection of the document title based on user-configurable Regular Expression;</li>
+<li>Optional preview in the default Web browser;</li>
+<li>Preview in Visual Studio Code, in a full-size window or side by side;</li>
+<li>A possibility of installation of <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> in an arbitrary directory, without the need to install “markdown-it” itself;</li>
+<li>Configuration of all processing detail of the extension, <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> and its plug-ins, from a single source.</li>
+</ul>
 <h2 id="usage">Usage</h2>
 <p>Open Markdown file (.md) in Visual Studio Code and activate the editor’s context menu, use the command “Markdown: Convert to HTML”, to convert this file.</p>
 <p>All files found in a currently opened workspace can be converted at once with the command “Markdown: Convert to HTML all .md files in workspace”. This command appears in context menu of any editor, and also in the Explorer context menu.</p>
 <p>Alternatively, open the Command Palette (“Ctrl+Shift+P”/“Cmd+Shift+P” or F1) and search for the command “Markdown: Convert to HTML” or “Markdown: Convert to HTML all .md files in workspace”.</p>
 <p>The HTML file is saved to the same directory as original Markdown file.</p>
+<h3 id="preview">Preview</h3>
+<p>Preview presents certain concerns, because built-in extension “VS Code Markdown” already implements the same two preview commands for Markdown.</p>
+<p>As the extension “VS Code Markdown” uses fixed set of Markdown-specific options and does not load <a href="#additional-plug-ins">additional plug-ins</a>, “VS Code Markdown” preview can be different from “Extensible Markdown Converter” rendering.</p>
+<p>So, it’s important to know the difference, to avoid mixing rendering performed by these two extensions.</p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Command</th>
+<th>Command Title</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VS Code Markdown</td>
+<td>markdown.showPreview</td>
+<td>Markdown: Open Preview</td>
+</tr>
+<tr>
+<td>Extensible Markdown Converter</td>
+<td>extensible.markdown.showPreview</td>
+<td>Markdown: Open &amp;Preview</td>
+</tr>
+<tr>
+<td>VS Code Markdown</td>
+<td>markdown.showPreviewToSide</td>
+<td>Markdown: Open Preview to Side</td>
+</tr>
+<tr>
+<td>Extensible Markdown Converter</td>
+<td>extensible.markdown.showPreviewToSide</td>
+<td>Markdown: Open Preview to &amp;Side</td>
+</tr>
+</tbody>
+</table>
+<p>In the Visual Studio Code UI, ‘&amp;’ is rendered as underscore and can be used as <em>hardware accelerator</em>: “Markdown: Open &amp;Preview”, “Markdown: Open Preview to &amp;Side”. These two strings are shown in the UI <em>Command Palette</em> as is, with ‘&amp;’. Note that two <code>extensible.markdown.showPreview*</code> commands are also shown in the current editor’s context menu, but “VS Code Markdown” <code>markdown.showPreview*</code> commands are not.</p>
 <h2 id="settings">Settings</h2>
 <h3 id="three-levels-of-settings">Three Levels of Settings</h3>
 <p>There are three levels of settings. The user of this extension can control them all.</p>

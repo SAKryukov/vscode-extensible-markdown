@@ -35,20 +35,20 @@ The HTML file is saved to the same directory as original Markdown file.
 
 ### Preview
 
-Preview presents special concern, because built-in extension "VS Code Markdown" already implements the same two preview commands for Markdown.
+Preview presents certain concerns, because built-in extension "VS Code Markdown" already implements the same two preview commands for Markdown.
 
-As "VS Code Markdown" uses fixed set of options and does not load additional plug-ins (SA???), "VS Code Markdown" preview can be different from "Extensible Markdown Converter" rendering.
+As the extension "VS Code Markdown" uses fixed set of Markdown-specific options and does not load [additional plug-ins](#additional-plug-ins), "VS Code Markdown" preview can be different from "Extensible Markdown Converter" rendering.
 
 So, it's important to know the difference, to avoid mixing rendering performed by these two extensions.
 
 | Extension | Command | Command Title |
 | --- | --- | --- |
 | VS Code Markdown | markdown.showPreview | Markdown: Open Preview |
-| Extensible Markdown Converter | extension.markdown.ShowPreview | Markdown: Open &Preview |     
+| Extensible Markdown Converter | extensible.markdown.showPreview | Markdown: Open &Preview |     
 | VS Code Markdown | markdown.showPreviewToSide | Markdown: Open Preview to Side |
-| Extensible Markdown Converter | extension.markdown.ShowPreviewToSide | Markdown: Open Preview to &Side |
+| Extensible Markdown Converter | extensible.markdown.showPreviewToSide | Markdown: Open Preview to &Side |
 
-In the Visual Studio Code UI, '&' is rendered as underscore and can be used as *hardware accelerator*: "Markdown: Open &Preview", "Markdown: Open Preview to &Side". These two strings are shown //SA???
+In the Visual Studio Code UI, '&' is rendered as underscore and can be used as *hardware accelerator*: "Markdown: Open &Preview", "Markdown: Open Preview to &Side". These two strings are shown in the UI *Command Palette* as is, with '&'. Note that two `extensible.markdown.showPreview*` commands are also shown in the current editor's context menu, but "VS Code Markdown" `markdown.showPreview*` commands are not.
 
 ## Settings
 

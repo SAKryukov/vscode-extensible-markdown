@@ -1,159 +1,159 @@
 {
-	"name": "convert-markdown-to-html",
-	"displayName": "Extensible Markdown Converter",
-	"description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
-	"version": "2.1.0",
-	"publisher": "sakryukov",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"
-	},
-	"engines": {
-		"vscode": "^1.13.1"
-	},
-	"categories": [
-		"Other"
-	],
-	"keywords": [
-		"markdown"
-	],
-	"activationEvents": [
-		"onCommand:extensible.markdown.showPreview",
-		"onCommand:extensible.markdown.showPreviewToSide",
-		"onCommand:extensible.markdown.convertToHtml",
-		"onCommand:extensible.markdown.convertToHtml.all"
-	],
-	"main": "./out/main.js",
-	"contributes": {		
-		"commands": [
-			{
-				"command": "extensible.markdown.showPreview",
-				"title": "Markdown: Open &Preview"
-			},
-			{
-				"command": "extensible.markdown.showPreviewToSide",
-				"title": "Markdown: Open Preview to the &Side"
-			},
-			{
-				"command": "extensible.markdown.convertToHtml",
-				"title": "Markdown: Convert to &HTML"
-			},
-			{
-				"command": "extensible.markdown.convertToHtml.all",
-				"title": "Markdown: Convert to HTML all .md files in &Workspace"
-			}
-		],
-		"menus": {
-			"editor/context": [
-				{
-					"when": "editorTextFocus && resourceLangId == markdown",
-					"command": "extensible.markdown.showPreview",
-					"group": "markdownPreview"
-				},
-				{
-					"when": "editorTextFocus && resourceLangId == markdown",
-					"command": "extensible.markdown.showPreviewToSide",
-					"group": "markdownPreview"
-				},
-				{
-					"when": "editorTextFocus && resourceLangId == markdown",
-					"command": "extensible.markdown.convertToHtml",
-					"group": "markdown"
-				},
-				{
-					"when": "editorTextFocus",
-					"command": "extensible.markdown.convertToHtml.all",
-					"group": "markdown"
-				}
-			],
-			"explorer/context": [
-				{
-					"command": "extensible.markdown.convertToHtml.all",
-					"group": "markdown"
-				}
-			]
-		},
-		"configuration": {
-			"type": "object",
-			"title": "Markdown convert to HTML configuration",
-			"properties": {
-				"markdown.extension.convertToHtml.reportSuccess": {
-					"type": "boolean",
-					"default": true
-				},
-				"markdown.extension.convertToHtml.showHtmlInBrowser": {
-					"type": "boolean",
-					"default": false
-				},
-				"markdown.extension.convertToHtml.embedCss": {
-					"type": "boolean",
-					"default": false
-				},
-				"markdown.extension.convertToHtml.titleLocatorRegex": {
-					"type": "string",
-					"default": "^(.*?)\\[\\]\\(title\\)"
-				},
-				"markdown.extension.convertToHtml.options.headingId": {
-					"type": "boolean",
-					"default": true
-				},
-				"markdown.extension.convertToHtml.options.allowHTML": {
-					"type": "boolean",
-					"default": true
-				},
-				"markdown.extension.convertToHtml.options.linkify": {
-					"type": "boolean",
-					"default": false
-				},
-				"markdown.extension.convertToHtml.options.br": {
-					"type": "boolean",
-					"default": true
-				},
-				"markdown.extension.convertToHtml.options.typographer": {
-					"type": "boolean",
-					"default": true
-				},
-				"markdown.extension.convertToHtml.options.smartQuotes": {
-					"type": "string",
-					"default": "“”‘’"
-				},
-				"markdown.extension.convertToHtml.options.additionalPlugins": {
-					"type": "object",
-					"default": {
-						"absolutePath": "",
-						"relativePath": "",
-						"plugins": [
-							{
-								"name": "",
-								"enable": true,
-								"options": {}
-							}
-						]
-					}
-				}
-			}
-		},
-		"configurationDefaults": {
-			"[markdown]": {
-				"editor.codeLens": true,
-				"editor.folding": false,
-				"editor.lineNumbers": "off",
-				"editor.wordWrap": "on"
-			}
-		}
-	},
-	"dependencies": {
-		"vscode": "^1.13.1"
-	},
-	"devDependencies": {
-		"vscode": "^1.13.1"
-	},
-	"extensionDependencies": [
-		"Microsoft.vscode-markdown"
-	],
-	"__metadata": {
-		"id": "2274c865-8de3-4905-b3ee-661afa12b4c5",
-		"publisherId": "d1ee7a62-4a9b-4f51-94ff-cb9d0dc5a6c9",
-		"publisherDisplayName": "Sergey A Kryukov"
-	}
+    "name": "convert-markdown-to-html",
+    "displayName": "Extensible Markdown Converter",
+    "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
+    "version": "2.1.0",
+    "publisher": "sakryukov",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"
+    },
+    "engines": {
+        "vscode": "^1.13.1"
+    },
+    "categories": [
+        "Other"
+    ],
+    "keywords": [
+        "markdown"
+    ],
+    "activationEvents": [
+        "onCommand:extensible.markdown.showPreview",
+        "onCommand:extensible.markdown.showPreviewToSide",
+        "onCommand:extensible.markdown.convertToHtml",
+        "onCommand:extensible.markdown.convertToHtml.all"
+    ],
+    "main": "./out/main.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extensible.markdown.showPreview",
+                "title": "Markdown: Open &Preview"
+            },
+            {
+                "command": "extensible.markdown.showPreviewToSide",
+                "title": "Markdown: Open Preview to the &Side"
+            },
+            {
+                "command": "extensible.markdown.convertToHtml",
+                "title": "Markdown: Convert to &HTML"
+            },
+            {
+                "command": "extensible.markdown.convertToHtml.all",
+                "title": "Markdown: Convert to HTML all .md files in &Workspace"
+            }
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "when": "editorTextFocus && resourceLangId == markdown",
+                    "command": "extensible.markdown.showPreview",
+                    "group": "markdownPreview"
+                },
+                {
+                    "when": "editorTextFocus && resourceLangId == markdown",
+                    "command": "extensible.markdown.showPreviewToSide",
+                    "group": "markdownPreview"
+                },
+                {
+                    "when": "editorTextFocus && resourceLangId == markdown",
+                    "command": "extensible.markdown.convertToHtml",
+                    "group": "markdown"
+                },
+                {
+                    "when": "editorTextFocus",
+                    "command": "extensible.markdown.convertToHtml.all",
+                    "group": "markdown"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "extensible.markdown.convertToHtml.all",
+                    "group": "markdown"
+                }
+            ]
+        },
+        "configuration": {
+            "type": "object",
+            "title": "Markdown convert to HTML configuration",
+            "properties": {
+                "markdown.extension.convertToHtml.reportSuccess": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "markdown.extension.convertToHtml.showHtmlInBrowser": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "markdown.extension.convertToHtml.embedCss": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "markdown.extension.convertToHtml.titleLocatorRegex": {
+                    "type": "string",
+                    "default": "^(.*?)\\[\\]\\(title\\)"
+                },
+                "markdown.extension.convertToHtml.options.headingId": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "markdown.extension.convertToHtml.options.allowHTML": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "markdown.extension.convertToHtml.options.linkify": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "markdown.extension.convertToHtml.options.br": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "markdown.extension.convertToHtml.options.typographer": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "markdown.extension.convertToHtml.options.smartQuotes": {
+                    "type": "string",
+                    "default": "“”‘’"
+                },
+                "markdown.extension.convertToHtml.options.additionalPlugins": {
+                    "type": "object",
+                    "default": {
+                        "absolutePath": "",
+                        "relativePath": "",
+                        "plugins": [
+                            {
+                                "name": "",
+                                "enable": true,
+                                "options": {}
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "configurationDefaults": {
+            "[markdown]": {
+                "editor.codeLens": true,
+                "editor.folding": false,
+                "editor.lineNumbers": "off",
+                "editor.wordWrap": "on"
+            }
+        }
+    },
+    "dependencies": {
+        "vscode": "^1.13.1"
+    },
+    "devDependencies": {
+        "vscode": "^1.13.1"
+    },
+    "extensionDependencies": [
+        "Microsoft.vscode-markdown"
+    ],
+    "__metadata": {
+        "id": "2274c865-8de3-4905-b3ee-661afa12b4c5",
+        "publisherId": "d1ee7a62-4a9b-4f51-94ff-cb9d0dc5a6c9",
+        "publisherDisplayName": "Sergey A Kryukov"
+    }
 }

@@ -288,18 +288,18 @@ exports.activate = function (context) {
     }; //previewCommand
 
     const registration = vscode.workspace.registerTextDocumentContentProvider(previewAuthority, provider);
-    context.subscriptions.push(vscode.commands.registerCommand("extension.markdown.ShowPreview", function () {
+    context.subscriptions.push(vscode.commands.registerCommand("extensible.markdown.showPreview", function () {
         previewCommand(vscode.ViewColumn.One);
     }), registration);
-    context.subscriptions.push(vscode.commands.registerCommand("extension.markdown.ShowPreviewToSide", function () {
+    context.subscriptions.push(vscode.commands.registerCommand("extensible.markdown.showPreviewToSide", function () {
         previewCommand(vscode.ViewColumn.Two);
     }), registration);
     context.subscriptions.push(
-        vscode.commands.registerCommand('extension.Markdown.ConvertToHtml', function () {
+        vscode.commands.registerCommand('extensible.markdown.convertToHtml', function () {
             command(convertOne);
         }));
     context.subscriptions.push(
-        vscode.commands.registerCommand('extension.Markdown.ConvertToHtml.All', function () {
+        vscode.commands.registerCommand('extensible.markdown.convertToHtml.all', function () {
             command(convertSet);
         }));
 

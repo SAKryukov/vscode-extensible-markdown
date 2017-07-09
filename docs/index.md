@@ -12,6 +12,17 @@ That said, there is no a need for different Markdown extensions. It's quite enou
 
 [[toc]]
 
+## Features
+
+- Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;
+- Support of the same CSS files configured for the extension "VS Code Markdown" and used in preview;
+- Optional embedding of CSS in HTML;
+- Optional Detection of the document title based on user-configurable Regular Expression;
+- Optional preview in the default Web browser;
+- Preview in Visual Studio Code, in a full-size window or side by side;
+- A possibility of installation of ["markdown-it" plug-ins](https://www.npmjs.com/package/markdown-it) in an arbitrary directory, without the need to install "markdown-it" itself;
+- Configuration of all processing detail of the extension, ["markdown-it"](https://www.npmjs.com/package/markdown-it) and its plug-ins, from a single source.
+
 ## Usage
 
 Open Markdown file (.md) in Visual Studio Code and activate the editor's context menu, use the command "Markdown: Convert to HTML", to convert this file.
@@ -21,6 +32,23 @@ All files found in a currently opened workspace can be converted at once with th
 Alternatively, open the Command Palette ("Ctrl+Shift+P"/"Cmd+Shift+P" or F1) and search for the command "Markdown: Convert to HTML" or "Markdown: Convert to HTML all .md files in workspace".
 
 The HTML file is saved to the same directory as original Markdown file.
+
+### Preview
+
+Preview presents special concern, because built-in extension "VS Code Markdown" already implements the same two preview commands for Markdown.
+
+As "VS Code Markdown" uses fixed set of options and does not load additional plug-ins (SA???), "VS Code Markdown" preview can be different from "Extensible Markdown Converter" rendering.
+
+So, it's important to know the difference, to avoid mixing rendering performed by these two extensions.
+
+| Extension | Command | Command Title |
+| --- | --- | --- |
+| VS Code Markdown | markdown.showPreview | Markdown: Open Preview |
+| Extensible Markdown Converter | extension.markdown.ShowPreview | Markdown: Open &Preview |     
+| VS Code Markdown | markdown.showPreviewToSide | Markdown: Open Preview to Side |
+| Extensible Markdown Converter | extension.markdown.ShowPreviewToSide | Markdown: Open Preview to &Side |
+
+In the Visual Studio Code UI, '&' is rendered as underscore and can be used as *hardware accelerator*: "Markdown: Open &Preview", "Markdown: Open Preview to &Side". These two strings are shown //SA???
 
 ## Settings
 

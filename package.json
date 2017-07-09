@@ -18,28 +18,28 @@
 		"markdown"
 	],
 	"activationEvents": [
-		"onCommand:extension.markdown.ShowPreview",
-		"onCommand:extension.markdown.ShowPreviewToSide",
-		"onCommand:extension.Markdown.ConvertToHtml",
-		"onCommand:extension.Markdown.ConvertToHtml.All"
+		"onCommand:extensible.markdown.showPreview",
+		"onCommand:extensible.markdown.showPreviewToSide",
+		"onCommand:extensible.markdown.convertToHtml",
+		"onCommand:extensible.markdown.convertToHtml.all"
 	],
 	"main": "./out/main.js",
 	"contributes": {		
 		"commands": [
 			{
-				"command": "extension.markdown.ShowPreview",
+				"command": "extensible.markdown.showPreview",
 				"title": "Markdown: Open &Preview"
 			},
 			{
-				"command": "extension.markdown.ShowPreviewToSide",
+				"command": "extensible.markdown.showPreviewToSide",
 				"title": "Markdown: Open Preview to the &Side"
 			},
 			{
-				"command": "extension.Markdown.ConvertToHtml",
+				"command": "extensible.markdown.convertToHtml",
 				"title": "Markdown: Convert to &HTML"
 			},
 			{
-				"command": "extension.Markdown.ConvertToHtml.All",
+				"command": "extensible.markdown.convertToHtml.all",
 				"title": "Markdown: Convert to HTML all .md files in &Workspace"
 			}
 		],
@@ -47,28 +47,28 @@
 			"editor/context": [
 				{
 					"when": "editorTextFocus && resourceLangId == markdown",
-					"command": "extension.markdown.ShowPreview",
+					"command": "extensible.markdown.showPreview",
 					"group": "markdownPreview"
 				},
 				{
 					"when": "editorTextFocus && resourceLangId == markdown",
-					"command": "extension.markdown.ShowPreviewToSide",
+					"command": "extensible.markdown.showPreviewToSide",
 					"group": "markdownPreview"
 				},
 				{
 					"when": "editorTextFocus && resourceLangId == markdown",
-					"command": "extension.Markdown.ConvertToHtml",
+					"command": "extensible.markdown.convertToHtml",
 					"group": "markdown"
 				},
 				{
 					"when": "editorTextFocus",
-					"command": "extension.Markdown.ConvertToHtml.All",
+					"command": "extensible.markdown.convertToHtml.all",
 					"group": "markdown"
 				}
 			],
 			"explorer/context": [
 				{
-					"command": "extension.Markdown.ConvertToHtml.All",
+					"command": "extensible.markdown.convertToHtml.all",
 					"group": "markdown"
 				}
 			]

@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 2.2.0
+
+* Improved performance (lazy evaluation of markdown-it module setup and settings)
+* In settings, implemented "outputPath" option
+
 ## Version 2.1.0
 
 * Minor code fixes: turned on JavaScript strict mode; it revealed some undeclared variables, fixed; none of those problems were functional

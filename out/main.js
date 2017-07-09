@@ -20,7 +20,7 @@ exports.activate = function (context) {
         }
     })();
 
-    let markdownIt;
+    const lazy = { markdownIt: undefined, settings: undefined };
 
     const getSettings = function () { // see package.json, "configuration":
         const thisExtensionSection =
@@ -45,21 +45,21 @@ exports.activate = function (context) {
         }
     }; //getSettings
 
-    const titleFinder = function(text, settings) {
+    const titleFinder = function (text, settings) {
         if (!settings.titleLocatorRegex) return null;
         try {
             const regexp = new RegExp(settings.titleLocatorRegex);
             const found = text.match(regexp);
             if (!found) return null;
             if (found.length < 2) return null; // match itself + group inside
-            return found[1];     
-        } catch(ex) {
+            return found[1];
+        } catch (ex) {
             return null;
         } //exception
     }; //titleFinder
 
     const transcodeText = function (text, fileName, title, css, embedCss) {
-        const result = markdownIt.render(text);
+        const result = lazy.markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
@@ -110,75 +110,77 @@ exports.activate = function (context) {
 
     const command = function (action, previewSourceTextEditor) {
         try {
-            const settings = getSettings();
+            if (!lazy.settings) 
+                lazy.settings = getSettings();
             const optionSet = (function () {
                 let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
-                result.html = settings.allowHTML;
-                result.typographer = settings.typographer;
-                result.linkify = settings.linkify;
-                result.breaks = settings.br;
-                result.typographer = settings.typographer;
-                if (settings.typographer) {
-                    if (!settings.smartQuotes)
+                result.html = lazy.settings.allowHTML;
+                result.typographer = lazy.settings.typographer;
+                result.linkify = lazy.settings.linkify;
+                result.breaks = lazy.settings.br;
+                result.typographer = lazy.settings.typographer;
+                if (lazy.settings.typographer) {
+                    if (!lazy.settings.smartQuotes)
                         result.quotes = defaultSmartQuotes;
-                    else if (!settings.smartQuotes.length)
+                    else if (!lazy.settings.smartQuotes.length)
                         result.quotes = defaultSmartQuotes;
-                    else if (settings.smartQuotes.length < defaultSmartQuotes.length)
+                    else if (lazy.settings.smartQuotes.length < defaultSmartQuotes.length)
                         result.quotes = defaultSmartQuotes;
                     else
-                        result.quotes = settings.smartQuotes;
+                        result.quotes = lazy.settings.smartQuotes;
                 } //if settings.typographer
                 return result;
             })(); //optionSet
             const additionalPlugins = (function () {
                 let result = [];
-                if (!settings.additionalPlugins) return result;
-                if (!settings.additionalPlugins.plugins) return result;
-                if (!settings.additionalPlugins.plugins.length) return result;
-                if (settings.additionalPlugins.plugins.length < 1) return result;
-                let effectiveParentPath = settings.additionalPlugins.absolutePath;
+                if (!lazy.settings.additionalPlugins) return result;
+                if (!lazy.settings.additionalPlugins.plugins) return result;
+                if (!lazy.settings.additionalPlugins.plugins.length) return result;
+                if (lazy.settings.additionalPlugins.plugins.length < 1) return result;
+                let effectiveParentPath = lazy.settings.additionalPlugins.absolutePath;
                 if (!effectiveParentPath) {
-                    let relativePath = settings.additionalPlugins.relativePath;
+                    let relativePath = lazy.settings.additionalPlugins.relativePath;
                     if (!relativePath) return result;
                     relativePath = relativePath.toString();
                     effectiveParentPath = path.join(vscode.workspace.rootPath, relativePath);
                 } //if 
                 if (!effectiveParentPath) return result;
                 if (!fs.existsSync(effectiveParentPath.toString())) return result;
-                for (let pluginDataProperty in settings.additionalPlugins.plugins) {
-                    const pluginData = settings.additionalPlugins.plugins[pluginDataProperty];
+                for (let pluginDataProperty in lazy.settings.additionalPlugins.plugins) {
+                    const pluginData = lazy.settings.additionalPlugins.plugins[pluginDataProperty];
                     if (!pluginData.name) continue;
                     const effectivePath =
                         path.join(effectiveParentPath.toString(), pluginData.name.toString());
                     if (!fs.existsSync(effectivePath)) continue;
                     if (!pluginData.enable) continue;
-                    result.push({name: effectivePath, options: pluginData.options});
+                    result.push({ name: effectivePath, options: pluginData.options });
                 } // loop settings.additionalPlugins.plugins
                 return result;
             }()); //additionalPlugins
-            markdownIt = (function () { // modify, depending in settings
-                const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
-                if (!extension) return;
-                const extensionPath = path.join(extension.extensionPath, "node_modules", "/");
-                const named = require(extensionPath + "markdown-it-named-headers");
-                let md = require(extensionPath + "markdown-it")().set(optionSet);
-                if (settings.headingId) md = md.use(named);
-                for (let pluginData in additionalPlugins) {
-                    let plugin;
-                    try {
-                        plugin = require(additionalPlugins[pluginData].name);
-                    } catch (requireException) {
-                        continue;
-                    } //exception
-                    md = md.use(plugin, additionalPlugins[pluginData].options);
-                } // using additionalPlugins
-                return md;
-            })();
+            if (!lazy.markdownIt)
+                lazy.markdownIt = (function () { // modify, depending in settings
+                    const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
+                    if (!extension) return;
+                    const extensionPath = path.join(extension.extensionPath, "node_modules", "/");
+                    const named = require(extensionPath + "markdown-it-named-headers");
+                    let md = require(extensionPath + "markdown-it")().set(optionSet);
+                    if (lazy.settings.headingId) md = md.use(named);
+                    for (let pluginData in additionalPlugins) {
+                        let plugin;
+                        try {
+                            plugin = require(additionalPlugins[pluginData].name);
+                        } catch (requireException) {
+                            continue;
+                        } //exception
+                        md = md.use(plugin, additionalPlugins[pluginData].options);
+                    } // using additionalPlugins
+                    return md;
+                })();
             if (!vscode.workspace.rootPath) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
                 return;
             } //if
-            return action(settings, previewSourceTextEditor);
+            return action(lazy.settings, previewSourceTextEditor);
         } catch (ex) {
             console.log(ex);
             vscode.window.showErrorMessage(ex.toString() + " Markdown conversion failed.");
@@ -192,7 +194,7 @@ exports.activate = function (context) {
             return;
         } //if no editor
         if (editor.document.languageId != "markdown") return;
-        const text = editor.document.getText(); 
+        const text = editor.document.getText();
         const outputFileName =
             convertText(
                 text,
@@ -243,7 +245,7 @@ exports.activate = function (context) {
 
     const previewUri =
         vscode.Uri.parse(util.format("%s://authority/%s", previewAuthority, previewAuthority));
-        
+
     const TextDocumentContentProvider = (function () {
         function TextDocumentContentProvider() {
             this.changeSourceHandler = new vscode.EventEmitter();
@@ -253,7 +255,8 @@ exports.activate = function (context) {
                 return command(previewOne, this.currentSourceTextEditor);
         }; //TextDocumentContentProvider.prototype.provideTextDocumentContent
         Object.defineProperty(TextDocumentContentProvider.prototype, "onDidChange", {
-            get: function () { return this.changeSourceHandler.event; }, enumerable: true, configurable: true});
+            get: function () { return this.changeSourceHandler.event; }, enumerable: true, configurable: true
+        });
         TextDocumentContentProvider.prototype.update = function (uri) {
             this.changeSourceHandler.fire(uri);
         }; //TextDocumentContentProvider.prototype.update
@@ -261,15 +264,17 @@ exports.activate = function (context) {
     }()); //TextDocumentContentProvider
 
     const provider = new TextDocumentContentProvider();
-    
+
     vscode.workspace.onDidChangeTextDocument(function (e) {
-        if (e.document === vscode.window.activeTextEditor.document) {
+        if (e.document === vscode.window.activeTextEditor.document)
             provider.update(previewUri);
-        }
+        if (e.document.languageId == "css")
+            lazy.settings = undefined;
     }); //vscode.workspace.onDidChangeTextDocument
-    vscode.workspace.onDidChangeTextDocument(function (e) {
-        provider.update(previewUri);
-    }); //vscode.workspace.onDidChangeTextDocument
+    vscode.workspace.onDidChangeConfiguration(function (e) {
+        lazy.settings = undefined;
+        lazy.markdownIt = undefined;
+    }); //vscode.workspace.onDidChangeConfiguration
 
     const previewCommand = function (columns) {
         const editor = vscode.window.activeTextEditor;

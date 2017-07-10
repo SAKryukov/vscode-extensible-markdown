@@ -4,6 +4,7 @@ exports.activate = function (context) {
     const encoding = "utf8";
     const Utf8BOM = "\ufeff";
     const defaultSmartQuotes = '""' + "''";
+    const markdownId = "markdown";
     const previewAuthority = "extensible-markdown-preview";
 
     const vscode = require('vscode');
@@ -27,7 +28,7 @@ exports.activate = function (context) {
             vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
         const thisMarkdownItOptionSection =
             vscode.workspace.getConfiguration("markdown.extension.convertToHtml.options");
-        const sharedSection = vscode.workspace.getConfiguration("markdown");
+        const sharedSection = vscode.workspace.getConfiguration(markdownId);
         return {
             reportSuccess: thisExtensionSection["reportSuccess"],
             showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
@@ -198,7 +199,7 @@ exports.activate = function (context) {
             vscode.window.showErrorMessage("Open Markdown file (.md)");
             return;
         } //if no editor
-        if (editor.document.languageId != "markdown") return;
+        if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
         const outputFileName =
             convertText(
@@ -286,6 +287,8 @@ exports.activate = function (context) {
     const previewCommand = function (columns) {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
+        if (editor.document.languageId != markdownId)
+            vscode.window.showWarningMessage("Extensible Markdown Converter: Not a Markdown source");
         const fileName = editor.document.fileName;
         if (!fileName) fileName = "unsaved";
         provider.currentSourceTextEditor = editor;

@@ -6,11 +6,6 @@ exports.activate = function (context) {
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
     const previewAuthority = "extensible-markdown-preview";
-    const titleDecorationTypeStyle = {
-        cursor: 'copy',
-        border: 'solid thin navy',
-        backgroundColor: 'rgba(200,200,100,0.1)'
-    }
 
     const vscode = require('vscode');
     const util = require('util');
@@ -34,7 +29,7 @@ exports.activate = function (context) {
         const thisMarkdownItOptionSection =
             vscode.workspace.getConfiguration("markdown.extension.convertToHtml.options");
         const sharedSection = vscode.workspace.getConfiguration(markdownId);
-        return {
+        const settings = {
             reportSuccess: thisExtensionSection["reportSuccess"],
             showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
             embedCss: thisExtensionSection["embedCss"],
@@ -48,14 +43,18 @@ exports.activate = function (context) {
             br: thisMarkdownItOptionSection["br"],
             typographer: thisMarkdownItOptionSection["typographer"],
             smartQuotes: thisMarkdownItOptionSection["smartQuotes"],
-            additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"]
-        }
+            additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"],
+        } //settings
+        settings.titleDecorationType =
+            vscode.window.createTextEditorDecorationType(
+                thisExtensionSection["titleLocatorDecoratorStyle"]);
+        return settings;
     }; //getSettings
 
     const titleFinder = function (text, settings) {
         if (!settings.titleLocatorRegex) return null;
         try {
-            const regexp = new RegExp(settings.titleLocatorRegex);
+            const regexp = new RegExp(settings.titleLocatorRegex, "m");
             const found = regexp.exec(text);
             if (!found) return null;
             if (found.length < 2) return null; // match itself + group inside
@@ -286,8 +285,6 @@ exports.activate = function (context) {
             document.positionAt(start + match.length));
     } //getVSCodeRange
 
-    const titleDecorationType = vscode.window.createTextEditorDecorationType(titleDecorationTypeStyle);
-
     const updateDecorators = function() {
         if (!vscode.window.activeTextEditor) return;
         const document = vscode.window.activeTextEditor.document;
@@ -306,7 +303,9 @@ exports.activate = function (context) {
                 }]; 
             } //if matches.all
         } //if matches
-        vscode.window.activeTextEditor.setDecorations(titleDecorationType, decoratorSet);
+        vscode.window.activeTextEditor.setDecorations(
+            lazy.settings.titleDecorationType,
+            decoratorSet);
     } //updateDecorators
     updateDecorators();
 

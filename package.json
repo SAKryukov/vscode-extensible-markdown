@@ -99,9 +99,10 @@
                     "type": "object",
                     "default": {
                         "cursor": "copy",
+                        "borderRadius": "3px",
                         "border": "solid thin navy",
-                        "color": "red",
-                        "backgroundColor": "rgba(200,200,100,0.1)"
+                        "color": "inherit",
+                        "backgroundColor": "rgba(200,200,0,0.7)"
                     }
                 },
                 "markdown.extension.convertToHtml.options.headingId": {

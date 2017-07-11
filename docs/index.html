@@ -29,12 +29,12 @@
 <h2 id="features">Features</h2>
 <ul>
 <li>Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;</li>
-<li>Support of the same CSS files configured for the extension “VS Code Markdown” and used in preview;</li>
 <li>Optional embedding of CSS in HTML;</li>
 <li>Optional Detection of the document title based on user-configurable Regular Expression;</li>
 <li>Optional preview in the default Web browser;</li>
-<li>Preview in Visual Studio Code, in a full-size window or side by side;</li>
+<li>Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching generated HTML file;</li>
 <li>A possibility of installation of <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> in an arbitrary directory, without the need to install “markdown-it” itself;</li>
+<li>User-configurable Markup syntax coloring for plug-ins;</li>
 <li>Configuration of all processing detail of the extension, <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> and its plug-ins, from a single source.</li>
 </ul>
 <h2 id="usage">Usage</h2>
@@ -296,7 +296,7 @@ If the pattern match is successfully found in the Markdown document, it is writt
 <pre><code>npm install --save a-name-of-markdown-it-plug-in
 </code></pre>
 <h3 id="customization-of-additional-plug-ins">Customization of Additional Plug-Ins</h3>
-<p>Additional plug-ins are set up with one single “setting.json” option: <a href="#markdown-it-options">“<code>markdown.extension.convertToHtml.options.additionalPlugins</code>”</a>.</p>
+<p>Additional plug-ins are set up with one single “setting.json” option: <a href="#markdown-it-options">markdown.extension.convertToHtml.options.additionalPlugins</a>.</p>
 <p>This is how default value is shown in “package.json”:</p>
 <pre><code class="language-Json">// ...
                     &quot;default&quot;: {

@@ -3,7 +3,7 @@
 ## Version 2.3.0
 
 * Implemented extensible Markdown syntactic decorations for each plug-in syntax, user-configurable
-* Implented user-configurable style for document title in input Markdown
+* Implemented user-configurable style for document title in input Markdown
 
 ## Version 2.2.0
 

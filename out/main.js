@@ -296,17 +296,17 @@ exports.activate = function (context) {
             lazy.settings = getSettings();
         const text = vscode.window.activeTextEditor.document.getText(); 
         const matches = titleFinder(text, lazy.settings);
+        let decoratorSet = [];
         if (matches) {
             if (matches.all) {
-                const title = matches.title ? matches.title.toString() : ''; 
-                vscode.window.activeTextEditor.setDecorations(
-                    titleDecorationType,
-                    [{
-                        range: getVSCodeRange(document, matches.start, matches.all),
-                        hoverMessage: util.format("Title: \"%s\"", title)
-                    }]);
+                const title = matches.title ? matches.title.toString() : '';
+                decoratorSet = [{
+                    range: getVSCodeRange(document, matches.start, matches.all),
+                    hoverMessage: util.format("Title: \"%s\"", title)
+                }]; 
             } //if matches.all
         } //if matches
+        vscode.window.activeTextEditor.setDecorations(titleDecorationType, decoratorSet);
     } //updateDecorators
     updateDecorators();
 

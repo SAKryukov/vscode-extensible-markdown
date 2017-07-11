@@ -6,6 +6,11 @@ exports.activate = function (context) {
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
     const previewAuthority = "extensible-markdown-preview";
+    const titleDecorationTypeStyle = {
+        cursor: 'copy',
+        border: 'solid thin navy',
+        backgroundColor: 'rgba(200,200,100,0.1)'
+    }
 
     const vscode = require('vscode');
     const util = require('util');
@@ -51,10 +56,10 @@ exports.activate = function (context) {
         if (!settings.titleLocatorRegex) return null;
         try {
             const regexp = new RegExp(settings.titleLocatorRegex);
-            const found = text.match(regexp);
+            const found = regexp.exec(text);
             if (!found) return null;
             if (found.length < 2) return null; // match itself + group inside
-            return found[1];
+            return { start: found.index, all: found[0], title: found[1] };
         } catch (ex) {
             return null;
         } //exception
@@ -76,7 +81,7 @@ exports.activate = function (context) {
                     path.join(vscode.workspace.rootPath, css[index]))
                     .replace(/\\/g, '/');
                 style += util.format(htmlTemplateSet.style, relative);
-            } //if5
+            } //if
             if (index < css.length - 1) style += "\n";
         } //loop
         return util.format(htmlTemplateSet.html,
@@ -201,11 +206,13 @@ exports.activate = function (context) {
         } //if no editor
         if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
+        const title = titleFinder(text, settings) ?
+            titleFinder(text, settings).title : null;  
         const outputFileName =
             convertText(
                 text,
                 editor.document.fileName,
-                titleFinder(text, settings),
+                title,
                 settings.css,
                 settings.embedCss,
                 settings.outputPath);
@@ -272,16 +279,56 @@ exports.activate = function (context) {
     }()); //TextDocumentContentProvider
 
     const provider = new TextDocumentContentProvider();
-    
+
+    const getVSCodeRange = function(document, start, match) {
+        return new vscode.Range(
+            document.positionAt(start),
+            document.positionAt(start + match.length));
+    } //getVSCodeRange
+
+    const titleDecorationType = vscode.window.createTextEditorDecorationType(titleDecorationTypeStyle);
+
+    const updateDecorators = function() {
+        if (!vscode.window.activeTextEditor) return;
+        const document = vscode.window.activeTextEditor.document;
+        if (document.languageId != markdownId) return;
+        if (!lazy.settings)
+            lazy.settings = getSettings();
+        const text = vscode.window.activeTextEditor.document.getText(); 
+        const matches = titleFinder(text, lazy.settings);
+        if (matches) {
+            if (matches.all) {
+                const title = matches.title ? matches.title.toString() : ''; 
+                vscode.window.activeTextEditor.setDecorations(
+                    titleDecorationType,
+                    [{
+                        range: getVSCodeRange(document, matches.start, matches.all),
+                        hoverMessage: util.format("Title: \"%s\"", title)
+                    }]);
+            } //if matches.all
+        } //if matches
+    } //updateDecorators
+    updateDecorators();
+
+    vscode.workspace.onDidOpenTextDocument(function (textDocument) {
+        if (textDocument.languageId == markdownId)
+            updateDecorators(); //SA???
+    });
+    vscode.window.onDidChangeActiveTextEditor(function (editor) {
+        updateDecorators();
+    }, null, context.subscriptions);
     vscode.workspace.onDidChangeTextDocument(function (e) {
         if (e.document === vscode.window.activeTextEditor.document)
             provider.update(previewUri);
         if (e.document.languageId == "css")
             lazy.settings = undefined;
+        else if (e.document.languageId == markdownId)
+            updateDecorators();
     }); //vscode.workspace.onDidChangeTextDocument
     vscode.workspace.onDidChangeConfiguration(function (e) {
         lazy.settings = undefined;
         lazy.markdownIt = undefined;
+        updateDecorators();
     }); //vscode.workspace.onDidChangeConfiguration
 
     const previewCommand = function (columns) {

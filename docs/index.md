@@ -246,7 +246,7 @@ npm install --save a-name-of-markdown-it-plug-in
 
 ### Customization of Additional Plug-Ins
 
-Additional plug-ins are set up with one single "setting.json" option: ["`markdown.extension.convertToHtml.options.additionalPlugins`"](#markdown-it-options).
+Additional plug-ins are set up with one single "setting.json" option: [markdown.extension.convertToHtml.options.additionalPlugins](#markdown-it-options).
 
 This is how default value is shown in "package.json":
 ```Json

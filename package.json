@@ -18,9 +18,7 @@
         "markdown"
     ],
     "activationEvents": [
-        "onCommand:extensible.markdown.showPreview",
-        "onCommand:extensible.markdown.showPreviewToSide",
-        "onCommand:extensible.markdown.convertToHtml",
+        "onLanguage:markdown",
         "onCommand:extensible.markdown.convertToHtml.all"
     ],
     "main": "./out/main.js",
@@ -96,6 +94,15 @@
                 "markdown.extension.convertToHtml.titleLocatorRegex": {
                     "type": "string",
                     "default": "^(.*?)\\[\\]\\(title\\)"
+                },
+                "markdown.extension.convertToHtml.titleLocatorRegex.decoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "cursor": "copy",
+                        "border": "solid thin navy",
+                        "color": "red",
+                        "backgroundColor": "rgba(200,200,100,0.1)"
+                    }
                 },
                 "markdown.extension.convertToHtml.options.headingId": {
                     "type": "boolean",

@@ -353,6 +353,7 @@ exports.activate = function (context) {
                 } // loop multiple matches
                 vscode.window.activeTextEditor.setDecorations(
                     plugin.decorationType, decoratorSet);
+                lazy.decorationTypeSet.push(plugin.decorationType);
             } //loop plugins
         } //loop additional plug-ins
     } //updateDecorators

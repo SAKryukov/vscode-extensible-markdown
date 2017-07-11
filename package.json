@@ -41,6 +41,20 @@
                 "title": "Markdown: Convert to HTML all .md files in &Workspace"
             }
         ],
+        "keybindings": [
+            {
+                "command": "extensible.markdown.showPreview",
+                "key": "ctrl+shift+v",
+                "mac": "cmd+shift+v",
+                "when": "editorTextFocus"
+            },
+            {
+                "command": "extensible.markdown.showPreviewToSide",
+                "key": "ctrl+k v",
+                "mac": "cmd+k v",
+                "when": "editorTextFocus"
+            }
+        ],        
         "menus": {
             "editor/context": [
                 {

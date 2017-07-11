@@ -95,7 +95,7 @@
                     "type": "string",
                     "default": "^(.*?)\\[\\]\\(title\\)"
                 },
-                "markdown.extension.convertToHtml.titleLocatorRegex.decoratorStyle": {
+                "markdown.extension.convertToHtml.titleLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "copy",

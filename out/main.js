@@ -21,7 +21,7 @@ exports.activate = function (context) {
         }
     })();
 
-    const lazy = { markdownIt: undefined, settings: undefined };
+    const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     const getSettings = function () { // see package.json, "configuration":
         const thisExtensionSection =
@@ -48,6 +48,27 @@ exports.activate = function (context) {
         settings.titleDecorationType =
             vscode.window.createTextEditorDecorationType(
                 thisExtensionSection["titleLocatorDecoratorStyle"]);
+        if (!settings.additionalPlugins) return settings;
+        settings.pluginSyntaxDecorators = [];
+        for (let plugin in settings.additionalPlugins.plugins) {
+            const pluginInstance = settings.additionalPlugins.plugins[plugin];
+            if (!pluginInstance) continue;
+            if (!pluginInstance.syntacticDecorators) continue;
+            for (let decorator in pluginInstance.syntacticDecorators) {
+                const decoratorInstance = pluginInstance.syntacticDecorators[decorator];
+                if (!decoratorInstance) continue;
+                if (!decoratorInstance.enable) continue;
+                if (!decoratorInstance.regexString) continue;
+                if (!decoratorInstance.style) continue;
+                const decoratorData = {
+                    regexString: decoratorInstance.regexString,
+                    tooltipFormat: decoratorInstance.tooltipFormat,
+                    decorationType: vscode.window.createTextEditorDecorationType(
+                        decoratorInstance.style)
+                };
+                settings.pluginSyntaxDecorators.push(decoratorData);
+            } //loop decorators
+        } //loop
         return settings;
     }; //getSettings
 
@@ -95,11 +116,11 @@ exports.activate = function (context) {
         const effectiveOutputPath = outputPath ?
             path.join(vscode.workspace.rootPath, outputPath) : path.dirname(fileName);
         if (!fs.existsSync(effectiveOutputPath))
-            vscode.window.showErrorMessage(util.format("Path not found: %s", effectiveOutputPath));  
+            vscode.window.showErrorMessage(util.format("Path not found: %s", effectiveOutputPath));
         const output = path.join(
             effectiveOutputPath,
             path.basename(fileName,
-            path.extname(fileName))) + ".html";
+                path.extname(fileName))) + ".html";
         result = Utf8BOM + result;
         fs.writeFileSync(output, result);
         return output;
@@ -120,7 +141,7 @@ exports.activate = function (context) {
 
     const command = function (action, previewSourceTextEditor) {
         try {
-            if (!lazy.settings) 
+            if (!lazy.settings)
                 lazy.settings = getSettings();
             const optionSet = (function () {
                 let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
@@ -206,7 +227,7 @@ exports.activate = function (context) {
         if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
         const title = titleFinder(text, settings) ?
-            titleFinder(text, settings).title : null;  
+            titleFinder(text, settings).title : null;
         const outputFileName =
             convertText(
                 text,
@@ -279,19 +300,19 @@ exports.activate = function (context) {
 
     const provider = new TextDocumentContentProvider();
 
-    const getVSCodeRange = function(document, start, match) {
+    const getVSCodeRange = function (document, start, match) {
         return new vscode.Range(
             document.positionAt(start),
             document.positionAt(start + match.length));
     } //getVSCodeRange
 
-    const updateDecorators = function() {
+    const updateDecorators = function () {
         if (!vscode.window.activeTextEditor) return;
         const document = vscode.window.activeTextEditor.document;
         if (document.languageId != markdownId) return;
         if (!lazy.settings)
             lazy.settings = getSettings();
-        const text = vscode.window.activeTextEditor.document.getText(); 
+        const text = vscode.window.activeTextEditor.document.getText();
         const matches = titleFinder(text, lazy.settings);
         let decoratorSet = [];
         if (matches) {
@@ -300,18 +321,46 @@ exports.activate = function (context) {
                 decoratorSet = [{
                     range: getVSCodeRange(document, matches.start, matches.all),
                     hoverMessage: util.format("Title: \"%s\"", title)
-                }]; 
+                }];
             } //if matches.all
         } //if matches
         vscode.window.activeTextEditor.setDecorations(
             lazy.settings.titleDecorationType,
             decoratorSet);
+        // clean:
+        for (let index in lazy.decorationTypeSet)
+            vscode.window.activeTextEditor.setDecorations(lazy.decorationTypeSet[index], []);
+        lazy.decorationTypeSet = [];
+        // populate:
+        if (lazy.settings.pluginSyntaxDecorators) {
+            for (let index in lazy.settings.pluginSyntaxDecorators) {
+                const plugin = lazy.settings.pluginSyntaxDecorators[index];
+                if (!plugin) continue;
+                let decoratorSet = [];
+                const document = vscode.window.activeTextEditor.document;
+                const text = document.getText();
+                const regexp = new RegExp(plugin.regexString, "gm");
+                let match = regexp.exec(text);
+                while (match != null) {
+                    let title = plugin.tooltipFormat;
+                    if (match[1])
+                        title = util.format(title, match[1].toString());
+                    decoratorSet.push({
+                        range: getVSCodeRange(document, match.index, match[0]),
+                        hoverMessage: title
+                    });
+                    match = regexp.exec(text);
+                } // loop multiple matches
+                vscode.window.activeTextEditor.setDecorations(
+                    plugin.decorationType, decoratorSet);
+            } //loop plugins
+        } //loop additional plug-ins
     } //updateDecorators
     updateDecorators();
 
     vscode.workspace.onDidOpenTextDocument(function (textDocument) {
         if (textDocument.languageId == markdownId)
-            updateDecorators(); //SA???
+            updateDecorators();
     });
     vscode.window.onDidChangeActiveTextEditor(function (editor) {
         updateDecorators();

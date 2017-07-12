@@ -13,17 +13,9 @@ exports.activate = function (context) {
     const path = require('path');
     const semantic = require('./semantic');
 
-    const htmlTemplateSet = (function () {
-        return {
-            html: fs.readFileSync(path.join(__dirname, "/template-html.txt"), encoding),
-            style: fs.readFileSync(path.join(__dirname + "/template-style.txt"), encoding),
-            embeddedStyle: fs.readFileSync(path.join(__dirname + "/template-embedded-style.txt"), encoding),
-            notFoundCss: fs.readFileSync(path.join(__dirname + "/template-not-found-css.txt"), encoding)
-        }
-    })();
-
     const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
+    const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
     const transcodeText = function (text, fileName, title, css, embedCss) {
         const result = lazy.markdownIt.render(text);
         let style = "";
@@ -236,22 +228,15 @@ exports.activate = function (context) {
             this.changeSourceHandler.fire(uri);
         }; //TextDocumentContentProvider.prototype.update
         return TextDocumentContentProvider;
-    }()); //TextDocumentContentProvider
-
+    }()); //jhTextDocumentContentProvider
     const provider = new TextDocumentContentProvider();
-
-    const getVSCodeRange = function (document, start, match) {
-        return new vscode.Range(
-            document.positionAt(start),
-            document.positionAt(start + match.length));
-    } //getVSCodeRange
 
     const updateDecorators = function () {
         if (!vscode.window.activeTextEditor) return;
         const document = vscode.window.activeTextEditor.document;
         if (document.languageId != markdownId) return;
         if (!lazy.settings)
-            lazy.settings = semantic.getSettings(vscode);
+            lazy.settings = semantic.getSettings(vscode, markdownId);
         const text = vscode.window.activeTextEditor.document.getText();
         const matches = semantic.titleFinder(text, lazy.settings);
         let decoratorSet = [];
@@ -259,7 +244,7 @@ exports.activate = function (context) {
             if (matches.all) {
                 const title = matches.title ? matches.title.toString() : '';
                 decoratorSet = [{
-                    range: getVSCodeRange(document, matches.start, matches.all),
+                    range: semantic.getVSCodeRange(vscode, document, matches.start, matches.all),
                     hoverMessage: util.format("Title: \"%s\"", title)
                 }];
             } //if matches.all
@@ -279,18 +264,16 @@ exports.activate = function (context) {
                 let decoratorSet = [];
                 const document = vscode.window.activeTextEditor.document;
                 const text = document.getText();
-                const regexp = new RegExp(plugin.regexString, "gm");
-                let match = regexp.exec(text);
-                while (match != null) {
-                    let title = plugin.tooltipFormat;
-                    if (match[1])
-                        title = util.format(title, match[1].toString());
-                    decoratorSet.push({
-                        range: getVSCodeRange(document, match.index, match[0]),
-                        hoverMessage: title
-                    });
-                    match = regexp.exec(text);
-                } // loop multiple matches
+                semantic.thenableRegex(plugin.regexString, text, true).then(
+                    function (start, length, groups) {
+                        let title = plugin.tooltipFormat;
+                        if (groups[1])
+                            title = util.format(title, groups[1].toString());
+                        decoratorSet.push({
+                           range: semantic.getVSCodeRange(vscode, document, start, groups[0]),
+                           hoverMessage: title
+                        });
+                    }); //looped occureences and groups
                 vscode.window.activeTextEditor.setDecorations(
                     plugin.decorationType, decoratorSet);
                 lazy.decorationTypeSet.push(plugin.decorationType);

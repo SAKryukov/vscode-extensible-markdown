@@ -1,3 +1,12 @@
+module.exports.getHtmlTemplateSet = function (path, fs, encoding) {
+    return {
+        html: fs.readFileSync(path.join(__dirname, "/template-html.txt"), encoding),
+        style: fs.readFileSync(path.join(__dirname + "/template-style.txt"), encoding),
+        embeddedStyle: fs.readFileSync(path.join(__dirname + "/template-embedded-style.txt"), encoding),
+        notFoundCss: fs.readFileSync(path.join(__dirname + "/template-not-found-css.txt"), encoding)
+    }
+}; //getHtmlTemplateSet
+
 module.exports.getSettings = function (vscode, markdownId) { // see package.json, "configuration":
     const thisExtensionSection =
         vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
@@ -60,22 +69,32 @@ module.exports.titleFinder = function (text, settings) {
     } //exception
 }; //titleFinder
 
+module.exports.getVSCodeRange = function (vscode, document, start, match) {
+    return new vscode.Range(
+        document.positionAt(start),
+        document.positionAt(start + match.length));
+} //getVSCodeRange
+
 // usage:
 // thenableRegex("1(.*?)2)", input, 0).then(function(start, len, groups) {
 //     //...
 // })
-module.exports.thenableRegex = function(regexPattern, input, options) {
-    if (!options) options = "gm";
-    const regexp = new RegExp(regexPattern, options);
-    let match = regexp.exec(input);
-    const then = function (callback) {
-        while (match != null) {
-            let groups = [];
-            for (let index = 0; index < match.length; ++index)
-                groups.push(match[index]);
-            callback(match.index, match.length, groups);
-            match = regexp.exec(input);
-        } //loop
-    } // then
-    return { then: then };
+module.exports.thenableRegex = function (regexPattern, input, isMultiline) {
+    let options = isMultiline ? "gm" : "g";
+    try {
+        const regexp = new RegExp(regexPattern, options);
+        let match = regexp.exec(input);
+        const then = function (callback) {
+            while (match != null) {
+                let groups = [];
+                for (let index = 0; index < match.length; ++index)
+                    groups.push(match[index]);
+                callback(match.index, match[0].length, groups);
+                match = regexp.exec(input);
+            } //loop
+        } // then
+        return { then: then };
+    } catch (ex) {
+        return { then: function () { } };
+    };
 }; //thenableRegex

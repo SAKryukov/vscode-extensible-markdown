@@ -160,7 +160,7 @@ This is the sample fragment of the file "settings.json" file ([user or workspace
 }
 ```
 
-<p><a href="./vscode-workspace-sample/.vscode/settings.json">Complete sample of settings.js</a>.</p>
+[Complete sample of settings.js](https://sakryukov.github.io/vscode-markdown-to-html/vscode-workspace-sample/vscode-sample/settings.json).
 
 
 The extension also uses "`markdown.styles`" option related to the extension "VS Code Markdown".

@@ -8,7 +8,7 @@ This package is the Visual Studio Code *extension* supporting [Markdown](https:/
 
 Since v. 2.0.0, the user can extend Markdown features by installing any of the ["markdown-it" plug-ins](https://www.npmjs.com/package/markdown-it) that are [abundantly available](https://www.npmjs.com/browse/keyword/markdown-it-plugin) in the [npm package registry](https://www.npmjs.com). All the packages can be configured from a single source: "settings.json", [on the user or workspace level](https://code.visualstudio.com/docs/getstarted/settings).
 
-That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.   
+That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
 [[toc]]
 
@@ -159,6 +159,9 @@ This is the sample fragment of the file "settings.json" file ([user or workspace
     "cSpell.enabled": true
 }
 ```
+
+<p><a href="./vscode-workspace-sample/.vscode/settings.json">Complete sample of settings.js</a>.</p>
+
 
 The extension also uses "`markdown.styles`" option related to the extension "VS Code Markdown".
 If one of more CSS files is defined, they are used in the generated HTML files as *external* or *embedded* style sheets, depending on the option "`markdown.extension.convertToHtml.embedCss`". The user is responsible for supplying the CSS files themselves.

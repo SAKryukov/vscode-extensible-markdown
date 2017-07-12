@@ -86,8 +86,8 @@
 <p><a href="#general-options">General options</a> control the behavior of command and detail of the HTML output unrelated to Markdown formatting.</p>
 </li>
 <li>
-<p>The extension is based on the <a href="https://nodejs.org">node.js</a> <em>package</em> <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a>. This module has its own options. <a href="#markdown-it-options">Markdown-it options</a> define how the mark-down module should be set up before parsing.<br/>
-There options are classified in two sets: a) embedded set of options, b) what plug-ins should be used.<br/>
+<p>The extension is based on the <a href="https://nodejs.org">node.js</a> <em>package</em> <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a>. This module has its own options. <a href="#markdown-it-options">Markdown-it options</a> define how the mark-down module should be set up before parsing.<br/><br />
+There options are classified in two sets: a) embedded set of options, b) what plug-ins should be used.<br/><br />
 Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as plug-ins, each defining custom or extended parsing and rendering rules. See <a href="#customization-of-additional-plug-ins">customization of Additional Plug-Ins</a>.<br/></p>
 </li>
 <li>
@@ -132,7 +132,7 @@ Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as p
 </tbody>
 </table>
 <p>The option “<code>markdown.extension.convertToHtml.showHtmlInBrowser</code>” is inapplicable to the command “Markdown: Convert to HTML all .md files in workspace”: if a set of files is converted, none of those files is shown in a Web browser.</p>
-<p><i id="special-markdown-extension-convertToHtml-outputPath"></i>
+<p><i id="special-markdown-extension-convertToHtml-outputPath"></i><br />
 The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ignored it its value resolves to false (empty string, <code>null</code>, <code>undefined</code>). If defined, it specify the path relative to current workspace directory. The effective target directory may not exist — in this case, error message is shown. If it exists, all files are saved in the same directory. In this case, it’s possible that the HTML files with identical base names but different locations overwrite one another. The user is responsible for suitability of the file names.</p>
 <h3 id="markdown-it-options">Markdown-it Options</h3>
 <p>The extension is based on the “VS Code Markdown” extension, which supplies node.js module <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> with the plug-in <a href="https://www.npmjs.com/package/markdown-it-named-headers">“markdown-it-named-headers”</a>. Since v.2.0.0, most of the module options are exposed to the user of the extension:</p>
@@ -243,11 +243,12 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
     &quot;cSpell.enabled&quot;: true
 }
 </code></pre>
-<p>The extension also uses “<code>markdown.styles</code>” option related to the extension “VS Code Markdown”.
+<p><a href="./vscode-workspace-sample/.vscode/settings.json">Complete sample of settings.js</a>.</p>
+<p>The extension also uses “<code>markdown.styles</code>” option related to the extension “VS Code Markdown”.<br />
 If one of more CSS files is defined, they are used in the generated HTML files as <em>external</em> or <em>embedded</em> style sheets, depending on the option “<code>markdown.extension.convertToHtml.embedCss</code>”. The user is responsible for supplying the CSS files themselves.</p>
 <h2 id="using-settings">Using Settings</h2>
 <h3 id="detecting-document-title">Detecting Document Title</h3>
-<p>To use the typographer,  <a href="#markdown-it-options">“markdown-it” option</a> “<code>markdown.extension.convertToHtml.titleLocatorRegex</code>” should define the <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a> pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
+<p>To use the typographer,  <a href="#markdown-it-options">“markdown-it” option</a> “<code>markdown.extension.convertToHtml.titleLocatorRegex</code>” should define the <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a> pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.<br />
 If the pattern match is successfully found in the Markdown document, it is written to the <code>title</code> element of the HTML <code>head</code> element. If the match is not found, the text “Converted from: &lt;input-file-name&gt;” is used as the title.</p>
 <p>It’s important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the <code>title</code> element.</p>
 <p>Let’s see how default value of the “<code>markdown.extension.convertToHtml.titleLocatorRegex</code>” works.</p>

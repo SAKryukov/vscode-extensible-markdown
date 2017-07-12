@@ -11,6 +11,7 @@ exports.activate = function (context) {
     const util = require('util');
     const fs = require('fs');
     const path = require('path');
+    const semantic = require('./semantic');
 
     const htmlTemplateSet = (function () {
         return {
@@ -22,68 +23,6 @@ exports.activate = function (context) {
     })();
 
     const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
-
-    const getSettings = function () { // see package.json, "configuration":
-        const thisExtensionSection =
-            vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
-        const thisMarkdownItOptionSection =
-            vscode.workspace.getConfiguration("markdown.extension.convertToHtml.options");
-        const sharedSection = vscode.workspace.getConfiguration(markdownId);
-        const settings = {
-            reportSuccess: thisExtensionSection["reportSuccess"],
-            showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
-            embedCss: thisExtensionSection["embedCss"],
-            titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
-            outputPath: thisExtensionSection["outputPath"],
-            css: sharedSection["styles"],
-            // options:
-            headingId: thisMarkdownItOptionSection["headingId"],
-            allowHTML: thisMarkdownItOptionSection["allowHTML"],
-            linkify: thisMarkdownItOptionSection["linkify"],
-            br: thisMarkdownItOptionSection["br"],
-            typographer: thisMarkdownItOptionSection["typographer"],
-            smartQuotes: thisMarkdownItOptionSection["smartQuotes"],
-            additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"],
-        } //settings
-        settings.titleDecorationType =
-            vscode.window.createTextEditorDecorationType(
-                thisExtensionSection["titleLocatorDecoratorStyle"]);
-        if (!settings.additionalPlugins) return settings;
-        settings.pluginSyntaxDecorators = [];
-        for (let plugin in settings.additionalPlugins.plugins) {
-            const pluginInstance = settings.additionalPlugins.plugins[plugin];
-            if (!pluginInstance) continue;
-            if (!pluginInstance.syntacticDecorators) continue;
-            for (let decorator in pluginInstance.syntacticDecorators) {
-                const decoratorInstance = pluginInstance.syntacticDecorators[decorator];
-                if (!decoratorInstance) continue;
-                if (!decoratorInstance.enable) continue;
-                if (!decoratorInstance.regexString) continue;
-                if (!decoratorInstance.style) continue;
-                const decoratorData = {
-                    regexString: decoratorInstance.regexString,
-                    tooltipFormat: decoratorInstance.tooltipFormat,
-                    decorationType: vscode.window.createTextEditorDecorationType(
-                        decoratorInstance.style)
-                };
-                settings.pluginSyntaxDecorators.push(decoratorData);
-            } //loop decorators
-        } //loop
-        return settings;
-    }; //getSettings
-
-    const titleFinder = function (text, settings) {
-        if (!settings.titleLocatorRegex) return null;
-        try {
-            const regexp = new RegExp(settings.titleLocatorRegex, "m");
-            const found = regexp.exec(text);
-            if (!found) return null;
-            if (found.length < 2) return null; // match itself + group inside
-            return { start: found.index, all: found[0], title: found[1] };
-        } catch (ex) {
-            return null;
-        } //exception
-    }; //titleFinder
 
     const transcodeText = function (text, fileName, title, css, embedCss) {
         const result = lazy.markdownIt.render(text);
@@ -142,7 +81,7 @@ exports.activate = function (context) {
     const command = function (action, previewSourceTextEditor) {
         try {
             if (!lazy.settings)
-                lazy.settings = getSettings();
+                lazy.settings = semantic.getSettings(vscode, markdownId);
             const optionSet = (function () {
                 let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
                 result.html = lazy.settings.allowHTML;
@@ -226,8 +165,9 @@ exports.activate = function (context) {
         } //if no editor
         if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
-        const title = titleFinder(text, settings) ?
-            titleFinder(text, settings).title : null;
+        const titleObject = semantic.titleFinder(text, settings); 
+        const title =  titleObject ?
+            titleObject.title : null;
         const outputFileName =
             convertText(
                 text,
@@ -262,7 +202,7 @@ exports.activate = function (context) {
                 lastOutput = convertText(
                     text,
                     fileName,
-                    titleFinder(text, settings),
+                    semantic.titleFinder(text, settings),
                     settings.css,
                     settings.embedCss,
                     settings.outputPath);
@@ -311,9 +251,9 @@ exports.activate = function (context) {
         const document = vscode.window.activeTextEditor.document;
         if (document.languageId != markdownId) return;
         if (!lazy.settings)
-            lazy.settings = getSettings();
+            lazy.settings = semantic.getSettings(vscode);
         const text = vscode.window.activeTextEditor.document.getText();
-        const matches = titleFinder(text, lazy.settings);
+        const matches = semantic.titleFinder(text, lazy.settings);
         let decoratorSet = [];
         if (matches) {
             if (matches.all) {

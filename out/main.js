@@ -1,4 +1,5 @@
 "use strict";
+
 exports.activate = function (context) {
 
     const encoding = "utf8";
@@ -11,7 +12,7 @@ exports.activate = function (context) {
     const util = require('util');
     const fs = require('fs');
     const path = require('path');
-    const importContext = { vscode: vscode, util: util, fs: fs, path: path };
+    const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
     const semantic = require('./semantic');
 
     const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
@@ -75,7 +76,7 @@ exports.activate = function (context) {
     const command = function (action, previewSourceTextEditor) {
         try {
             if (!lazy.settings)
-                lazy.settings = semantic.getSettings(vscode, markdownId);
+                lazy.settings = semantic.getSettings(importContext);
             const optionSet = (function () {
                 let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
                 result.html = lazy.settings.allowHTML;
@@ -238,7 +239,7 @@ exports.activate = function (context) {
         const document = vscode.window.activeTextEditor.document;
         if (document.languageId != markdownId) return;
         if (!lazy.settings)
-            lazy.settings = semantic.getSettings(vscode, markdownId);
+            lazy.settings = semantic.getSettings(importContext);
         const text = vscode.window.activeTextEditor.document.getText();
         const matches = semantic.titleFinder(text, lazy.settings);
         let decoratorSet = [];

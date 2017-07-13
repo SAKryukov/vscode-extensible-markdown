@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports.getHtmlTemplateSet = function (path, fs, encoding) {
     return {
         html: fs.readFileSync(path.join(__dirname, "/template-html.txt"), encoding),
@@ -7,12 +9,12 @@ module.exports.getHtmlTemplateSet = function (path, fs, encoding) {
     }
 }; //getHtmlTemplateSet
 
-module.exports.getSettings = function (vscode, markdownId) { // see package.json, "configuration":
+module.exports.getSettings = function (importContext) { // see package.json, "configuration":
     const thisExtensionSection =
-        vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
+        importContext.vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
     const thisMarkdownItOptionSection =
-        vscode.workspace.getConfiguration("markdown.extension.convertToHtml.options");
-    const sharedSection = vscode.workspace.getConfiguration(markdownId);
+        importContext.vscode.workspace.getConfiguration("markdown.extension.convertToHtml.options");
+    const sharedSection = importContext.vscode.workspace.getConfiguration(importContext.markdownId);
     const settings = {
         reportSuccess: thisExtensionSection["reportSuccess"],
         showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
@@ -33,7 +35,7 @@ module.exports.getSettings = function (vscode, markdownId) { // see package.json
         additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"],
     } //settings
     settings.titleDecorationType =
-        vscode.window.createTextEditorDecorationType(
+        importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["titleLocatorDecoratorStyle"]);
     if (!settings.additionalPlugins) return settings;
     settings.pluginSyntaxDecorators = [];
@@ -50,7 +52,7 @@ module.exports.getSettings = function (vscode, markdownId) { // see package.json
             const decoratorData = {
                 regexString: decoratorInstance.regexString,
                 tooltipFormat: decoratorInstance.tooltipFormat,
-                decorationType: vscode.window.createTextEditorDecorationType(
+                decorationType: importContext.vscode.window.createTextEditorDecorationType(
                     decoratorInstance.style)
             };
             settings.pluginSyntaxDecorators.push(decoratorData);
@@ -59,7 +61,7 @@ module.exports.getSettings = function (vscode, markdownId) { // see package.json
     settings.pluginSyntaxDecorators.push({
         regexString: settings.includeLocatorRegex,
         tooltipFormat: "include %s",
-        decorationType: vscode.window.createTextEditorDecorationType(
+        decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["includeLocatorDecoratorStyle"]) 
     });
     return settings;
@@ -108,21 +110,21 @@ module.exports.thenableRegex = function (regexPattern, input, isMultiline) {
     };
 }; //thenableRegex
 
-module.exports.replaceIncludes = function (context, input, settings) {
+module.exports.replaceIncludes = function (importContext, input, settings) {
     const readFile = function(fileName) {
         try {
-            return context.fs.readFileSync(fileName, context.encoding);
+            return importContext.fs.readFileSync(fileName, importContext.encoding);
         } catch (ex) {
-            return context.util.format(settings.includeLocatorFileReadFailureMessageFormat, fileName);
+            return importContext.util.format(settings.includeLocatorFileReadFailureMessageFormat, fileName);
         } //exception
     }; //readFile
-    const invalidRegexMessage = context.util.format(settings.includeLocatorInvalidRegexMessageFormat, settings.includeLocatorRegex);
+    const invalidRegexMessage = importContext.util.format(settings.includeLocatorInvalidRegexMessageFormat, settings.includeLocatorRegex);
     let result = input;
     const replaceOne = function (regex) {
         const match = regex.exec(result);
         if (!match) return false; 
         if (match.length != 2) { result = invalidRegexMessage; return false; }
-        const fileName = context.path.join(context.vscode.workspace.rootPath, match[1]);
+        const fileName = importContext.path.join(importContext.vscode.workspace.rootPath, match[1]);
         result = result.replace(match[0], readFile(fileName));
         return true;
     }; //replaceOne

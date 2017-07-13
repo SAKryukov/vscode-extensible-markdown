@@ -56,6 +56,12 @@ module.exports.getSettings = function (vscode, markdownId) { // see package.json
             settings.pluginSyntaxDecorators.push(decoratorData);
         } //loop decorators
     } //loop
+    settings.pluginSyntaxDecorators.push({
+        regexString: settings.includeLocatorRegex,
+        tooltipFormat: "include %s",
+        decorationType: vscode.window.createTextEditorDecorationType(
+            thisExtensionSection["includeLocatorDecoratorStyle"]) 
+    });
     return settings;
 }; //getSettings
 

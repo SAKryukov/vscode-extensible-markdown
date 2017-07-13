@@ -135,8 +135,8 @@
                     "default": {
                         "cursor": "copy",
                         "borderRadius": "5px",
-                        "color": "red",
-                        "backgroundColor": "navy"
+                        "color": "black",
+                        "backgroundColor": "lightBlue"
                     }
                 },
                 "markdown.extension.convertToHtml.options.headingId": {

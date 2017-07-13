@@ -8,4 +8,4 @@ A^2^ --- plug-ins work!
 
 [[toc]]
 
-[](include())
+[](include(.vscode/settings.json))

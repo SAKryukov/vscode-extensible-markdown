@@ -11,12 +11,14 @@ exports.activate = function (context) {
     const util = require('util');
     const fs = require('fs');
     const path = require('path');
+    const importContext = { vscode: vscode, util: util, fs: fs, path: path };
     const semantic = require('./semantic');
 
     const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
     const transcodeText = function (text, fileName, title, css, embedCss) {
+        text = semantic.replaceIncludes(importContext, text, lazy.settings);
         const result = lazy.markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {

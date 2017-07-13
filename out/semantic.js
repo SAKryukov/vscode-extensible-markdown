@@ -102,29 +102,29 @@ module.exports.thenableRegex = function (regexPattern, input, isMultiline) {
     };
 }; //thenableRegex
 
-const replaceIncludes = function (context, input, settings) {
+module.exports.replaceIncludes = function (context, input, settings) {
     const readFile = function(fileName) {
         try {
             return context.fs.readFileSync(fileName, context.encoding);
         } catch (ex) {
-            return context.util.format(settings.formatFailureReadingFile, fileName);
+            return context.util.format(settings.includeLocatorFileReadFailureMessageFormat, fileName);
         } //exception
     }; //readFile
-    const invalidRegexMessage = context.util.format(settings.formatInvalidIncludeRegex, settings.includeRegexString);
+    const invalidRegexMessage = context.util.format(settings.includeLocatorInvalidRegexMessageFormat, settings.includeLocatorRegex);
     let result = input;
     const replaceOne = function (regex) {
         const match = regex.exec(result);
-        if (!match) { result = invalidRegexMessage; return false; }
+        if (!match) return false; 
         if (match.length != 2) { result = invalidRegexMessage; return false; }
-        result = result.replace(match[0], readFile(match[1]));
+        const fileName = context.path.join(context.vscode.workspace.rootPath, match[1]);
+        result = result.replace(match[0], readFile(fileName));
         return true;
     }; //replaceOne
     try {
-        const regex = new RegExp(settings.includeRegexString);
+        const regex = new RegExp(settings.includeLocatorRegex);
         do { } while (replaceOne(regex));
         return result;
     } catch (ex) {
         return input;
     } //exception
 }; //replaceIncludes
-

@@ -36,7 +36,7 @@
                 "syntacticDecorators": [
                     {
                         "enable": true,
-                        "regexString": "\\~([^\\s]*?)\\~",
+                        "regexString": "\\~([^\\s]+?)\\~",
                         "tooltipFormat": "Subscript expression: %s",
                         "style": {
                             "color": "darkGreen",
@@ -52,7 +52,7 @@
                 "syntacticDecorators": [
                     {
                         "enable": true,
-                        "regexString": "\\^([^\\s]*?)\\^",
+                        "regexString": "\\^([^\\s]+?)\\^",
                         "tooltipFormat": "Superscript expression: %s",
                         "style": {
                             "color": "darkBlue",

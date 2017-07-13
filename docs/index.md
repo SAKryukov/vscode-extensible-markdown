@@ -37,9 +37,14 @@ The HTML file is saved to the same directory as original Markdown file, if not s
 
 Preview presents certain concerns, because built-in extension "VS Code Markdown" already implements the same two preview commands for Markdown.
 
+Anyway, "Extensible Markdown Converter" extension defines keybinding to overwrite default preview keybinding:
+
+- Open Preview: Ctrl+Shift+V
+- Open Preview to Side: Ctrl+K V
+
 As the extension "VS Code Markdown" uses fixed set of Markdown-specific options and does not load [additional plug-ins](#additional-plug-ins), "VS Code Markdown" preview can be different from "Extensible Markdown Converter" rendering.
 
-So, it's important to know the difference, to avoid mixing rendering performed by these two extensions.
+So, it's important to know the difference, to make sure the rendering is performed by Extensible Markdown Converter.
 
 | Extension | Command | Command Title |
 | --- | --- | --- |
@@ -72,7 +77,7 @@ Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, ea
 | markdown.extension.convertToHtml.showHtmlInBrowser | false | Opens generated HTML file in the default browser |
 | markdown.extension.convertToHtml.embedCss | false | Used to embed CSS code found in CSS files in generated HTML |
 | markdown.extension.convertToHtml.outputPath | `""` | Specifies output path for generated HTL files, relative to current workspace |
-| markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)\\[\\]\\(title\\) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
+| markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)//[//]//(title//) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
 
 The option "`markdown.extension.convertToHtml.showHtmlInBrowser`" is inapplicable to the command "Markdown: Convert to HTML all .md files in workspace": if a set of files is converted, none of those files is shown in a Web browser.
 
@@ -99,122 +104,16 @@ Note that selection of "markdown-it" options can render generated HTML files dif
 
 ### Settings Sample
 
-This is the sample fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):
+This is the sample fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):{id=special-settings.json}
 
 ```json
-{
-    "markdown.extension.convertToHtml.reportSuccess": true, // default
-    "markdown.extension.convertToHtml.showHtmlInBrowser": false, // default
-    "markdown.extension.convertToHtml.embedCss": false, // default
-    "markdown.extension.convertToHtml.outputPath": "" // default
-    "markdown.extension.convertToHtml.titleLocatorRegex": // default
-        "^(.*?)\\[\\]\\(title\\)",        
-    // markdown-it options, all defaults:  
-    "markdown.extension.convertToHtml.options.allowHTML": true,
-    // "markdown-it-named-headers" plug-in,
-    // adds id attributes to h1 .. h6 elements:
-    "markdown.extension.convertToHtml.options.headingId": true,
-    // converts "link-like" text: for ex., "http://my.com" ->
-    // <a href="http://my.com">"http://my.com"</a>: 
-    "markdown.extension.convertToHtml.options.linkify": false,
-    // replaces new line marker with <br/>:
-    "markdown.extension.convertToHtml.options.br": true,
-    // typographer replaces -- --- with en dash and em dash, smart quotes, etc.:
-    "markdown.extension.convertToHtml.options.typographer": true,
-    // applicable if typographer is true:
-    // 4 characters, replacement for "" and '':
-    "markdown.extension.convertToHtml.options.smartQuotes": "“”‘’",    
-    "markdown.extension.convertToHtml.options.additionalPlugins": {
-        "absolutePath": "", // in this case, just a placeholder; absolute path has higher priority
-        "relativePath": "../additional_plugins/node_modules", // relative to workspace
-        "plugins": [
-            {
-                "name": "markdown-it-sub",
-                "enable": true
-            },
-            {
-                "name": "markdown-it-sup",
-                "enable": true
-            },
-            {
-                "name": "markdown-it-table-of-contents",
-                "options": { // content of this object depends on plug-in:
-                    "includeLevel": [2, 3, 4],
-                    "containerClass": "toc",
-                    "listType": "ul"
-                },
-                "enable": true
-            }
-        ]
-    },
-
-    "markdown.styles": [
-        // same styles used for preview are used in converted HTML files:
-        "style.css", 
-        "moreStyles.css"
-    ],
-
-    // ...
-	
-    "cSpell.enabled": true
-}
+[](include(docs/vscode-workspace-sample/.vscode/settings.json))
 ```
-
-[Complete sample of settings.js](https://sakryukov.github.io/vscode-markdown-to-html/vscode-workspace-sample/vscode-sample/settings.json).
-
 
 The extension also uses "`markdown.styles`" option related to the extension "VS Code Markdown".
 If one of more CSS files is defined, they are used in the generated HTML files as *external* or *embedded* style sheets, depending on the option "`markdown.extension.convertToHtml.embedCss`". The user is responsible for supplying the CSS files themselves.
 
-## Using Settings
-
-### Detecting Document Title
-
-To use the typographer,  ["markdown-it" option](#markdown-it-options) "`markdown.extension.convertToHtml.titleLocatorRegex`" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
-If the pattern match is successfully found in the Markdown document, it is written to the `title` element of the HTML `head` element. If the match is not found, the text "Converted from: \<input-file-name\>" is used as the title.
-
-It's important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the `title` element.
-
-Let's see how default value of the "`markdown.extension.convertToHtml.titleLocatorRegex`" works.
-
-By default, the following regular expression is used:
-
-```
-^\(*.?)\[\]\(title\)
-```
-
-It means that first occurrence of the text between beginning of line ("^" in [regular expressions](https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended)) and "[](title)" will make a match. The *group* "(*.?)" (marked by round brackets) means that the arbitrary text in between will be detected as the match.
-
-For example, this line in source Markdown document
-
-```
-My Article Name[](title)
-```
-will create two matches:
-
-0. My Article Name\[\](title)
-1. My Article Name
-
-The text of the second match corresponds to the group "(*.?)". It will be rendered as an HTML paragraph and written as the text values of its `title` element. Only the first occurrence of the matching text will be handled this way. 
-
-In practice, this particular regular expression is useful to use the very first *paragraph* in the document to produce the title string. It can be taken into account in the CSS, to render this paragraph accordingly. For example, the special CSS properties can be applied to the paragraph defined by the [child selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors) combined with the [first-child](https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child) [pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
-
-CSS line example:
-
-```
-body > p:first-child { font-size: 240%; text-align: center; }
-```
-Alternatively, the heading element of some level (level 1, for example) could be used as a title. It will require the following regular expression:
-
-```
-^\# (*.?)\[\]\(title\)
-```
-Note the blank space between "#" and (*.?).
-
-Matching Markdown would be:<br/>
-```
-# My Article Name[](title)
-```
+## Advanced Usage and Settings
 
 ### Typographer
 
@@ -232,6 +131,56 @@ Typographer substitution rules:
 Two last patterns are more complicated. They match the text taken in a *pair* of [quotation marks](https://en.wikipedia.org/wiki/Quotation_mark#Summary_table), either `""` or `''`. Importantly, they should be balanced, to get processed.
 
 The value of the option "`markdown.extension.convertToHtml.options.smartQuotes`" should be a string with four characters. If the values resolved to false in a *conditional expression* (undefined, null) or contain less than four characters, no replacement is performed — this is the way to turn the feature off, even if other typographer substitutions are enabled. For languages such as English, Hindi, Indonesian, etc., it should be `“”‘’` (default); for many European languages and languages using Cyrillic system, it's `«»‹›`, `«»“”` or the like (second pair highly polymorphic and rarely used), and so on.
+
+### Detecting Document Title
+
+To use the typographer,  ["markdown-it" option](#markdown-it-options) "`markdown.extension.convertToHtml.titleLocatorRegex`" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
+If the pattern match is successfully found in the Markdown document, it is written to the `title` element of the HTML `head` element. If the match is not found, the text "Converted from: /<input-file-name/>" is used as the title.
+
+It's important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the `title` element.
+
+Let's see how default value of the "`markdown.extension.convertToHtml.titleLocatorRegex`" works.
+
+By default, the following regular expression is used:
+
+```
+^/(*.?)/[/]/(title/)
+```
+
+It means that first occurrence of the text between beginning of line ("^" in [regular expressions](https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended)) and "[](title)" will make a match. The *group* "(*.?)" (marked by round brackets) means that the arbitrary text in between will be detected as the match.
+
+For example, this line in source Markdown document
+
+```
+My Article Name[](title)
+```
+will create two matches:
+
+0. My Article Name/[/](title)
+1. My Article Name
+
+The text of the second match corresponds to the group "(*.?)". It will be rendered as an HTML paragraph and written as the text values of its `title` element. Only the first occurrence of the matching text will be handled this way. 
+
+In practice, this particular regular expression is useful to use the very first *paragraph* in the document to produce the title string. It can be taken into account in the CSS, to render this paragraph accordingly. For example, the special CSS properties can be applied to the paragraph defined by the [child selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors) combined with the [first-child](https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child) [pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
+
+CSS line example:
+
+```
+body > p:first-child { font-size: 240%; text-align: center; }
+```
+Alternatively, the heading element of some level (level 1, for example) could be used as a title. It will require the following regular expression:
+
+```
+^/# (*.?)/[/]/(title/)
+```
+Note the blank space between "#" and (*.?).
+
+Matching Markdown would be:<br/>
+```
+# My Article Name[](title)
+```
+
+### File Includes
 
 ## Additional Plug-ins
 
@@ -267,7 +216,7 @@ This is how default value is shown in "package.json":
                     }
 // ...
 ```
-Main purpose of such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the "settings.json" is shown [above](#settings-sample).
+Main purpose of such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the "settings.json" is shown [above](#special-settings.json).
 
 First, the settings specify path to the directory where the set of additional plug-ins is installed, either "absolutePath" or "relativePath". There is no need to include both properties, but it if happens, "absolutePath" is considered first. If it is not defined (more exactly, evaluates to "false" in conditional expression), "relativePath" is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it's checked up if effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name `"node_modules"`.
 

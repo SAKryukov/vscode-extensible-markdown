@@ -2,8 +2,10 @@
 
 ## Version 2.3.0
 
-* Implemented extensible Markdown syntactic decorations for each plug-in syntax, user-configurable
+* Implemented extensible Markdown syntax coloring for each plug-in syntax, user-configurable
 * Implemented user-configurable style for document title in input Markdown
+* Implemented file includes, with user-configurable syntax coloring
+* Added keybinding, to overwrite "VS Code Markdown" preview key bindings
 
 ## Version 2.2.0
 

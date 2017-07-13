@@ -118,6 +118,27 @@
                         "backgroundColor": "navy"
                     }
                 },
+                "markdown.extension.convertToHtml.includeLocatorRegex": { 
+                    "type": "string",
+                    "default": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)"
+                },
+                "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": { 
+                    "type": "string",
+                    "default": "!!! invalid Regular Expression of include:  \"%s\" !!!"
+                },
+                "markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat": { 
+                    "type": "string",
+                    "default": "!!! failed to read file \"%s\" !!!"
+                },
+                "markdown.extension.convertToHtml.includeLocatorDecoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "cursor": "copy",
+                        "borderRadius": "5px",
+                        "color": "red",
+                        "backgroundColor": "navy"
+                    }
+                },
                 "markdown.extension.convertToHtml.options.headingId": {
                     "type": "boolean",
                     "default": true

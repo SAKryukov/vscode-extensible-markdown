@@ -18,6 +18,9 @@ module.exports.getSettings = function (vscode, markdownId) { // see package.json
         showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
         embedCss: thisExtensionSection["embedCss"],
         titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
+        includeLocatorRegex: thisExtensionSection["includeLocatorRegex"],
+        includeLocatorInvalidRegexMessageFormat: thisExtensionSection["includeLocatorInvalidRegexMessageFormat"],
+        includeLocatorFileReadFailureMessageFormat: thisExtensionSection["includeLocatorFileReadFailureMessageFormat"],
         outputPath: thisExtensionSection["outputPath"],
         css: sharedSection["styles"],
         // options:
@@ -98,3 +101,30 @@ module.exports.thenableRegex = function (regexPattern, input, isMultiline) {
         return { then: function () { } };
     };
 }; //thenableRegex
+
+const replaceIncludes = function (context, input, settings) {
+    const readFile = function(fileName) {
+        try {
+            return context.fs.readFileSync(fileName, context.encoding);
+        } catch (ex) {
+            return context.util.format(settings.formatFailureReadingFile, fileName);
+        } //exception
+    }; //readFile
+    const invalidRegexMessage = context.util.format(settings.formatInvalidIncludeRegex, settings.includeRegexString);
+    let result = input;
+    const replaceOne = function (regex) {
+        const match = regex.exec(result);
+        if (!match) { result = invalidRegexMessage; return false; }
+        if (match.length != 2) { result = invalidRegexMessage; return false; }
+        result = result.replace(match[0], readFile(match[1]));
+        return true;
+    }; //replaceOne
+    try {
+        const regex = new RegExp(settings.includeRegexString);
+        do { } while (replaceOne(regex));
+        return result;
+    } catch (ex) {
+        return input;
+    } //exception
+}; //replaceIncludes
+

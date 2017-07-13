@@ -110,7 +110,7 @@ module.exports.thenableRegex = function (regexPattern, input, isMultiline) {
     };
 }; //thenableRegex
 
-module.exports.replaceIncludes = function (importContext, input, settings) {
+module.exports.replaceIncludes = function (importContext, input, hostFileName, settings) {
     const readFile = function(fileName) {
         try {
             return importContext.fs.readFileSync(fileName, importContext.encoding);
@@ -124,8 +124,10 @@ module.exports.replaceIncludes = function (importContext, input, settings) {
         const match = regex.exec(result);
         if (!match) return false; 
         if (match.length != 2) { result = invalidRegexMessage; return false; }
-        const fileName = importContext.path.join(importContext.vscode.workspace.rootPath, match[1]);
-        result = result.replace(match[0], readFile(fileName));
+        const includefileName = importContext.path.join(
+            importContext.path.dirname(hostFileName),
+            match[1]);
+        result = result.replace(match[0], readFile(includefileName));
         return true;
     }; //replaceOne
     try {

@@ -239,7 +239,7 @@ Matching Markdown would be:<br/>
 
 ### File Includes
 
-The File Includes feature allows [including](#special.include.file) an external files in the source Markdown documents before they are parsed. The file path is relative to the current Visual Studio Code workspace (and not to the current document). 
+The File Includes feature allows [including](#special.include.file) an external file in the source Markdown document, before it is parsed. The file path is relative to the current document where the include element is placed. 
 
 ### Syntax Coloring
 

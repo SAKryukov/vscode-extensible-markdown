@@ -19,7 +19,7 @@ exports.activate = function (context) {
 
     const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
     const transcodeText = function (text, fileName, title, css, embedCss) {
-        text = semantic.replaceIncludes(importContext, text, lazy.settings);
+        text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
         const result = lazy.markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
@@ -180,7 +180,8 @@ exports.activate = function (context) {
         const text = previewSourceTextEditor.document.getText();
         return transcodeText(
             text,
-            "", "",
+            previewSourceTextEditor.document.fileName,
+            "", //title
             settings.css,
             true);
     } //previewOne

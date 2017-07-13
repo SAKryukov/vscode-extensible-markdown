@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 3.0.0
+
+* Location of the included file is now relative to the Markdown document location
+
 ## Version 2.3.0
 
 * Implemented extensible Markdown syntax coloring for each plug-in syntax, user-configurable

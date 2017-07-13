@@ -124,22 +124,6 @@
                         }
                     }
                 ]                
-            },
-            {
-                "name": "just for the syntactic decorator, not a real plug-in, modifies existing decorator",
-                "syntacticDecorators": [
-                    {
-                        "enable": true,
-                        "regexString": "\\[.*?\\]\\((#[^\\s]+?)\\)",
-                        "tooltipFormat": "Local link: %s",
-                        "style": {
-                            "cursor": "copy",
-                            "color": "darkBlue",
-                            "backgroundColor": "rgba(250,200,0,0.4)",
-                            "border": "solid thin black"
-                        }
-                    }
-                ]
             }
         ]
     },

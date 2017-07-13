@@ -55,6 +55,53 @@ So, it's important to know the difference, to make sure the rendering is perform
 
 In the Visual Studio Code UI, '&' is rendered as underscore and can be used as *hardware accelerator*: "Markdown: Open &Preview", "Markdown: Open Preview to &Side". These two strings are shown in the UI *Command Palette* as is, with '&'. Note that two `extensible.markdown.showPreview*` commands are also shown in the current editor's context menu, but "VS Code Markdown" `markdown.showPreview*` commands are not.
 
+## Extending of Markdown Syntax
+
+Markdown syntax can be extended. With Extensible Markdown Converter, all of them are user-configurable. At the very minimum,each extension can be enabled and disabled, and some extension allow for detailed configuration. All configurations can be modified [on the user or workspace level](https://code.visualstudio.com/docs/getstarted/settings) or combine both.
+
+They can be classified into two parts: in first part, extensions are based on embedded "VSCode Markdown" extension. They come with Visual Studio Code installation, but are not fully exposed to the end user. The new "Extensible Markdown Converter" extension exposes most of them to user-defined "settings.json" files, so they are made configurable.
+
+In second part, new extensions are added by Extensible Markdown Converter. Some are embedded, others can be installed and then configured by the user.
+
+### Markdown-it Extensions
+
+The embedded extension "VSCode Markdown" is based on the [node.js](https://nodejs.org) *package* ["markdown-it"](https://www.npmjs.com/package/markdown-it). This module does not require installation, it comes with Visual Studio Code. Extensible Markdown Converter exposed the following extended features: Typographer, "smart quotes" (can used when Typographer is enabled), enabled or disabled HTML formatting in input Markdown document, "linkify", generation of `br` attributes. The configuration parameters are described in the section [Markdown-it Options](#markdown-it-options).
+
+### Markdown-it-named-headers Extension
+
+Another [node.js](https://nodejs.org) package ["markdown-it-named-headers"](https://www.npmjs.com/package/markdown-it-named-headers) is used as a *plug-in* to ["markdown-it"](https://www.npmjs.com/package/markdown-it). It also comes with Visual Studio Code, but not exposed by the extension embedded "VSCode Markdown". Extensible Markdown Converter controls the use of this plug-in through the [configuration option](#markdown-it-options) "`markdown.extension.convertToHtml.options.headingId`".
+
+### Extensible Markdown Converter Embedded Extensions
+
+Extensible Markdown Converter adds two syntax elements to Markdown:
+
+- Tagging for detection of the document title
+- File include declaration
+
+By default, both elements use *pseudo-link* form based on Markdown *link* syntax. They take the form: `[](some-tag)`. Even when such element produces HTML anchor, it gives no clickable area (normally defined by the text between [] brackets). The user can create/modify "settings.json" to describe any other suitable syntax, which is done in Regular Expression form.
+
+Document title needs to get detected, because HTML requires a text value for the `title` element of the element `head`. The idea is to use some available Markdown element, which is actually rendered on HTML page, without replacing it, but with just tagging it as a title text.
+
+The default syntax for title detection is:
+```
+The Name of The Document[](title) 
+```
+
+In this example, the text "The Name of The Document" is copied to HTML `title`.
+
+The default syntax for file include is:
+```
+[](include( file-name... ))
+// file-name expression should come without blank space characters
+``` 
+Again, the user can use any other syntax.
+
+Both elements are emphasized in source Markdown document by [syntax coloring](#syntax-coloring) with coloring style configured by the user. Please see the description of the [settings](#extensible-markdown-converter-syntax-extension-options).
+
+### Extensible Markdown Converter User-Installed Extensions
+
+The configuration option ["`markdown.extension.convertToHtml.options.additionalPlugins`"](#markdown-it-options) is used for adding the referenced to additional ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-ins which can be installed by the user. Please see the section [Customization of Additional Plug-Ins](#customization-of-additional-plug-ins) for the detail.
+
 ## Settings
 
 ### Three Levels of Settings
@@ -77,12 +124,22 @@ Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, ea
 | markdown.extension.convertToHtml.showHtmlInBrowser | false | Opens generated HTML file in the default browser |
 | markdown.extension.convertToHtml.embedCss | false | Used to embed CSS code found in CSS files in generated HTML |
 | markdown.extension.convertToHtml.outputPath | `""` | Specifies output path for generated HTL files, relative to current workspace |
-| markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)//[//]//(title//) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
 
 The option "`markdown.extension.convertToHtml.showHtmlInBrowser`" is inapplicable to the command "Markdown: Convert to HTML all .md files in workspace": if a set of files is converted, none of those files is shown in a Web browser.
 
 <i id="special-markdown-extension-convertToHtml-outputPath"></i>
-The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its value resolves to false (empty string, `null`, `undefined`). If defined, it specify the path relative to current workspace directory. The effective target directory may not exist — in this case, error message is shown. If it exists, all files are saved in the same directory. In this case, it's possible that the HTML files with identical base names but different locations overwrite one another. The user is responsible for suitability of the file names. 
+The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its value resolves to false (empty string, `null`, `undefined`). If defined, it specify the path relative to current workspace directory. The effective target directory may not exist — in this case, error message is shown. If it exists, all files are saved in the same directory. In this case, it's possible that the HTML files with identical base names but different locations overwrite one another. The user is responsible for suitability of the file names.
+
+### Extensible Markdown Converter Syntax Extension Options
+
+| Name | Default | Description |
+| --- | --- | --- |
+| markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)\\[\\]\\(title\\) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
+| markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see SA??? | see SA??? |
+| markdown.extension.convertToHtml.includeLocatorRegex | `\[\]\(include\(([^\s]+?)\)\)` | --- |
+| markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | --- |
+| markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | --- |
+| markdown.extension.convertToHtml.includeLocatorDecoratorStyle | see SA??? | see SA??? |
 
 ### Markdown-it Options
 
@@ -181,6 +238,12 @@ Matching Markdown would be:<br/>
 ```
 
 ### File Includes
+
+//SA???
+
+### Syntax Coloring
+
+//SA???
 
 ## Additional Plug-ins
 

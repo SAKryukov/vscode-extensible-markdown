@@ -89,7 +89,7 @@ The Name of The Document[](title)
 
 In this example, the text "The Name of The Document" is copied to HTML `title`.
 
-The default syntax for file include is:
+The default syntax for file include is: {id=special.include.file}
 ```
 [](include( file-name... ))
 // file-name expression should come without blank space characters
@@ -135,11 +135,11 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | Name | Default | Description |
 | --- | --- | --- |
 | markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)\\[\\]\\(title\\) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
-| markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see SA??? | see SA??? |
-| markdown.extension.convertToHtml.includeLocatorRegex | `\[\]\(include\(([^\s]+?)\)\)` | --- |
-| markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | --- |
-| markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | --- |
-| markdown.extension.convertToHtml.includeLocatorDecoratorStyle | see SA??? | see SA??? |
+| markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag element |
+| markdown.extension.convertToHtml.includeLocatorRegex | `\[\]\(include\(([^\s]+?)\)\)` | Defines Regex pattern used to define file include Markdown syntax extension |
+| markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | Message format for the message produced in the output HTML in case of invalid Regular Expression |
+| markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | Message format for the message produced in the output HTML in case of the file reading failure |
+| markdown.extension.convertToHtml.includeLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the file include extended Markdown tag element |
 
 ### Markdown-it Options
 
@@ -239,11 +239,11 @@ Matching Markdown would be:<br/>
 
 ### File Includes
 
-//SA???
+The File Includes feature allows [including](#special.include.file) an external files in the source Markdown documents before they are parsed. The file path is relative to the current Visual Studio Code workspace (and not to the current document). 
 
 ### Syntax Coloring
 
-//SA???
+Syntax coloring can be defined using a pair of configuration settings a Regular Expression and a set of CSS properties. A regular expression should contain additional *group* marked by round brackets (), according to the Regular Expression syntax. This group is used in the text of the *tooltip* shown by the matching text fragment when a mouse cursor hovers over it. The matching text is styled according to the provided CSS style set. Please see the properties `*Regex*` and `style` in the ["settings.json" sample](#special-settings.json).
 
 ## Additional Plug-ins
 

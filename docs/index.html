@@ -103,7 +103,7 @@
 <pre><code>The Name of The Document[](title) 
 </code></pre>
 <p>In this example, the text “The Name of The Document” is copied to HTML <code>title</code>.</p>
-<p>The default syntax for file include is:</p>
+<p id="special.include.file">The default syntax for file include is:</p>
 <pre><code>[](include( file-name... ))
 // file-name expression should come without blank space characters
 </code></pre>
@@ -179,28 +179,28 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
 </tr>
 <tr>
 <td>markdown.extension.convertToHtml.titleLocatorDecoratorStyle</td>
-<td>see SA???</td>
-<td>see SA???</td>
+<td>see <a href="#special-settings.json">“settings.json” sample</a></td>
+<td>CSS style for syntax coloring of the title extended Markdown tag element</td>
 </tr>
 <tr>
 <td>markdown.extension.convertToHtml.includeLocatorRegex</td>
 <td><code>\[\]\(include\(([^\s]+?)\)\)</code></td>
-<td>—</td>
+<td>Defines Regex pattern used to define file include Markdown syntax extension</td>
 </tr>
 <tr>
 <td>markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat</td>
 <td><code>!!! invalid Regular Expression of include: &quot;%s</code></td>
-<td>—</td>
+<td>Message format for the message produced in the output HTML in case of invalid Regular Expression</td>
 </tr>
 <tr>
 <td>markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat</td>
 <td><code>!!! failed to read file &quot;%s&quot; !!!</code></td>
-<td>—</td>
+<td>Message format for the message produced in the output HTML in case of the file reading failure</td>
 </tr>
 <tr>
 <td>markdown.extension.convertToHtml.includeLocatorDecoratorStyle</td>
-<td>see SA???</td>
-<td>see SA???</td>
+<td>see <a href="#special-settings.json">“settings.json” sample</a></td>
+<td>CSS style for syntax coloring of the file include extended Markdown tag element</td>
 </tr>
 </tbody>
 </table>
@@ -451,9 +451,9 @@ If the pattern match is successfully found in the Markdown document, it is writt
 <pre><code># My Article Name[](title)
 </code></pre>
 <h3 id="file-includes">File Includes</h3>
-<p>//SA???</p>
+<p>The File Includes feature allows <a href="#special.include.file">including</a> an external files in the source Markdown documents before they are parsed. The file path is relative to the current Visual Studio Code workspace (and not to the current document).</p>
 <h3 id="syntax-coloring">Syntax Coloring</h3>
-<p>//SA???</p>
+<p>Syntax coloring can be defined using a pair of configuration settings a Regular Expression and a set of CSS properties. A regular expression should contain additional <em>group</em> marked by round brackets (), according to the Regular Expression syntax. This group is used in the text of the <em>tooltip</em> shown by the matching text fragment when a mouse cursor hovers over it. The matching text is styled according to the provided CSS style set. Please see the properties <code>*Regex*</code> and <code>style</code> in the <a href="#special-settings.json">“settings.json” sample</a>.</p>
 <h2 id="additional-plug-ins">Additional Plug-ins</h2>
 <p>Since v. 2.0.0, additional <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">plug-ins</a> can be installed by the users of the extension and configured for the use with Visual Studio Code.</p>
 <h3 id="installation">Installation</h3>

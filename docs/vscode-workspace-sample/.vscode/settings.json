@@ -75,7 +75,7 @@
             {
                 "name": "markdown-it-table-of-contents",
                 "options": {
-                    "includeLevel": [1, 2, 3, 4],
+                    "includeLevel": [2, 3, 4],
                     "containerClass": "toc",
                     "listType": "ul"
                 },

@@ -213,8 +213,8 @@ My Article Name[](title)
 ```
 will create two matches:
 
-0. My Article Name/[/](title)
-1. My Article Name
+0. `My Article Name[](title)`
+1. `My Article Name`
 
 The text of the second match corresponds to the group "(*.?)". It will be rendered as an HTML paragraph and written as the text values of its `title` element. Only the first occurrence of the matching text will be handled this way. 
 

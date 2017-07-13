@@ -23,11 +23,9 @@ See [detailed documentation](https://sakryukov.github.io/vscode-markdown-to-html
 
 ## Usage
 
-Open Markdown file (.md) in Visual Studio Code and activate the editor's context menu, use the command **"Markdown: Convert to HTML"**, to convert this file.
+Open Markdown file (.md) in Visual Studio Code and activate the editor's context menu, use the command **"Markdown: Convert to HTML"**, to convert this file. All files found in a currently opened workspace can be converted at once with the command **"Markdown: Convert to HTML all .md files in workspace"**. This command appears in context menu of any editor, and also in the Explorer context menu.
 
-All files found in a currently opened workspace can be converted at once with the command **"Markdown: Convert to HTML all .md files in workspace"**. This command appears in context menu of any editor, and also in the Explorer context menu.
-
-Two more commands showing in the editor's context menu show HTML preview using all of the extended features: **Markdown: Open <u>P</u>review** and **Markdown: Open Preview to the <u>S</u>ide**.
+Two more commands showing in the editor's context menu show HTML preview using all of the extended features: **Markdown: Open <u>P</u>review** (`Ctrl+Shift+V`) and **Markdown: Open Preview to the <u>S</u>ide** (`Ctrl+K V`).
 
 Alternatively, open the Command Palette ("`Ctrl+Shift+P`"/"`Cmd+Shift+P`" or `F1`) and search for the these commands.
 

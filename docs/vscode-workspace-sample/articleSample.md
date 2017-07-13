@@ -50,6 +50,7 @@ It's convenient to mark the part of HTML to paste in the CodeProject submission 
 - [Formatting](#formatting)
 - [Links and Anchors](#links-and-anchors)
 - [Images](#images)
+- [Using File Includes](#using-file-includes)
 - [Important Warning](#important-warning)
 - [Conclusions](#conclusions)
 
@@ -145,6 +146,13 @@ Never ever write headings with identical text. Also, make sure manually created 
 ## Images
 
 ![Sergey A Kryukov, WiDEsk](http://sakryukov.org/freeware/WD.png)
+
+## Using File Includes
+
+This is a sample of includes: `.vscode/settings.json`":
+```
+[](include(.vscode/settings.json))
+```
 
 ## Important Warning
 

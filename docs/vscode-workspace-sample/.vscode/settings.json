@@ -28,7 +28,7 @@
     },
     "markdown.extension.convertToHtml.options.additionalPlugins": {
         "absolutePath": null, // just a placeholder
-        "relativePath": "../../additional_plugins/node_modules", // relative to workspace
+        "relativePath": "../../../additional_plugins/node_modules", // relative to workspace
         "plugins": [
             {
                 "name": "markdown-it-sub",

@@ -15,21 +15,19 @@ That said, there is no a need for different Markdown extensions. It's quite enou
 ## Features
 
 - Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;
+- A possibility of installation of ["markdown-it" plug-ins](https://www.npmjs.com/package/markdown-it) in an arbitrary directory, without the need to install "markdown-it" itself;
+- User-configurable Markup syntax coloring for plug-ins;
 - Optional embedding of CSS in HTML;
 - Optional Detection of the document title based on user-configurable Regular Expression;
 - Optional preview in the default Web browser;
 - Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching generated HTML file;
-- A possibility of installation of ["markdown-it" plug-ins](https://www.npmjs.com/package/markdown-it) in an arbitrary directory, without the need to install "markdown-it" itself;
-- User-configurable Markup syntax coloring for plug-ins;
 - Configuration of all processing detail of the extension, ["markdown-it"](https://www.npmjs.com/package/markdown-it) and its plug-ins, from a single source.
 
 ## Usage
 
-Open Markdown file (.md) in Visual Studio Code and activate the editor's context menu, use the command "Markdown: Convert to HTML", to convert this file.
+Open Markdown file (.md) in Visual Studio Code and activate the editor's context menu, use the command "Markdown: Convert to HTML", to convert this file. All files found in a currently opened workspace can be converted at once with the command "Markdown: Convert to HTML all .md files in workspace". This command appears in context menu of any editor, and also in the Explorer context menu.
 
-All files found in a currently opened workspace can be converted at once with the command "Markdown: Convert to HTML all .md files in workspace". This command appears in context menu of any editor, and also in the Explorer context menu.
-
-Alternatively, open the Command Palette ("Ctrl+Shift+P"/"Cmd+Shift+P" or F1) and search for the command "Markdown: Convert to HTML" or "Markdown: Convert to HTML all .md files in workspace".
+Alternatively, open the Command Palette ("`Ctrl+Shift+P`"/"`Cmd+Shift+P`" or `F1`) and search for the command "Markdown: Convert to HTML" or "Markdown: Convert to HTML all .md files in workspace".
 
 The HTML file is saved to the same directory as original Markdown file, if not specified otherwise [by settings](#special-markdown-extension-convertToHtml-outputPath).
 

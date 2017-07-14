@@ -13,12 +13,12 @@ See [detailed documentation](https://sakryukov.github.io/vscode-markdown-to-html
 ## Features
 
 - Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;
+- A possibility of installation of ["markdown-it" plug-ins](https://www.npmjs.com/package/markdown-it) in an arbitrary directory, without the need to install "markdown-it" itself;
+- User-configurable Markup syntax coloring for plug-ins;
 - Optional embedding of CSS in HTML;
 - Optional Detection of the document title based on user-configurable Regular Expression;
 - Optional preview in the default Web browser;
 - Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching generated HTML file;
-- A possibility of installation of ["markdown-it" plug-ins](https://www.npmjs.com/package/markdown-it) in an arbitrary directory, without the need to install "markdown-it" itself;
-- User-configurable Markup syntax coloring for plug-ins;
 - Configuration of all processing detail of the extension, ["markdown-it"](https://www.npmjs.com/package/markdown-it) and its plug-ins, from a single source.
 
 ## Usage
@@ -28,8 +28,6 @@ Open Markdown file (.md) in Visual Studio Code and activate the editor's context
 Two more commands showing in the editor's context menu show HTML preview using all of the extended features: **Markdown: Open <u>P</u>review** (`Ctrl+Shift+V`) and **Markdown: Open Preview to the <u>S</u>ide** (`Ctrl+K V`).
 
 Alternatively, open the Command Palette ("`Ctrl+Shift+P`"/"`Cmd+Shift+P`" or `F1`) and search for the these commands.
-
-The HTML file is saved to the same directory as original Markdown file.
 
 ## Settings
 

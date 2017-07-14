@@ -4,6 +4,11 @@
     "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
     "version": "4.0.0",
     "publisher": "sakryukov",
+	"author": {
+		"name": "Sergey A Kryukov",
+		"url": "http://www.SAKryukov.org"
+	},
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"

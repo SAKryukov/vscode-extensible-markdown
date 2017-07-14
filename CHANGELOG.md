@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 4.1.0
+
+* Added settings option: "markdown.extension.convertToHtml.tocIncludeLevels", default [1, 2, 3, 4, 5, 6]
+* Added settings option: "markdown.extension.convertToHtml.tocContainerClass", default "toc"
+* Added settings option: "markdown.extension.convertToHtml.tocListType", default "ul"
+
 ## Version 4.0.0
 
 * Found critical bug in the external "markdown-it-named-headers" and "markdown-it-table-of-contents": generated id values of headers were not unique. As a work-around, these external modules are eliminated and replaced with modules embedded in the extension.

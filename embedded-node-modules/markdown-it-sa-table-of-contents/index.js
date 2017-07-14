@@ -2,7 +2,7 @@
 
 var defaults = {
   includeLevel: [1, 2],
-  containerClass: "table-of-contents",
+  containerClass: "toc",
   slugify: function (str, used_headers) {
     return str; //SA??? unacceptable, but "Extensible Mardkdown Converter" will set proper option
   },

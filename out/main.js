@@ -134,7 +134,7 @@ exports.activate = function (context) {
                     const idHeadersSlugify = function (s, used_headers) {
                         let slug = stringModule(s).slugify().toString();
                         while (used_headers[slug])
-                            slug += '-' + 'a';
+                            slug += '.' + 'a';
                         used_headers[slug] = slug;
                         return slug;
                     } // idHeadersSlugify
@@ -142,7 +142,10 @@ exports.activate = function (context) {
                     if (lazy.settings.headingId) md = md.use(named, { slugify: idHeadersSlugify });
                     md = md.use(toc, {
                         slugify: idHeadersSlugify,
-                        markerPattern: new RegExp(lazy.settings.tocRegex, "m")});
+                        markerPattern: new RegExp(lazy.settings.tocRegex, "m"),
+                        includeLevel: lazy.settings.tocIncludeLevels,
+                        tocContainerClass: lazy.settings.tocContainerClass,
+                        tocListType: lazy.settings.tocListType});
                     for (let pluginData in additionalPlugins) {
                         let plugin;
                         try {

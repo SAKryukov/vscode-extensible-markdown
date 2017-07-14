@@ -2,7 +2,7 @@
     "name": "convert-markdown-to-html",
     "displayName": "Extensible Markdown Converter",
     "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
-    "version": "4.0.0",
+    "version": "4.1.0",
     "publisher": "sakryukov",
 	"author": {
 		"name": "Sergey A Kryukov",
@@ -136,6 +136,18 @@
                         "backgroundColor": "orange"
                     }
                 },
+                "markdown.extension.convertToHtml.tocIncludeLevels": {
+                    "type": "array",
+                    "default": [1, 2, 3, 4, 5, 6]
+                },
+                "markdown.extension.convertToHtml.tocContainerClass": {
+                    "type": "string",
+                    "default": "toc"
+                },
+                "markdown.extension.convertToHtml.tocListType": {
+                    "type": "string",
+                    "default": "ul"
+                },                
                 "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",
                     "default": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)"

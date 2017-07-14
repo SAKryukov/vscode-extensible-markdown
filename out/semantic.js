@@ -20,6 +20,10 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
         embedCss: thisExtensionSection["embedCss"],
         titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
+        tocRegex: thisExtensionSection["tocRegex"],
+        tocIncludeLevels: thisExtensionSection["tocIncludeLevels"],
+        tocContainerClass: thisExtensionSection["tocContainerClass"],
+        tocListType: thisExtensionSection["tocListType"],
         includeLocatorRegex: thisExtensionSection["includeLocatorRegex"],
         includeLocatorInvalidRegexMessageFormat: thisExtensionSection["includeLocatorInvalidRegexMessageFormat"],
         includeLocatorFileReadFailureMessageFormat: thisExtensionSection["includeLocatorFileReadFailureMessageFormat"],
@@ -64,7 +68,6 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["includeLocatorDecoratorStyle"]) 
     });
-    settings.tocRegex = thisExtensionSection["tocRegex"]; 
     settings.pluginSyntaxDecorators.push({
         regexString: settings.tocRegex,
         tooltipFormat: "Table of Contents",

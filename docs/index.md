@@ -10,7 +10,7 @@ Since v. 2.0.0, the user can extend Markdown features by installing any of the [
 
 That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
-[[toc]]
+[](toc)
 
 ## Features
 
@@ -134,8 +134,11 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | --- | --- | --- |
 | markdown.extension.convertToHtml.titleLocatorRegex | `^(.*?)\[\]\(title\)` | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
 | markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag element |
-| markdown.extension.convertToHtml.tocRegex | `^\[\]\(toc\)` | Defines Regex pattern used to recognize the location where Table Of Contents is placed |
-| markdown.extension.convertToHtml.tocDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag marking the Table of Context placing |
+| markdown.extension.convertToHtml.tocRegex | `^\[\]\(toc\)` | Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed |
+| markdown.extension.convertToHtml.tocDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing |
+| markdown.extension.convertToHtml.tocIncludeLevels | [1, 2, 3, 4, 5, 6] | Defines level of the headers to be included in TOC |
+| markdown.extension.convertToHtml.tocContainerClass | `toc` | CSS class of the TOC container (by default, `ul`) |
+| markdown.extension.convertToHtml.tocListType | `ul` | HTML element representing TOC container; alternatively, can be `ol` |
 | markdown.extension.convertToHtml.includeLocatorRegex | `\[\]\(include\(([^\s]+?)\)\)` | Defines Regex pattern used to define file include Markdown syntax extension |
 | markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | Message format for the message produced in the output HTML in case of invalid Regular Expression |
 | markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | Message format for the message produced in the output HTML in case of the file reading failure |

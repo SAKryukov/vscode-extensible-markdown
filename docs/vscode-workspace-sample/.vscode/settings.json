@@ -26,6 +26,13 @@
         "color": "white",
         "backgroundColor": "navy"
     },
+    "markdown.extension.convertToHtml.tocRegex": "^\\[\\]\\(toc\\)",
+    "markdown.extension.convertToHtml.tocDecoratorStyle": {
+        "cursor": "cell",
+        "border": "thin solid black",
+        "color": "white",
+        "backgroundColor": "orange"
+    },    
     "cSpell.enabled": true,
     "markdown.extension.convertToHtml.includeLocatorRegex": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)",
     "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": "!!! invalid Regular Expression of include:  \"%s\" !!!",

@@ -140,7 +140,9 @@ exports.activate = function (context) {
                     } // idHeadersSlugify
                     let md = require(path.join(extensionPath, "markdown-it"))().set(optionSet);
                     if (lazy.settings.headingId) md = md.use(named, { slugify: idHeadersSlugify });
-                    md = md.use(toc, { slugify: idHeadersSlugify });
+                    md = md.use(toc, {
+                        slugify: idHeadersSlugify,
+                        markerPattern: new RegExp(lazy.settings.tocRegex, "m")});
                     for (let pluginData in additionalPlugins) {
                         let plugin;
                         try {

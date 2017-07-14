@@ -64,11 +64,9 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["includeLocatorDecoratorStyle"]) 
     });
+    settings.tocRegex = thisExtensionSection["tocRegex"]; 
     settings.pluginSyntaxDecorators.push({
-        regexString: "^\\[\\]\\(toc\\)",
-            // For now: should be in sync with embedded-node-modules/markdown-it-sa-table-of-contents/index.js:
-            // defaults.markerPattern
-            // regex is not customizable 
+        regexString: settings.tocRegex,
         tooltipFormat: "Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["tocDecoratorStyle"]) 

@@ -2,7 +2,7 @@
     "name": "convert-markdown-to-html",
     "displayName": "Extensible Markdown Converter",
     "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
-    "version": "3.1.0",
+    "version": "4.0.0",
     "publisher": "sakryukov",
     "repository": {
         "type": "git",
@@ -54,7 +54,7 @@
                 "mac": "cmd+k v",
                 "when": "editorTextFocus"
             }
-        ],        
+        ],
         "menus": {
             "editor/context": [
                 {
@@ -118,24 +118,28 @@
                         "backgroundColor": "navy"
                     }
                 },
+                "markdown.extension.convertToHtml.tocRegex": {
+                    "type": "string",
+                    "default": "^\\[\\]\\(toc\\)"
+                },
                 "markdown.extension.convertToHtml.tocDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "cell",
                         "border": "thin solid black",
-                        "color": "navy",
-                        "backgroundColor": "gold"
+                        "color": "white",
+                        "backgroundColor": "orange"
                     }
                 },
-                "markdown.extension.convertToHtml.includeLocatorRegex": { 
+                "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",
                     "default": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)"
                 },
-                "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": { 
+                "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": {
                     "type": "string",
                     "default": "!!! invalid Regular Expression of include:  \"%s\" !!!"
                 },
-                "markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat": { 
+                "markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat": {
                     "type": "string",
                     "default": "!!! failed to read file \"%s\" !!!"
                 },

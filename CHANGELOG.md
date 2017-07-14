@@ -1,8 +1,10 @@
 # Changelog
 
-## Version 3.1.0
+## Version 4.0.0
 
-* Found critical bug in "markdown-it-named-headers" and "markdown-it-table-of-contents": id values of headers were not unique. As a work-around, these external modules are eliminated and replaced with modules embedded in the extension.
+* Found critical bug in the external "markdown-it-named-headers" and "markdown-it-table-of-contents": generated id values of headers were not unique. As a work-around, these external modules are eliminated and replaced with modules embedded in the extension.
+
+Major version is incremented because the default Markdown pattern for Table of Content has changed to `^\[\]\(toc\)`, which means "`[](toc)`" at the beginning of line. Potentially, it could break backward compatibility with existing Markdown documents using "`[[toc]]`", but it's easy to fix.
 
 ## Version 3.0.0
 

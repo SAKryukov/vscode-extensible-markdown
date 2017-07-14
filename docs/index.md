@@ -132,8 +132,10 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 
 | Name | Default | Description |
 | --- | --- | --- |
-| markdown.extension.convertToHtml.titleLocatorRegex | ^(.*?)\\[\\]\\(title\\) | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
+| markdown.extension.convertToHtml.titleLocatorRegex | `^(.*?)\[\]\(title\)` | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
 | markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag element |
+| markdown.extension.convertToHtml.tocRegex | `^\[\]\(toc\)` | Defines Regex pattern used to recognize the location where Table Of Contents is placed |
+| markdown.extension.convertToHtml.tocDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag marking the Table of Context placing |
 | markdown.extension.convertToHtml.includeLocatorRegex | `\[\]\(include\(([^\s]+?)\)\)` | Defines Regex pattern used to define file include Markdown syntax extension |
 | markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | Message format for the message produced in the output HTML in case of invalid Regular Expression |
 | markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | Message format for the message produced in the output HTML in case of the file reading failure |
@@ -162,7 +164,7 @@ Note that selection of "markdown-it" options can render generated HTML files dif
 This is the sample fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):{id=special-settings.json}
 
 ```json
-[](include(docs/vscode-workspace-sample/.vscode/settings.json))
+[](include(vscode-workspace-sample/.vscode/settings.json))
 ```
 
 The extension also uses "`markdown.styles`" option related to the extension "VS Code Markdown".

@@ -73,27 +73,6 @@
                 ]                
             },
             {
-                "name": "markdown-it-table-of-contents",
-                "options": {
-                    "includeLevel": [2, 3, 4],
-                    "containerClass": "toc",
-                    "listType": "ul"
-                },
-                "enable": true,
-                "syntacticDecorators": [
-                    {
-                        "enable": true,
-                        "regexString": "\\[\\[toc\\]\\]",
-                        "tooltipFormat": "Table of Contents",
-                        "style": {
-                            "cursor": "pointer",
-                            "color": "yellow",
-                            "backgroundColor": "rgba(100,0,200,0.8)"
-                        }
-                    }
-                ]
-            },
-            {
                 "name": "markdown-it-footnote",
                 "enable": true
             },

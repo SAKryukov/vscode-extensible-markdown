@@ -126,10 +126,21 @@ exports.activate = function (context) {
                 lazy.markdownIt = (function () { // modify, depending in settings
                     const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
                     if (!extension) return;
-                    const extensionPath = path.join(extension.extensionPath, "node_modules", "/");
-                    const named = require(extensionPath + "markdown-it-named-headers");
-                    let md = require(extensionPath + "markdown-it")().set(optionSet);
-                    if (lazy.settings.headingId) md = md.use(named);
+                    const extensionPath = path.join(extension.extensionPath, "node_modules");
+                    const embeddedExtensionPath = path.join(__dirname, "../embedded-node-modules");
+                    const stringModule = require(path.join(extensionPath, "string"));
+                    const named = require(path.join(embeddedExtensionPath, "markdown-it-sa-named-headers"));
+                    const toc = require(path.join(embeddedExtensionPath, "markdown-it-sa-table-of-contents"));
+                    const idHeadersSlugify = function (s, used_headers) {
+                        let slug = stringModule(s).slugify().toString();
+                        while (used_headers[slug])
+                            slug += '-' + 'a';
+                        used_headers[slug] = slug;
+                        return slug;
+                    } // idHeadersSlugify
+                    let md = require(path.join(extensionPath, "markdown-it"))().set(optionSet);
+                    if (lazy.settings.headingId) md = md.use(named, { slugify: idHeadersSlugify });
+                    md = md.use(toc, { slugify: idHeadersSlugify });
                     for (let pluginData in additionalPlugins) {
                         let plugin;
                         try {
@@ -160,8 +171,8 @@ exports.activate = function (context) {
         } //if no editor
         if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
-        const titleObject = semantic.titleFinder(text, settings); 
-        const title =  titleObject ?
+        const titleObject = semantic.titleFinder(text, settings);
+        const title = titleObject ?
             titleObject.title : null;
         const outputFileName =
             convertText(
@@ -274,8 +285,8 @@ exports.activate = function (context) {
                         if (groups[1])
                             title = util.format(title, groups[1].toString());
                         decoratorSet.push({
-                           range: semantic.getVSCodeRange(vscode, document, start, groups[0]),
-                           hoverMessage: title
+                            range: semantic.getVSCodeRange(vscode, document, start, groups[0]),
+                            hoverMessage: title
                         });
                     }); //looped occureences and groups
                 vscode.window.activeTextEditor.setDecorations(

@@ -1,0 +1,48 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "markdown-it-named-headers@https://registry.npmjs.org/markdown-it-named-headers/-/markdown-it-named-headers-0.0.4.tgz",
+        "scope": null,
+        "escapedName": "markdown-it-sa-named-headers",
+        "name": "markdown-it-sa-named-headers",
+        "rawSpec": "https://registry.npmjs.org/markdown-it-named-headers/-/markdown-it-named-headers-0.0.4.tgz",
+        "spec": "https://registry.npmjs.org/markdown-it-named-headers/-/markdown-it-named-headers-0.0.4.tgz",
+        "type": "remote"
+      },
+      "D:\\work\\agent1\\1\\s\\extensions\\markdown"
+    ]
+  ],
+  "author": {
+    "name": "Jason Brackins"
+  },
+  "bugs": {
+    "url": "https://github.com/leff/markdown-it-named-headers/issues"
+  },
+  "dependencies": {
+    "string": "^3.0.1"
+  },
+  "description": "Headers have name attributes for markdown-it.",
+  "devDependencies": {
+    "markdown-it": "^4.0.1",
+    "mocha": "^2.2.1",
+    "test": ">=0.0.1"
+  },
+  "files": [
+    "README.md",
+    "UNLICENSE",
+    "index.js"
+  ],
+  "homepage": "https://github.com/leff/markdown-it-named-headers",
+  "keywords": [
+    "markdown-it-plugin"
+  ],
+  "license": {
+    "type": "Unlicense",
+    "url": "http://unlicense.org/"
+  },
+  "name": "markdown-it-named-headers",
+  "optionalDependencies": {},
+  "readmeFilename": "README.md",
+  "version": "1.0.0"
+}

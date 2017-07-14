@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 3.1.0
+
+* Found critical bug in "markdown-it-named-headers" and "markdown-it-table-of-contents": id values of headers were not unique. As a work-around, these external modules are eliminated and replaced with modules embedded in the extension.
+
 ## Version 3.0.0
 
 * Location of the included file is now relative to the Markdown document location

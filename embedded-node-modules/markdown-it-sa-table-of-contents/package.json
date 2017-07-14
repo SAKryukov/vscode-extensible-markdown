@@ -1,32 +1,9 @@
 {
-  "license": "MIT",
-  "version": "0.3.3",
-  "name": "markdown-it-table-of-contents",
+  "name": "markdown-it-sa-table-of-contents",
   "main": "index.js",
-  "description": "A Markdown-it plugin for adding a table of contents to markdown documents",
-  "homepage": "https://github.com/Oktavilla/markdown-it-table-of-contents",
-  "keywords": [
-    "markdown",
-    "markdown-it",
-    "toc",
-    "table of contents",
-    "markdown-it-plugin"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Oktavilla/markdown-it-table-of-contents.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Oktavilla/markdown-it-table-of-contents/issues"
-  },
-  "author": "Oktavilla <https://github.com/Oktavilla>",
-  "contributors": "Listed at <https://github.com/Oktavilla/markdown-it-table-of-contents/contributors>",
-  "dependencies": {
-    "string": "~3.3.3",
-    "lodash.assign": "~4.2.0"
-  },
+  "version": "3.1.0",
+  "description": "A Markdown-it plugin for adding a table of contents to markdown documents. Work-around by SAKryukov: published npm module does not maintain uniqueness of id values for headings.",
   "devDependencies": {
-    "mocha": "~3.1.2",
     "markdown-it": "~8.1.0",
     "markdown-it-anchor": "~2.6.0"
   }

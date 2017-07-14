@@ -118,6 +118,15 @@
                         "backgroundColor": "navy"
                     }
                 },
+                "markdown.extension.convertToHtml.tocDecoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "cursor": "cell",
+                        "border": "thin solid black",
+                        "color": "navy",
+                        "backgroundColor": "gold"
+                    }
+                },
                 "markdown.extension.convertToHtml.includeLocatorRegex": { 
                     "type": "string",
                     "default": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)"

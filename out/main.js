@@ -133,7 +133,7 @@ exports.activate = function (context) {
                         enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                         idPrefix: lazy.settings.headingIdPrefix,
                         stringModule: require(path.join(extensionPath, "string")),
-                        markerPattern: new RegExp(lazy.settings.tocRegex, "m"),
+                        tocRegex: lazy.settings.tocRegex,
                         includeLevel: lazy.settings.tocIncludeLevels,
                         tocContainerClass: lazy.settings.tocContainerClass,
                         tocListType: lazy.settings.tocListType

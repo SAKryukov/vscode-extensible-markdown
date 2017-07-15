@@ -4,7 +4,7 @@ const defaultOptions = {
     enableHeadingId: true,
     includeLevel: [1, 2, 3, 4, 5, 6],
     containerClass: "toc",
-    markerPattern: /^\[\]\(toc\)/im,
+    tocRegex: "^\\[\\]\\(toc\\)",
     listType: "ul",
     format: undefined
 }; //defaultOptions
@@ -56,62 +56,60 @@ module.exports = function (md, userOptions) {
 
     // TOC: //////////////////////////////////////////////////
 
-    let tocRegexp = options.markerPattern;
+    let tocRegexp;
+    if (typeof "" == typeof options.tocRegex)
+         tocRegexp = new RegExp(options.tocRegex, "m");
+    else // SA??? assume its constructor is RegExp; if not, exception will throw later
+        tocRegexp = options.tocRegex;
     let gstate;
 
     function toc(state, silent) {
-
         let token;
         let match;
-
+        //
         // Reject if the token does not start with [
-        if (state.src.charCodeAt(state.pos) !== 0x5B /* [ */) {
+        if (state.src.charCodeAt(state.pos) !== 0x5B /* [ */)
             return false;
-        }
         // Don't run any pairs in validation mode
-        if (silent) {
+        if (silent)
             return false;
-        }
-
+        //
         // Detect TOC markdown
         match = tocRegexp.exec(state.src);
         match = !match ? [] : match.filter(function (m) { return m; });
-        if (match.length < 1) {
+        if (match.length < 1)
             return false;
-        }
-
+        //
         // Build content
         token = state.push("toc_open", "toc", 1);
         token.markup = "[[toc]]";
         token = state.push("toc_body", "", 0);
         token = state.push("toc_close", "toc", -1);
-
+        //
         // Update pos so the parser can continue
         let newline = state.src.indexOf("\n");
-        if (newline !== -1) {
+        if (newline !== -1)
             state.pos = state.pos + newline;
-        } else {
+        else
             state.pos = state.pos + state.posMax + 1;
-        }
-
         return true;
     } //toc
 
     md.renderer.rules.toc_open = function (tokens, index) {
         usedIDs.toc = {};
         return '<div class="' + options.containerClass + '">';
-    };
+    }; //md.renderer.rules.toc_open
 
     md.renderer.rules.toc_close = function (tokens, index) {
         return "</div>";
         usedIDs.toc = {};
-    };
+    }; //md.renderer.rules.toc_close
 
     md.renderer.rules.toc_body = function (tokens, index) {
-        return renderChildsTokens(0, gstate.tokens)[1];
-    };
+        return renderChildrenTokens(0, gstate.tokens)[1];
+    }; //md.renderer.rules.toc_body
 
-    function renderChildsTokens(pos, tokens) {
+    function renderChildrenTokens(pos, tokens) {
         let headings = [],
             buffer = '',
             currentLevel,
@@ -128,7 +126,7 @@ module.exports = function (md, userOptions) {
             } //if
             if (currentLevel) {
                 if (level > currentLevel) {
-                    subHeadings = renderChildsTokens(currentPos, tokens);
+                    subHeadings = renderChildrenTokens(currentPos, tokens);
                     buffer += subHeadings[1];
                     currentPos = subHeadings[0];
                     continue;
@@ -160,7 +158,7 @@ module.exports = function (md, userOptions) {
         if (options.listType === bulletedListType) // SA
             effectiveStyle = noBulletStyle;
         return [currentPos, "<" + options.listType + effectiveStyle + ">" + headings.join("") + "</" + options.listType + ">"];
-    } //renderChildsTokens
+    } //renderChildrenTokens
 
     // Catch all the tokens for iteration later
     md.core.ruler.push("grab_state", function (state) {

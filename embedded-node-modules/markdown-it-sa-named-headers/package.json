@@ -1,9 +1,0 @@
-{
-  "name": "markdown-it-sa-named-headers",
-  "main": "index.js",
-  "version": "3.1.0",
-  "description": "Headers have name attributes for markdown-it. Work-around by SAKryukov: published npm module does not maintain uniqueness of id values for headings.",
-  "devDependencies": {
-    "markdown-it": "^4.0.1"
-  }
-}

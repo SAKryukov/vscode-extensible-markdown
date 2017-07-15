@@ -173,6 +173,10 @@
                     "type": "boolean",
                     "default": true
                 },
+                "markdown.extension.convertToHtml.options.headingIdPrefix": {
+                    "type": "string",
+                    "default": "heading."
+                },
                 "markdown.extension.convertToHtml.options.allowHTML": {
                     "type": "boolean",
                     "default": true

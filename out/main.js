@@ -129,23 +129,15 @@ exports.activate = function (context) {
                     const extensionPath = path.join(extension.extensionPath, "node_modules");
                     const embeddedExtensionPath = path.join(__dirname, "../embedded-node-modules");
                     const stringModule = require(path.join(extensionPath, "string"));
-                    const named = require(path.join(embeddedExtensionPath, "markdown-it-sa-named-headers"));
-                    const toc = require(path.join(embeddedExtensionPath, "markdown-it-sa-table-of-contents"));
-                    const idHeadersSlugify = function (s, used_headers) {
-                        let slug = stringModule(s).slugify().toString();
-                        while (used_headers[slug])
-                            slug += '.' + 'a';
-                        used_headers[slug] = slug;
-                        return slug;
-                    } // idHeadersSlugify
+                    const idToc = require("./id.toc.js");
                     let md = require(path.join(extensionPath, "markdown-it"))().set(optionSet);
-                    if (lazy.settings.headingId) md = md.use(named, { slugify: idHeadersSlugify });
-                    md = md.use(toc, {
-                        slugify: idHeadersSlugify,
+                    md.use(idToc, {
+                        stringModule: stringModule,
                         markerPattern: new RegExp(lazy.settings.tocRegex, "m"),
                         includeLevel: lazy.settings.tocIncludeLevels,
                         tocContainerClass: lazy.settings.tocContainerClass,
-                        tocListType: lazy.settings.tocListType});
+                        tocListType: lazy.settings.tocListType
+                    });
                     for (let pluginData in additionalPlugins) {
                         let plugin;
                         try {

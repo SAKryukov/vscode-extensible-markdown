@@ -1,0 +1,505 @@
+﻿<html>
+<head>
+    <title>VSCode: Extensible Markdown Converter</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+	body > p:first-child { font-size: 240%; text-align: center; }
+	body > p:nth-child(2) { text-align: right; }
+	div.toc ul { list-style-type: none; }
+	code { font-size: 130%; }
+        pre, code { color: darkGreen; padding:0; font-family: 'Consolas', sans-serif }
+        pre, pre code { color: black; font-size: 100%; background-color: antiqueWhite; }
+        html, body, p { font-family: 'Verdana', 'Ububtu', serif; }
+        blockquote { margin-left: 2em; }
+	th, td { border: thin solid black; padding-left: 1em; padding-right: 1em; }
+	th { border-bottom: solid black 2px; }
+	th { background-color: lightGray; font-weight: normal; font-size: 100%; }
+	table { border: solid black 2px; border-collapse: collapse; }
+    </style>
+</head>
+<body>
+
+<p>VSCode: Extensible Markdown Converter<a href="title"></a></p>
+<p><a href="https://www.SAKryukov.org"><em>Sergey A Kryukov</em></a></p>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html"><img src="https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg" alt="Latest Release" /></a></p>
+<p>This package is the Visual Studio Code <em>extension</em> supporting <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>. The extension depends on the built-in extension “VS Code Markdown” (<code>id=&quot;Microsoft.vscode-markdown&quot;</code>) and adds important function: it reads Markdown content from a currently active editor and converts to an HTML file.</p>
+<p>Since v. 2.0.0, the user can extend Markdown features by installing any of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> that are <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">abundantly available</a> in the <a href="https://www.npmjs.com">npm package registry</a>. All the packages can be configured from a single source: “settings.json”, <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a>.</p>
+<p>That said, there is no a need for different Markdown extensions. It’s quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.</p>
+<p><div class="toc"><ul style="list-style-type: none;"><li><a href="#heading.features">Features</a></li><li><a href="#heading.usage">Usage</a><ul style="list-style-type: none;"><li><a href="#heading.preview">Preview</a></li></ul></li><li><a href="#heading.extending-of-markdown-syntax">Extending of Markdown Syntax</a><ul style="list-style-type: none;"><li><a href="#heading.markdown-it-extensions">Markdown-it Extensions</a></li><li><a href="#heading.markdown-it-named-headers-extension">Markdown-it-named-headers Extension</a></li><li><a href="#heading.extensible-markdown-converter-embedded-extensions">Extensible Markdown Converter Embedded Extensions</a></li><li><a href="#heading.extensible-markdown-converter-user-installed-extensions">Extensible Markdown Converter User-Installed Extensions</a></li></ul></li><li><a href="#heading.settings">Settings</a><ul style="list-style-type: none;"><li><a href="#heading.three-levels-of-settings">Three Levels of Settings</a></li><li><a href="#heading.general-options">General Options</a></li><li><a href="#heading.extensible-markdown-converter-syntax-extension-options">Extensible Markdown Converter Syntax Extension Options</a></li><li><a href="#heading.markdown-it-options">Markdown-it Options</a></li><li><a href="#heading.settings-sample">Settings Sample</a></li></ul></li><li><a href="#heading.advanced-usage-and-settings">Advanced Usage and Settings</a><ul style="list-style-type: none;"><li><a href="#heading.typographer">Typographer</a></li><li><a href="#heading.detecting-document-title">Detecting Document Title</a></li><li><a href="#heading.file-includes">File Includes</a></li><li><a href="#heading.syntax-coloring">Syntax Coloring</a></li></ul></li><li><a href="#heading.additional-plug-ins">Additional Plug-ins</a><ul style="list-style-type: none;"><li><a href="#heading.installation">Installation</a></li><li><a href="#heading.customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
+<h2 id="heading.features.">Features</h2>
+<ul>
+<li>Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;</li>
+<li>A possibility of installation of <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> in an arbitrary directory, without the need to install “markdown-it” itself;</li>
+<li>User-configurable Markup syntax coloring for plug-ins;</li>
+<li>Optional embedding of CSS in HTML;</li>
+<li>Optional Detection of the document title based on user-configurable Regular Expression;</li>
+<li>Optional preview in the default Web browser;</li>
+<li>Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching generated HTML file;</li>
+<li>Configuration of all processing detail of the extension, <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> and its plug-ins, from a single source.</li>
+</ul>
+<h2 id="heading.usage.">Usage</h2>
+<p>Open Markdown file (.md) in Visual Studio Code and activate the editor’s context menu, use the command “Markdown: Convert to HTML”, to convert this file. All files found in a currently opened workspace can be converted at once with the command “Markdown: Convert to HTML all .md files in workspace”. This command appears in context menu of any editor, and also in the Explorer context menu.</p>
+<p>Alternatively, open the Command Palette (&quot;<code>Ctrl+Shift+P</code>&quot;/&quot;<code>Cmd+Shift+P</code>&quot; or <code>F1</code>) and search for the command “Markdown: Convert to HTML” or “Markdown: Convert to HTML all .md files in workspace”.</p>
+<p>The HTML file is saved to the same directory as original Markdown file, if not specified otherwise <a href="#special-markdown-extension-convertToHtml-outputPath">by settings</a>.</p>
+<h3 id="heading.preview.">Preview</h3>
+<p>Preview presents certain concerns, because built-in extension “VS Code Markdown” already implements the same two preview commands for Markdown.</p>
+<p>Anyway, “Extensible Markdown Converter” extension defines keybinding to overwrite default preview keybinding:</p>
+<ul>
+<li>Open Preview: Ctrl+Shift+V</li>
+<li>Open Preview to Side: Ctrl+K V</li>
+</ul>
+<p>As the extension “VS Code Markdown” uses fixed set of Markdown-specific options and does not load <a href="#additional-plug-ins">additional plug-ins</a>, “VS Code Markdown” preview can be different from “Extensible Markdown Converter” rendering.</p>
+<p>So, it’s important to know the difference, to make sure the rendering is performed by Extensible Markdown Converter.</p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Command</th>
+<th>Command Title</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VS Code Markdown</td>
+<td>markdown.showPreview</td>
+<td>Markdown: Open Preview</td>
+</tr>
+<tr>
+<td>Extensible Markdown Converter</td>
+<td>extensible.markdown.showPreview</td>
+<td>Markdown: Open &amp;Preview</td>
+</tr>
+<tr>
+<td>VS Code Markdown</td>
+<td>markdown.showPreviewToSide</td>
+<td>Markdown: Open Preview to Side</td>
+</tr>
+<tr>
+<td>Extensible Markdown Converter</td>
+<td>extensible.markdown.showPreviewToSide</td>
+<td>Markdown: Open Preview to &amp;Side</td>
+</tr>
+</tbody>
+</table>
+<p>In the Visual Studio Code UI, ‘&amp;’ is rendered as underscore and can be used as <em>hardware accelerator</em>: “Markdown: Open &amp;Preview”, “Markdown: Open Preview to &amp;Side”. These two strings are shown in the UI <em>Command Palette</em> as is, with ‘&amp;’. Note that two <code>extensible.markdown.showPreview*</code> commands are also shown in the current editor’s context menu, but “VS Code Markdown” <code>markdown.showPreview*</code> commands are not.</p>
+<h2 id="heading.extending-of-markdown-syntax.">Extending of Markdown Syntax</h2>
+<p>Markdown syntax can be extended. With Extensible Markdown Converter, all of them are user-configurable. At the very minimum,each extension can be enabled and disabled, and some extension allow for detailed configuration. All configurations can be modified <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a> or combine both.</p>
+<p>They can be classified into two parts: in first part, extensions are based on embedded “VSCode Markdown” extension. They come with Visual Studio Code installation, but are not fully exposed to the end user. The new “Extensible Markdown Converter” extension exposes most of them to user-defined “settings.json” files, so they are made configurable.</p>
+<p>In second part, new extensions are added by Extensible Markdown Converter. Some are embedded, others can be installed and then configured by the user.</p>
+<h3 id="heading.markdown-it-extensions.">Markdown-it Extensions</h3>
+<p>The embedded extension “VSCode Markdown” is based on the <a href="https://nodejs.org">node.js</a> <em>package</em> <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a>. This module does not require installation, it comes with Visual Studio Code. Extensible Markdown Converter exposed the following extended features: Typographer, “smart quotes” (can used when Typographer is enabled), enabled or disabled HTML formatting in input Markdown document, “linkify”, generation of <code>br</code> attributes. The configuration parameters are described in the section <a href="#markdown-it-options">Markdown-it Options</a>.</p>
+<h3 id="heading.markdown-it-named-headers-extension.">Markdown-it-named-headers Extension</h3>
+<p>Another <a href="https://nodejs.org">node.js</a> package <a href="https://www.npmjs.com/package/markdown-it-named-headers">“markdown-it-named-headers”</a> is used as a <em>plug-in</em> to <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a>. It also comes with Visual Studio Code, but not exposed by the extension embedded “VSCode Markdown”. Extensible Markdown Converter controls the use of this plug-in through the <a href="#markdown-it-options">configuration option</a> “<code>markdown.extension.convertToHtml.options.headingId</code>”.</p>
+<h3 id="heading.extensible-markdown-converter-embedded-extensions.">Extensible Markdown Converter Embedded Extensions</h3>
+<p>Extensible Markdown Converter adds two syntax elements to Markdown:</p>
+<ul>
+<li>Tagging for detection of the document title</li>
+<li>File include declaration</li>
+</ul>
+<p>By default, both elements use <em>pseudo-link</em> form based on Markdown <em>link</em> syntax. They take the form: <code>[](some-tag)</code>. Even when such element produces HTML anchor, it gives no clickable area (normally defined by the text between [] brackets). The user can create/modify “settings.json” to describe any other suitable syntax, which is done in Regular Expression form.</p>
+<p>Document title needs to get detected, because HTML requires a text value for the <code>title</code> element of the element <code>head</code>. The idea is to use some available Markdown element, which is actually rendered on HTML page, without replacing it, but with just tagging it as a title text.</p>
+<p>The default syntax for title detection is:</p>
+<pre><code>The Name of The Document[](title) 
+</code></pre>
+<p>In this example, the text “The Name of The Document” is copied to HTML <code>title</code>.</p>
+<p id="special.include.file">The default syntax for file include is:</p>
+<pre><code>[](include( file-name... ))
+// file-name expression should come without blank space characters
+</code></pre>
+<p>Again, the user can use any other syntax.</p>
+<p>Both elements are emphasized in source Markdown document by <a href="#syntax-coloring">syntax coloring</a> with coloring style configured by the user. Please see the description of the <a href="#extensible-markdown-converter-syntax-extension-options">settings</a>.</p>
+<h3 id="heading.extensible-markdown-converter-user-installed-extensions.">Extensible Markdown Converter User-Installed Extensions</h3>
+<p>The configuration option <a href="#markdown-it-options">“<code>markdown.extension.convertToHtml.options.additionalPlugins</code>”</a> is used for adding the referenced to additional <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> plug-ins which can be installed by the user. Please see the section <a href="#customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a> for the detail.</p>
+<h2 id="heading.settings.">Settings</h2>
+<h3 id="heading.three-levels-of-settings.">Three Levels of Settings</h3>
+<p>There are three levels of settings. The user of this extension can control them all.</p>
+<ol>
+<li>
+<p><a href="#general-options">General options</a> control the behavior of command and detail of the HTML output unrelated to Markdown formatting.</p>
+</li>
+<li>
+<p>The extension is based on the <a href="https://nodejs.org">node.js</a> <em>package</em> <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a>. This module has its own options. <a href="#markdown-it-options">Markdown-it options</a> define how the mark-down module should be set up before parsing.<br/><br />
+There options are classified in two sets: a) embedded set of options, b) what plug-ins should be used.<br/><br />
+Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as plug-ins, each defining custom or extended parsing and rendering rules. See <a href="#customization-of-additional-plug-ins">customization of Additional Plug-Ins</a>.<br/></p>
+</li>
+<li>
+<p>Some of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> plug-in packages have their own options. For example, see the package <a href="https://www.npmjs.com/package/markdown-it-table-of-contents">“markdown-it-table-of-contents”</a>. The example of setting its options in “settings.json” is shown in the <a href="#settings-sample">settings sample</a>.</p>
+</li>
+</ol>
+<h3 id="heading.general-options.">General Options</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>markdown.extension.convertToHtml.reportSuccess</td>
+<td>true</td>
+<td>Shows the message upon successful conversion, reports the names of the input and output files</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.showHtmlInBrowser</td>
+<td>false</td>
+<td>Opens generated HTML file in the default browser</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.embedCss</td>
+<td>false</td>
+<td>Used to embed CSS code found in CSS files in generated HTML</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.outputPath</td>
+<td><code>&quot;&quot;</code></td>
+<td>Specifies output path for generated HTL files, relative to current workspace</td>
+</tr>
+</tbody>
+</table>
+<p>The option “<code>markdown.extension.convertToHtml.showHtmlInBrowser</code>” is inapplicable to the command “Markdown: Convert to HTML all .md files in workspace”: if a set of files is converted, none of those files is shown in a Web browser.</p>
+<p><i id="special-markdown-extension-convertToHtml-outputPath"></i><br />
+The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ignored it its value resolves to false (empty string, <code>null</code>, <code>undefined</code>). If defined, it specify the path relative to current workspace directory. The effective target directory may not exist — in this case, error message is shown. If it exists, all files are saved in the same directory. In this case, it’s possible that the HTML files with identical base names but different locations overwrite one another. The user is responsible for suitability of the file names.</p>
+<h3 id="heading.extensible-markdown-converter-syntax-extension-options.">Extensible Markdown Converter Syntax Extension Options</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>markdown.extension.convertToHtml.titleLocatorRegex</td>
+<td><code>^(.*?)\[\]\(title\)</code></td>
+<td>Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML <code>head</code> <code>title</code> element</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.titleLocatorDecoratorStyle</td>
+<td>see <a href="#special-settings.json">“settings.json” sample</a></td>
+<td>CSS style for syntax coloring of the title extended Markdown tag element</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.options.headingId</td>
+<td>true</td>
+<td>Enables or disables generation of the <code>id</code> attributes for <code>h1</code>… <code>h6</code> elements</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.options.headingIdPrefix</td>
+<td><code>heading.</code></td>
+<td>If generation of the <code>id</code> attributes is enabled, the heading is added to each <code>id</code> value of each <code>h1</code>… <code>h6</code> element</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.tocRegex</td>
+<td><code>^\[\]\(toc\)</code></td>
+<td>Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.tocDecoratorStyle</td>
+<td>see <a href="#special-settings.json">“settings.json” sample</a></td>
+<td>CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.tocIncludeLevels</td>
+<td>[1, 2, 3, 4, 5, 6]</td>
+<td>Defines level of the headers to be included in TOC</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.tocContainerClass</td>
+<td><code>toc</code></td>
+<td>CSS class of the TOC container (by default, <code>ul</code>)</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.tocListType</td>
+<td><code>ul</code></td>
+<td>HTML element representing TOC container; alternatively, can be <code>ol</code></td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.includeLocatorRegex</td>
+<td><code>\[\]\(include\(([^\s]+?)\)\)</code></td>
+<td>Defines Regex pattern used to define file include Markdown syntax extension</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat</td>
+<td><code>!!! invalid Regular Expression of include: &quot;%s</code></td>
+<td>Message format for the message produced in the output HTML in case of invalid Regular Expression</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat</td>
+<td><code>!!! failed to read file &quot;%s&quot; !!!</code></td>
+<td>Message format for the message produced in the output HTML in case of the file reading failure</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.includeLocatorDecoratorStyle</td>
+<td>see <a href="#special-settings.json">“settings.json” sample</a></td>
+<td>CSS style for syntax coloring of the file include extended Markdown tag element</td>
+</tr>
+</tbody>
+</table>
+<h3 id="heading.markdown-it-options.">Markdown-it Options</h3>
+<p>The extension is based on the “VS Code Markdown” extension, which supplies node.js module <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> with the plug-in <a href="https://www.npmjs.com/package/markdown-it-named-headers">“markdown-it-named-headers”</a>. Since v.2.0.0, most of the module options are exposed to the user of the extension:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>markdown.extension.convertToHtml.options.allowHTML</td>
+<td>true</td>
+<td>If true, allows HTML formatting, otherwise HTML code is rendered as text</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.options.linkify</td>
+<td>false</td>
+<td>Renders “Link-like” text as link</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.options.br</td>
+<td>true</td>
+<td><a href="https://en.wikipedia.org/wiki/Newline">New line</a> handling: if true, line separators are replaced with the HTML <em>element</em> <code>br</code></td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.options.typographer</td>
+<td>true</td>
+<td><a href="#Typographer"><em>Typographer</em></a> option is used</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.options.smartQuotes</td>
+<td><code>“”‘’</code></td>
+<td>If typographer option is true, replaces <code>&quot;&quot;</code> and <code>''</code> characters</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.options.additionalPlugins</td>
+<td>see <a href="#customization-of-additional-plug-ins">below</a></td>
+<td>Descriptor of <a href="#additional-plug-ins">additional markdown-it plug-ins</a></td>
+</tr>
+</tbody>
+</table>
+<p>The value of the option “<code>markdown.extension.convertToHtml.options.smartQuotes</code>” should have four characters, otherwise the characters <code>&quot;&quot;</code> and <code>''</code> are rendered as is, as if the option value was <code>&quot;&quot;''</code>. It can be used to turn off “smart quotes” feature when other typographer processing is enabled.</p>
+<p>Note that selection of “markdown-it” options can render generated HTML files different from the  preview based on “VS Code Markdown” extension. For example, this preview presently does not enable “linkify” and “typographer”.</p>
+<h3 id="heading.settings-sample.">Settings Sample</h3>
+<p id="special-settings.json">This is the sample fragment of the file “settings.json” file (<a href="https://code.visualstudio.com/docs/getstarted/settings">user or workspace settings</a>):</p>
+<pre><code class="language-json">// Original publication:
+// https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode
+{
+    &quot;markdown.extension.convertToHtml.reportSuccess&quot;: true, // default
+    &quot;markdown.extension.convertToHtml.showHtmlInBrowser&quot;: false, // default
+    &quot;markdown.extension.convertToHtml.embedCss&quot;: true, // default
+    &quot;markdown.extension.convertToHtml.outputPath&quot;: &quot;&quot;,
+    // markdown-it options, all defaults:
+    &quot;markdown.extension.convertToHtml.options.allowHTML&quot;: true,
+    // &quot;markdown-it-named-headers&quot; plug-in, adds id attributes to h1 .. h6 elements:
+    &quot;markdown.extension.convertToHtml.options.headingId&quot;: true,
+    // converts &quot;link-like&quot; text: for ex., &quot;http://my.com&quot; -&gt;
+    // &lt;a href=&quot;http://my.com&quot;&gt;&quot;http://my.com&quot;&lt;/a&gt;: 
+    &quot;markdown.extension.convertToHtml.options.linkify&quot;: false,
+    // replaces new line marker with &lt;br/&gt;:
+    &quot;markdown.extension.convertToHtml.options.br&quot;: true,
+    // typographer replaces -- --- with en dash and em dash, smart quotes, etc.:
+    &quot;markdown.extension.convertToHtml.options.typographer&quot;: true,
+    // applicable if typographer is true:
+    // 4 characters, replacement for &quot;&quot; and '':
+    &quot;markdown.extension.convertToHtml.options.smartQuotes&quot;: &quot;“”‘’&quot;,
+    &quot;markdown.extension.convertToHtml.titleLocatorRegex&quot;: &quot;^(.*?)\\[\\]\\(title\\)&quot;,    
+    &quot;markdown.extension.convertToHtml.titleLocatorDecoratorStyle&quot;: {
+        &quot;cursor&quot;: &quot;copy&quot;,
+        &quot;borderRadius&quot;: &quot;5px&quot;,
+        &quot;color&quot;: &quot;white&quot;,
+        &quot;backgroundColor&quot;: &quot;navy&quot;
+    },
+    &quot;markdown.extension.convertToHtml.tocRegex&quot;: &quot;^\\[\\]\\(toc\\)&quot;,
+    &quot;markdown.extension.convertToHtml.tocDecoratorStyle&quot;: {
+        &quot;cursor&quot;: &quot;cell&quot;,
+        &quot;border&quot;: &quot;thin solid black&quot;,
+        &quot;color&quot;: &quot;white&quot;,
+        &quot;backgroundColor&quot;: &quot;orange&quot;
+    },    
+    &quot;markdown.extension.convertToHtml.tocIncludeLevels&quot;: [ 1, 2, 3, 4, 5, 6 ],
+    &quot;markdown.extension.convertToHtml.tocContainerClass&quot;: &quot;toc&quot;,
+    &quot;markdown.extension.convertToHtml.tocListType&quot;: &quot;ul&quot;,  
+    &quot;cSpell.enabled&quot;: true,
+    &quot;markdown.extension.convertToHtml.includeLocatorRegex&quot;: &quot;\\[\\]\\(include\\(([^\\s]+?)\\)\\)&quot;,
+    &quot;markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat&quot;: &quot;!!! invalid Regular Expression of include:  \&quot;%s\&quot; !!!&quot;,
+    &quot;markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat&quot;: &quot;!!! failed to read file \&quot;%s\&quot; !!!&quot;,
+    &quot;markdown.extension.convertToHtml.includeLocatorDecoratorStyle&quot;: {
+        &quot;cursor&quot;: &quot;copy&quot;,
+        &quot;borderRadius&quot;: &quot;5px&quot;,
+        &quot;color&quot;: &quot;black&quot;,
+        &quot;backgroundColor&quot;: &quot;lightBlue&quot;
+    },    
+    &quot;markdown.extension.convertToHtml.options.additionalPlugins&quot;: {
+        &quot;absolutePath&quot;: null, // just a placeholder
+        &quot;relativePath&quot;: &quot;../../../additional_plugins/node_modules&quot;, // relative to workspace
+        &quot;plugins&quot;: [
+            {
+                &quot;name&quot;: &quot;markdown-it-sub&quot;,
+                &quot;enable&quot;: true,
+                &quot;syntacticDecorators&quot;: [
+                    {
+                        &quot;enable&quot;: true,
+                        &quot;regexString&quot;: &quot;\\~([^\\s]+?)\\~&quot;,
+                        &quot;tooltipFormat&quot;: &quot;Subscript expression: %s&quot;,
+                        &quot;style&quot;: {
+                            &quot;color&quot;: &quot;darkGreen&quot;,
+                            &quot;backgroundColor&quot;: &quot;lightGreen&quot;,
+                            &quot;border&quot;: &quot;solid thin navy&quot;
+                        }
+                    }
+                ]
+            },
+            {
+                &quot;name&quot;: &quot;markdown-it-sup&quot;,
+                &quot;enable&quot;: true,
+                &quot;syntacticDecorators&quot;: [
+                    {
+                        &quot;enable&quot;: true,
+                        &quot;regexString&quot;: &quot;\\^([^\\s]+?)\\^&quot;,
+                        &quot;tooltipFormat&quot;: &quot;Superscript expression: %s&quot;,
+                        &quot;style&quot;: {
+                            &quot;color&quot;: &quot;darkBlue&quot;,
+                            &quot;backgroundColor&quot;: &quot;yellow&quot;,
+                            &quot;border&quot;: &quot;solid thin brown&quot;
+                        }
+                    }
+                ]                
+            },
+            {
+                &quot;name&quot;: &quot;markdown-it-footnote&quot;,
+                &quot;enable&quot;: true
+            },
+            {
+                &quot;name&quot;: &quot;markdown-it-attrs&quot;,
+                &quot;enable&quot;: true,
+                &quot;syntacticDecorators&quot;: [
+                    { // for &quot;id&quot; attribute {id=...}:
+                        &quot;enable&quot;: true,
+                        &quot;regexString&quot;: &quot;\\{id\\=([^\\s]+?)\\}&quot;,
+                        &quot;tooltipFormat&quot;: &quot;id=\&quot;%s\&quot;&quot;,
+                        &quot;style&quot;: {
+                            &quot;cursor&quot;: &quot;pointer&quot;,
+                            &quot;color&quot;: &quot;black&quot;,
+                            &quot;backgroundColor&quot;: &quot;rgba(100,0,200,0.1)&quot;,
+                            &quot;border&quot;: &quot;solid thin black&quot;
+                        }
+                    },
+                    { // for &quot;class&quot; attribute {.class-name}:
+                        &quot;enable&quot;: true,
+                        &quot;regexString&quot;: &quot;\\{\\.([^\\s]+?)\\}&quot;,
+                        &quot;tooltipFormat&quot;: &quot;CSS class: \&quot;%s\&quot;&quot;,
+                        &quot;style&quot;: {
+                            &quot;cursor&quot;: &quot;copy&quot;,
+                            &quot;color&quot;: &quot;darkBlue&quot;,
+                            &quot;backgroundColor&quot;: &quot;rgba(200,50,200,0.2)&quot;,
+                            &quot;border&quot;: &quot;solid thin black&quot;
+                        }
+                    }
+                ]                
+            }
+        ]
+    },
+    &quot;markdown.styles&quot;: [
+        // same styles used for preview are used in converted HTML files:
+        &quot;style.css&quot;, 
+        &quot;moreStyles.css&quot;
+    ],
+    // irrelevant, because &quot;VSCode Markdown&quot; is not used:
+    &quot;markdown.preview.fontSize&quot;: 0,
+    // irrelevant, because &quot;VSCode Markdown&quot; is not used:
+    &quot;markdown.preview.lineHeight&quot;: 0,
+    &quot;editor.wordBasedSuggestions&quot;: false,
+    &quot;[markdown]&quot;: { // for Markdown language id only:
+        &quot;editor.codeLens&quot;: true,
+        &quot;editor.lineNumbers&quot;: &quot;off&quot;,
+        &quot;editor.rulers&quot;: [
+            79 //CodeProject requirements for source code samples
+        ]
+    },
+    &quot;git.enabled&quot;: false,
+}
+</code></pre>
+<p>The extension also uses “<code>markdown.styles</code>” option related to the extension “VS Code Markdown”.<br />
+If one of more CSS files is defined, they are used in the generated HTML files as <em>external</em> or <em>embedded</em> style sheets, depending on the option “<code>markdown.extension.convertToHtml.embedCss</code>”. The user is responsible for supplying the CSS files themselves.</p>
+<h2 id="heading.advanced-usage-and-settings.">Advanced Usage and Settings</h2>
+<h3 id="heading.typographer.">Typographer</h3>
+<p>To use the typographer,  <a href="#markdown-it-options">“markdown-it” option</a> “<code>markdown.extension.convertToHtml.options.typographer</code>” should be set to true (default).</p>
+<p>Typographer substitution rules:</p>
+<ol>
+<li><code>+-</code> → ±</li>
+<li><code>...</code> → … (single character, <a href="https://en.wikipedia.org/wiki/Ellipsis">ellipsis</a>)</li>
+<li><code>---</code> → — (<a href="https://en.wikipedia.org/wiki/Dash#Em_dash">em dash</a>)</li>
+<li><code>--</code> → – (<a href="https://en.wikipedia.org/wiki/Dash#En_dash">en dash</a>)</li>
+<li><code>&quot;…&quot;</code>: depends on “markdown.extension.convertToHtml.options.smartQuotes” value, two first characters</li>
+<li><code>'…'</code>: depends on “markdown.extension.convertToHtml.options.smartQuotes” value, two last characters</li>
+</ol>
+<p>Two last patterns are more complicated. They match the text taken in a <em>pair</em> of <a href="https://en.wikipedia.org/wiki/Quotation_mark#Summary_table">quotation marks</a>, either <code>&quot;&quot;</code> or <code>''</code>. Importantly, they should be balanced, to get processed.</p>
+<p>The value of the option “<code>markdown.extension.convertToHtml.options.smartQuotes</code>” should be a string with four characters. If the values resolved to false in a <em>conditional expression</em> (undefined, null) or contain less than four characters, no replacement is performed — this is the way to turn the feature off, even if other typographer substitutions are enabled. For languages such as English, Hindi, Indonesian, etc., it should be <code>“”‘’</code> (default); for many European languages and languages using Cyrillic system, it’s <code>«»‹›</code>, <code>«»“”</code> or the like (second pair highly polymorphic and rarely used), and so on.</p>
+<h3 id="heading.detecting-document-title.">Detecting Document Title</h3>
+<p>To use the typographer,  <a href="#markdown-it-options">“markdown-it” option</a> “<code>markdown.extension.convertToHtml.titleLocatorRegex</code>” should define the <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expression</a> pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.<br />
+If the pattern match is successfully found in the Markdown document, it is written to the <code>title</code> element of the HTML <code>head</code> element. If the match is not found, the text “Converted from: /<input-file-name/>” is used as the title.</p>
+<p>It’s important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the <code>title</code> element.</p>
+<p>Let’s see how default value of the “<code>markdown.extension.convertToHtml.titleLocatorRegex</code>” works.</p>
+<p>By default, the following regular expression is used:</p>
+<pre><code>^/(*.?)/[/]/(title/)
+</code></pre>
+<p>It means that first occurrence of the text between beginning of line (&quot;^&quot; in <a href="https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended">regular expressions</a>) and “<a href="title"></a>” will make a match. The <em>group</em> “(*.?)” (marked by round brackets) means that the arbitrary text in between will be detected as the match.</p>
+<p>For example, this line in source Markdown document</p>
+<pre><code>My Article Name[](title)
+</code></pre>
+<p>will create two matches:</p>
+<ol start="0">
+<li><code>My Article Name[](title)</code></li>
+<li><code>My Article Name</code></li>
+</ol>
+<p>The text of the second match corresponds to the group “(*.?)”. It will be rendered as an HTML paragraph and written as the text values of its <code>title</code> element. Only the first occurrence of the matching text will be handled this way.</p>
+<p>In practice, this particular regular expression is useful to use the very first <em>paragraph</em> in the document to produce the title string. It can be taken into account in the CSS, to render this paragraph accordingly. For example, the special CSS properties can be applied to the paragraph defined by the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors">child selector</a> combined with the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child">first-child</a> <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes">pseudo-class</a>.</p>
+<p>CSS line example:</p>
+<pre><code>body &gt; p:first-child { font-size: 240%; text-align: center; }
+</code></pre>
+<p>Alternatively, the heading element of some level (level 1, for example) could be used as a title. It will require the following regular expression:</p>
+<pre><code>^/# (*.?)/[/]/(title/)
+</code></pre>
+<p>Note the blank space between “#” and (*.?).</p>
+<p>Matching Markdown would be:<br/></p>
+<pre><code># My Article Name[](title)
+</code></pre>
+<h3 id="heading.file-includes.">File Includes</h3>
+<p>The File Includes feature allows <a href="#special.include.file">including</a> an external file in the source Markdown document, before it is parsed. The file path is relative to the current document where the include element is placed.</p>
+<h3 id="heading.syntax-coloring.">Syntax Coloring</h3>
+<p>Syntax coloring can be defined using a pair of configuration settings a Regular Expression and a set of CSS properties. A regular expression should contain additional <em>group</em> marked by round brackets (), according to the Regular Expression syntax. This group is used in the text of the <em>tooltip</em> shown by the matching text fragment when a mouse cursor hovers over it. The matching text is styled according to the provided CSS style set. Please see the properties <code>*Regex*</code> and <code>style</code> in the <a href="#special-settings.json">“settings.json” sample</a>.</p>
+<h2 id="heading.additional-plug-ins.">Additional Plug-ins</h2>
+<p>Since v. 2.0.0, additional <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">plug-ins</a> can be installed by the users of the extension and configured for the use with Visual Studio Code.</p>
+<h3 id="heading.installation.">Installation</h3>
+<p>All <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> plug-ins can be installed using <a href="https://nodejs.org">node.js</a> <a href="https://www.npmjs.com">npm</a> without installation of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> module itself, as it is already installed with Visual Studio Code. It is assumed that all such plug-ins are installed in the same <code>&quot;node_modules&quot;</code> directory. The “convert-markdown-to-html” does not require installation of plug-ins to the same directory as any of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a>. It is recommended to install the plug-ins separately.</p>
+<p>Initial installation of plug-ins requires installation of <a href="https://nodejs.org">node.js</a>, but node.js is not required after the plug-ins are installed. Plug-ins can be installed <em>locally</em> (recommended):</p>
+<pre><code>npm install --save a-name-of-markdown-it-plug-in
+</code></pre>
+<h3 id="heading.customization-of-additional-plug-ins.">Customization of Additional Plug-Ins</h3>
+<p>Additional plug-ins are set up with one single “setting.json” option: <a href="#markdown-it-options">markdown.extension.convertToHtml.options.additionalPlugins</a>.</p>
+<p>This is how default value is shown in “package.json”:</p>
+<pre><code class="language-Json">// ...
+                    &quot;default&quot;: {
+                        &quot;absolutePath&quot;: &quot;&quot;,
+                        &quot;relativePath&quot;: &quot;&quot;,
+                        &quot;plugins&quot;: [
+                            {
+                                &quot;name&quot;: &quot;&quot;,
+                                &quot;enable&quot;: true,
+                                &quot;options&quot;: {}
+                            }
+                        ]
+                    }
+// ...
+</code></pre>
+<p>Main purpose of such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the “settings.json” is shown <a href="#special-settings.json">above</a>.</p>
+<p>First, the settings specify path to the directory where the set of additional plug-ins is installed, either “absolutePath” or “relativePath”. There is no need to include both properties, but it if happens, “absolutePath” is considered first. If it is not defined (more exactly, evaluates to “false” in conditional expression), “relativePath” is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it’s checked up if effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name <code>&quot;node_modules&quot;</code>.</p>
+<p>For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (<code>require</code>) each plugin, if its directory exists and the property “enable” is evaluates to <code>true</code>. If loading fails, the command execution continues with next plug-in. If a plug-in is successfully loaded, it’s used by markdown-it, with options specified by the “options” object, which can be omitted.</p>
+
+
+</body>
+</html>

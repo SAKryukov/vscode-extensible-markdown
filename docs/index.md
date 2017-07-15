@@ -134,6 +134,8 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | --- | --- | --- |
 | markdown.extension.convertToHtml.titleLocatorRegex | `^(.*?)\[\]\(title\)` | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
 | markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag element |
+| markdown.extension.convertToHtml.options.headingId | true | Enables or disables generation of the `id` attributes for `h1`.. `h6` elements |
+| markdown.extension.convertToHtml.options.headingIdPrefix | `heading.` | If generation of the `id` attributes is enabled, the heading is added to each `id` value of each `h1`.. `h6` element |
 | markdown.extension.convertToHtml.tocRegex | `^\[\]\(toc\)` | Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed |
 | markdown.extension.convertToHtml.tocDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing |
 | markdown.extension.convertToHtml.tocIncludeLevels | [1, 2, 3, 4, 5, 6] | Defines level of the headers to be included in TOC |
@@ -151,8 +153,6 @@ The extension is based on the "VS Code Markdown" extension, which supplies node.
 | Name | Default | Description |
 | --- | --- | --- |
 | markdown.extension.convertToHtml.options.allowHTML | true | If true, allows HTML formatting, otherwise HTML code is rendered as text |
-| markdown.extension.convertToHtml.options.headingId | true | Enables or disables generation of the `id` attributes for `h1`.. `h6` elements |
-| markdown.extension.convertToHtml.options.headingIdPrefix | `heading.` | If generation of the `id` attributes is enabled, the heading is added to each `id` value of each `h1`.. `h6` element |
 | markdown.extension.convertToHtml.options.linkify | false | Renders "Link-like" text as link |
 | markdown.extension.convertToHtml.options.br | true | [New line](https://en.wikipedia.org/wiki/Newline) handling: if true, line separators are replaced with the HTML *element* `br` |
 | markdown.extension.convertToHtml.options.typographer | true | [*Typographer*](#Typographer) option is used |

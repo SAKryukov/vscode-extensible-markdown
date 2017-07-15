@@ -133,6 +133,14 @@
                         "backgroundColor": "navy"
                     }
                 },
+                "markdown.extension.convertToHtml.headingId": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "markdown.extension.convertToHtml.headingIdPrefix": {
+                    "type": "string",
+                    "default": "heading."
+                },                
                 "markdown.extension.convertToHtml.tocRegex": {
                     "type": "string",
                     "default": "^\\[\\]\\(toc\\)"
@@ -178,14 +186,6 @@
                         "color": "black",
                         "backgroundColor": "lightBlue"
                     }
-                },
-                "markdown.extension.convertToHtml.options.headingId": {
-                    "type": "boolean",
-                    "default": true
-                },
-                "markdown.extension.convertToHtml.options.headingIdPrefix": {
-                    "type": "string",
-                    "default": "heading."
                 },
                 "markdown.extension.convertToHtml.options.allowHTML": {
                     "type": "boolean",

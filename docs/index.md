@@ -47,7 +47,7 @@ So, it's important to know the difference, to make sure the rendering is perform
 | Extension | Command | Command Title |
 | --- | --- | --- |
 | VS Code Markdown | markdown.showPreview | Markdown: Open Preview |
-| Extensible Markdown Converter | extensible.markdown.showPreview | Markdown: Open &Preview |     
+| Extensible Markdown Converter | extensible.markdown.showPreview | Markdown: Open &Preview |
 | VS Code Markdown | markdown.showPreviewToSide | Markdown: Open Preview to Side |
 | Extensible Markdown Converter | extensible.markdown.showPreviewToSide | Markdown: Open Preview to &Side |
 
@@ -65,16 +65,13 @@ In second part, new extensions are added by Extensible Markdown Converter. Some 
 
 The embedded extension "VSCode Markdown" is based on the [node.js](https://nodejs.org) *package* ["markdown-it"](https://www.npmjs.com/package/markdown-it). This module does not require installation, it comes with Visual Studio Code. Extensible Markdown Converter exposed the following extended features: Typographer, "smart quotes" (can used when Typographer is enabled), enabled or disabled HTML formatting in input Markdown document, "linkify", generation of `br` attributes. The configuration parameters are described in the section [Markdown-it Options](#markdown-it-options).
 
-### Markdown-it-named-headers Extension
-
-Another [node.js](https://nodejs.org) package ["markdown-it-named-headers"](https://www.npmjs.com/package/markdown-it-named-headers) is used as a *plug-in* to ["markdown-it"](https://www.npmjs.com/package/markdown-it). It also comes with Visual Studio Code, but not exposed by the extension embedded "VSCode Markdown". Extensible Markdown Converter controls the use of this plug-in through the [configuration option](#markdown-it-options) "`markdown.extension.convertToHtml.options.headingId`".
-
 ### Extensible Markdown Converter Embedded Extensions
 
-Extensible Markdown Converter adds two syntax elements to Markdown:
+Extensible Markdown Converter adds three syntax elements to Markdown:
 
 - Tagging for detection of the document title
 - File include declaration
+- Table of Contents (TOC) tag
 
 By default, both elements use *pseudo-link* form based on Markdown *link* syntax. They take the form: `[](some-tag)`. Even when such element produces HTML anchor, it gives no clickable area (normally defined by the text between [] brackets). The user can create/modify "settings.json" to describe any other suitable syntax, which is done in Regular Expression form.
 
@@ -82,7 +79,7 @@ Document title needs to get detected, because HTML requires a text value for the
 
 The default syntax for title detection is:
 ```
-The Name of The Document[](title) 
+The Name of The Document[](title)
 ```
 
 In this example, the text "The Name of The Document" is copied to HTML `title`.
@@ -91,10 +88,19 @@ The default syntax for file include is: {id=special.include.file}
 ```
 [](include( file-name... ))
 // file-name expression should come without blank space characters
-``` 
+```
+
+The default syntax for TOC tag is:
+
+```
+[](toc)
+```
+
 Again, the user can use any other syntax.
 
-Both elements are emphasized in source Markdown document by [syntax coloring](#syntax-coloring) with coloring style configured by the user. Please see the description of the [settings](#extensible-markdown-converter-syntax-extension-options).
+Only first occurrence of the document title tag is taken into account. In Markdown view, it can be seen on *syntax coloring* of this element. Other elements, including TOC, can appear multiple times. Note that TOC feature works in collaboration with automatic generation of the `id` attributes for all heading elements (`h1`.. `h6`), which is also embedded in the extension.
+
+All these elements are emphasized in source Markdown document by [syntax coloring](#syntax-coloring) with coloring style configured by the user. Please see the description of the [settings](#extensible-markdown-converter-syntax-extension-options).
 
 ### Extensible Markdown Converter User-Installed Extensions
 
@@ -114,7 +120,7 @@ Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, ea
 
 1. Some of the ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-in packages have their own options. For example, see the package ["markdown-it-table-of-contents"](https://www.npmjs.com/package/markdown-it-table-of-contents). The example of setting its options in "settings.json" is shown in the [settings sample](#settings-sample).
 
-### General Options   
+### General Options
 
 | Name | Default | Description |
 | --- | --- | --- |
@@ -220,7 +226,7 @@ will create two matches:
 0. `My Article Name[](title)`
 1. `My Article Name`
 
-The text of the second match corresponds to the group "(*.?)". It will be rendered as an HTML paragraph and written as the text values of its `title` element. Only the first occurrence of the matching text will be handled this way. 
+The text of the second match corresponds to the group "(*.?)". It will be rendered as an HTML paragraph and written as the text values of its `title` element. Only the first occurrence of the matching text will be handled this way.
 
 In practice, this particular regular expression is useful to use the very first *paragraph* in the document to produce the title string. It can be taken into account in the CSS, to render this paragraph accordingly. For example, the special CSS properties can be applied to the paragraph defined by the [child selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors) combined with the [first-child](https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child) [pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
 
@@ -243,7 +249,7 @@ Matching Markdown would be:<br/>
 
 ### File Includes
 
-The File Includes feature allows [including](#special.include.file) an external file in the source Markdown document, before it is parsed. The file path is relative to the current document where the include element is placed. 
+The File Includes feature allows [including](#special.include.file) an external file in the source Markdown document, before it is parsed. The file path is relative to the current document where the include element is placed.
 
 ### Syntax Coloring
 

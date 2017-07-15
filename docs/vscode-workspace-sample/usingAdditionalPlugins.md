@@ -18,7 +18,6 @@ This demo requires installation of
 * [markdown-it-attrs](https://www.npmjs.com/package/markdown-it-attrs)
 * [markdown-it-sub](https://www.npmjs.com/package/markdown-it-sub)
 * [markdown-it-sup](https://www.npmjs.com/package/markdown-it-sup)
-* [markdown-it-table-of-contents](https://www.npmjs.com/package/markdown-it-table-of-contents)
 
 For installation, [node.js](https://nodejs.org) should be installed. It comes with [npm](https://www.npmjs.com).
 

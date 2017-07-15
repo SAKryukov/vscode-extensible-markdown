@@ -34,3 +34,10 @@ Alternatively, open the Command Palette ("`Ctrl+Shift+P`"/"`Cmd+Shift+P`" or `F1
 The user can set up the extension of three levels: 1) general behavior of the commands, 2) detail of Markdown parsing and HTML production rules, 3) plug-ins options. The user can install additional plug-ins. If a plug-in has its own options, they are transparently passed from user or workspace "settings.json" to the plug-in.
 
 For detailed specifications, see the [documentation](https://sakryukov.github.io/vscode-markdown-to-html).
+
+## Credits
+
+The embedded [markdown-it](https://www.npmjs.com/package/markdown-it) plug-in for generation of heading `id` attributes and Table of Contents is based on two separate plug-ins:
+
+- [markdown-it-named-headers](https://github.com/leff/markdown-it-named-headers) by [Jason Brackins](https://github.com/leff)
+- [markdown-it-table-of-contents]() by [Oktavilla](https://github.com/Oktavilla)

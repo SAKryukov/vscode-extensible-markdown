@@ -7,8 +7,10 @@
     "markdown.extension.convertToHtml.outputPath": "",
     // markdown-it options, all defaults:
     "markdown.extension.convertToHtml.options.allowHTML": true,
-    // "markdown-it-named-headers" plug-in, adds id attributes to h1 .. h6 elements:
-    "markdown.extension.convertToHtml.options.headingId": true,
+    // adds id attributes to h1 .. h6 elements:
+    "markdown.extension.convertToHtml.headingId": true,
+    // added before id values of headings
+    "markdown.extension.convertToHtml.headingIdPrefix": "heading.",
     // converts "link-like" text: for ex., "http://my.com" ->
     // <a href="http://my.com">"http://my.com"</a>: 
     "markdown.extension.convertToHtml.options.linkify": false,
@@ -133,5 +135,5 @@
             79 //CodeProject requirements for source code samples
         ]
     },
-    "git.enabled": false,
+    "git.enabled": false
 }

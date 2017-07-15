@@ -14,7 +14,6 @@ It can be convenient to add other CodeProject article attributes here: Section, 
 
 ---
 
-
 Original publication: [https://www.codeproject.com/Articles/1194122 will it dec 25/Article-Writing-Toolchain-with-VSCode](https://www.codeproject.com/Articles/1194122 will it dec 25/Article-Writing-Toolchain-with-VSCode)
 
 Visual Studio Code extension on Visual Studio Marketplace: [convert-markdown-to-html](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html). See also **extension usage** on this page.
@@ -35,6 +34,8 @@ ext install convert-markdown-to-html
 ---
 
 <!--
+This document sample shows, in particular, how to prepare articles for CodeProject
+
 All text above was just for convenience (all in one). Below, the body of the article goes.
 Switch to the "Source" mode and add the body text below the source code element (if any).
 It's convenient to mark the part of HTML to paste in the CodeProject submission wizard with comments:
@@ -42,17 +43,11 @@ It's convenient to mark the part of HTML to paste in the CodeProject submission 
 
 <!-- Paste to CodeProject: --------------------------------------------------->
 
-<h22 will it dec 2>Contents</h22 will it dec 2><!-- not a Markdown element, just to avoid adding it to TOC -->
+<h2>Contents</h2><!-- not a Markdown element, just to avoid adding it to TOC -->
 
 <div class="toc"> <!-- see style.css: div.toc > ul used to remove bullets from TOC (won't work in CodeProject) -->
 
-- [Introduction](#introduction)
-- [Formatting](#formatting)
-- [Links and Anchors](#links-and-anchors)
-- [Images](#images)
-- [Using File Includes](#using-file-includes)
-- [Important Warning](#important-warning)
-- [Conclusions](#conclusions)
+[](toc)
 
 </div>
 
@@ -135,13 +130,13 @@ Combined list:
 
 [Navigate to first code sample](#src.cs.code.sample)
 
-[Navigate to Introduction](#introduction)
+[Navigate to Introduction](#heading.introduction)
 
 [External link](https://www.CodeProject.com)
 
 ### Headings have Automatically Defined IDs
 
-Never ever write headings with identical text. Also, make sure manually created `id` values never break uniqueness. It's the best to prefix such values with some unique prefix (such as "src.id.") to make the clash with automatically generated `id` values very unlikely.  
+Make sure manually created `id` values never break uniqueness. It's the best to prefix such values with some unique prefix (such as "src.id.") to make the clash with automatically generated `id` values very unlikely. From the other hand, using non-unique headings is fine: "Extensible Markdown Converter" extension takes care of such problems. Moreover, the settings option "`markdown.extension.convertToHtml.headingIdPrefix`" adds a prefix to `id values generated out of headings.
 
 ## Images
 

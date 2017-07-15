@@ -1,7 +1,8 @@
 "use strict";
 
 const defaults = {
-    includeLevel: [1, 2],
+    enableHeadingId: true,
+    includeLevel: [1, 2, 3, 4, 5, 6],
     containerClass: "toc",
     markerPattern: /^\[\]\(toc\)/im,
     listType: "ul",
@@ -12,6 +13,8 @@ const noBulletStyle = " style=\"list-style-type: none;\""; //SA
 
 module.exports = function (md, userOptions) {
 
+    if (!userOptions.enableHeadingId) return;
+
     let usedHeadings = {};
 
     let options = defaults;
@@ -19,16 +22,15 @@ module.exports = function (md, userOptions) {
         for (let index in userOptions)
             options[index] = userOptions[index];
 
-    let tocRegexp = options.markerPattern;
-    let gstate;
-
     const slugify = function (s, usedHeadings) {
-        let slug = options.stringModule(s).slugify().toString();
+        let slug = options.idPrefix + options.stringModule(s).slugify().toString();
         while (usedHeadings[slug])
-            slug += '.' + 'a';
+            slug += '.';
         usedHeadings[slug] = slug;
         return slug;
     } // idHeadersSlugify
+
+    // Heading id: ///////////////////////////////////////////
 
     let originalHeadingOpen = md.renderer.rules.heading_open;
 
@@ -52,7 +54,10 @@ module.exports = function (md, userOptions) {
         console.out("toc open");
     };
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TOC: //////////////////////////////////////////////////
+
+    let tocRegexp = options.markerPattern;
+    let gstate;
 
     function toc(state, silent) {
 
@@ -90,7 +95,7 @@ module.exports = function (md, userOptions) {
         }
 
         return true;
-    }
+    } //toc
 
     md.renderer.rules.toc_open = function (tokens, index) {
         return '<div class="' + options.containerClass + '">';
@@ -110,23 +115,22 @@ module.exports = function (md, userOptions) {
             currentLevel,
             subHeadings,
             size = tokens.length,
-            i = pos;
-        while (i < size) {
-            let token = tokens[i];
-            let heading = tokens[i - 1];
+            currentPos = pos;
+        while (currentPos < size) {
+            let token = tokens[currentPos];
+            let heading = tokens[currentPos - 1];
             let level = token.tag && parseInt(token.tag.substr(1, 1));
             if (token.type !== "heading_close" || options.includeLevel.indexOf(level) == -1 || heading.type !== "inline") {
-                i++; continue; // Skip if not matching criteria
-            }
-            if (!currentLevel) {
-                currentLevel = level;// We init with the first found level
-            } else {
+                currentPos++;
+                continue; // Skip if not matching criteria
+            } //if
+            if (currentLevel) {
                 if (level > currentLevel) {
-                    subHeadings = renderChildsTokens(i, tokens);
+                    subHeadings = renderChildsTokens(currentPos, tokens);
                     buffer += subHeadings[1];
-                    i = subHeadings[0];
+                    currentPos = subHeadings[0];
                     continue;
-                }
+                } //if
                 if (level < currentLevel) {
                     // Finishing the sub headings
                     buffer += "</li>";
@@ -134,30 +138,31 @@ module.exports = function (md, userOptions) {
                     let effectiveStyle = "";
                     if (options.listType === bulletedListType) // SA
                         effectiveStyle = noBulletStyle;
-                    return [i, "<" + options.listType + effectiveStyle + ">" + headings.join("") + "</" + options.listType + ">"];
-                }
+                    return [currentPos, "<" + options.listType + effectiveStyle + ">" + headings.join("") + "</" + options.listType + ">"];
+                } //if
                 if (level == currentLevel) {
                     // Finishing the sub headings
                     buffer += "</li>";
                     headings.push(buffer);
-                }
-            }
-            buffer = "<li><a href=\"#" + options.slugify(heading.content, usedHeadings) + "\">";
+                } //if
+            } else
+                currentLevel = level; // We init with the first found level
+            buffer = "<li><a href=\"#" + slugify(heading.content, usedHeadings) + "\">";
             buffer += typeof options.format === "function" ? options.format(heading.content) : heading.content;
             buffer += "</a>";
-            i++;
-        }
+            currentPos++;
+        } //loop
         buffer += "</li>";
         headings.push(buffer);
         let effectiveStyle = ""; // SA
         if (options.listType === bulletedListType) // SA
             effectiveStyle = noBulletStyle;
-        return [i, "<" + options.listType + effectiveStyle + ">" + headings.join("") + "</" + options.listType + ">"];
+        return [currentPos, "<" + options.listType + effectiveStyle + ">" + headings.join("") + "</" + options.listType + ">"];
     } //renderChildsTokens
 
     // Catch all the tokens for iteration later
     md.core.ruler.push("grab_state", function (state) {
-        usedHeadings = {};
+        //    usedHeadings = {};
         gstate = state;
     });
 

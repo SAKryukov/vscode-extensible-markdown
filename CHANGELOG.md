@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 4.2.0
+
+* Table of Contents and generation of heading `id` attributes unified in a single embedded module.
+* Added settings option: "markdown.extension.convertToHtml.options.headingIdPrefix", default "heading."
+* Fixed a bug in heading `id` attribute generation; now the set of used `id` values is reset on each rendering
+
 ## Version 4.1.0
 
 * Added settings option: "markdown.extension.convertToHtml.tocIncludeLevels", default [1, 2, 3, 4, 5, 6]

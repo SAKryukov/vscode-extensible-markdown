@@ -31,6 +31,7 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         css: sharedSection["styles"],
         // options:
         headingId: thisMarkdownItOptionSection["headingId"],
+        headingIdPrefix: thisMarkdownItOptionSection["headingIdPrefix"],
         allowHTML: thisMarkdownItOptionSection["allowHTML"],
         linkify: thisMarkdownItOptionSection["linkify"],
         br: thisMarkdownItOptionSection["br"],

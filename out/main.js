@@ -14,6 +14,7 @@ exports.activate = function (context) {
     const path = require('path');
     const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
     const semantic = require('./semantic');
+    const idToc = require("./id.toc.js");
 
     const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
@@ -127,12 +128,11 @@ exports.activate = function (context) {
                     const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
                     if (!extension) return;
                     const extensionPath = path.join(extension.extensionPath, "node_modules");
-                    const embeddedExtensionPath = path.join(__dirname, "../embedded-node-modules");
-                    const stringModule = require(path.join(extensionPath, "string"));
-                    const idToc = require("./id.toc.js");
                     let md = require(path.join(extensionPath, "markdown-it"))().set(optionSet);
                     md.use(idToc, {
-                        stringModule: stringModule,
+                        enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
+                        idPrefix: lazy.settings.headingIdPrefix,
+                        stringModule: require(path.join(extensionPath, "string")),
                         markerPattern: new RegExp(lazy.settings.tocRegex, "m"),
                         includeLevel: lazy.settings.tocIncludeLevels,
                         tocContainerClass: lazy.settings.tocContainerClass,

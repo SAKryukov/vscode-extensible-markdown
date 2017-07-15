@@ -40,4 +40,4 @@ For detailed specifications, see the [documentation](https://sakryukov.github.io
 The embedded [markdown-it](https://www.npmjs.com/package/markdown-it) plug-in for generation of heading `id` attributes and Table of Contents is based on two separate plug-ins:
 
 - [markdown-it-named-headers](https://github.com/leff/markdown-it-named-headers) by [Jason Brackins](https://github.com/leff)
-- [markdown-it-table-of-contents]() by [Oktavilla](https://github.com/Oktavilla)
+- [markdown-it-table-of-contents](https://github.com/Oktavilla/markdown-it-table-of-contents) by [Oktavilla](https://github.com/Oktavilla)

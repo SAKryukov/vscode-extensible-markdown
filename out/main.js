@@ -84,7 +84,6 @@ exports.activate = function (context) {
                 result.typographer = lazy.settings.typographer;
                 result.linkify = lazy.settings.linkify;
                 result.breaks = lazy.settings.br;
-                result.typographer = lazy.settings.typographer;
                 if (lazy.settings.typographer) {
                     if (!lazy.settings.smartQuotes)
                         result.quotes = defaultSmartQuotes;
@@ -240,7 +239,7 @@ exports.activate = function (context) {
             this.changeSourceHandler.fire(uri);
         }; //TextDocumentContentProvider.prototype.update
         return TextDocumentContentProvider;
-    }()); //jhTextDocumentContentProvider
+    }()); //TextDocumentContentProvider
     const provider = new TextDocumentContentProvider();
 
     const updateDecorators = function () {

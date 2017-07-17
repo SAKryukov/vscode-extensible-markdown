@@ -19,6 +19,7 @@
         }
     ],
     "license": "MIT",
+    "icon": "images/logo.png",
     "repository": {
         "type": "git",
         "url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"

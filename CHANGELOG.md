@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 4.3.0
+
+* Added logo
+* Minor fixed (non-functional)
+
 ## Version 4.2.0
 
 * Table of Contents and generation of heading `id` attributes unified in a single embedded module.

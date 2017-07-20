@@ -43,7 +43,7 @@ It's convenient to mark the part of HTML to paste in the CodeProject submission 
 
 <!-- Paste to CodeProject: --------------------------------------------------->
 
-<h2>Contents</h2><!-- not a Markdown element, just to avoid adding it to TOC -->
+## Contents[](notoc)
 
 <div class="toc"> <!-- see style.css: div.toc > ul used to remove bullets from TOC (won't work in CodeProject) -->
 

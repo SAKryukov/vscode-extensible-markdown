@@ -18,7 +18,7 @@ defaultOptions.bulletedListType = defaultOptions.defaultListElement;
 
 module.exports = function (md, userOptions) {
 
-    const string = require("../node_modules/string");
+    const string = require("./node_modules/string");
     const util = require("util");
 
     const options = defaultOptions;

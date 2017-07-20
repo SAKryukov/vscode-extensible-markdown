@@ -4,9 +4,9 @@
     "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
     "version": "4.3.0",
     "publisher": "sakryukov",
-	"author": {
-		"name": "Sergey A Kryukov",
-		"url": "http://www.SAKryukov.org"
+    "author": {
+        "name": "Sergey A Kryukov",
+        "url": "http://www.SAKryukov.org"
     },
     "contributors": [
         {
@@ -141,10 +141,14 @@
                 "markdown.extension.convertToHtml.headingIdPrefix": {
                     "type": "string",
                     "default": "heading."
-                },                
+                },
                 "markdown.extension.convertToHtml.tocRegex": {
                     "type": "string",
                     "default": "^\\[\\]\\(toc\\)"
+                },
+                "markdown.extension.convertToHtml.excludeFromTocRegex": {
+                    "type": "string",
+                    "default": "\\[\\]\\(notoc\\)"
                 },
                 "markdown.extension.convertToHtml.tocDecoratorStyle": {
                     "type": "object",
@@ -157,7 +161,14 @@
                 },
                 "markdown.extension.convertToHtml.tocIncludeLevels": {
                     "type": "array",
-                    "default": [1, 2, 3, 4, 5, 6]
+                    "default": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6
+                    ]
                 },
                 "markdown.extension.convertToHtml.tocContainerClass": {
                     "type": "string",
@@ -166,6 +177,33 @@
                 "markdown.extension.convertToHtml.tocListType": {
                     "type": "string",
                     "default": "ul"
+                },
+                "markdown.extension.convertToHtml.listElements": {
+                    "type": "string",
+                    "default": [
+                        "ul",
+                        "ul",
+                        "ul",
+                        "ul",
+                        "ul",
+                        "ul"
+                    ]
+                },
+                "markdown.extension.convertToHtml.defaultlistItemAttributeSet": {
+                    "type": "object",
+                    "default": { "style": "list-style-type: none;" }
+                },
+                "markdown.extension.convertToHtml.listItemAttributeSets": {
+                    "type": "object",
+                    "default": []
+                },
+                "markdown.extension.convertToHtml.itemPrefixes": {
+                    "type": "object",
+                    "default": []
+                },
+                "markdown.extension.convertToHtml.idPrefix": {
+                    "type": "string",
+                    "default": "headings."
                 },                
                 "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",

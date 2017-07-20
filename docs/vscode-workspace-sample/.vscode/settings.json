@@ -42,11 +42,19 @@
         "backgroundColor": "darkGray"
     },
     "markdown.extension.convertToHtml.defaultListElement": "ul",
-    "markdown.extension.convertToHtml.idPrefix": "headings.",
+    "markdown.extension.convertToHtml.listElements": [
+        "ul",
+        "ul",
+        "ul",
+        "ul",
+        "ul",
+        "ul"
+    ],
     "markdown.extension.convertToHtml.defaultlistItemAttributeSet": {
         "style": "list-style-type: none;"
     },
     "markdown.extension.convertToHtml.listItemAttributeSets": [],
+    "markdown.extension.convertToHtml.idPrefix": "headings.",
     "markdown.extension.convertToHtml.tocIncludeLevels": [
         1,
         2,

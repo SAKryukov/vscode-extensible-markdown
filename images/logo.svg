@@ -12,7 +12,7 @@
    height="198.53656"
    viewBox="0 0 218.85416 198.53656"
    id="svg8"
-   sodipodi:docname="Markdown-mark.svg"
+   sodipodi:docname="logo.svg"
    inkscape:version="0.92.1 r15371"
    inkscape:export-filename="c:\sa\papers\my\CodeProject\ArticleWritingToolchain.ExtensionDevelopment\repository.extension.Extensible-Markdown\images\logo.png"
    inkscape:export-xdpi="48.330002"
@@ -49,39 +49,31 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:zoom="1.5865385"
-     inkscape:cx="237.16751"
+     inkscape:cx="126.86448"
      inkscape:cy="50.07594"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg8" />
-  <g
-     id="g4504"
-     transform="translate(98.081622,84.460606)">
-    <g
-       transform="translate(-92.654545,-84.460606)"
-       id="g4494">
-      <rect
-         rx="10"
-         style="fill:none;stroke:#000000;stroke-width:10"
-         width="198"
-         height="118"
-         x="5"
-         y="5"
-         ry="10"
-         id="rect2" />
-      <path
-         inkscape:connector-curvature="0"
-         style="fill:#000000"
-         d="M 30,98 V 30 H 50 L 70,55 90,30 h 20 V 98 H 90 V 59 L 70,84 50,59 v 39 z"
-         id="path4" />
-      <path
-         inkscape:connector-curvature="0"
-         style="fill:#000000"
-         d="M 155,98 125,65 h 20 V 30 h 20 v 35 h 20 z"
-         id="path6" />
-    </g>
-  </g>
+  <rect
+     rx="10"
+     style="fill:#ffffff;stroke:#000000;stroke-width:10;fill-opacity:1"
+     width="198"
+     height="118"
+     x="10.427077"
+     y="5"
+     ry="10"
+     id="rect2" />
+  <path
+     inkscape:connector-curvature="0"
+     style="fill:#000000"
+     d="M 35.427077,98 V 30 h 20 l 20,25 20,-25 H 115.42708 V 98 H 95.427077 V 59 l -20,25 -20,-25 v 39 z"
+     id="path4" />
+  <path
+     inkscape:connector-curvature="0"
+     style="fill:#000000"
+     d="m 160.42708,98 -30,-33 h 20 V 30 h 20 v 35 h 20 z"
+     id="path6" />
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:61.32409286px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#338000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"

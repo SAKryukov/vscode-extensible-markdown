@@ -42,7 +42,8 @@
         "commands": [
             {
                 "command": "extensible.markdown.showPreview",
-                "title": "Markdown: Open &Preview"
+                "title": "Markdown: Open &Preview",
+                "icon": "images/preview.svg"
             },
             {
                 "command": "extensible.markdown.showPreviewToSide",
@@ -50,7 +51,8 @@
             },
             {
                 "command": "extensible.markdown.convertToHtml",
-                "title": "Markdown: Convert to &HTML"
+                "title": "Markdown: Convert to &HTML",
+                "icon": "images/logo.svg"
             },
             {
                 "command": "extensible.markdown.convertToHtml.all",
@@ -72,6 +74,18 @@
             }
         ],
         "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceLangId == markdown",
+                    "command": "extensible.markdown.convertToHtml",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceLangId == markdown",
+                    "command": "extensible.markdown.showPreview",
+                    "group": "navigation"
+                }
+            ],
             "editor/context": [
                 {
                     "when": "editorTextFocus && resourceLangId == markdown",
@@ -159,6 +173,14 @@
                         "backgroundColor": "orange"
                     }
                 },
+                "markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "border": "thin solid black",
+                        "color": "white",
+                        "backgroundColor": "black"
+                    }                    
+                },                
                 "markdown.extension.convertToHtml.tocIncludeLevels": {
                     "type": "array",
                     "default": [
@@ -174,12 +196,12 @@
                     "type": "string",
                     "default": "toc"
                 },
-                "markdown.extension.convertToHtml.tocListType": {
+                "markdown.extension.convertToHtml.defaultListElement": {
                     "type": "string",
                     "default": "ul"
                 },
                 "markdown.extension.convertToHtml.listElements": {
-                    "type": "string",
+                    "type": "array",
                     "default": [
                         "ul",
                         "ul",
@@ -194,11 +216,7 @@
                     "default": { "style": "list-style-type: none;" }
                 },
                 "markdown.extension.convertToHtml.listItemAttributeSets": {
-                    "type": "object",
-                    "default": []
-                },
-                "markdown.extension.convertToHtml.itemPrefixes": {
-                    "type": "object",
+                    "type": "array",
                     "default": []
                 },
                 "markdown.extension.convertToHtml.idPrefix": {

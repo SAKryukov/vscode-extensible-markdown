@@ -25,12 +25,16 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         tocRegex: thisExtensionSection["tocRegex"],
         tocIncludeLevels: thisExtensionSection["tocIncludeLevels"],
         tocContainerClass: thisExtensionSection["tocContainerClass"],
-        tocListType: thisExtensionSection["tocListType"],
         includeLocatorRegex: thisExtensionSection["includeLocatorRegex"],
         includeLocatorInvalidRegexMessageFormat: thisExtensionSection["includeLocatorInvalidRegexMessageFormat"],
         includeLocatorFileReadFailureMessageFormat: thisExtensionSection["includeLocatorFileReadFailureMessageFormat"],
         outputPath: thisExtensionSection["outputPath"],
         css: sharedSection["styles"],
+        excludeFromTocRegex: thisExtensionSection["excludeFromTocRegex"],
+        defaultListElement: thisExtensionSection["defaultListElement"],
+        listElements: thisExtensionSection["listElements"],
+        defaultlistItemAttributeSet: thisExtensionSection["defaultlistItemAttributeSet"],
+        listItemAttributeSets: thisExtensionSection["listItemAttributeSets"],
         // options:
         allowHTML: thisMarkdownItOptionSection["allowHTML"],
         linkify: thisMarkdownItOptionSection["linkify"],
@@ -69,6 +73,13 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["includeLocatorDecoratorStyle"]) 
     });
+    settings.pluginSyntaxDecorators.push({
+        regexString: settings.excludeFromTocRegex,
+        tooltipFormat: "Exclude from Table of Contents",
+        decorationType: importContext.vscode.window.createTextEditorDecorationType(
+            thisExtensionSection["excludeFromTocLocatorDecoratorStyle"]) 
+    });
+    //
     settings.pluginSyntaxDecorators.push({
         regexString: settings.tocRegex,
         tooltipFormat: "Table of Contents",

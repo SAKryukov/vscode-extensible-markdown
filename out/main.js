@@ -129,6 +129,12 @@ exports.activate = function (context) {
                     const extensionPath = path.join(extension.extensionPath, "node_modules");
                     let md = require(path.join(extensionPath, "markdown-it"))().set(optionSet);
                     md.use(idToc, {
+                        excludeFromTocRegex: lazy.settings.excludeFromTocRegex, 
+                        defaultListElement: lazy.settings.tocListType,
+                        listElements: lazy.settings.listElements,
+                        defaultlistItemAttributeSet: lazy.settings.defaultlistItemAttributeSet,
+                        listItemAttributeSets: lazy.settings.listItemAttributeSets,
+                        //itemPrefixes: ... don't do it for now, maybe we can implement auto-numbering later
                         enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                         idPrefix: lazy.settings.headingIdPrefix,
                         stringModule: require(path.join(extensionPath, "string")),

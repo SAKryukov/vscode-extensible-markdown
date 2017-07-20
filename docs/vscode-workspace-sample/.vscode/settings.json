@@ -35,10 +35,27 @@
         "color": "white",
         "backgroundColor": "orange"
     },    
-    "markdown.extension.convertToHtml.tocIncludeLevels": [ 1, 2, 3, 4, 5, 6 ],
+    "markdown.extension.convertToHtml.excludeFromTocRegex": "\\[\\]\\(notoc\\)",
+    "markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle": {
+        "border": "thin solid black",
+        "color": "white",
+        "backgroundColor": "darkGray"
+    },
+    "markdown.extension.convertToHtml.defaultListElement": "ul",
+    "markdown.extension.convertToHtml.idPrefix": "headings.",
+    "markdown.extension.convertToHtml.defaultlistItemAttributeSet": {
+        "style": "list-style-type: none;"
+    },
+    "markdown.extension.convertToHtml.listItemAttributeSets": [],
+    "markdown.extension.convertToHtml.tocIncludeLevels": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+    ],
     "markdown.extension.convertToHtml.tocContainerClass": "toc",
-    "markdown.extension.convertToHtml.tocListType": "ul",  
-    "cSpell.enabled": true,
     "markdown.extension.convertToHtml.includeLocatorRegex": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)",
     "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": "!!! invalid Regular Expression of include:  \"%s\" !!!",
     "markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat": "!!! failed to read file \"%s\" !!!",

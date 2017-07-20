@@ -2,13 +2,13 @@ Using Additional Plug-ins</small>[](title)
 
 [Sergey A Kryukov](http://www.sakryukov.org)
 
-<h2>Contents</h2>
+## Contents[](notoc)
 
-One trick to avoid adding the heading of the Table of Contents (TOC) to the automatically-generated TOC is using HTML heading (such as `<h2>`) instead of [Markdown](https://en.wikipedia.org/wiki/Markdown).
+The way to avoid adding the heading is to mark it with `[](notoc)`.
 
 The TOC below is automatically generated with the plug-in "[markdown-it-table-of-contents](https://www.npmjs.com/package/markdown-it-table-of-contents)":
 
-[[toc]]
+[](toc)
 
 ## Installation of Plug-ins
 

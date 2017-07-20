@@ -3,7 +3,7 @@
 ## Version 4.3.0
 
 * Added logo
-* Minor fixed (non-functional)
+* Minor fixes (non-functional)
 
 ## Version 4.2.0
 

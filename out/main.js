@@ -132,8 +132,8 @@ exports.activate = function (context) {
                         excludeFromTocRegex: lazy.settings.excludeFromTocRegex, 
                         defaultListElement: lazy.settings.tocListType,
                         listElements: lazy.settings.listElements,
-                        defaultlistItemAttributeSet: lazy.settings.defaultlistItemAttributeSet,
-                        listItemAttributeSets: lazy.settings.listItemAttributeSets,
+                        defaultListElementAttributeSet: lazy.settings.defaultListElementAttributeSet,
+                        listElementAttributeSets: lazy.settings.listElementAttributeSets,
                         //itemPrefixes: ... don't do it for now, maybe we can implement auto-numbering later
                         enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                         idPrefix: lazy.settings.headingIdPrefix,

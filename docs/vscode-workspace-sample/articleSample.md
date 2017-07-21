@@ -43,6 +43,9 @@ It's convenient to mark the part of HTML to paste in the CodeProject submission 
 
 <!-- Paste to CodeProject: --------------------------------------------------->
 
+<!-- Markdown extension "notoc" is the way to avoid adding some heading to the Table of Contents,
+which is important for headings like "Contents" or "Table of Contents" -->
+
 ## Contents[](notoc)
 
 <div class="toc"> <!-- see style.css: div.toc > ul used to remove bullets from TOC (won't work in CodeProject) -->

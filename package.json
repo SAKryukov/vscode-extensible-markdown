@@ -211,11 +211,11 @@
                         "ul"
                     ]
                 },
-                "markdown.extension.convertToHtml.defaultlistItemAttributeSet": {
+                "markdown.extension.convertToHtml.defaultListElementAttributeSet": {
                     "type": "object",
                     "default": { "style": "list-style-type: none;" }
                 },
-                "markdown.extension.convertToHtml.listItemAttributeSets": {
+                "markdown.extension.convertToHtml.listElementAttributeSets": {
                     "type": "array",
                     "default": []
                 },

@@ -8,8 +8,8 @@ const defaultOptions = {
     excludeFromTocRegex: "\\[\\]\\(notoc\\)",
     defaultListElement: "ul",
     listElements: ["ul", "ul", "ul", "ul", "ul", "ul"],
-    defaultlistItemAttributeSet: { style: "list-style-type: none;" },
-    listItemAttributeSets: [],
+    defaultListElementAttributeSet: { style: "list-style-type: none;" },
+    listElementAttributeSets: [],
     itemPrefixes: [], // array of strings: prefix depending on level
     idPrefix: "headings.",
     format: undefined
@@ -34,7 +34,23 @@ module.exports = function (md, userOptions) {
         return slug;
     } // idHeadersSlugify
 
-    let usedIDs = { headings: {}, toc: {} };
+    // function nextNumber(number) { // number is a letter of a number as string or numeric
+    //     let tryNumeric = parseInt(number);
+    //     if (isNaN(tryNumeric)) {
+    //         let codePoint = number.codePointAt();
+    //         return String.fromCodePoint(++codePoint);
+    //     } else
+    //         return (++tryNumeric).toString();
+    // } //nextNumber
+
+    let tocRegexp = options.tocRegex;
+    if (tocRegexp.constructor != RegExp)
+        tocRegexp = new RegExp(options.tocRegex, "m");
+    let excludeFromTocRegex = options.excludeFromTocRegex;
+    if (excludeFromTocRegex.constructor != RegExp)
+        excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
+
+    const usedIDs = { headings: {}, toc: {} };
 
     // Heading id: ///////////////////////////////////////////
 
@@ -51,21 +67,10 @@ module.exports = function (md, userOptions) {
             return originalHeadingOpen.apply(this, arguments);
         else
             return self.renderToken.apply(self, arguments);
+        //SA!!! APPENT text to return to add prefix to heading content
     }; //md.renderer.rules.heading_open
 
     // TOC: //////////////////////////////////////////////////
-
-    let tocRegexp;
-    if (typeof "" == typeof options.tocRegex)
-        tocRegexp = new RegExp(options.tocRegex, "m");
-    else // SA??? assume its constructor is RegExp; if not, exception will throw later
-        tocRegexp = options.tocRegex;
-
-    let excludeFromTocRegex
-    if (typeof "" == typeof options.tocRegex)
-        excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
-    else // SA??? assume its constructor is RegExp; if not, exception will throw later
-        excludeFromTocRegex = options.excludeFromTocRegex;
 
     let gstate;
 
@@ -151,6 +156,8 @@ module.exports = function (md, userOptions) {
                 } //if
             } else
                 currentLevel = level; // We init with the first found level
+            //SA!!! currentLevel is the level of the TOC item, number of '#' in '#', '##', '###'...
+            // APPEND text after "<li><a href=\"#%s\">" to make PREFIX to title 
             buffer = util.format("<li><a href=\"#%s\">", slugify(heading.content, usedIDs.toc));
             let headingContent = heading.content;
             if (options.itemPrefixes)
@@ -172,13 +179,14 @@ module.exports = function (md, userOptions) {
             if (options.listElements[level - 1])
                 listTag = options.listElements[level - 1];
         let elementAttributes = "";
-        if (options.listItemAttributeSets)
-            if (options.listItemAttributeSets[level - 1])
-                for (let index in options.listItemAttributeSets[level - 1])
-                    elementAttributes += util.format(" %s=\"%s\"", index, options.listItemAttributeSets[level - 1][index]);
-        if (elementAttributes.length < 1)
-            for (let index in options.defaultlistItemAttributeSet)
-                elementAttributes += util.format(" %s=\"%s\"", index, options.defaultlistItemAttributeSet[index]);
+        if (options.listElementAttributeSets)
+            if (options.listElementAttributeSets[level - 1])
+                for (let index in options.listElementAttributeSets[level - 1])
+                    elementAttributes += util.format(" %s=\"%s\"", index, options.listElementAttributeSets[level - 1][index]);
+        if (options.listElementAttributeSets)
+            if (options.listElementAttributeSets.length < 1)
+                for (let index in options.defaultListElementAttributeSet)
+                    elementAttributes += util.format(" %s=\"%s\"", index, options.defaultListElementAttributeSet[index]);
         return [currentPos,
             util.format("<%s%s>%s</%s>",
                 listTag, elementAttributes, headings.join(""), listTag)];

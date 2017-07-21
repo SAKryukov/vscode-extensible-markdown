@@ -33,8 +33,8 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         excludeFromTocRegex: thisExtensionSection["excludeFromTocRegex"],
         defaultListElement: thisExtensionSection["defaultListElement"],
         listElements: thisExtensionSection["listElements"],
-        defaultlistItemAttributeSet: thisExtensionSection["defaultlistItemAttributeSet"],
-        listItemAttributeSets: thisExtensionSection["listItemAttributeSets"],
+        defaultListElementAttributeSet: thisExtensionSection["defaultListElementAttributeSet"],
+        listElementAttributeSets: thisExtensionSection["listElementAttributeSets"],
         // options:
         allowHTML: thisMarkdownItOptionSection["allowHTML"],
         linkify: thisMarkdownItOptionSection["linkify"],

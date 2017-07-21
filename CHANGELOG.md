@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 5.0.0
+
+* Added advanced Markdown extension features based on embedded markdown-it plug-in:
+	- Syntax extension: a tag to mark a heading to be excluded from TOC 
+	- Extended options to make a choice between `ul` or `ol` elements in TOC, either globally or per TOC level
+	- Extended options to add sets of HTML attributes to TOC list elements, either globally or per TOC level
+* Added images to conversion and preview commands and menu items to the editor title
+* Improved logo
+
 ## Version 4.3.0
 
 * Added logo

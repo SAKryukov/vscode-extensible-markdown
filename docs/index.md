@@ -10,6 +10,8 @@ Since v. 2.0.0, the user can extend Markdown features by installing any of the [
 
 That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
+## Contents[](notoc)
+
 [](toc)
 
 ## Features
@@ -72,12 +74,16 @@ Extensible Markdown Converter adds three syntax elements to Markdown:
 - Tagging for detection of the document title
 - File include declaration
 - Table of Contents (TOC) tag
+- Exclude from TOC tag
+
+In addition to these syntactic extensions, version 5.0.0 introduces two new TOC features enabled through configuration options, without any addition to the Markdown syntax. The rendering of list items of the TOC can be defined on for the whole document, or separately per level of TOC. This way, the choice between `ul` (default) or `ul` list element can be done globally or per TOC level. Also, each of these element can be give a global or level-dependent set of HTML *attributes*. One of the uses of these attribute is setting `class` attribute. However, attributes are not limited to the classes. The possibility of adding arbitrary attributes is very important for the not uncommon situation where the document hosting does not provide access to CSS. Instead, inline `style` attribute can solve the problem. The configuration setting for these is described [below](#heading.extensible-markdown-converter-extension-options).
 
 By default, both elements use *pseudo-link* form based on Markdown *link* syntax. They take the form: `[](some-tag)`. Even when such element produces HTML anchor, it gives no clickable area (normally defined by the text between [] brackets). The user can create/modify "settings.json" to describe any other suitable syntax, which is done in Regular Expression form.
 
 Document title needs to get detected, because HTML requires a text value for the `title` element of the element `head`. The idea is to use some available Markdown element, which is actually rendered on HTML page, without replacing it, but with just tagging it as a title text.
 
 The default syntax for title detection is:
+
 ```
 The Name of The Document[](title)
 ```
@@ -85,6 +91,7 @@ The Name of The Document[](title)
 In this example, the text "The Name of The Document" is copied to HTML `title`.
 
 The default syntax for file include is: {id=special.include.file}
+
 ```
 [](include( file-name... ))
 // file-name expression should come without blank space characters
@@ -96,7 +103,16 @@ The default syntax for TOC tag is:
 [](toc)
 ```
 
-Again, the user can use any other syntax.
+This tag works if it is placed at the beginning of a line. 
+
+New feature in version 5.0.0 is the "no toc" tag. It is used to exclude some headings from the TOC. It can be important for headings like "Contents" or "Table of Contents". The default syntax for this tag is:
+
+```
+[](notoc)
+```
+This tag can be placed anywhere in the content of a heading text. 
+
+Again, the user can use any other syntax .
 
 Only first occurrence of the document title tag is taken into account. In Markdown view, it can be seen on *syntax coloring* of this element. Other elements, including TOC, can appear multiple times. Note that TOC feature works in collaboration with automatic generation of the `id` attributes for all heading elements (`h1`.. `h6`), which is also embedded in the extension.
 
@@ -134,7 +150,7 @@ The option "`markdown.extension.convertToHtml.showHtmlInBrowser`" is inapplicabl
 <i id="special-markdown-extension-convertToHtml-outputPath"></i>
 The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its value resolves to false (empty string, `null`, `undefined`). If defined, it specify the path relative to current workspace directory. The effective target directory may not exist — in this case, error message is shown. If it exists, all files are saved in the same directory. In this case, it's possible that the HTML files with identical base names but different locations overwrite one another. The user is responsible for suitability of the file names.
 
-### Extensible Markdown Converter Syntax Extension Options
+### Extensible Markdown Converter Extension Options
 
 | Name | Default | Description |
 | --- | --- | --- |
@@ -143,8 +159,14 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | markdown.extension.convertToHtml.options.headingId | true | Enables or disables generation of the `id` attributes for `h1`.. `h6` elements |
 | markdown.extension.convertToHtml.options.headingIdPrefix | `heading.` | If generation of the `id` attributes is enabled, the heading is added to each `id` value of each `h1`.. `h6` element |
 | markdown.extension.convertToHtml.tocRegex | `^\[\]\(toc\)` | Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed |
+| markdown.extension.convertToHtml.excludeFromTocRegex | `\\[\\]\\(notoc\\)` | Marks the heading elements to be excluded from TOC |
+| markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the tag marking a heading to be excluded from TOC |
 | markdown.extension.convertToHtml.tocDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing |
 | markdown.extension.convertToHtml.tocIncludeLevels | [1, 2, 3, 4, 5, 6] | Defines level of the headers to be included in TOC |
+| markdown.extension.convertToHtml.defaultListElement | `ul` | Default HTML element for all TOC list elements. This option is ignored if one or more elements are defined on per-level basis (see below) |
+| markdown.extension.convertToHtml.listElements | `[]` | Array of strings each defining an HTML element for a TOC list on each TOC level (see above) |
+| markdown.extension.convertToHtml.defaultListElementAttributeSet | `{ "style": "list-style-type: none;" }` | An object defining set of HTML attributes to be added for all TOC list elements. This option is ignored if one or more sets is defined on per-level basis (see below) |
+| markdown.extension.convertToHtml.listElementAttributeSets | `[]` | Array of sets of HTML attributes, same as above, but defining an attribute set for each TOC level |
 | markdown.extension.convertToHtml.tocContainerClass | `toc` | CSS class of the TOC container (by default, `ul`) |
 | markdown.extension.convertToHtml.tocListType | `ul` | HTML element representing TOC container; alternatively, can be `ol` |
 | markdown.extension.convertToHtml.includeLocatorRegex | `\[\]\(include\(([^\s]+?)\)\)` | Defines Regex pattern used to define file include Markdown syntax extension |

@@ -25,7 +25,8 @@
 <p>This package is the Visual Studio Code <em>extension</em> supporting <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>. The extension depends on the built-in extension “VS Code Markdown” (<code>id=&quot;Microsoft.vscode-markdown&quot;</code>) and adds important function: it reads Markdown content from a currently active editor and converts to an HTML file.</p>
 <p>Since v. 2.0.0, the user can extend Markdown features by installing any of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> that are <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">abundantly available</a> in the <a href="https://www.npmjs.com">npm package registry</a>. All the packages can be configured from a single source: “settings.json”, <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a>.</p>
 <p>That said, there is no a need for different Markdown extensions. It’s quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.</p>
-<p><div class="toc"><ul style="list-style-type: none;"><li><a href="#heading.features">Features</a></li><li><a href="#heading.usage">Usage</a><ul style="list-style-type: none;"><li><a href="#heading.preview">Preview</a></li></ul></li><li><a href="#heading.extending-of-markdown-syntax">Extending of Markdown Syntax</a><ul style="list-style-type: none;"><li><a href="#heading.markdown-it-extensions">Markdown-it Extensions</a></li><li><a href="#heading.extensible-markdown-converter-embedded-extensions">Extensible Markdown Converter Embedded Extensions</a></li><li><a href="#heading.extensible-markdown-converter-user-installed-extensions">Extensible Markdown Converter User-Installed Extensions</a></li></ul></li><li><a href="#heading.settings">Settings</a><ul style="list-style-type: none;"><li><a href="#heading.three-levels-of-settings">Three Levels of Settings</a></li><li><a href="#heading.general-options">General Options</a></li><li><a href="#heading.extensible-markdown-converter-syntax-extension-options">Extensible Markdown Converter Syntax Extension Options</a></li><li><a href="#heading.markdown-it-options">Markdown-it Options</a></li><li><a href="#heading.settings-sample">Settings Sample</a></li></ul></li><li><a href="#heading.advanced-usage-and-settings">Advanced Usage and Settings</a><ul style="list-style-type: none;"><li><a href="#heading.typographer">Typographer</a></li><li><a href="#heading.detecting-document-title">Detecting Document Title</a></li><li><a href="#heading.file-includes">File Includes</a></li><li><a href="#heading.syntax-coloring">Syntax Coloring</a></li></ul></li><li><a href="#heading.additional-plug-ins">Additional Plug-ins</a><ul style="list-style-type: none;"><li><a href="#heading.installation">Installation</a></li><li><a href="#heading.customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
+<h2 id="heading.contents">Contents<a href="notoc"></a></h2>
+<p><div class="toc"><ul style="list-style-type: none;"><li><a href="#heading.features">Features</a></li><li><a href="#heading.usage">Usage</a><ul style="list-style-type: none;"><li><a href="#heading.preview">Preview</a></li></ul></li><li><a href="#heading.extending-of-markdown-syntax">Extending of Markdown Syntax</a><ul style="list-style-type: none;"><li><a href="#heading.markdown-it-extensions">Markdown-it Extensions</a></li><li><a href="#heading.extensible-markdown-converter-embedded-extensions">Extensible Markdown Converter Embedded Extensions</a></li><li><a href="#heading.extensible-markdown-converter-user-installed-extensions">Extensible Markdown Converter User-Installed Extensions</a></li></ul></li><li><a href="#heading.settings">Settings</a><ul style="list-style-type: none;"><li><a href="#heading.three-levels-of-settings">Three Levels of Settings</a></li><li><a href="#heading.general-options">General Options</a></li><li><a href="#heading.extensible-markdown-converter-extension-options">Extensible Markdown Converter Extension Options</a></li><li><a href="#heading.markdown-it-options">Markdown-it Options</a></li><li><a href="#heading.settings-sample">Settings Sample</a></li></ul></li><li><a href="#heading.advanced-usage-and-settings">Advanced Usage and Settings</a><ul style="list-style-type: none;"><li><a href="#heading.typographer">Typographer</a></li><li><a href="#heading.detecting-document-title">Detecting Document Title</a></li><li><a href="#heading.file-includes">File Includes</a></li><li><a href="#heading.syntax-coloring">Syntax Coloring</a></li></ul></li><li><a href="#heading.additional-plug-ins">Additional Plug-ins</a><ul style="list-style-type: none;"><li><a href="#heading.installation">Installation</a></li><li><a href="#heading.customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
 <h2 id="heading.features">Features</h2>
 <ul>
 <li>Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;</li>
@@ -94,7 +95,9 @@
 <li>Tagging for detection of the document title</li>
 <li>File include declaration</li>
 <li>Table of Contents (TOC) tag</li>
+<li>Exclude from TOC tag</li>
 </ul>
+<p>In addition to these syntactic extensions, version 5.0.0 introduces two new TOC features enabled through configuration options, without any addition to the Markdown syntax. The rendering of list items of the TOC can be defined on for the whole document, or separately per level of TOC. This way, the choice between <code>ul</code> (default) or <code>ul</code> list element can be done globally or per TOC level. Also, each of these element can be give a global or level-dependent set of HTML <em>attributes</em>. One of the uses of these attribute is setting <code>class</code> attribute. However, attributes are not limited to the classes. The possibility of adding arbitrary attributes is very important for the not uncommon situation where the document hosting does not provide access to CSS. Instead, inline <code>style</code> attribute can solve the problem. The configuration setting for these is described <a href="#heading.extensible-markdown-converter-extension-options">below</a>.</p>
 <p>By default, both elements use <em>pseudo-link</em> form based on Markdown <em>link</em> syntax. They take the form: <code>[](some-tag)</code>. Even when such element produces HTML anchor, it gives no clickable area (normally defined by the text between [] brackets). The user can create/modify “settings.json” to describe any other suitable syntax, which is done in Regular Expression form.</p>
 <p>Document title needs to get detected, because HTML requires a text value for the <code>title</code> element of the element <code>head</code>. The idea is to use some available Markdown element, which is actually rendered on HTML page, without replacing it, but with just tagging it as a title text.</p>
 <p>The default syntax for title detection is:</p>
@@ -108,7 +111,12 @@
 <p>The default syntax for TOC tag is:</p>
 <pre><code>[](toc)
 </code></pre>
-<p>Again, the user can use any other syntax.</p>
+<p>This tag works if it is placed at the beginning of a line.</p>
+<p>New feature in version 5.0.0 is the “no toc” tag. It is used to exclude some headings from the TOC. It can be important for headings like “Contents” or “Table of Contents”. The default syntax for this tag is:</p>
+<pre><code>[](notoc)
+</code></pre>
+<p>This tag can be placed anywhere in the content of a heading text.</p>
+<p>Again, the user can use any other syntax .</p>
 <p>Only first occurrence of the document title tag is taken into account. In Markdown view, it can be seen on <em>syntax coloring</em> of this element. Other elements, including TOC, can appear multiple times. Note that TOC feature works in collaboration with automatic generation of the <code>id</code> attributes for all heading elements (<code>h1</code>… <code>h6</code>), which is also embedded in the extension.</p>
 <p>All these elements are emphasized in source Markdown document by <a href="#syntax-coloring">syntax coloring</a> with coloring style configured by the user. Please see the description of the <a href="#extensible-markdown-converter-syntax-extension-options">settings</a>.</p>
 <h3 id="heading.extensible-markdown-converter-user-installed-extensions">Extensible Markdown Converter User-Installed Extensions</h3>
@@ -164,7 +172,7 @@ Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as p
 <p>The option “<code>markdown.extension.convertToHtml.showHtmlInBrowser</code>” is inapplicable to the command “Markdown: Convert to HTML all .md files in workspace”: if a set of files is converted, none of those files is shown in a Web browser.</p>
 <p><i id="special-markdown-extension-convertToHtml-outputPath"></i><br />
 The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ignored it its value resolves to false (empty string, <code>null</code>, <code>undefined</code>). If defined, it specify the path relative to current workspace directory. The effective target directory may not exist — in this case, error message is shown. If it exists, all files are saved in the same directory. In this case, it’s possible that the HTML files with identical base names but different locations overwrite one another. The user is responsible for suitability of the file names.</p>
-<h3 id="heading.extensible-markdown-converter-syntax-extension-options">Extensible Markdown Converter Syntax Extension Options</h3>
+<h3 id="heading.extensible-markdown-converter-extension-options">Extensible Markdown Converter Extension Options</h3>
 <table>
 <thead>
 <tr>
@@ -200,6 +208,16 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
 <td>Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed</td>
 </tr>
 <tr>
+<td>markdown.extension.convertToHtml.excludeFromTocRegex</td>
+<td><code>\\[\\]\\(notoc\\)</code></td>
+<td>Marks the heading elements to be excluded from TOC</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle</td>
+<td>see <a href="#special-settings.json">“settings.json” sample</a></td>
+<td>CSS style for syntax coloring of the tag marking a heading to be excluded from TOC</td>
+</tr>
+<tr>
 <td>markdown.extension.convertToHtml.tocDecoratorStyle</td>
 <td>see <a href="#special-settings.json">“settings.json” sample</a></td>
 <td>CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing</td>
@@ -208,6 +226,26 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
 <td>markdown.extension.convertToHtml.tocIncludeLevels</td>
 <td>[1, 2, 3, 4, 5, 6]</td>
 <td>Defines level of the headers to be included in TOC</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.defaultListElement</td>
+<td><code>ul</code></td>
+<td>Default HTML element for all TOC list elements. This option is ignored if one or more elements are defined on per-level basis (see below)</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.listElements</td>
+<td><code>[]</code></td>
+<td>Array of strings each defining an HTML element for a TOC list on each TOC level (see above)</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.defaultListElementAttributeSet</td>
+<td><code>{ &quot;style&quot;: &quot;list-style-type: none;&quot; }</code></td>
+<td>An object defining set of HTML attributes to be added for all TOC list elements. This option is ignored if one or more sets is defined on per-level basis (see below)</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.listElementAttributeSets</td>
+<td><code>[]</code></td>
+<td>Array of sets of HTML attributes, same as above, but defining an attribute set for each TOC level</td>
 </tr>
 <tr>
 <td>markdown.extension.convertToHtml.tocContainerClass</td>
@@ -325,10 +363,36 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
         &quot;color&quot;: &quot;white&quot;,
         &quot;backgroundColor&quot;: &quot;orange&quot;
     },    
-    &quot;markdown.extension.convertToHtml.tocIncludeLevels&quot;: [ 1, 2, 3, 4, 5, 6 ],
+    &quot;markdown.extension.convertToHtml.excludeFromTocRegex&quot;: &quot;\\[\\]\\(notoc\\)&quot;,
+    &quot;markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle&quot;: {
+        &quot;border&quot;: &quot;thin solid black&quot;,
+        &quot;color&quot;: &quot;white&quot;,
+        &quot;backgroundColor&quot;: &quot;darkGray&quot;
+    },
+    &quot;markdown.extension.convertToHtml.defaultListElementAttributeSet&quot;: {
+        &quot;style&quot;: &quot;list-style-type: none;&quot;
+    },
+    &quot;markdown.extension.convertToHtml.listElementAttributeSets&quot;: [
+    ],
+    &quot;markdown.extension.convertToHtml.defaultListElement&quot;: &quot;ul&quot;,
+    &quot;markdown.extension.convertToHtml.listElements&quot;: [
+        &quot;ul&quot;,
+        &quot;ul&quot;,
+        &quot;ol&quot;,
+        &quot;ul&quot;,
+        &quot;ul&quot;,
+        &quot;ul&quot;
+    ],
+    &quot;markdown.extension.convertToHtml.idPrefix&quot;: &quot;headings.&quot;,
+    &quot;markdown.extension.convertToHtml.tocIncludeLevels&quot;: [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+    ],
     &quot;markdown.extension.convertToHtml.tocContainerClass&quot;: &quot;toc&quot;,
-    &quot;markdown.extension.convertToHtml.tocListType&quot;: &quot;ul&quot;,  
-    &quot;cSpell.enabled&quot;: true,
     &quot;markdown.extension.convertToHtml.includeLocatorRegex&quot;: &quot;\\[\\]\\(include\\(([^\\s]+?)\\)\\)&quot;,
     &quot;markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat&quot;: &quot;!!! invalid Regular Expression of include:  \&quot;%s\&quot; !!!&quot;,
     &quot;markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat&quot;: &quot;!!! failed to read file \&quot;%s\&quot; !!!&quot;,

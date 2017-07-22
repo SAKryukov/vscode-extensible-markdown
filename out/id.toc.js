@@ -1,7 +1,7 @@
 "use strict";
 
 const defaultOptions = {
-    enableHeadingId: false,
+    enableHeadingId: true,
     includeLevel: [1, 2, 3, 4, 5, 6],
     tocContainerClass: "toc",
     tocRegex: "^\\[\\]\\(toc\\)",
@@ -64,9 +64,13 @@ module.exports = function (md, userOptions) {
             const level = token.tag && parseInt(token.tag.substr(1, 1));
             if (token.type !== "heading_close"
                 || options.includeLevel.indexOf(level) == -1
-                || heading.type !== "inline"
-                || usedIds.excludeFromToc[currentPos] == token) {
+                || heading.type !== "inline") {
                 currentPos++;
+                continue;
+            } //if
+            if (usedIds.excludeFromToc[currentPos] == token) {
+                currentPos++;
+                ++idCounts.toc; // one id is skipped
                 continue;
             } //if
             if (currentLevel) {
@@ -129,16 +133,13 @@ module.exports = function (md, userOptions) {
             const token = tokens[index];
             const headingTextToken = tokens[index - 1];
             if (token.type !== "heading_close" || headingTextToken.type !== "inline") continue;
-            let excludeFromToc = false;
+            idSet.push(slugify(headingTextToken.content, usedIds));
             if (excludeFromTocRegex) {
                 const oldContent = headingTextToken.content;
                 headingTextToken.content = headingTextToken.content.replace(excludeFromTocRegex, "");
-                excludeFromToc = oldContent !== headingTextToken.content;
-                if (excludeFromToc)
+                if (oldContent !== headingTextToken.content)
                     usedIds.excludeFromToc[index] = token;
             } //if
-            if (!excludeFromToc)
-                idSet.push(slugify(headingTextToken.content, usedIds));
         } //loop
     } //buildIdSet
 

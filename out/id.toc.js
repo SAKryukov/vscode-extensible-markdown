@@ -1,11 +1,11 @@
 "use strict";
 
 const defaultOptions = {
-    enableHeadingId: true,
+    enableHeadingId: true, //SA what to do if TOC is detected? 
     includeLevel: [1, 2, 3, 4, 5, 6],
     tocContainerClass: "toc",
     tocRegex: "^\\[\\]\\(toc\\)",
-    excludeFromTocRegex: "\\[\\]\\(notoc\\)",
+    excludeFromTocRegex: "\\{\\}\\(notoc\\)",
     defaultListElement: "ul",
     listElements: ["ul", "ul", "ul", "ul", "ul", "ul"],
     defaultListElementAttributeSet: { style: "list-style-type: none;" },
@@ -18,7 +18,6 @@ defaultOptions.bulletedListType = defaultOptions.defaultListElement;
 
 module.exports = function (md, userOptions) {
 
-    const string = require("./node_modules/string");
     const util = require("util");
 
     const options = defaultOptions;
@@ -27,7 +26,11 @@ module.exports = function (md, userOptions) {
             options[index] = userOptions[index];
 
     const slugify = function (s, used) {
-        let slug = options.idPrefix + string(s).slugify().toString();
+        let slug = options.idPrefix +
+            s.replace(' ', '-')
+                .replace(/[^A-Za-z0-9\-\.\_]/g, function (match) {
+                    return match.codePointAt().toString(16);
+                }).toLowerCase();
         while (used[slug])
             slug += '.';
         used[slug] = slug;
@@ -51,77 +54,44 @@ module.exports = function (md, userOptions) {
         excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
 
     const usedIDs = { headings: {}, toc: {} };
+    const idCounts = { headings: 0, toc: 0 };
+    const idSet = [];
+    const originalHeadingOpen = md.renderer.rules.heading_open;
+    let fullTokenSet;
+    // no magic function names:
+    const tocFunctionNames = { open: "tocOpen", close: "tocClose", body: "tocBody" };
+    const ruleName = "toc"; // works with null, but let's care about other plug-ins
 
-    // Heading id: ///////////////////////////////////////////
-
-    let originalHeadingOpen = md.renderer.rules.heading_open;
-
-    md.renderer.rules.heading_open = function (tokens, idx, something, somethingelse, self) {
-        tokens[idx].attrs = tokens[idx].attrs || [];
-        let title = tokens[idx + 1].children.reduce(function (acc, t) {
-            return acc + t.content;
+    md.renderer.rules.heading_open = function (tokens, index, userOptions, object, renderer) {
+        tokens[index].attrs = tokens[index].attrs || [];
+        let title = tokens[index + 1].children.reduce(function (accumulator, child) {
+            return accumulator + child.content;
         }, "");
-        let slug = slugify(title, usedIDs.headings);
-        tokens[idx].attrs.push(["id", slug]);
+        const headingSlug = idSet[idCounts.headings];
+        tokens[index].attrs.push(["id", headingSlug]);
+        ++idCounts.headings;
         if (originalHeadingOpen)
             return originalHeadingOpen.apply(this, arguments);
         else
-            return self.renderToken.apply(self, arguments);
-        //SA!!! APPENT text to return to add prefix to heading content
+            return renderer.renderToken.apply(renderer, arguments);
+        //SA!!! APPEND text to return to add prefix to heading content
     }; //md.renderer.rules.heading_open
 
-    // TOC: //////////////////////////////////////////////////
-
-    let gstate;
-
-    function toc(state, silent) {
-        let token;
-        let match;
-        //
-        // Reject if the token does not start with [
-        if (state.src.charCodeAt(state.pos) !== 0x5B) // [
-            return false;
-        // Don't run any pairs in validation mode
-        if (silent)
-            return false;
-        //
-        // Detect TOC markdown
-        match = tocRegexp.exec(state.src);
-        match = !match ? [] : match.filter(function (m) { return m; });
-        if (match.length < 1)
-            return false;
-        //
-        // Build content
-        token = state.push("toc_open", "toc", 1);
-        token = state.push("toc_body", "", 0);
-        token = state.push("toc_close", "toc", -1);
-        //
-        // Update pos so the parser can continue
-        let newline = state.src.indexOf("\n");
-        if (newline !== -1)
-            state.pos = state.pos + newline;
-        else
-            state.pos = state.pos + state.posMax + 1;
-        return true;
-    } //toc
-
-    md.renderer.rules.toc_open = function (tokens, index) {
+    let r = md.renderer.rules[tocFunctionNames.open] = function (tokens, index) {
         usedIDs.toc = {};
         return util.format("<div class=\"%s\">", options.tocContainerClass);
-    }; //md.renderer.rules.toc_open
-
-    md.renderer.rules.toc_close = function (tokens, index) {
+    }; // open
+    md.renderer.rules[tocFunctionNames.body] = function (tokens, index) {
+        return createTocTree(0, fullTokenSet)[1];
+    }; //body
+    md.renderer.rules[tocFunctionNames.close] = function (tokens, index) {
         return "</div>";
         usedIDs.toc = {};
-    }; //md.renderer.rules.toc_close
+    }; //close
 
-    md.renderer.rules.toc_body = function (tokens, index) {
-        return renderChildrenTokens(0, gstate.tokens)[1];
-    }; //md.renderer.rules.toc_body
-
-    function renderChildrenTokens(pos, tokens) {
+    function createTocTree(pos, tokens) {
         let headings = [],
-            buffer = '',
+            buffer = "",
             currentLevel,
             subHeadings,
             size = tokens.length,
@@ -134,36 +104,35 @@ module.exports = function (md, userOptions) {
                 || options.includeLevel.indexOf(level) == -1 || heading.type !== "inline"
                 || excludeFromTocRegex.exec(heading.content)) {
                 currentPos++;
-                continue; // Skip if not matching criteria
+                continue;
             } //if
             if (currentLevel) {
                 if (level > currentLevel) {
-                    subHeadings = renderChildrenTokens(currentPos, tokens);
+                    subHeadings = createTocTree(currentPos, tokens);
                     buffer += subHeadings[1];
                     currentPos = subHeadings[0];
                     continue;
                 } //if
                 if (level < currentLevel) {
-                    // Finishing the sub headings
                     buffer += "</li>";
                     headings.push(buffer);
                     return listElement(currentLevel, currentPos, options, headings);
                 } //if
                 if (level == currentLevel) {
-                    // Finishing the sub headings
                     buffer += "</li>";
                     headings.push(buffer);
                 } //if
             } else
                 currentLevel = level; // We init with the first found level
             //SA!!! currentLevel is the level of the TOC item, number of '#' in '#', '##', '###'...
-            // APPEND text after "<li><a href=\"#%s\">" to make PREFIX to title 
-            buffer = util.format("<li><a href=\"#%s\">", slugify(heading.content, usedIDs.toc));
+            // APPEND text after "<li><a href=\"#%s\">" to make PREFIX to title
+            const tocSlug = idSet[idCounts.toc];
+            ++idCounts.toc;
+            buffer = util.format("<li><a href=\"#%s\">", tocSlug);
             let headingContent = heading.content;
             if (options.itemPrefixes)
                 if (options.itemPrefixes[currentLevel - 1])
                     headingContent = options.itemPrefixes[currentLevel - 1] + headingContent;
-            // SA??? add prefixes
             buffer += typeof options.format === "function" ? options.format(headingContent) : headingContent;
             buffer += "</a>";
             currentPos++;
@@ -171,7 +140,7 @@ module.exports = function (md, userOptions) {
         buffer += "</li>";
         headings.push(buffer);
         return listElement(currentLevel, currentPos, options, headings);
-    } //renderChildrenTokens
+    } //createTocTree
 
     function listElement(level, currentPos, options, headings) {
         let listTag = options.defaultListElement;
@@ -192,13 +161,43 @@ module.exports = function (md, userOptions) {
                 listTag, elementAttributes, headings.join(""), listTag)];
     } //listElement
 
-    // Catch all the tokens for iteration later
-    md.core.ruler.push("", function (state) {
-        usedIDs.headings = [];
-        gstate = state;
-    });
+    function buildIdSet(idSet, tokens) {
+        for (let index = 1; index < tokens.length; ++index) {
+            const token = tokens[index];
+            const previousToken = tokens[index - 1];
+            if (token.type !== "heading_close" || previousToken.type !== "inline") continue;
+            idSet.push(slugify(previousToken.content, usedIDs));
+        } //loop
+    } //buildIdSet
 
-    // Insert TOC
-    md.inline.ruler.after("text", "toc", toc);
+    md.core.ruler.before("inline", "buildToc", function (state) {
+        usedIDs.headings = [];
+        if (!tocRegexp) return;
+        // extra global check saves time if there is no match:
+        const match = tocRegexp.exec(state.src);
+        if (!match) return;
+        if (match.length < 1) return;
+        usedIDs.headings = {};
+        usedIDs.toc = {};
+        buildIdSet(idSet, state.tokens);
+        idCounts.headings = 0;
+        idCounts.top = 0;
+        md.inline.ruler.before("text", ruleName, function toc(state, silent) {
+            if (silent) return false;
+            const match = tocRegexp.exec(state.src);
+            if (!match) return false;
+            if (match.length < 1) return false;
+            state.push(tocFunctionNames.open, ruleName, 1);
+            state.push(tocFunctionNames.body, ruleName, 0);
+            state.push(tocFunctionNames.close, ruleName, -1);
+            let newline = state.src.indexOf("\n");
+            if (newline !== -1)
+                state.pos = state.pos + newline;
+            else
+                state.pos = state.pos + state.posMax + 1;
+            return true;
+        });
+        fullTokenSet = state.tokens;
+    }); //md.core.ruler.before
 
 }; //module.exports

@@ -62,13 +62,11 @@ module.exports = function (md, userOptions) {
             const heading = tokens[currentPos - 1];
             if (!heading) { currentPos++; continue; }
             const level = token.tag && parseInt(token.tag.substr(1, 1));
-            if (token.type !== "heading_close"
-                || options.includeLevel.indexOf(level) == -1
-                || heading.type !== "inline") {
+            if (token.type !== "heading_close" || heading.type !== "inline") {
                 currentPos++;
                 continue;
             } //if
-            if (usedIds.excludeFromToc[currentPos] == token) {
+            if (usedIds.excludeFromToc[currentPos] == token || options.includeLevel.indexOf(level) == -1) {
                 currentPos++;
                 ++idCounts.toc; // one id is skipped
                 continue;

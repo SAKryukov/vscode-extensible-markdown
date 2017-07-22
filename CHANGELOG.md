@@ -1,8 +1,12 @@
 # Changelog
 
+## Version 5.3.0
+
+* Fixed critical bugs in the embedded markdown-it plug-in: shifted sequence of `id` values in TOC when some heading levels are excluded
+
 ## Version 5.2.0
 
-* Fixed critical bugs in the the embedded markdown-it plug-in: shifted sequence of `id` values in headings when "no-TOC" features is used
+* Fixed critical bugs in the embedded markdown-it plug-in: shifted sequence of `id` values in headings when "no-TOC" features is used
 
 ## Version 5.1.0
 

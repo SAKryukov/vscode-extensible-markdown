@@ -5,7 +5,7 @@ const defaultOptions = {
     includeLevel: [1, 2, 3, 4, 5, 6],
     tocContainerClass: "toc",
     tocRegex: "^\\[\\]\\(toc\\)",
-    excludeFromTocRegex: "\\{\\}\\(notoc\\)",
+    excludeFromTocRegex: "\\[\\]\\(notoc\\)",
     defaultListElement: "ul",
     listElements: ["ul", "ul", "ul", "ul", "ul", "ul"],
     defaultListElementAttributeSet: { style: "list-style-type: none;" },
@@ -46,50 +46,11 @@ module.exports = function (md, userOptions) {
     //         return (++tryNumeric).toString();
     // } //nextNumber
 
-    let tocRegexp = options.tocRegex;
-    if (tocRegexp.constructor != RegExp)
-        tocRegexp = new RegExp(options.tocRegex, "m");
-    let excludeFromTocRegex = options.excludeFromTocRegex;
-    if (excludeFromTocRegex.constructor != RegExp)
-        excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
-
-    const usedIDs = { headings: {}, toc: {} };
-    const idCounts = { headings: 0, toc: 0 };
-    const idSet = [];
-    const originalHeadingOpen = md.renderer.rules.heading_open;
-    let fullTokenSet;
     // no magic function names:
     const tocFunctionNames = { open: "tocOpen", close: "tocClose", body: "tocBody" };
     const ruleName = "toc"; // works with null, but let's care about other plug-ins
 
-    md.renderer.rules.heading_open = function (tokens, index, userOptions, object, renderer) {
-        tokens[index].attrs = tokens[index].attrs || [];
-        let title = tokens[index + 1].children.reduce(function (accumulator, child) {
-            return accumulator + child.content;
-        }, "");
-        const headingSlug = idSet[idCounts.headings];
-        tokens[index].attrs.push(["id", headingSlug]);
-        ++idCounts.headings;
-        if (originalHeadingOpen)
-            return originalHeadingOpen.apply(this, arguments);
-        else
-            return renderer.renderToken.apply(renderer, arguments);
-        //SA!!! APPEND text to return to add prefix to heading content
-    }; //md.renderer.rules.heading_open
-
-    let r = md.renderer.rules[tocFunctionNames.open] = function (tokens, index) {
-        usedIDs.toc = {};
-        return util.format("<div class=\"%s\">", options.tocContainerClass);
-    }; // open
-    md.renderer.rules[tocFunctionNames.body] = function (tokens, index) {
-        return createTocTree(0, fullTokenSet)[1];
-    }; //body
-    md.renderer.rules[tocFunctionNames.close] = function (tokens, index) {
-        return "</div>";
-        usedIDs.toc = {};
-    }; //close
-
-    function createTocTree(pos, tokens) {
+    function createTocTree(pos, tokens, usedIds, idCounts, idSet, excludeFromTocRegex) {
         let headings = [],
             buffer = "",
             currentLevel,
@@ -99,16 +60,20 @@ module.exports = function (md, userOptions) {
         while (currentPos < size) {
             let token = tokens[currentPos];
             let heading = tokens[currentPos - 1];
+            if (!heading) { currentPos++; continue; }
             let level = token.tag && parseInt(token.tag.substr(1, 1));
+            let excludeFromToc = false;
+            if (excludeFromTocRegex)
+                excludeFromToc = excludeFromTocRegex.exec(heading.content) != null;
             if (token.type !== "heading_close"
                 || options.includeLevel.indexOf(level) == -1 || heading.type !== "inline"
-                || excludeFromTocRegex.exec(heading.content)) {
+                || excludeFromToc) {
                 currentPos++;
                 continue;
             } //if
             if (currentLevel) {
                 if (level > currentLevel) {
-                    subHeadings = createTocTree(currentPos, tokens);
+                    subHeadings = createTocTree(currentPos, tokens, usedIds, idCounts, idSet, excludeFromTocRegex);
                     buffer += subHeadings[1];
                     currentPos = subHeadings[0];
                     continue;
@@ -116,7 +81,7 @@ module.exports = function (md, userOptions) {
                 if (level < currentLevel) {
                     buffer += "</li>";
                     headings.push(buffer);
-                    return listElement(currentLevel, currentPos, options, headings);
+                    return [currentPos, listElement(currentLevel, options, headings)];
                 } //if
                 if (level == currentLevel) {
                     buffer += "</li>";
@@ -139,10 +104,10 @@ module.exports = function (md, userOptions) {
         } //loop
         buffer += "</li>";
         headings.push(buffer);
-        return listElement(currentLevel, currentPos, options, headings);
+        return [tokens.length, listElement(currentLevel, options, headings)];
     } //createTocTree
 
-    function listElement(level, currentPos, options, headings) {
+    function listElement(level, options, headings) {
         let listTag = options.defaultListElement;
         if (options.listElements)
             if (options.listElements[level - 1])
@@ -155,49 +120,84 @@ module.exports = function (md, userOptions) {
         if (options.listElementAttributeSets)
             if (options.listElementAttributeSets.length < 1)
                 for (let index in options.defaultListElementAttributeSet)
-                    elementAttributes += util.format(" %s=\"%s\"", index, options.defaultListElementAttributeSet[index]);
-        return [currentPos,
-            util.format("<%s%s>%s</%s>",
-                listTag, elementAttributes, headings.join(""), listTag)];
+                    elementAttributes += util.format(" %s=\"%s\"",
+                        index,
+                        options.defaultListElementAttributeSet[index]);
+        return util.format("<%s%s>%s</%s>", listTag, elementAttributes, headings.join(""), listTag);
     } //listElement
 
-    function buildIdSet(idSet, tokens) {
+    function buildIdSet(idSet, tokens, usedIds) {
         for (let index = 1; index < tokens.length; ++index) {
             const token = tokens[index];
             const previousToken = tokens[index - 1];
             if (token.type !== "heading_close" || previousToken.type !== "inline") continue;
-            idSet.push(slugify(previousToken.content, usedIDs));
+            idSet.push(slugify(previousToken.content, usedIds));
         } //loop
     } //buildIdSet
 
     md.core.ruler.before("inline", "buildToc", function (state) {
-        usedIDs.headings = [];
-        if (!tocRegexp) return;
+        let tocRegexp = options.tocRegex;
+        if (tocRegexp.constructor != RegExp)
+            tocRegexp = new RegExp(options.tocRegex, "m");
         // extra global check saves time if there is no match:
-        const match = tocRegexp.exec(state.src);
-        if (!match) return;
-        if (match.length < 1) return;
-        usedIDs.headings = {};
-        usedIDs.toc = {};
-        buildIdSet(idSet, state.tokens);
-        idCounts.headings = 0;
-        idCounts.top = 0;
-        md.inline.ruler.before("text", ruleName, function toc(state, silent) {
-            if (silent) return false;
+        let doToc = false;
+        if (tocRegexp) {
             const match = tocRegexp.exec(state.src);
-            if (!match) return false;
-            if (match.length < 1) return false;
-            state.push(tocFunctionNames.open, ruleName, 1);
-            state.push(tocFunctionNames.body, ruleName, 0);
-            state.push(tocFunctionNames.close, ruleName, -1);
-            let newline = state.src.indexOf("\n");
-            if (newline !== -1)
-                state.pos = state.pos + newline;
+            doToc = match != null;
+        } //if
+        let excludeFromTocRegex = options.excludeFromTocRegex;
+        if (excludeFromTocRegex.constructor != RegExp)
+            excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
+        //
+        const usedIds = { headings: {}, toc: {} };
+        const idCounts = { headings: 0, toc: 0 };
+        const idSet = [];
+        buildIdSet(idSet, state.tokens, usedIds);
+        // create TOC:
+        if (doToc) {
+            md.renderer.rules[tocFunctionNames.open] = function (tokens, index) {
+                return util.format("<div class=\"%s\">", options.tocContainerClass);
+            }; // open
+            md.renderer.rules[tocFunctionNames.body] = function (tokens, index) {
+                return createTocTree(0, state.tokens, usedIds, idCounts, idSet, excludeFromTocRegex)[1];
+            }; //body
+            md.renderer.rules[tocFunctionNames.close] = function (tokens, index) {
+                return "</div>";
+            }; //close
+        } //if doToc
+        // add id attributes:
+        const headingOpenPrevious = md.renderer.rules.heading_open;
+        md.renderer.rules.heading_open = function (tokens, index, userOptions, object, renderer) {
+            tokens[index].attrs = tokens[index].attrs || [];
+            let title = tokens[index + 1].children.reduce(function (accumulator, child) {
+                return accumulator + child.content;
+            }, "");
+            const headingSlug = idSet[idCounts.headings];
+            tokens[index].attrs.push(["id", headingSlug]);
+            ++idCounts.headings;
+            if (headingOpenPrevious)
+                return headingOpenPrevious.apply(this, arguments);
             else
-                state.pos = state.pos + state.posMax + 1;
-            return true;
-        });
-        fullTokenSet = state.tokens;
+                return renderer.renderToken.apply(renderer, arguments);
+            //SA!!! APPEND text to return to add prefix to heading content
+        }; //md.renderer.rules.heading_open
+        // detect TOC location:
+        if (doToc)
+            md.inline.ruler.before("text", ruleName, function toc(state, silent) {
+                if (silent) return false;
+                const match = tocRegexp.exec(state.src);
+                if (!match) return false;
+                if (match.length < 1) return false;
+                state.push(tocFunctionNames.open, ruleName, 1);
+                state.push(tocFunctionNames.body, ruleName, 0);
+                state.push(tocFunctionNames.close, ruleName, -1);
+                let newline = state.src.indexOf("\n");
+                if (newline !== -1)
+                    state.pos = state.pos + newline;
+                else
+                    state.pos = state.pos + state.posMax + 1;
+                return true;
+            });
     }); //md.core.ruler.before
 
 }; //module.exports

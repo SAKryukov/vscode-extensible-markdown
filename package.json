@@ -2,22 +2,12 @@
     "name": "convert-markdown-to-html",
     "displayName": "Extensible Markdown Converter",
     "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
-    "version": "5.0.0",
+    "version": "5.1.0",
     "publisher": "sakryukov",
     "author": {
         "name": "Sergey A Kryukov",
         "url": "http://www.SAKryukov.org"
     },
-    "contributors": [
-        {
-            "name": "Jason Brackins",
-            "url": "https://github.com/leff"
-        },
-        {
-            "name": "Oktavilla",
-            "url": "https://github.com/Oktavilla"
-        }
-    ],
     "license": "MIT",
     "icon": "images/logo.png",
     "repository": {
@@ -298,10 +288,10 @@
         }
     },
     "dependencies": {
-        "vscode": ">=1.14.1"
+        "vscode": "^1.14.1"
     },
     "devDependencies": {
-        "vscode": ">=1.14.1"
+        "vscode": "^1.14.1"
     },
     "extensionDependencies": [
         "Microsoft.vscode-markdown"

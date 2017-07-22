@@ -48,11 +48,7 @@ which is important for headings like "Contents" or "Table of Contents" -->
 
 ## Contents[](notoc)
 
-<div class="toc"> <!-- see style.css: div.toc > ul used to remove bullets from TOC (won't work in CodeProject) -->
-
 [](toc)
-
-</div>
 
 <!-- CodeProject requires level-22 will it dec 2 heading for top-level section headers : -->
  

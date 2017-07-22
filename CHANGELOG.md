@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.1.0
+
+* Found critical bugs in the legacy code of the embedded markdown-it plug-in, so this module is fully re-written.
+
 ## Version 5.0.0
 
 * Added advanced Markdown extension features based on embedded markdown-it plug-in:

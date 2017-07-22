@@ -1,7 +1,7 @@
 "use strict";
 
 const defaultOptions = {
-    enableHeadingId: true, //SA what to do if TOC is detected? 
+    enableHeadingId: false,
     includeLevel: [1, 2, 3, 4, 5, 6],
     tocContainerClass: "toc",
     tocRegex: "^\\[\\]\\(toc\\)",
@@ -50,30 +50,28 @@ module.exports = function (md, userOptions) {
     const tocFunctionNames = { open: "tocOpen", close: "tocClose", body: "tocBody" };
     const ruleName = "toc"; // works with null, but let's care about other plug-ins
 
-    function createTocTree(pos, tokens, usedIds, idCounts, idSet, excludeFromTocRegex) {
+    function createTocTree(pos, tokens, usedIds, idCounts, idSet) {
         let headings = [],
             buffer = "",
             currentLevel,
             subHeadings,
-            size = tokens.length,
             currentPos = pos;
+        const size = tokens.length;
         while (currentPos < size) {
-            let token = tokens[currentPos];
-            let heading = tokens[currentPos - 1];
+            const token = tokens[currentPos];
+            const heading = tokens[currentPos - 1];
             if (!heading) { currentPos++; continue; }
-            let level = token.tag && parseInt(token.tag.substr(1, 1));
-            let excludeFromToc = false;
-            if (excludeFromTocRegex)
-                excludeFromToc = excludeFromTocRegex.exec(heading.content) != null;
+            const level = token.tag && parseInt(token.tag.substr(1, 1));
             if (token.type !== "heading_close"
-                || options.includeLevel.indexOf(level) == -1 || heading.type !== "inline"
-                || excludeFromToc) {
+                || options.includeLevel.indexOf(level) == -1
+                || heading.type !== "inline"
+                || usedIds.excludeFromToc[currentPos] == token) {
                 currentPos++;
                 continue;
             } //if
             if (currentLevel) {
                 if (level > currentLevel) {
-                    subHeadings = createTocTree(currentPos, tokens, usedIds, idCounts, idSet, excludeFromTocRegex);
+                    subHeadings = createTocTree(currentPos, tokens, usedIds, idCounts, idSet);
                     buffer += subHeadings[1];
                     currentPos = subHeadings[0];
                     continue;
@@ -126,16 +124,27 @@ module.exports = function (md, userOptions) {
         return util.format("<%s%s>%s</%s>", listTag, elementAttributes, headings.join(""), listTag);
     } //listElement
 
-    function buildIdSet(idSet, tokens, usedIds) {
+    function buildIdSet(idSet, tokens, excludeFromTocRegex, usedIds) {
         for (let index = 1; index < tokens.length; ++index) {
             const token = tokens[index];
-            const previousToken = tokens[index - 1];
-            if (token.type !== "heading_close" || previousToken.type !== "inline") continue;
-            idSet.push(slugify(previousToken.content, usedIds));
+            const headingTextToken = tokens[index - 1];
+            if (token.type !== "heading_close" || headingTextToken.type !== "inline") continue;
+            let excludeFromToc = false;
+            if (excludeFromTocRegex) {
+                const oldContent = headingTextToken.content;
+                headingTextToken.content = headingTextToken.content.replace(excludeFromTocRegex, "");
+                excludeFromToc = oldContent !== headingTextToken.content;
+                if (excludeFromToc)
+                    usedIds.excludeFromToc[index] = token;
+            } //if
+            if (!excludeFromToc)
+                idSet.push(slugify(headingTextToken.content, usedIds));
         } //loop
     } //buildIdSet
 
     md.core.ruler.before("inline", "buildToc", function (state) {
+        if (!options.enableHeadingId)   // inconsistent with having toc/no-toc tags, 
+            return;                     // so leave them as is
         let tocRegexp = options.tocRegex;
         if (tocRegexp.constructor != RegExp)
             tocRegexp = new RegExp(options.tocRegex, "m");
@@ -149,17 +158,17 @@ module.exports = function (md, userOptions) {
         if (excludeFromTocRegex.constructor != RegExp)
             excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
         //
-        const usedIds = { headings: {}, toc: {} };
+        const usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
         const idCounts = { headings: 0, toc: 0 };
         const idSet = [];
-        buildIdSet(idSet, state.tokens, usedIds);
+        buildIdSet(idSet, state.tokens, excludeFromTocRegex, usedIds);
         // create TOC:
         if (doToc) {
             md.renderer.rules[tocFunctionNames.open] = function (tokens, index) {
                 return util.format("<div class=\"%s\">", options.tocContainerClass);
             }; // open
             md.renderer.rules[tocFunctionNames.body] = function (tokens, index) {
-                return createTocTree(0, state.tokens, usedIds, idCounts, idSet, excludeFromTocRegex)[1];
+                return createTocTree(0, state.tokens, usedIds, idCounts, idSet)[1];
             }; //body
             md.renderer.rules[tocFunctionNames.close] = function (tokens, index) {
                 return "</div>";
@@ -191,11 +200,7 @@ module.exports = function (md, userOptions) {
                 state.push(tocFunctionNames.open, ruleName, 1);
                 state.push(tocFunctionNames.body, ruleName, 0);
                 state.push(tocFunctionNames.close, ruleName, -1);
-                let newline = state.src.indexOf("\n");
-                if (newline !== -1)
-                    state.pos = state.pos + newline;
-                else
-                    state.pos = state.pos + state.posMax + 1;
+                state.src = "";
                 return true;
             });
     }); //md.core.ruler.before

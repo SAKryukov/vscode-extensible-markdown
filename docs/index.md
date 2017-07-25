@@ -43,7 +43,7 @@ Anyway, "Extensible Markdown Converter" extension defines keybinding to overwrit
 - Open Preview: Ctrl+Shift+V
 - Open Preview to Side: Ctrl+K V
 
-As the extension "VS Code Markdown" uses fixed set of Markdown-specific options and does not load [additional plug-ins](#additional-plug-ins), "VS Code Markdown" preview can be different from "Extensible Markdown Converter" rendering.
+As the extension "VS Code Markdown" uses fixed set of Markdown-specific options and does not load [additional plug-ins](#heading.additional-plug-ins), "VS Code Markdown" preview can be different from "Extensible Markdown Converter" rendering.
 
 So, it's important to know the difference, to make sure the rendering is performed by Extensible Markdown Converter.
 
@@ -66,7 +66,7 @@ In second part, new extensions are added by Extensible Markdown Converter. Some 
 
 ### Markdown-it Extensions
 
-The embedded extension "VSCode Markdown" is based on the [node.js](https://nodejs.org) *package* ["markdown-it"](https://www.npmjs.com/package/markdown-it). This module does not require installation, it comes with Visual Studio Code. Extensible Markdown Converter exposed the following extended features: Typographer, "smart quotes" (can used when Typographer is enabled), enabled or disabled HTML formatting in input Markdown document, "linkify", generation of `br` attributes. The configuration parameters are described in the section [Markdown-it Options](#markdown-it-options).
+The embedded extension "VSCode Markdown" is based on the [node.js](https://nodejs.org) *package* ["markdown-it"](https://www.npmjs.com/package/markdown-it). This module does not require installation, it comes with Visual Studio Code. Extensible Markdown Converter exposed the following extended features: Typographer, "smart quotes" (can used when Typographer is enabled), enabled or disabled HTML formatting in input Markdown document, "linkify", generation of `br` attributes. The configuration parameters are described in the section [Markdown-it Options](#heading.markdown-it-options).
 
 ### Extensible Markdown Converter Embedded Extensions
 
@@ -117,11 +117,11 @@ Again, the user can use any other syntax .
 
 Only first occurrence of the document title tag is taken into account. In Markdown view, it can be seen on *syntax coloring* of this element. Other elements, including TOC, can appear multiple times. Note that TOC feature works in collaboration with automatic generation of the `id` attributes for all heading elements (`h1`.. `h6`), which is also embedded in the extension.
 
-All these elements are emphasized in source Markdown document by [syntax coloring](#syntax-coloring) with coloring style configured by the user. Please see the description of the [settings](#extensible-markdown-converter-syntax-extension-options).
+All these elements are emphasized in source Markdown document by [syntax coloring](#heading.syntax-coloring) with coloring style configured by the user. Please see the description of the [settings](#heading.extensible-markdown-converter-syntax-extension-options).
 
 ### Extensible Markdown Converter User-Installed Extensions
 
-The configuration option ["`markdown.extension.convertToHtml.options.additionalPlugins`"](#markdown-it-options) is used for adding the referenced to additional ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-ins which can be installed by the user. Please see the section [Customization of Additional Plug-Ins](#customization-of-additional-plug-ins) for the detail.
+The configuration option ["`markdown.extension.convertToHtml.options.additionalPlugins`"](#heading.markdown-it-options) is used for adding the referenced to additional ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-ins which can be installed by the user. Please see the section [Customization of Additional Plug-Ins](#heading.customization-of-additional-plug-ins) for the detail.
 
 ## Settings
 
@@ -129,13 +129,13 @@ The configuration option ["`markdown.extension.convertToHtml.options.additionalP
 
 There are three levels of settings. The user of this extension can control them all.
 
-1. [General options](#general-options) control the behavior of command and detail of the HTML output unrelated to Markdown formatting.
+1. [General options](#heading.general-options) control the behavior of command and detail of the HTML output unrelated to Markdown formatting.
 
-1. The extension is based on the [node.js](https://nodejs.org) *package* ["markdown-it"](https://www.npmjs.com/package/markdown-it). This module has its own options. [Markdown-it options](#markdown-it-options) define how the mark-down module should be set up before parsing.<br/>
+1. The extension is based on the [node.js](https://nodejs.org) *package* ["markdown-it"](https://www.npmjs.com/package/markdown-it). This module has its own options. [Markdown-it options](#heading.markdown-it-options) define how the mark-down module should be set up before parsing.<br/>
 There options are classified in two sets: a) embedded set of options, b) what plug-ins should be used.<br/>
-Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, each defining custom or extended parsing and rendering rules. See [customization of Additional Plug-Ins](#customization-of-additional-plug-ins).<br/>
+Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, each defining custom or extended parsing and rendering rules. See [customization of Additional Plug-Ins](#heading.customization-of-additional-plug-ins).<br/>
 
-1. Some of the ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-in packages have their own options. For example, see the package ["markdown-it-table-of-contents"](https://www.npmjs.com/package/markdown-it-table-of-contents). The example of setting its options in "settings.json" is shown in the [settings sample](#settings-sample).
+1. Some of the ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-in packages have their own options. For example, see the package ["markdown-it-table-of-contents"](https://www.npmjs.com/package/markdown-it-table-of-contents). The example of setting its options in "settings.json" is shown in the [settings sample](#heading.settings-sample).
 
 ### General Options
 
@@ -156,13 +156,13 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | Name | Default | Description |
 | --- | --- | --- |
 | markdown.extension.convertToHtml.titleLocatorRegex | `^(.*?)\[\]\(title\)` | Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML `head` `title` element |
-| markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag element |
+| markdown.extension.convertToHtml.titleLocatorDecoratorStyle | see ["settings.json" sample](#heading.special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag element |
 | markdown.extension.convertToHtml.options.headingId | true | Enables or disables generation of the `id` attributes for `h1`.. `h6` elements |
 | markdown.extension.convertToHtml.options.headingIdPrefix | `heading.` | If generation of the `id` attributes is enabled, the heading is added to each `id` value of each `h1`.. `h6` element |
 | markdown.extension.convertToHtml.tocRegex | `^\[\]\(toc\)` | Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed |
 | markdown.extension.convertToHtml.excludeFromTocRegex | `\\[\\]\\(notoc\\)` | Marks the heading elements to be excluded from TOC |
-| markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the tag marking a heading to be excluded from TOC |
-| markdown.extension.convertToHtml.tocDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing |
+| markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle | see ["settings.json" sample](#heading.special-settings.json) | CSS style for syntax coloring of the tag marking a heading to be excluded from TOC |
+| markdown.extension.convertToHtml.tocDecoratorStyle | see ["settings.json" sample](#heading.special-settings.json) | CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing |
 | markdown.extension.convertToHtml.tocIncludeLevels | [1, 2, 3, 4, 5, 6] | Defines level of the headers to be included in TOC |
 | markdown.extension.convertToHtml.defaultListElement | `ul` | Default HTML element for all TOC list elements. This option is ignored if one or more elements are defined on per-level basis (see below) |
 | markdown.extension.convertToHtml.listElements | `[]` | Array of strings each defining an HTML element for a TOC list on each TOC level (see above) |
@@ -173,7 +173,7 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | markdown.extension.convertToHtml.includeLocatorRegex | `\[\]\(include\(([^\s]+?)\)\)` | Defines Regex pattern used to define file include Markdown syntax extension |
 | markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | Message format for the message produced in the output HTML in case of invalid Regular Expression |
 | markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | Message format for the message produced in the output HTML in case of the file reading failure |
-| markdown.extension.convertToHtml.includeLocatorDecoratorStyle | see ["settings.json" sample](#special-settings.json) | CSS style for syntax coloring of the file include extended Markdown tag element |
+| markdown.extension.convertToHtml.includeLocatorDecoratorStyle | see ["settings.json" sample](#heading.special-settings.json) | CSS style for syntax coloring of the file include extended Markdown tag element |
 
 ### Markdown-it Options
 
@@ -184,9 +184,9 @@ The extension is based on the "VS Code Markdown" extension, which supplies node.
 | markdown.extension.convertToHtml.options.allowHTML | true | If true, allows HTML formatting, otherwise HTML code is rendered as text |
 | markdown.extension.convertToHtml.options.linkify | false | Renders "Link-like" text as link |
 | markdown.extension.convertToHtml.options.br | true | [New line](https://en.wikipedia.org/wiki/Newline) handling: if true, line separators are replaced with the HTML *element* `br` |
-| markdown.extension.convertToHtml.options.typographer | true | [*Typographer*](#Typographer) option is used |
+| markdown.extension.convertToHtml.options.typographer | true | [*Typographer*](#heading.Typographer) option is used |
 | markdown.extension.convertToHtml.options.smartQuotes | `“”‘’` | If typographer option is true, replaces `""` and `''` characters |
-| markdown.extension.convertToHtml.options.additionalPlugins | see [below](#customization-of-additional-plug-ins) | Descriptor of [additional markdown-it plug-ins](#additional-plug-ins) |
+| markdown.extension.convertToHtml.options.additionalPlugins | see [below](#heading.customization-of-additional-plug-ins) | Descriptor of [additional markdown-it plug-ins](#heading.additional-plug-ins) |
 
 The value of the option "`markdown.extension.convertToHtml.options.smartQuotes`" should have four characters, otherwise the characters `""` and `''` are rendered as is, as if the option value was `""''`. It can be used to turn off "smart quotes" feature when other typographer processing is enabled.
 
@@ -207,7 +207,7 @@ If one of more CSS files is defined, they are used in the generated HTML files a
 
 ### Typographer
 
-To use the typographer,  ["markdown-it" option](#markdown-it-options) "`markdown.extension.convertToHtml.options.typographer`" should be set to true (default).
+To use the typographer,  ["markdown-it" option](#heading.markdown-it-options) "`markdown.extension.convertToHtml.options.typographer`" should be set to true (default).
 
 Typographer substitution rules:
 
@@ -224,7 +224,7 @@ The value of the option "`markdown.extension.convertToHtml.options.smartQuotes`"
 
 ### Detecting Document Title
 
-To use the typographer,  ["markdown-it" option](#markdown-it-options) "`markdown.extension.convertToHtml.titleLocatorRegex`" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
+To use the typographer,  ["markdown-it" option](#heading.markdown-it-options) "`markdown.extension.convertToHtml.titleLocatorRegex`" should define the [regular expression](https://en.wikipedia.org/wiki/Regular_expression) pattern used to detect some fragment of the input Markdown text which should be interpreted as the title of the document.
 If the pattern match is successfully found in the Markdown document, it is written to the `title` element of the HTML `head` element. If the match is not found, the text "Converted from: /<input-file-name/>" is used as the title.
 
 It's important to understand that detection never modifies input Markdown text. The idea is to detect some text fragment present in the document. If Markdown rules rendering this text fragment in output HTML, it will be rendered; and the copy of this fragment will be written in the `title` element.
@@ -294,7 +294,7 @@ npm install --save a-name-of-markdown-it-plug-in
 
 ### Customization of Additional Plug-Ins
 
-Additional plug-ins are set up with one single "setting.json" option: [markdown.extension.convertToHtml.options.additionalPlugins](#markdown-it-options).
+Additional plug-ins are set up with one single "setting.json" option: [markdown.extension.convertToHtml.options.additionalPlugins](#heading.markdown-it-options).
 
 This is how default value is shown in "package.json":
 ```Json

@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 5.5.2
+## Version 5.5.3
 
 * Fixed a bug with second run of embedded markdown-it plugin: TOC was not updated
 

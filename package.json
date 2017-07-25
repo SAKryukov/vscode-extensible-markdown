@@ -236,6 +236,10 @@
                         "backgroundColor": "lightBlue"
                     }
                 },
+                "markdown.extension.convertToHtml.enableAutoNumbering": {
+                    "type": "boolean",
+                    "default": false
+                },             
                 "markdown.extension.convertToHtml.autoNumbering": {
                     "type": "object",
                     "default": null

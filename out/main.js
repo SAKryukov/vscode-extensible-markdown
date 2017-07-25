@@ -142,6 +142,7 @@ exports.activate = function (context) {
                         includeLevel: lazy.settings.tocIncludeLevels,
                         tocContainerClass: lazy.settings.tocContainerClass,
                         tocListType: lazy.settings.tocListType,
+                        enableAutoNumbering: lazy.settings.enableAutoNumbering, 
                         autoNumbering: lazy.settings.autoNumbering,
                         autoNumberingRegex: lazy.settings.autoNumberingRegex
                     });

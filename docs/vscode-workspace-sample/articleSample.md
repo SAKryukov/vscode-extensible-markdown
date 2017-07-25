@@ -1,4 +1,3 @@
-
 All in One Toolchain for Article Writing with Visual Studio Code<br><small>(Code Samples)</small>[](title)
 
 [Sergey A Kryukov](http://www.sakryukov.org)

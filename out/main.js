@@ -122,7 +122,7 @@ exports.activate = function (context) {
                 } // loop settings.additionalPlugins.plugins
                 return result;
             }()); //additionalPlugins
-            if (!lazy.markdownIt)
+            //if (!lazy.markdownIt) // SA??? not checking due to the problem of new idToc, will improve later 
                 lazy.markdownIt = (function () { // modify, depending in settings
                     const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
                     if (!extension) return;

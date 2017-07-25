@@ -1,16 +1,3 @@
-[](=numbering {
-    "pattern": [
-        { "start": 1 },
-        { "prefix": "I ", "start": 1 },
-        { },
-        { "start": 1, "separator": ".", "standAlong": true },
-        { "suffix": ") ", "start": "a", "separator":".", "standAlong":true }
-    ],
-    "defaultSuffix": ". ",
-    "defaultPrefix": "",
-    "defaultStart": 1,
-    "defaultSeparator": "."
-}=)
 
 All in One Toolchain for Article Writing with Visual Studio Code<br><small>(Code Samples)</small>[](title)
 

@@ -240,7 +240,6 @@ module.exports = function (md, userOptions) {
     } //addIdAttributes
 
     function createToc(state) {
-        if (!firstTime) return;
         md.renderer.rules[tocFunctionNames.open] = function (tokens, index) {
             return util.format("<div class=\"%s\">", options.tocContainerClass);
         }; // open

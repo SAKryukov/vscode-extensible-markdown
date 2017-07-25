@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.5.2
+
+* Fixed a bug with second run of embedded markdown-it plugin: TOC was not updated
+
 ## Version 5.5.1
 
 * Fixed regression bug in auto-numbering, related to handling of RegExp failure: if first token is paragraph and not a auto-numbering settings tag, it wasn't rendering

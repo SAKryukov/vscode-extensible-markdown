@@ -169,8 +169,8 @@
                         "border": "thin solid black",
                         "color": "white",
                         "backgroundColor": "black"
-                    }                    
-                },                
+                    }
+                },
                 "markdown.extension.convertToHtml.tocIncludeLevels": {
                     "type": "array",
                     "default": [
@@ -203,7 +203,9 @@
                 },
                 "markdown.extension.convertToHtml.defaultListElementAttributeSet": {
                     "type": "object",
-                    "default": { "style": "list-style-type: none;" }
+                    "default": {
+                        "style": "list-style-type: none;"
+                    }
                 },
                 "markdown.extension.convertToHtml.listElementAttributeSets": {
                     "type": "array",
@@ -212,7 +214,7 @@
                 "markdown.extension.convertToHtml.idPrefix": {
                     "type": "string",
                     "default": "headings."
-                },                
+                },
                 "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",
                     "default": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)"
@@ -232,6 +234,30 @@
                         "borderRadius": "5px",
                         "color": "black",
                         "backgroundColor": "lightBlue"
+                    }
+                },
+                "markdown.extension.convertToHtml.autoNumbering": {
+                    "markdown.extension.convertToHtml.defaultListElementAttributeSet": {
+                        "type": "object",
+                        "default": {
+                            "pattern": [],
+                            "defaultSuffix": ". ",
+                            "defaultPrefix": "",
+                            "defaultStart": 1,
+                            "defaultSeparator": "."
+                        }
+                    }
+                },
+                "markdown.extension.convertToHtml.autoNumberingRegex": {
+                    "type": "string",
+                    "default": "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)"                    
+                },
+                "markdown.extension.convertToHtml.autoNumberingDecoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "cursor": "copy",
+                        "color": "black",
+                        "backgroundColor": "yellow"
                     }
                 },
                 "markdown.extension.convertToHtml.options.allowHTML": {

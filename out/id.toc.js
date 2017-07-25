@@ -102,13 +102,32 @@ module.exports = function (md, userOptions) {
             if (!options.autoNumberingRegex) return;
             if (tokens[0].type != "paragraph_open" || tokens[1].type != "inline" || tokens[2].type != "paragraph_close")
                 return;
-            const regexp = new RegExp(options.autoNumberingRegex);
-            const match = regexp.exec(tokens[1].content);
-            if (!match) return;
-            if (!match.length) return;
-            if (match.length < 2) return;
-            tokens.splice(0, 3);
-            return JSON.parse(match[1]);
+            let regexp;
+            try {
+                regexp = new RegExp(options.autoNumberingRegex);
+            } catch (ex) {
+                tokens[1].content = util.format(
+                    "<h1>Invalid auto-numbering Regular Expression: %s<br/><br/>%s</h1>",
+                    ex.toString(),
+                    options.autoNumberingRegex);
+                return;
+            } //exception
+            let failedJsonParse = false;
+            try {
+                const match = regexp.exec(tokens[1].content);
+                if (!match) return;
+                if (!match.length) return;
+                if (match.length < 2) return;
+                return JSON.parse(match[1]);
+            } catch (ex) {
+                failedJsonParse = true;
+                let val = util.format("Invalid auto-numbering JSON structure: %s", ex.toString());
+                tokens[1].content = util.format("<h1>Invalid auto-numbering JSON structure: %s:</h1>", ex.toString())
+                    + tokens[1].content;
+            } finally {
+                if (!failedJsonParse)
+                    tokens.splice(0, 3);
+            } //exception
         } //getDocumentLevelOptions
         const initializeAutoNumbering = function (tokens) {
             let effectiveOptions = getDocumentLevelOptions(tokens);

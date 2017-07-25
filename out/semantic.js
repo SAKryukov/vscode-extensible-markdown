@@ -35,6 +35,8 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         listElements: thisExtensionSection["listElements"],
         defaultListElementAttributeSet: thisExtensionSection["defaultListElementAttributeSet"],
         listElementAttributeSets: thisExtensionSection["listElementAttributeSets"],
+        autoNumbering: thisExtensionSection["autoNumbering"],
+        autoNumberingRegex: thisExtensionSection["autoNumberingRegex"],
         // options:
         allowHTML: thisMarkdownItOptionSection["allowHTML"],
         linkify: thisMarkdownItOptionSection["linkify"],
@@ -85,6 +87,12 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         tooltipFormat: "Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["tocDecoratorStyle"]) 
+    });
+    settings.pluginSyntaxDecorators.push({
+        regexString: settings.autoNumberingRegex,
+        tooltipFormat: "Auto-Numbering Settings",
+        decorationType: importContext.vscode.window.createTextEditorDecorationType(
+            thisExtensionSection["autoNumberingDecoratorStyle"]) 
     });
     return settings;
 }; //getSettings

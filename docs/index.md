@@ -1,5 +1,3 @@
-[]()
-
 VSCode: Extensible Markdown Converter[](title)
 
 [*Sergey A Kryukov*](https://www.SAKryukov.org)

@@ -24,7 +24,7 @@ That said, there is no a need for different Markdown extensions. It's quite enou
 - Optional Detection of the document title based on user-configurable Regular Expression;
 - Optional preview in the default Web browser;
 - Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching generated HTML file;
-- Configuration of all processing detail of the extension, ["markdown-it"](https://www.npmjs.com/package/markdown-it) and its plug-ins, from a single source.
+- Configuration of all processing detail of the extension, "[markdown-it](https://www.npmjs.com/package/markdown-it)" and its plug-ins, from a single source.
 
 ## Usage
 
@@ -174,6 +174,9 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | Message format for the message produced in the output HTML in case of invalid Regular Expression |
 | markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | Message format for the message produced in the output HTML in case of the file reading failure |
 | markdown.extension.convertToHtml.includeLocatorDecoratorStyle | see ["settings.json" sample](#heading.special-settings.json) | CSS style for syntax coloring of the file include extended Markdown tag element |
+| markdown.extension.convertToHtml.autoNumbering | null | Structure of auto-numbering; see [Auto-Numbering](#heading.auto-numbering) |
+|markdown.extension.convertToHtml.autoNumberingRegex | `\[\]\(\=numbering([\s\S]*?)\=\)` | Defines Regex pattern for the tag used to define structure of auto-numbering at the document level. See [Auto-Numbering](#heading.auto-numbering). This tag should come as a first paragraph on a Markdown document |
+| markdown.extension.convertToHtml.autoNumberingDecoratorStyle | see [Auto-Numbering](#heading.auto-numbering) | CSS style for syntax coloring of the auto-numbering extended Markdown tag element (above) |
 
 ### Markdown-it Options
 
@@ -277,6 +280,60 @@ The File Includes feature allows [including](#special.include.file) an external 
 ### Syntax Coloring
 
 Syntax coloring can be defined using a pair of configuration settings a Regular Expression and a set of CSS properties. A regular expression should contain additional *group* marked by round brackets (), according to the Regular Expression syntax. This group is used in the text of the *tooltip* shown by the matching text fragment when a mouse cursor hovers over it. The matching text is styled according to the provided CSS style set. Please see the properties `*Regex*` and `style` in the ["settings.json" sample](#special-settings.json).
+
+### Auto-Numbering
+
+Version 5.0.0 introduced optional user-configurable auto-numbering option. Auto-numbering can be configured either at the level of Visual Studio Code settings options `markdown.extension.convertToHtml.autoNumbering` and `markdown.extension.convertToHtml.autoNumberingRegex`, or at the document level, in the extension tag matching the Regular Expression defined by `markdown.extension.convertToHtml.autoNumberingRegex`, by default: `\[\]\(\=numbering([\s\S]*?)\=\)`. If used, this tag should come as a first paragraph in a Markdown document. 
+
+By default, auto-numbering is not used. This is the case when both the auto-numbering tag is not present in the document and the option `markdown.extension.convertToHtml.autoNumbering`. If both conditions are met, document-level specification of auto-numbering takes precedence.
+
+This is a JavaScript sample of the plugin options object with default values:
+```
+{
+    enableHeadingId: true,
+    autoNumbering: undefined,
+    autoNumberingRegex: "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)",
+    includeLevel: [1, 2, 3, 4, 5, 6],
+    tocContainerClass: "toc",
+    tocRegex: "^\\[\\]\\(toc\\)",
+    excludeFromTocRegex: "\\[\\]\\(notoc\\)",
+    defaultListElement: "ul",
+    listElements: ["ul", "ul", "ul", "ul", "ul", "ul"],
+    defaultListElementAttributeSet: { style: "list-style-type: none;" },
+    listElementAttributeSets: [],
+    idPrefix: "headings."
+}
+```
+This is the representative sample of the fragment of the Markdown code using the extended syntax for passing auto-numbering option. This is a tag which should come as a first paragraph of the document:
+
+```
+[](=numbering                {
+    "pattern": [
+        { "start": 1 },
+        { "prefix": "Chapter ", "start": 1 },
+        { },
+        { "start": 1, "separator": ".", "standAlong": true },
+        { "suffix": ") ", "start": "a", "separator":".", "standAlong":true }
+    ],
+    "defaultPrefix": "",
+    "defaultSuffix": ". ",
+    "defaultStart": 1,
+    "defaultSeparator": "."
+}=)
+
+```
+
+First of all, all options come on two levels: general for the entire document (named `default*`) and per heading level, described in the property `pattern`. The exclusion is the option `standAlong` which appears only in `patter` and is only defined for individual heading levels. 
+
+By default, a heading number is shown as a multi-component string including number of upper-level headings, such as in "2.11.3". The option `standAlong` is used to disable upper-level part, showing, in this example, just "3".
+
+| Property Name | Default | Description |
+| --- | --- | --- |
+| prefix<br/>defaultPrefix | `""` | String which comes before number. Typical used include "Chapter ", "Part " |
+| suffix<br/>defaultSuffix | `". "` | String which comes after number. It is used to separate number and heading caption |
+| start<br/>defaultStart | 1 | Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character. |
+| separator<br/>defaultSeparator | 1 | Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character. | . | String (most typically, as single-character string) delimiting components of number inherited from upper-level headings |
+| standAlong | `undefined`| "Stand along" flag defining that for some individual levels of headings, the components of number inherited from upper-level headings are not shown |
 
 ## Additional Plug-ins
 

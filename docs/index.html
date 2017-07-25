@@ -27,7 +27,7 @@
 <p>Since v. 2.0.0, the user can extend Markdown features by installing any of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> that are <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">abundantly available</a> in the <a href="https://www.npmjs.com">npm package registry</a>. All the packages can be configured from a single source: “settings.json”, <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a>.</p>
 <p>That said, there is no a need for different Markdown extensions. It’s quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.</p>
 <h2 id="heading.contents">Contents</h2>
-<p><div class="toc"><ul style="list-style-type: none;"><li><a href="#heading.contents">Contents</a></li><li><a href="#heading.features">Features</a></li><li><a href="#heading.usage">Usage</a><ul style="list-style-type: none;"><li><a href="#heading.preview">Preview</a></li></ul></li><li><a href="#heading.extending-of20markdown20syntax">Extending of Markdown Syntax</a><ul style="list-style-type: none;"><li><a href="#heading.markdown-it-extensions">Markdown-it Extensions</a></li><li><a href="#heading.extensible-markdown20converter20embedded20extensions">Extensible Markdown Converter Embedded Extensions</a></li><li><a href="#heading.extensible-markdown20converter20user-installed20extensions">Extensible Markdown Converter User-Installed Extensions</a></li></ul></li><li><a href="#heading.settings">Settings</a><ul style="list-style-type: none;"><li><a href="#heading.three-levels20of20settings">Three Levels of Settings</a></li><li><a href="#heading.general-options">General Options</a></li><li><a href="#heading.extensible-markdown20converter20extension20options">Extensible Markdown Converter Extension Options</a></li><li><a href="#heading.markdown-it-options">Markdown-it Options</a></li><li><a href="#heading.settings-sample">Settings Sample</a></li></ul></li><li><a href="#heading.advanced-usage20and20settings">Advanced Usage and Settings</a><ul style="list-style-type: none;"><li><a href="#heading.typographer">Typographer</a></li><li><a href="#heading.detecting-document20title">Detecting Document Title</a></li><li><a href="#heading.file-includes">File Includes</a></li><li><a href="#heading.syntax-coloring">Syntax Coloring</a></li></ul></li><li><a href="#heading.additional-plug-ins">Additional Plug-ins</a><ul style="list-style-type: none;"><li><a href="#heading.installation">Installation</a></li><li><a href="#heading.customization-of20additional20plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
+<p><div class="toc"><ul style="list-style-type: none;"><li><a href="#heading.contents">Contents</a></li><li><a href="#heading.features">Features</a></li><li><a href="#heading.usage">Usage</a><ul style="list-style-type: none;"><li><a href="#heading.preview">Preview</a></li></ul></li><li><a href="#heading.extending-of20markdown20syntax">Extending of Markdown Syntax</a><ul style="list-style-type: none;"><li><a href="#heading.markdown-it-extensions">Markdown-it Extensions</a></li><li><a href="#heading.extensible-markdown20converter20embedded20extensions">Extensible Markdown Converter Embedded Extensions</a></li><li><a href="#heading.extensible-markdown20converter20user-installed20extensions">Extensible Markdown Converter User-Installed Extensions</a></li></ul></li><li><a href="#heading.settings">Settings</a><ul style="list-style-type: none;"><li><a href="#heading.three-levels20of20settings">Three Levels of Settings</a></li><li><a href="#heading.general-options">General Options</a></li><li><a href="#heading.extensible-markdown20converter20extension20options">Extensible Markdown Converter Extension Options</a></li><li><a href="#heading.markdown-it-options">Markdown-it Options</a></li><li><a href="#heading.settings-sample">Settings Sample</a></li></ul></li><li><a href="#heading.advanced-usage20and20settings">Advanced Usage and Settings</a><ul style="list-style-type: none;"><li><a href="#heading.typographer">Typographer</a></li><li><a href="#heading.detecting-document20title">Detecting Document Title</a></li><li><a href="#heading.file-includes">File Includes</a></li><li><a href="#heading.syntax-coloring">Syntax Coloring And So on</a></li><li><a href="#heading.auto-numbering">Auto-Numbering</a></li></ul></li><li><a href="#heading.additional-plug-ins">Additional Plug-ins</a><ul style="list-style-type: none;"><li><a href="#heading.installation">Installation</a></li><li><a href="#heading.customization-of20additional20plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
 <h2 id="heading.features">Features</h2>
 <ul>
 <li>Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;</li>
@@ -38,7 +38,7 @@
 <li>Optional Detection of the document title based on user-configurable Regular Expression;</li>
 <li>Optional preview in the default Web browser;</li>
 <li>Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching generated HTML file;</li>
-<li>Configuration of all processing detail of the extension, <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> and its plug-ins, from a single source.</li>
+<li>Configuration of all processing detail of the extension, “<a href="https://www.npmjs.com/package/markdown-it">markdown-it</a>” and its plug-ins, from a single source.</li>
 </ul>
 <h2 id="heading.usage">Usage</h2>
 <p>Open Markdown file (.md) in Visual Studio Code and activate the editor’s context menu, use the command “Markdown: Convert to HTML”, to convert this file. All files found in a currently opened workspace can be converted at once with the command “Markdown: Convert to HTML all .md files in workspace”. This command appears in context menu of any editor, and also in the Explorer context menu.</p>
@@ -278,6 +278,21 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
 <td>markdown.extension.convertToHtml.includeLocatorDecoratorStyle</td>
 <td>see <a href="#heading.special-settings.json">“settings.json” sample</a></td>
 <td>CSS style for syntax coloring of the file include extended Markdown tag element</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.autoNumbering</td>
+<td>null</td>
+<td>Structure of auto-numbering; see <a href="#heading.auto-numbering">Auto-Numbering</a></td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.autoNumberingRegex</td>
+<td><code>\[\]\(\=numbering([\s\S]*?)\=\)</code></td>
+<td>Defines Regex pattern for the tag used to define structure of auto-numbering at the document level. See <a href="#heading.auto-numbering">Auto-Numbering</a>. This tag should come as a first paragraph on a Markdown document</td>
+</tr>
+<tr>
+<td>markdown.extension.convertToHtml.autoNumberingDecoratorStyle</td>
+<td>see <a href="#heading.auto-numbering">Auto-Numbering</a></td>
+<td>CSS style for syntax coloring of the auto-numbering extended Markdown tag element (above)</td>
 </tr>
 </tbody>
 </table>
@@ -543,6 +558,79 @@ If the pattern match is successfully found in the Markdown document, it is writt
 <p>The File Includes feature allows <a href="#special.include.file">including</a> an external file in the source Markdown document, before it is parsed. The file path is relative to the current document where the include element is placed.</p>
 <h3 id="heading.syntax-coloring">Syntax Coloring</h3>
 <p>Syntax coloring can be defined using a pair of configuration settings a Regular Expression and a set of CSS properties. A regular expression should contain additional <em>group</em> marked by round brackets (), according to the Regular Expression syntax. This group is used in the text of the <em>tooltip</em> shown by the matching text fragment when a mouse cursor hovers over it. The matching text is styled according to the provided CSS style set. Please see the properties <code>*Regex*</code> and <code>style</code> in the <a href="#special-settings.json">“settings.json” sample</a>.</p>
+<h3 id="heading.auto-numbering">Auto-Numbering</h3>
+<p>Version 5.0.0 introduced optional user-configurable auto-numbering option. Auto-numbering can be configured either at the level of Visual Studio Code settings options <code>markdown.extension.convertToHtml.autoNumbering</code> and <code>markdown.extension.convertToHtml.autoNumberingRegex</code>, or at the document level, in the extension tag matching the Regular Expression defined by <code>markdown.extension.convertToHtml.autoNumberingRegex</code>, by default: <code>\[\]\(\=numbering([\s\S]*?)\=\)</code>. If used, this tag should come as a first paragraph in a Markdown document.</p>
+<p>By default, auto-numbering is not used. This is the case when both the auto-numbering tag is not present in the document and the option <code>markdown.extension.convertToHtml.autoNumbering</code>. If both conditions are met, document-level specification of auto-numbering takes precedence.</p>
+<p>This is a JavaScript sample of the plugin options object with default values:</p>
+<pre><code>{
+    enableHeadingId: true,
+    autoNumbering: undefined,
+    autoNumberingRegex: &quot;\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)&quot;,
+    includeLevel: [1, 2, 3, 4, 5, 6],
+    tocContainerClass: &quot;toc&quot;,
+    tocRegex: &quot;^\\[\\]\\(toc\\)&quot;,
+    excludeFromTocRegex: &quot;\\[\\]\\(notoc\\)&quot;,
+    defaultListElement: &quot;ul&quot;,
+    listElements: [&quot;ul&quot;, &quot;ul&quot;, &quot;ul&quot;, &quot;ul&quot;, &quot;ul&quot;, &quot;ul&quot;],
+    defaultListElementAttributeSet: { style: &quot;list-style-type: none;&quot; },
+    listElementAttributeSets: [],
+    idPrefix: &quot;headings.&quot;
+}
+</code></pre>
+<p>This is the representative sample of the fragment of the Markdown code using the extended syntax for passing auto-numbering option. This is a tag which should come as a first paragraph of the document:</p>
+<pre><code>[](=numbering                {
+    &quot;pattern&quot;: [
+        { &quot;start&quot;: 1 },
+        { &quot;prefix&quot;: &quot;Chapter &quot;, &quot;start&quot;: 1 },
+        { },
+        { &quot;start&quot;: 1, &quot;separator&quot;: &quot;.&quot;, &quot;standAlong&quot;: true },
+        { &quot;suffix&quot;: &quot;) &quot;, &quot;start&quot;: &quot;a&quot;, &quot;separator&quot;:&quot;.&quot;, &quot;standAlong&quot;:true }
+    ],
+    &quot;defaultPrefix&quot;: &quot;&quot;,
+    &quot;defaultSuffix&quot;: &quot;. &quot;,
+    &quot;defaultStart&quot;: 1,
+    &quot;defaultSeparator&quot;: &quot;.&quot;
+}=)
+
+</code></pre>
+<p>First of all, all options come on two levels: general for the entire document (named <code>default*</code>) and per heading level, described in the property <code>pattern</code>. The exclusion is the option <code>standAlong</code> which appears only in <code>patter</code> and is only defined for individual heading levels.</p>
+<p>By default, a heading number is shown as a multi-component string including number of upper-level headings, such as in “2.11.3”. The option <code>standAlong</code> is used to disable upper-level part, showing, in this example, just “3”.</p>
+<table>
+<thead>
+<tr>
+<th>Property Name</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>prefix<br/>defaultPrefix</td>
+<td><code>&quot;&quot;</code></td>
+<td>String which comes before number. Typical used include &quot;Chapter &quot;, &quot;Part &quot;</td>
+</tr>
+<tr>
+<td>suffix<br/>defaultSuffix</td>
+<td><code>&quot;. &quot;</code></td>
+<td>String which comes after number. It is used to separate number and heading caption</td>
+</tr>
+<tr>
+<td>start<br/>defaultStart</td>
+<td>1</td>
+<td>Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character.</td>
+</tr>
+<tr>
+<td>separator<br/>defaultSeparator</td>
+<td>1</td>
+<td>Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character.</td>
+</tr>
+<tr>
+<td>standAlong</td>
+<td><code>undefined</code></td>
+<td>“Stand along” flag defining that for some individual levels of headings, the components of number inherited from upper-level headings are not shown</td>
+</tr>
+</tbody>
+</table>
 <h2 id="heading.additional-plug-ins">Additional Plug-ins</h2>
 <p>Since v. 2.0.0, additional <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">plug-ins</a> can be installed by the users of the extension and configured for the use with Visual Studio Code.</p>
 <h3 id="heading.installation">Installation</h3>

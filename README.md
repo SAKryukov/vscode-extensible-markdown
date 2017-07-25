@@ -14,7 +14,7 @@ See [detailed documentation](https://sakryukov.github.io/vscode-markdown-to-html
 
 - Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;
 - A possibility of installation of ["markdown-it" plug-ins](https://www.npmjs.com/package/markdown-it) in an arbitrary directory, without the need to install "markdown-it" itself;
-- Optional user-configurable **auto-numbering** with rich set of options
+- Optional user-configurable **auto-numbering** with rich set of options;
 - User-configurable Markup syntax coloring for plug-ins;
 - Optional embedding of CSS in HTML;
 - Optional Detection of the document title based on user-configurable Regular Expression;

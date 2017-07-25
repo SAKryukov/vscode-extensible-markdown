@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.4.0
+
+* Added user-configurable auto-numbering
+
 ## Version 5.3.0
 
 * Fixed critical bugs in the embedded markdown-it plug-in: shifted sequence of `id` values in TOC when some heading levels are excluded

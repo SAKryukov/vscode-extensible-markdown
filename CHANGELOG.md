@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.5.0
+
+* Fixed known bugs in 5.4.0: incorrect auto numbering default in settings, redundant re-setting of handler in the embedded markdown-it plugin
+
 ## Version 5.4.0
 
 * Added user-configurable auto-numbering

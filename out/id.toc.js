@@ -39,7 +39,51 @@ module.exports = function (md, userOptions) {
     let idCounts = { headings: 0, toc: 0 };
     let idSet = [];
 
-    // entry point:
+    md.core.ruler.before("normalize", "detectAutoNumbering", function (state) {
+        let regexp;
+        try {
+            regexp = new RegExp(options.autoNumberingRegex);
+        } catch (ex) {
+            state.src = util.format(
+                "<h1>Invalid auto-numbering Regular Expression: %s<br/><br/>%s</h1>",
+                ex.toString(),
+                options.autoNumberingRegex);
+            return;
+        } //exception
+        let failedJsonParse = false;
+        let match;
+        try {
+            match = regexp.exec(state.src);
+            if (!match) return;
+            if (!match.length) return;
+            if (match.length < 2) return;
+            options.autoNumbering = JSON.parse(match[1]);
+        } catch (ex) {
+            failedJsonParse = true;
+            const errorString = ex.toString();
+            const errorTerms = errorString.split(' ');
+            let errorPosition;
+            for (let index in errorTerms) {
+                errorPosition = parseInt(errorTerms[index]);
+                if (errorPosition) break;
+            } //loop
+            let matchText = match[1] && match[1].length > 0 ? match[1] : '';
+            if (errorPosition && matchText) {
+                matchText = [
+                    matchText.slice(0, errorPosition),
+                    "<b style=\"background-color:red; color:yellow;\"> &blacktriangleright;</b>",
+                    matchText.slice(errorPosition)].join('');
+            } //if
+            state.src = util.format(
+                "<h1>Invalid auto-numbering JSON structure:</h1><h1>%s:</h1><p>%s</p>",
+                errorString,
+                matchText);
+        } finally {
+            if (match && !failedJsonParse)
+                state.src = state.src.slice(match[0].length, state.src.length);
+        } //exception
+    }); //md.core.ruler.before
+
     md.core.ruler.before("inline", "buildToc", function (state) {
         if (!options.enableHeadingId)   // inconsistent with having toc/no-toc tags, 
             return;                     // so leave them as is
@@ -102,42 +146,8 @@ module.exports = function (md, userOptions) {
             if (!propertyValue) return defaultValue;
             return propertyValue;
         } //getOption
-        function getDocumentLevelOptions(tokens) {
-            if (tokens.length < 3) return;
-            if (!options.autoNumberingRegex) return;
-            if (tokens[0].type != "paragraph_open" || tokens[1].type != "inline" || tokens[2].type != "paragraph_close")
-                return;
-            let regexp;
-            try {
-                regexp = new RegExp(options.autoNumberingRegex);
-            } catch (ex) {
-                tokens[1].content = util.format(
-                    "<h1>Invalid auto-numbering Regular Expression: %s<br/><br/>%s</h1>",
-                    ex.toString(),
-                    options.autoNumberingRegex);
-                return;
-            } //exception
-            let failedJsonParse = false, hasMatch = false;
-            try {
-                const match = regexp.exec(tokens[1].content);
-                if (!match) return;
-                if (!match.length) return;
-                if (match.length < 2) return;
-                hasMatch = !!match;
-                return JSON.parse(match[1]);
-            } catch (ex) {
-                failedJsonParse = true;
-                let val = util.format("Invalid auto-numbering JSON structure: %s", ex.toString());
-                tokens[1].content = util.format("<h1>Invalid auto-numbering JSON structure: %s:</h1>", ex.toString())
-                    + tokens[1].content;
-            } finally {
-                if (hasMatch && !failedJsonParse)
-                    tokens.splice(0, 3);
-            } //exception
-        } //getDocumentLevelOptions
         const initializeAutoNumbering = function (tokens) {
-            let effectiveOptions = getDocumentLevelOptions(tokens);
-            if (!effectiveOptions) effectiveOptions = options.autoNumbering;
+            const effectiveOptions = options.autoNumbering;
             if (!effectiveOptions) return null;
             const theSet = {
                 level: -1,

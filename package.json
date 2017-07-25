@@ -237,20 +237,12 @@
                     }
                 },
                 "markdown.extension.convertToHtml.autoNumbering": {
-                    "markdown.extension.convertToHtml.defaultListElementAttributeSet": {
-                        "type": "object",
-                        "default": {
-                            "pattern": [ { "start": "1" }, { "start": "1" }, { "start": "1" }, { "start": "1" } ],
-                            "defaultSuffix": ". ",
-                            "defaultPrefix": "",
-                            "defaultStart": 1,
-                            "defaultSeparator": "."
-                        }
-                    }
+                    "type": "object",
+                    "default": null
                 },
                 "markdown.extension.convertToHtml.autoNumberingRegex": {
                     "type": "string",
-                    "default": "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)"                    
+                    "default": "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)"
                 },
                 "markdown.extension.convertToHtml.autoNumberingDecoratorStyle": {
                     "type": "object",

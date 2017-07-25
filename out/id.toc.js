@@ -34,6 +34,10 @@ module.exports = function (md, userOptions) {
     // no magic function names:
     const tocFunctionNames = { open: "tocOpen", close: "tocClose", body: "tocBody" };
     const ruleName = "toc"; // works with null, but let's care about other plug-ins
+    let firstTime = true;
+    let usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
+    let idCounts = { headings: 0, toc: 0 };
+    let idSet = [];
 
     // entry point:
     md.core.ruler.before("inline", "buildToc", function (state) {
@@ -52,14 +56,15 @@ module.exports = function (md, userOptions) {
         if (excludeFromTocRegex.constructor != RegExp)
             excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
         //
-        const usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
-        const idCounts = { headings: 0, toc: 0 };
-        const idSet = [];
-        buildIdSet(idSet, state.tokens, excludeFromTocRegex, usedIds);
-        addIdAttributes(idCounts, idSet);
+        usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
+        idCounts = { headings: 0, toc: 0 };
+        idSet = [];
+        buildIdSet(idSet, state.tokens, excludeFromTocRegex);
+        addIdAttributes();
         if (!doToc) return;
-        createToc(state, usedIds, idCounts, idSet);
+        createToc(state);
         detectAndPushToc(tocRegexp);
+        firstTime = false;
     }); //md.core.ruler.before
 
     const slugify = function (s, used) {
@@ -191,7 +196,7 @@ module.exports = function (md, userOptions) {
         return { initializer: initializeAutoNumbering, iterator: iterateAutoNumbering };
     } //autoNumbering
 
-    function buildIdSet(idSet, tokens, excludeFromTocRegex, usedIds) {
+    function buildIdSet(idSet, tokens, excludeFromTocRegex) {
         const autoNumberingMethods = autoNumbering();
         const autoSet = autoNumberingMethods.initializer(tokens);
         for (let index = 1; index < tokens.length; ++index) {
@@ -213,7 +218,8 @@ module.exports = function (md, userOptions) {
         } //loop
     } //buildIdSet
 
-    function addIdAttributes(idCounts, idSet) {
+    function addIdAttributes() {
+        if (!firstTime) return;
         const headingOpenPrevious = md.renderer.rules.heading_open;
         md.renderer.rules.heading_open = function (tokens, index, userOptions, object, renderer) {
             tokens[index].attrs = tokens[index].attrs || [];
@@ -232,12 +238,13 @@ module.exports = function (md, userOptions) {
         }; //md.renderer.rules.heading_open
     } //addIdAttributes
 
-    function createToc(state, usedIds, idCounts, idSet) {
+    function createToc(state) {
+        if (!firstTime) return;
         md.renderer.rules[tocFunctionNames.open] = function (tokens, index) {
             return util.format("<div class=\"%s\">", options.tocContainerClass);
         }; // open
         md.renderer.rules[tocFunctionNames.body] = function (tokens, index) {
-            return createTocTree(0, state.tokens, usedIds, idCounts, idSet)[1];
+            return createTocTree(0, state.tokens)[1];
         }; //body
         md.renderer.rules[tocFunctionNames.close] = function (tokens, index) {
             return "</div>";
@@ -245,6 +252,7 @@ module.exports = function (md, userOptions) {
     } //createToc
 
     function detectAndPushToc(tocRegexp) {
+        if (!firstTime) return;
         md.inline.ruler.before("text", ruleName, function toc(state, silent) {
             if (silent) return false;
             const match = tocRegexp.exec(state.src);
@@ -258,7 +266,7 @@ module.exports = function (md, userOptions) {
         });
     } //detectAndPushToc
 
-    function createTocTree(tokenIndex, tokens, usedIds, idCounts, idSet) {
+    function createTocTree(tokenIndex, tokens) {
         let headings = [],
             listItemContent = "",
             currentLevel,

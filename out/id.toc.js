@@ -2,6 +2,8 @@
 
 const defaultOptions = {
     enableHeadingId: true,
+    enableAutoNumbering: false,
+    autoNumberingRegex: "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)",
     autoNumbering: {
         "pattern": [],
         "defaultSuffix": ". ",
@@ -9,7 +11,6 @@ const defaultOptions = {
         "defaultStart": 1,
         "defaultSeparator": "."
     },
-    autoNumberingRegex: "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)",
     includeLevel: [2, 4, 5, 6],
     tocContainerClass: "toc",
     tocRegex: "^\\[\\]\\(toc\\)",
@@ -26,20 +27,8 @@ module.exports = function (md, options) {
 
     const util = require("util");
 
-    if (!options) options = {}; 
-    (function populateWithDefault(value, defaultValue) {
-        const constants = { objectType: typeof {} };
-        if (!defaultValue) return;
-        if (!value) return;
-        if (typeof defaultValue == constants.objectType && typeof value == constants.objectType) {
-            for (var index in defaultValue)
-                if (!(index in value))
-                    value[index] = defaultValue[index];
-                else
-                    populateWithDefault(value[index], defaultValue[index]);
-        } else
-            value = defaultValue;
-    })(options, defaultOptions); //populateWithDefault
+    if (!options) options = {};
+    populateWithDefault(options, defaultOptions);
 
     // no magic function names:
     const tocFunctionNames = { open: "tocOpen", close: "tocClose", body: "tocBody" };
@@ -67,7 +56,9 @@ module.exports = function (md, options) {
             if (!match) return;
             if (!match.length) return;
             if (match.length < 2) return;
-            options.autoNumbering = JSON.parse(match[1]);
+            let privilegedOptions = JSON.parse(match[1]); 
+            populateWithDefault(privilegedOptions, options.autoNumbering);
+            options.autoNumbering = privilegedOptions;
         } catch (ex) {
             failedJsonParse = true;
             const errorString = ex.toString();
@@ -159,6 +150,7 @@ module.exports = function (md, options) {
         const initializeAutoNumbering = function (tokens) {
             const effectiveOptions = options.autoNumbering;
             if (!effectiveOptions) return null;
+            if (!effectiveOptions.enableAutoNumbering) return null;
             const theSet = {
                 level: -1,
                 levels: [],
@@ -360,4 +352,18 @@ module.exports = function (md, options) {
         return util.format("<%s%s>%s</%s>", listTag, elementAttributes, headings.join(""), listTag);
     } //listElement
 
+    function populateWithDefault(value, defaultValue) {
+        const constants = { objectType: typeof {} };
+        if (!defaultValue) return;
+        if (!value) return;
+        if (typeof defaultValue == constants.objectType && typeof value == constants.objectType) {
+            for (var index in defaultValue)
+                if (!(index in value))
+                    value[index] = defaultValue[index];
+                else
+                    populateWithDefault(value[index], defaultValue[index]);
+        } else
+            value = defaultValue;
+    } //populateWithDefault
+    
 }; //module.exports

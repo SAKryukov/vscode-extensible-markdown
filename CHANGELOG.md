@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.5.1
+
+* Fixed regression bug in auto-numbering, related to handling of RegExp failure: if first token is paragraph and not a auto-numbering settings tag, it wasn't rendering
+
 ## Version 5.5.0
 
 * Fixed known bugs in 5.4.0: incorrect auto numbering default in settings, redundant re-setting of handler in the embedded markdown-it plugin

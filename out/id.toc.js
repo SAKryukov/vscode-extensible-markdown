@@ -117,12 +117,13 @@ module.exports = function (md, userOptions) {
                     options.autoNumberingRegex);
                 return;
             } //exception
-            let failedJsonParse = false;
+            let failedJsonParse = false, hasMatch = false;
             try {
                 const match = regexp.exec(tokens[1].content);
                 if (!match) return;
                 if (!match.length) return;
                 if (match.length < 2) return;
+                hasMatch = !!match;
                 return JSON.parse(match[1]);
             } catch (ex) {
                 failedJsonParse = true;
@@ -130,7 +131,7 @@ module.exports = function (md, userOptions) {
                 tokens[1].content = util.format("<h1>Invalid auto-numbering JSON structure: %s:</h1>", ex.toString())
                     + tokens[1].content;
             } finally {
-                if (!failedJsonParse)
+                if (hasMatch && !failedJsonParse)
                     tokens.splice(0, 3);
             } //exception
         } //getDocumentLevelOptions

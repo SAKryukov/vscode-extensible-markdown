@@ -22,14 +22,24 @@ const defaultOptions = {
 }; //defaultOptions
 defaultOptions.bulletedListType = defaultOptions.defaultListElement;
 
-module.exports = function (md, userOptions) {
+module.exports = function (md, options) {
 
     const util = require("util");
 
-    const options = defaultOptions;
-    if (userOptions)
-        for (let index in userOptions)
-            options[index] = userOptions[index];
+    if (!options) options = {}; 
+    (function populateWithDefault(value, defaultValue) {
+        const constants = { objectType: typeof {} };
+        if (!defaultValue) return;
+        if (!value) return;
+        if (typeof defaultValue == constants.objectType && typeof value == constants.objectType) {
+            for (var index in defaultValue)
+                if (!(index in value))
+                    value[index] = defaultValue[index];
+                else
+                    populateWithDefault(value[index], defaultValue[index]);
+        } else
+            value = defaultValue;
+    })(options, defaultOptions); //populateWithDefault
 
     // no magic function names:
     const tocFunctionNames = { open: "tocOpen", close: "tocClose", body: "tocBody" };
@@ -232,7 +242,7 @@ module.exports = function (md, userOptions) {
     function addIdAttributes() {
         if (!firstTime) return;
         const headingOpenPrevious = md.renderer.rules.heading_open;
-        md.renderer.rules.heading_open = function (tokens, index, userOptions, object, renderer) {
+        md.renderer.rules.heading_open = function (tokens, index, options, object, renderer) {
             tokens[index].attrs = tokens[index].attrs || [];
             let title = tokens[index + 1].children.reduce(function (accumulator, child) {
                 return accumulator + child.content;

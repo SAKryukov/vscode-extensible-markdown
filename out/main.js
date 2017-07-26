@@ -286,7 +286,7 @@ exports.activate = function (context) {
                 semantic.thenableRegex(plugin.regexString, text, true).then(
                     function (start, length, groups) {
                         let title = plugin.tooltipFormat;
-                        if (groups[1])
+                        if (groups[1] && title.includes("%s"))
                             title = util.format(title, groups[1].toString());
                         decoratorSet.push({
                             range: semantic.getVSCodeRange(vscode, document, start, groups[0]),

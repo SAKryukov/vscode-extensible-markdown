@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = function (options, headingLevel) {
 
     function getOption(optionSet, level, property, defaultValue) {

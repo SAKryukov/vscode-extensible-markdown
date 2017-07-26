@@ -65,7 +65,7 @@ module.exports = function (md, options) {
             const errorString = ex.toString();
             const errorTerms = errorString.split(' ');
             let errorPosition;
-            for (let index in errorTerms) {
+            for (const index in errorTerms) {
                 errorPosition = parseInt(errorTerms[index]);
                 if (errorPosition) break;
             } //loop
@@ -263,7 +263,7 @@ module.exports = function (md, options) {
                     elementAttributes += util.format(" %s=\"%s\"", index, options.listElementAttributeSets[level - 1][index]);
         if (options.listElementAttributeSets)
             if (options.listElementAttributeSets.length < 1)
-                for (let index in options.defaultListElementAttributeSet)
+                for (const index in options.defaultListElementAttributeSet)
                     elementAttributes += util.format(" %s=\"%s\"",
                         index,
                         options.defaultListElementAttributeSet[index]);
@@ -274,7 +274,7 @@ module.exports = function (md, options) {
         if (!defaultValue) return;
         if (!value) return;
         if (defaultValue.constructor == Object && value.constructor == Object) {
-            for (var index in defaultValue)
+            for (const index in defaultValue)
                 if (!(index in value))
                     value[index] = defaultValue[index];
                 else

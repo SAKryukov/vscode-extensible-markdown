@@ -1,8 +1,9 @@
 # Changelog
 
-## Version 5.5.5
+## Version 5.6.0
 
 * New major feature: heading number iterates not only by numbers or letters, but also by array of "numbers", such as ["One", "Two", "Three"]
+* Regression issue fix: arrays in user options are not overridden by default, first of all, `includeLevel` used in TOC
 
 ## Version 5.5.4
 

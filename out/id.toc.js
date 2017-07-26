@@ -27,7 +27,7 @@ module.exports = function (md, options) {
 
     const util = require("util");
     const autoNumbering = require("./autoNumbering");
-    
+
     if (!options) options = {};
     populateWithDefault(options, defaultOptions);
 
@@ -65,8 +65,8 @@ module.exports = function (md, options) {
             const errorString = ex.toString();
             const errorTerms = errorString.split(' ');
             let errorPosition;
-            for (const index in errorTerms) {
-                errorPosition = parseInt(errorTerms[index]);
+            for (const term of errorTerms) {
+                errorPosition = parseInt(term);
                 if (errorPosition) break;
             } //loop
             let matchText = match[1] && match[1].length > 0 ? match[1] : '';
@@ -77,7 +77,7 @@ module.exports = function (md, options) {
                     matchText.slice(errorPosition)].join('');
             } //if
             state.src = util.format(
-                "<h1>Invalid auto-numbering JSON structure:</h1><h1>%s:</h1><p>%s</p>",
+                "<h1>Invalid auto-numbering JSON structure:</h1><h1>%s:</h1><big><pre>%s</pre></big>",
                 errorString,
                 matchText);
         } finally {
@@ -262,8 +262,8 @@ module.exports = function (md, options) {
                 for (let index in options.listElementAttributeSets[level - 1])
                     elementAttributes += util.format(" %s=\"%s\"", index, options.listElementAttributeSets[level - 1][index]);
         if (options.listElementAttributeSets)
-            if (options.listElementAttributeSets.length < 1)
-                for (const index in options.defaultListElementAttributeSet)
+            for (const index in options.defaultListElementAttributeSet)
+                if (options.listElementAttributeSets.length < 1)
                     elementAttributes += util.format(" %s=\"%s\"",
                         index,
                         options.defaultListElementAttributeSet[index]);

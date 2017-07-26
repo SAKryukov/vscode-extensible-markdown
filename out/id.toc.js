@@ -26,7 +26,8 @@ defaultOptions.bulletedListType = defaultOptions.defaultListElement;
 module.exports = function (md, options) {
 
     const util = require("util");
-
+    const autoNumbering = require("./autoNumbering");
+    
     if (!options) options = {};
     populateWithDefault(options, defaultOptions);
 
@@ -56,7 +57,7 @@ module.exports = function (md, options) {
             if (!match) return;
             if (!match.length) return;
             if (match.length < 2) return;
-            let privilegedOptions = JSON.parse(match[1]); 
+            let privilegedOptions = JSON.parse(match[1]);
             populateWithDefault(privilegedOptions, options.autoNumbering);
             options.autoNumbering = privilegedOptions;
         } catch (ex) {
@@ -126,91 +127,8 @@ module.exports = function (md, options) {
 
     function headingLevel(token) { return token.tag && parseInt(token.tag.substr(1, 1)); }
 
-    function nextNumber(number) { // number is a letter of a number as string or numeric
-        let tryNumeric = parseInt(number);
-        if (isNaN(tryNumeric)) {
-            let codePoint = number.codePointAt();
-            return String.fromCodePoint(++codePoint);
-        } else
-            return (++tryNumeric).toString();
-    } //nextNumber    
-
-    function autoNumbering() {
-        function getOption(optionSet, level, property, defaultValue) {
-            if (!defaultValue) defaultValue = '';
-            if (!optionSet) return defaultValue;
-            const pattern = optionSet.pattern;
-            if (!pattern) return defaultValue;
-            const arrayElement = pattern[level - 1];
-            if (!arrayElement) return defaultValue;
-            const propertyValue = arrayElement[property];
-            if (!propertyValue) return defaultValue;
-            return propertyValue;
-        } //getOption
-        const initializeAutoNumbering = function (tokens) {
-            const effectiveOptions = options.autoNumbering;
-            if (!effectiveOptions) return null;
-            if (!effectiveOptions.enable) return null;
-            const theSet = {
-                level: -1,
-                levels: [],
-                effectiveOptions: effectiveOptions,
-                getSeparator: function (level) {
-                    return getOption(effectiveOptions, level, "separator", effectiveOptions.defaultSeparator);
-                },
-                getStart: function (level) {
-                    return getOption(effectiveOptions, level, "start", effectiveOptions.defaultStart)
-                },
-                getPrefix: function (level) {
-                    return getOption(effectiveOptions, level, "prefix", effectiveOptions.defaultPrefix);
-                },
-                getSuffix: function (level) {
-                    return getOption(effectiveOptions, level, "suffix", effectiveOptions.defaultSuffix);
-                },
-                getStandAlong: function (level) {
-                    return getOption(effectiveOptions, level, "standAlong", effectiveOptions.defaultPrefix);
-                }
-            }; //theSet
-            theSet.getAccumulator = function (level) {
-                if (!theSet.levels[theSet.level]) return '';
-                if (!theSet.levels[theSet.level].accumulator)
-                    return theSet.levels[theSet.level].number;
-                return theSet.levels[theSet.level].accumulator
-                    + theSet.getSeparator(theSet.level)
-                    + theSet.levels[theSet.level].number
-            }; //theSet.getAccumulator
-            theSet.getNumberingText = function (level) {
-                const standAlong = theSet.getStandAlong(level);
-                return (!standAlong) && theSet.levels[level].accumulator.length > 0 ?
-                    theSet.levels[level].accumulator
-                    + theSet.getSeparator(level)
-                    + theSet.levels[level].number.toString()
-                    : theSet.levels[level].number.toString();
-            }; //theSet.getNumberingText
-            return theSet;
-        }; //initializeAutoNumbering
-        const iterateAutoNumbering = function (excludeFromToc, autoSet, token) {
-            if (!autoSet) return '';
-            if (excludeFromToc) return '';
-            const level = headingLevel(token);
-            if (!autoSet.levels[level])
-                autoSet.levels[level] = { number: autoSet.getStart(level) };
-            if (level > autoSet.level) {
-                autoSet.levels[level].number = autoSet.getStart(level);
-                autoSet.levels[level].accumulator = autoSet.getAccumulator(level);
-            } else
-                autoSet.levels[level].number = nextNumber(autoSet.levels[level].number);
-            const result = autoSet.getNumberingText(level);
-            const prefix = autoSet.getPrefix(level);
-            const suffix = autoSet.getSuffix(level);
-            autoSet.level = level;
-            return prefix + result + suffix;
-        }; //iterateAutoNumbering
-        return { initializer: initializeAutoNumbering, iterator: iterateAutoNumbering };
-    } //autoNumbering
-
     function buildIdSet(idSet, tokens, excludeFromTocRegex) {
-        const autoNumberingMethods = autoNumbering();
+        const autoNumberingMethods = autoNumbering(options, headingLevel);
         const autoSet = autoNumberingMethods.initializer(tokens);
         for (let index = 1; index < tokens.length; ++index) {
             const token = tokens[index];
@@ -365,5 +283,5 @@ module.exports = function (md, options) {
         } else
             value = defaultValue;
     } //populateWithDefault
-    
+
 }; //module.exports

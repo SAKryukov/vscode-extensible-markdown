@@ -11,7 +11,7 @@ const defaultOptions = {
         "defaultStart": 1,
         "defaultSeparator": "."
     },
-    includeLevel: [1, 2, 3, 4, 5, 6], //fixed
+    includeLevel: [1, 2, 3, 4, 5, 6],
     tocContainerClass: "toc",
     tocRegex: "^\\[\\]\\(toc\\)",
     excludeFromTocRegex: "\\[\\]\\(notoc\\)",

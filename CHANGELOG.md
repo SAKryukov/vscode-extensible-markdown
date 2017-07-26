@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.5.5
+
+* New major feature: heading number iterates not only by numbers or letters, but also by array of "numbers", such as ["One", "Two", "Three"]
+
 ## Version 5.5.4
 
 * Many improvements related to auto-numbering options, defaults and handling the options and the defaults

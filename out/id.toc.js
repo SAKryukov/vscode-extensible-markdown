@@ -270,11 +270,10 @@ module.exports = function (md, options) {
         return util.format("<%s%s>%s</%s>", listTag, elementAttributes, headings.join(""), listTag);
     } //listElement
 
-    function populateWithDefault(value, defaultValue) {
-        const constants = { objectType: typeof {} };
+    function populateWithDefault(value, defaultValue) { // special edition: it does not populate Array
         if (!defaultValue) return;
         if (!value) return;
-        if (typeof defaultValue == constants.objectType && typeof value == constants.objectType) {
+        if (defaultValue.constructor == Object && value.constructor == Object) {
             for (var index in defaultValue)
                 if (!(index in value))
                     value[index] = defaultValue[index];

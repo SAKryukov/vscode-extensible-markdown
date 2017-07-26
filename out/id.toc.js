@@ -2,9 +2,9 @@
 
 const defaultOptions = {
     enableHeadingId: true,
-    enableAutoNumbering: false,
     autoNumberingRegex: "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)",
     autoNumbering: {
+        "enable": false,
         "pattern": [],
         "defaultSuffix": ". ",
         "defaultPrefix": "",
@@ -150,7 +150,7 @@ module.exports = function (md, options) {
         const initializeAutoNumbering = function (tokens) {
             const effectiveOptions = options.autoNumbering;
             if (!effectiveOptions) return null;
-            if (!effectiveOptions.enableAutoNumbering) return null;
+            if (!effectiveOptions.enable) return null;
             const theSet = {
                 level: -1,
                 levels: [],

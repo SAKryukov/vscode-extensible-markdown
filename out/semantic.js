@@ -35,7 +35,6 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         listElements: thisExtensionSection["listElements"],
         defaultListElementAttributeSet: thisExtensionSection["defaultListElementAttributeSet"],
         listElementAttributeSets: thisExtensionSection["listElementAttributeSets"],
-        enableAutoNumbering: thisExtensionSection["enableAutoNumbering"],
         autoNumbering: thisExtensionSection["autoNumbering"],
         autoNumberingRegex: thisExtensionSection["autoNumberingRegex"],
         // options:

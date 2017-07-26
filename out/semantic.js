@@ -89,6 +89,7 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
             thisExtensionSection["tocDecoratorStyle"]) 
     });
     settings.pluginSyntaxDecorators.push({
+        relativeToWholeText: true, // special case: regex is not 
         regexString: settings.autoNumberingRegex,
         tooltipFormat: "Auto-Numbering Settings",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(

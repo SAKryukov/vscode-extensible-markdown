@@ -174,9 +174,9 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored it its val
 | markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat | `!!! invalid Regular Expression of include:  "%s` | Message format for the message produced in the output HTML in case of invalid Regular Expression |
 | markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat | `!!! failed to read file "%s" !!!` | Message format for the message produced in the output HTML in case of the file reading failure |
 | markdown.extension.convertToHtml.includeLocatorDecoratorStyle | see ["settings.json" sample](#heading.special-settings.json) | CSS style for syntax coloring of the file include extended Markdown tag element |
-| markdown.extension.convertToHtml.autoNumbering | null | Structure of auto-numbering; see [Auto-Numbering](#heading.auto-numbering) |
-|markdown.extension.convertToHtml.autoNumberingRegex | `\[\]\(\=numbering([\s\S]*?)\=\)` | Defines Regex pattern for the tag used to define structure of auto-numbering at the document level. See [Auto-Numbering](#heading.auto-numbering). This tag should come as a first paragraph on a Markdown document |
-| markdown.extension.convertToHtml.autoNumberingDecoratorStyle | see [Auto-Numbering](#heading.auto-numbering) | CSS style for syntax coloring of the auto-numbering extended Markdown tag element (above) |
+| markdown.extension.convertToHtml.autoNumbering | `{ enable: false }` | Structure of auto-numbering; see [Auto-Numbering](#heading.auto-numbering); with default value `null` the effective options are taken from the embedded plugin default |
+|markdown.extension.convertToHtml.autoNumberingRegex | `\[\]\(\=numbering([\s\S]*?)\=\)` | Defines Regex pattern for the tag used to define structure of auto-numbering at the document level. See [Auto-Numbering](#heading.auto-numbering). This tag should come at first position of the Markdown document file. |
+| markdown.extension.convertToHtml.autoNumberingDecoratorStyle | see default settings | CSS style for syntax coloring of the auto-numbering extended Markdown tag element (above) |
 
 ### Markdown-it Options
 
@@ -283,44 +283,34 @@ Syntax coloring can be defined using a pair of configuration settings a Regular 
 
 ### Auto-Numbering
 
-Version 5.0.0 introduced optional user-configurable auto-numbering option. Auto-numbering can be configured either at the level of Visual Studio Code settings options `markdown.extension.convertToHtml.autoNumbering` and `markdown.extension.convertToHtml.autoNumberingRegex`, or at the document level, in the extension tag matching the Regular Expression defined by `markdown.extension.convertToHtml.autoNumberingRegex`, by default: `\[\]\(\=numbering([\s\S]*?)\=\)`. If used, this tag should come as a first paragraph in a Markdown document. 
+Version 5.0.0 introduced optional user-configurable auto-numbering option. Auto-numbering can be configured either at the level of Visual Studio Code settings options `markdown.extension.convertToHtml.autoNumbering` and `markdown.extension.convertToHtml.autoNumberingRegex`, or at the document level, in the extension tag matching the Regular Expression defined by `markdown.extension.convertToHtml.autoNumberingRegex`, by default: `\[\]\(\=numbering([\s\S]*?)\=\)`. If used, this tag should come at first position of the Markdown document file. 
 
 By default, auto-numbering is not used. This is the case when both the auto-numbering tag is not present in the document and the option `markdown.extension.convertToHtml.autoNumbering`. If both conditions are met, document-level specification of auto-numbering takes precedence.
 
-This is a JavaScript sample of the plugin options object with default values:
-```
-{
-    enableHeadingId: true,
-    autoNumbering: undefined,
-    autoNumberingRegex: "\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)",
-    includeLevel: [1, 2, 3, 4, 5, 6],
-    tocContainerClass: "toc",
-    tocRegex: "^\\[\\]\\(toc\\)",
-    excludeFromTocRegex: "\\[\\]\\(notoc\\)",
-    defaultListElement: "ul",
-    listElements: ["ul", "ul", "ul", "ul", "ul", "ul"],
-    defaultListElementAttributeSet: { style: "list-style-type: none;" },
-    listElementAttributeSets: [],
-    idPrefix: "headings."
-}
-```
-This is the representative sample of the fragment of the Markdown code using the extended syntax for passing auto-numbering option. This is a tag which should come as a first paragraph of the document:
+This is the representative sample of the fragment of the Markdown code using the extended syntax for passing auto-numbering option. This is a tag which should come in a first position of the document file:
 
 ```
-[](=numbering                {
-    "pattern": [
+[](=numbering {
+    "enable": true,
+    "defaultPrefix": "",
+    "defaultSuffix": ". ",
+    "defaultStart": 1,
+    "defaultSeparator": "."    "pattern": [
         { "start": 1 },
         { "prefix": "Chapter ", "start": 1 },
         { },
         { "start": 1, "separator": ".", "standAlong": true },
         { "suffix": ") ", "start": "a", "separator":".", "standAlong":true }
-    ],
-    "defaultPrefix": "",
-    "defaultSuffix": ". ",
-    "defaultStart": 1,
-    "defaultSeparator": "."
+    ]
 }=)
+```
 
+With default settings, minimum in-document content of the in-document auto-numbering specification would be:
+
+```
+[](=numbering {
+    "enable": true
+}=)
 ```
 
 First of all, all options come on two levels: general for the entire document (named `default*`) and per heading level, described in the property `pattern`. The exclusion is the option `standAlong` which appears only in `patter` and is only defined for individual heading levels. 

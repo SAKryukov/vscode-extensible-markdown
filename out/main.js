@@ -122,14 +122,14 @@ exports.activate = function (context) {
                 } // loop settings.additionalPlugins.plugins
                 return result;
             }()); //additionalPlugins
-            if (!lazy.markdownIt) 
+            if (!lazy.markdownIt)
                 lazy.markdownIt = (function () { // modify, depending in settings
                     const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
                     if (!extension) return;
                     const extensionPath = path.join(extension.extensionPath, "node_modules");
                     let md = require(path.join(extensionPath, "markdown-it"))().set(optionSet);
                     md.use(idToc, {
-                        excludeFromTocRegex: lazy.settings.excludeFromTocRegex, 
+                        excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                         defaultListElement: lazy.settings.tocListType,
                         listElements: lazy.settings.listElements,
                         defaultListElementAttributeSet: lazy.settings.defaultListElementAttributeSet,
@@ -283,7 +283,7 @@ exports.activate = function (context) {
                 let decoratorSet = [];
                 const document = vscode.window.activeTextEditor.document;
                 const text = document.getText();
-                semantic.thenableRegex(plugin.regexString, text, true).then(
+                semantic.thenableRegex(plugin.regexString, text, !plugin.relativeToWholeText).then(
                     function (start, length, groups) {
                         let title = plugin.tooltipFormat;
                         if (groups[1] && title.includes("%s"))
@@ -292,7 +292,7 @@ exports.activate = function (context) {
                             range: semantic.getVSCodeRange(vscode, document, start, groups[0]),
                             hoverMessage: title
                         });
-                    }); //looped occureences and groups
+                    }); //looped occurrences and groups
                 vscode.window.activeTextEditor.setDecorations(
                     plugin.decorationType, decoratorSet);
                 lazy.decorationTypeSet.push(plugin.decorationType);

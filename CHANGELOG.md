@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 5.5.4
+
+* Many improvements related to auto-numbering options, defaults and handling the options and the defaults
+* Improved syntax coloring for extended syntactic features
+
+* Fixed a bug with second run of embedded markdown-it plugin: TOC was not updated
+
 ## Version 5.5.3
 
 * Fixed a bug with second run of embedded markdown-it plugin: TOC was not updated

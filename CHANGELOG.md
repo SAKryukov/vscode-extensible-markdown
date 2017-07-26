@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 5.7.0
+
+* Improved handling of the case of invalid JSON in the in-doc auto-numbering specifications
+
 ## Version 5.6.0
 
 * New major feature: heading number iterates not only by numbers or letters, but also by array of "numbers", such as ["One", "Two", "Three"]

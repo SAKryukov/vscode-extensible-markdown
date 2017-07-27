@@ -295,7 +295,8 @@ This is the representative sample of the fragment of the Markdown code using the
     "defaultPrefix": "",
     "defaultSuffix": ". ",
     "defaultStart": 1,
-    "defaultSeparator": "."    "pattern": [
+    "defaultSeparator": ".",
+    "pattern": [
         { "start": 1 },
         { "prefix": "Chapter ", "start": 1 },
         { },

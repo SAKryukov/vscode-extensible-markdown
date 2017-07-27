@@ -319,7 +319,7 @@ By default, a heading number is shown as a multi-component string including numb
 
 | Property Name | Default | Description |
 | --- | --- | --- |
-| prefix<br/>defaultPrefix | `""` | String which comes before number. Typical used include "Chapter ", "Part " |
+| prefix<br/>defaultPrefix | `""` | String which comes before number. Typical uses include "Chapter ", "Part " |
 | suffix<br/>defaultSuffix | `". "` | String which comes after number. It is used to separate number and heading caption |
 | start<br/>defaultStart | 1 | Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character. |
 | separator<br/>defaultSeparator | 1 | Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character. | . | String (most typically, as single-character string) delimiting components of number inherited from upper-level headings |

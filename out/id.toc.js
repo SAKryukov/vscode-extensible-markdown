@@ -158,11 +158,13 @@ module.exports = function (md, options) {
                 return accumulator + child.content;
             }, "");
             // some not-so-pathological cases create redundant md.renderer.rules.heading_open call, so:
-            if (!idSet[idCounts.headings]) return;
-            const headingSlug = idSet[idCounts.headings].id;
-            tokens[index].attrs.push(["id", headingSlug]);
-            const prefix = idSet[idCounts.headings].prefix;
-            ++idCounts.headings;
+            let prefix = '';
+            if (idSet[idCounts.headings]) {
+                const headingSlug = idSet[idCounts.headings].id;
+                tokens[index].attrs.push(["id", headingSlug]);
+                prefix = idSet[idCounts.headings].prefix;
+                ++idCounts.headings;
+            } //if
             if (headingOpenPrevious)
                 return headingOpenPrevious.apply(this, arguments) + prefix;
             else

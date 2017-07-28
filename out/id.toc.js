@@ -157,6 +157,8 @@ module.exports = function (md, options) {
             let title = tokens[index + 1].children.reduce(function (accumulator, child) {
                 return accumulator + child.content;
             }, "");
+            // some not-so-pathological cases create redundant md.renderer.rules.heading_open call, so:
+            if (!idSet[idCounts.headings]) return;
             const headingSlug = idSet[idCounts.headings].id;
             tokens[index].attrs.push(["id", headingSlug]);
             const prefix = idSet[idCounts.headings].prefix;

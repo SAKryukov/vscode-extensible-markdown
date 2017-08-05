@@ -27,6 +27,7 @@ module.exports = function (md, options) {
 
     const util = require("util");
     const autoNumbering = require("./autoNumbering");
+    const autoNumberingParser = require("./autoNumbering.optionParser");
 
     if (!options) options = {};
     populateWithDefault(options, defaultOptions);
@@ -61,6 +62,19 @@ module.exports = function (md, options) {
             populateWithDefault(privilegedOptions, options.autoNumbering);
             options.autoNumbering = privilegedOptions;
         } catch (ex) {
+            // alternative:
+            let privilegedOptions;
+            try {
+                privilegedOptions = autoNumberingParser(match[1]);
+                if (privilegedOptions) {
+                    populateWithDefault(privilegedOptions, options.autoNumbering);
+                    options.autoNumbering = privilegedOptions;
+                    return;
+                } // else let exception go
+            } catch (newFormatException) {
+                // continue with JSON
+            }
+            // end alternative
             failedJsonParse = true;
             const errorString = ex.toString();
             const errorTerms = errorString.split(' ');

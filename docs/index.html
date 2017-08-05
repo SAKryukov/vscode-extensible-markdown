@@ -27,7 +27,7 @@
 <p>Since v. 2.0.0, the user can extend Markdown features by installing any of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it” plug-ins</a> that are <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">abundantly available</a> in the <a href="https://www.npmjs.com">npm package registry</a>. All the packages can be configured from a single source: “settings.json”, <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a>.</p>
 <p>That said, there is no a need for different Markdown extensions. It’s quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.</p>
 <h2 id="heading.contents">Contents</h2>
-<p><div class="toc"><ul style="list-style-type: none;"><li><a href="#heading.features">Features</a></li><li><a href="#heading.usage">Usage</a><ul style="list-style-type: none;"><li><a href="#heading.preview">Preview</a></li></ul></li><li><a href="#heading.extending-of20markdown20syntax">Extending of Markdown Syntax</a><ul style="list-style-type: none;"><li><a href="#heading.markdown-it-extensions">Markdown-it Extensions</a></li><li><a href="#heading.extensible-markdown20converter20embedded20extensions">Extensible Markdown Converter Embedded Extensions</a></li><li><a href="#heading.extensible-markdown20converter20user-installed20extensions">Extensible Markdown Converter User-Installed Extensions</a></li></ul></li><li><a href="#heading.settings">Settings</a><ul style="list-style-type: none;"><li><a href="#heading.three-levels20of20settings">Three Levels of Settings</a></li><li><a href="#heading.general-options">General Options</a></li><li><a href="#heading.extensible-markdown20converter20extension20options">Extensible Markdown Converter Extension Options</a></li><li><a href="#heading.markdown-it-options">Markdown-it Options</a></li><li><a href="#heading.settings-sample">Settings Sample</a></li></ul></li><li><a href="#heading.advanced-usage20and20settings">Advanced Usage and Settings</a><ul style="list-style-type: none;"><li><a href="#heading.typographer">Typographer</a></li><li><a href="#heading.detecting-document20title">Detecting Document Title</a></li><li><a href="#heading.file-includes">File Includes</a></li><li><a href="#heading.syntax-coloring">Syntax Coloring</a></li><li><a href="#heading.auto-numbering">Auto-Numbering</a></li></ul></li><li><a href="#heading.additional-plug-ins">Additional Plug-ins</a><ul style="list-style-type: none;"><li><a href="#heading.installation">Installation</a></li><li><a href="#heading.customization-of20additional20plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
+<p><div class="toc"><ul style="list-style-type: none;"><li><a href="#heading.features">Features</a></li><li><a href="#heading.usage">Usage</a><ul style="list-style-type: none;"><li><a href="#heading.preview">Preview</a></li></ul></li><li><a href="#heading.extending-of20markdown20syntax">Extending of Markdown Syntax</a><ul style="list-style-type: none;"><li><a href="#heading.markdown-it-extensions">Markdown-it Extensions</a></li><li><a href="#heading.extensible-markdown20converter20embedded20extensions">Extensible Markdown Converter Embedded Extensions</a></li><li><a href="#heading.extensible-markdown20converter20user-installed20extensions">Extensible Markdown Converter User-Installed Extensions</a></li></ul></li><li><a href="#heading.settings">Settings</a><ul style="list-style-type: none;"><li><a href="#heading.three-levels20of20settings">Three Levels of Settings</a></li><li><a href="#heading.general-options">General Options</a></li><li><a href="#heading.extensible-markdown20converter20extension20options">Extensible Markdown Converter Extension Options</a></li><li><a href="#heading.markdown-it-options">Markdown-it Options</a></li><li><a href="#heading.settings-sample">Settings Sample</a></li></ul></li><li><a href="#heading.advanced-usage20and20settings">Advanced Usage and Settings</a><ul style="list-style-type: none;"><li><a href="#heading.typographer">Typographer</a></li><li><a href="#heading.detecting-document20title">Detecting Document Title</a></li><li><a href="#heading.file-includes">File Includes</a></li><li><a href="#heading.syntax-coloring">Syntax Coloring</a></li><li><a href="#heading.auto-numbering">Auto-Numbering</a></li><li><a href="#heading.simplified-auto-numbering20options20format">Simplified Auto-Numbering Options Format</a></li></ul></li><li><a href="#heading.additional-plug-ins">Additional Plug-ins</a><ul style="list-style-type: none;"><li><a href="#heading.installation">Installation</a></li><li><a href="#heading.customization-of20additional20plug-ins">Customization of Additional Plug-Ins</a></li></ul></li></ul></div></p>
 <h2 id="heading.features">Features</h2>
 <ul>
 <li>Conversion of individual file or all Markdown files of the current Visual Studio Code workspace;</li>
@@ -456,6 +456,53 @@ If the pattern match is successfully found in the Markdown document, it is writt
 </tr>
 </tbody>
 </table>
+<h3 id="heading.simplified-auto-numbering20options20format">Simplified Auto-Numbering Options Format</h3>
+<p>Version 3.6.1 introduces alternative format for auto-numbering version. The format used previously is JSON; it still can be used, but it is not very suitable for human input and is not fault-tolerant. Presently, it takes precedence. If JSON parsing fails, new parser tried to parse the content of the <code>[](= ... =)</code> tag using new grammar:</p>
+<ul>
+<li>Each property is placed on a separate line</li>
+<li>Leading and trailing blank spaces and spaced between syntactic elements are ignored</li>
+<li>Line syntax: <code>&lt;property&gt;: &lt;value&gt;</code></li>
+<li>Document properties:
+<ul>
+<li>enabled: true</li>
+<li>defaultStart: <code>&lt;value&gt;</code></li>
+<li>defaultSeparator: <code>&lt;value&gt;</code></li>
+<li>defaultPrefix: <code>&lt;value&gt;</code></li>
+<li>defaultSuffix: <code>&lt;value&gt;</code></li>
+</ul>
+</li>
+<li>Heading level properties:
+<ul>
+<li>h<code>&lt;level&gt;</code>.standAlong: true</li>
+<li>h<code>&lt;level&gt;</code>.start: <code>&lt;value&gt;</code></li>
+<li>h<code>&lt;level&gt;</code>.separator: <code>&lt;value&gt;</code></li>
+<li>h<code>&lt;level&gt;</code>.prefix: <code>&lt;value&gt;</code></li>
+<li>h<code>&lt;level&gt;</code>.suffix: <code>&lt;value&gt;</code><br />
+here, <code>&lt;level&gt;</code> values 1, 2, … correspond to Markdown headings <code>#</code>, <code>##</code>, … or HTML elements <code>h1</code>, <code>h2</code>, …</li>
+</ul>
+</li>
+<li>Valid values for .start, defaultStart:
+<ul>
+<li>integer number</li>
+<li>string (in this case, only first character is used)</li>
+<li>array of strings</li>
+</ul>
+</li>
+</ul>
+<p>If a line fails to parse, it is ignored. It can be used for comments.</p>
+<p>Example of auto-numbering option in-document specifications:</p>
+<pre><code>[](=numbering {
+    enable: true
+    defaultSuffix: 1&quot;. &quot;
+    h2.prefix: &quot;Chapter &quot;
+    h2.start: [&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;, &quot;Four&quot;]
+    h2.suffix: &quot;: &quot;
+    h5.standAlong: true
+    h4.standAlong: true
+    h5.start: &quot;a&quot;
+    h5.suffix: &quot;) &quot;
+}=)
+</code></pre>
 <h2 id="heading.additional-plug-ins">Additional Plug-ins</h2>
 <p>Since v. 2.0.0, additional <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">plug-ins</a> can be installed by the users of the extension and configured for the use with Visual Studio Code.</p>
 <h3 id="heading.installation">Installation</h3>

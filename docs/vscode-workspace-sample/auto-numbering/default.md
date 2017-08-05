@@ -1,5 +1,5 @@
 [](=numbering {
-    "enable": true
+    enable: true
 }=)
 
 [](include(body.md))

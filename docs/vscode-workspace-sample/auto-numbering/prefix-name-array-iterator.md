@@ -1,13 +1,12 @@
 [](=numbering {
-    "enable": true,
-    "defaultSuffix": " ",
-    "pattern": [
-        {},
-        { "prefix": "Chapter ", "suffix": ": ", "start": ["One", "Two", "Three"] },
-        {},
-        { "start": "a", "suffix": ") ", "standAlong": true },
-        { }
-    ]
+    enable: true
+    defaultSuffix: " "
+    h2.prefix: "Chapter "
+    h2.suffix: ": "
+    h2.start: ["One", "Two", "Three"]
+    h4.start; "a"
+    h4.suffix: ") 
+    h2.standAlong: true
 }=)
 
 [](include(body.md))

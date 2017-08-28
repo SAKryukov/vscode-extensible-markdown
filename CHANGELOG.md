@@ -2,7 +2,7 @@
 
 Version 5.8.1
 
-* Improved slugify, now all blank spaces in id values are rendered as '-'
+* Improved slugify; now all blank spaces in id values are rendered as '-'
 
 Version 5.8.0
 

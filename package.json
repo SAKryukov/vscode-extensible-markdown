@@ -2,7 +2,7 @@
     "name": "convert-markdown-to-html",
     "displayName": "Extensible Markdown Converter",
     "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
-    "version": "5.8.0",
+    "version": "5.8.1",
     "publisher": "sakryukov",
     "author": {
         "name": "Sergey A Kryukov",

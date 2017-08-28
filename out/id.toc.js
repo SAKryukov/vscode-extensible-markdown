@@ -129,7 +129,7 @@ module.exports = function (md, options) {
 
     const slugify = function (s, used) {
         let slug = options.idPrefix +
-            s.replace(' ', '-')
+            s.replace(/ /g, '-')
                 .replace(/[^A-Za-z0-9\-\.\_]/g, function (match) {
                     return match.codePointAt().toString(16);
                 }).toLowerCase();

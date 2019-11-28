@@ -33,9 +33,8 @@ exports.activate = function (context) {
                     cssCode = fs.readFileSync(absolute, encoding);
                 style += util.format(htmlTemplateSet.embeddedStyle, cssCode);
             } else {
-                const relative = path.relative(
-                    path.dirname(fileName),
-                    path.join(rootPath, css[index]))
+                let relative = path.relative(path.dirname(fileName), rootPath);
+                relative =  path.join(relative, css[index])
                     .replace(/\\/g, '/');
                 style += util.format(htmlTemplateSet.style, relative);
             } //if
@@ -109,7 +108,7 @@ exports.activate = function (context) {
                     let relativePath = lazy.settings.additionalPlugins.relativePath;
                     if (!relativePath) return result;
                     relativePath = relativePath.toString();
-                    const rootPath = vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri).uri.path;
+                    const rootPath = vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri).uri.fsPath;
                     effectiveParentPath = path.join(rootPath, relativePath);
                 } //if 
                 if (!effectiveParentPath) return result;
@@ -177,7 +176,7 @@ exports.activate = function (context) {
         } //if no editor
         if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
-        const rootPath = vscode.workspace.getWorkspaceFolder(editor.document.uri).uri.path;
+        const rootPath = vscode.workspace.getWorkspaceFolder(editor.document.uri).uri.fsPath;
         const titleObject = semantic.titleFinder(text, settings);
         const title = titleObject ?
             titleObject.title : null;

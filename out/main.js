@@ -18,14 +18,16 @@ exports.activate = function (context) {
 
     const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
+    let inheritedMarkdown = null;
+
     const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
-    const transcodeText = function (text, fileName, title, css, embedCss) {
+    const transcodeText = function (text, fileName, title, css, embedCss, rootPath) {
         text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
         const result = lazy.markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
-                const absolute = path.join(vscode.workspace.rootPath, css[index]);
+                const absolute = path.join(rootPath, css[index]);
                 let cssCode = util.format(htmlTemplateSet.notFoundCss, absolute);
                 if (fs.existsSync(absolute))
                     cssCode = fs.readFileSync(absolute, encoding);
@@ -33,7 +35,7 @@ exports.activate = function (context) {
             } else {
                 const relative = path.relative(
                     path.dirname(fileName),
-                    path.join(vscode.workspace.rootPath, css[index]))
+                    path.join(rootPath, css[index]))
                     .replace(/\\/g, '/');
                 style += util.format(htmlTemplateSet.style, relative);
             } //if
@@ -46,10 +48,10 @@ exports.activate = function (context) {
             result);
     }; //transcodeText
 
-    const convertText = function (text, fileName, title, css, embedCss, outputPath) {
-        let result = transcodeText(text, fileName, title, css, embedCss);
+    const convertText = function (text, fileName, title, css, embedCss, outputPath, rootPath) {
+        let result = transcodeText(text, fileName, title, css, embedCss, rootPath);
         const effectiveOutputPath = outputPath ?
-            path.join(vscode.workspace.rootPath, outputPath) : path.dirname(fileName);
+            path.join(rootPath, outputPath) : path.dirname(fileName);
         if (!fs.existsSync(effectiveOutputPath))
             vscode.window.showErrorMessage(util.format("Path not found: %s", effectiveOutputPath));
         const output = path.join(
@@ -107,7 +109,8 @@ exports.activate = function (context) {
                     let relativePath = lazy.settings.additionalPlugins.relativePath;
                     if (!relativePath) return result;
                     relativePath = relativePath.toString();
-                    effectiveParentPath = path.join(vscode.workspace.rootPath, relativePath);
+                    const rootPath = vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri).uri.path;
+                    effectiveParentPath = path.join(rootPath, relativePath);
                 } //if 
                 if (!effectiveParentPath) return result;
                 if (!fs.existsSync(effectiveParentPath.toString())) return result;
@@ -124,10 +127,9 @@ exports.activate = function (context) {
             }()); //additionalPlugins
             if (!lazy.markdownIt)
                 lazy.markdownIt = (function () { // modify, depending in settings
-                    const extension = vscode.extensions.getExtension("Microsoft.vscode-markdown");
-                    if (!extension) return;
-                    const extensionPath = path.join(extension.extensionPath, "node_modules");
-                    let md = require(path.join(extensionPath, "markdown-it"))().set(optionSet);
+                    let md = inheritedMarkdown;
+                    md.set(optionSet);
+                    //SA??? to restore
                     md.use(idToc, {
                         excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                         defaultListElement: lazy.settings.tocListType,
@@ -137,13 +139,13 @@ exports.activate = function (context) {
                         //itemPrefixes: ... don't do it for now, maybe we can implement auto-numbering later
                         enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                         idPrefix: lazy.settings.headingIdPrefix,
-                        stringModule: require(path.join(extensionPath, "string")),
+                        //stringModule: require(path.join(extensionPath, "string")), //SA??? extension path is not defined
                         tocRegex: lazy.settings.tocRegex,
                         includeLevel: lazy.settings.tocIncludeLevels,
                         tocContainerClass: lazy.settings.tocContainerClass,
                         tocListType: lazy.settings.tocListType,
-                        autoNumbering: lazy.settings.autoNumbering,
-                        autoNumberingRegex: lazy.settings.autoNumberingRegex
+                        //autoNumbering: lazy.settings.autoNumbering, //SA??? causes exception
+                        autoNumberingRegex: lazy.settings.autoNumberingRegex,
                     });
                     for (let pluginData in additionalPlugins) {
                         let plugin;
@@ -156,7 +158,7 @@ exports.activate = function (context) {
                     } // using additionalPlugins
                     return md;
                 })();
-            if (!vscode.workspace.rootPath) {
+            if (!vscode.workspace.workspaceFolders) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
                 return;
             } //if
@@ -175,6 +177,7 @@ exports.activate = function (context) {
         } //if no editor
         if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
+        const rootPath = vscode.workspace.getWorkspaceFolder(editor.document.uri).uri.path;
         const titleObject = semantic.titleFinder(text, settings);
         const title = titleObject ?
             titleObject.title : null;
@@ -185,7 +188,8 @@ exports.activate = function (context) {
                 title,
                 settings.css,
                 settings.embedCss,
-                settings.outputPath);
+                settings.outputPath,
+                rootPath);
         successAction(editor.document.fileName, outputFileName, settings);
     } //convertOne
 
@@ -350,6 +354,13 @@ exports.activate = function (context) {
         vscode.commands.registerCommand('extensible.markdown.convertToHtml.all', function () {
             command(convertSet);
         }));
+
+    return {
+        extendMarkdownIt(md) {
+            inheritedMarkdown = md;
+            return md;
+        }
+    };
 
 }; //exports.activate
 

@@ -29,6 +29,7 @@
     ],
     "main": "./out/main.js",
     "contributes": {
+        "markdown.markdownItPlugins": true,
         "commands": [
             {
                 "command": "extensible.markdown.showPreview",
@@ -313,7 +314,7 @@
         "vscode": "^1.14.1"
     },
     "extensionDependencies": [
-        "Microsoft.vscode-markdown"
+        "vscode.markdown"
     ],
     "__metadata": {
         "id": "2274c865-8de3-4905-b3ee-661afa12b4c5",

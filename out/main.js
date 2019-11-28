@@ -6,7 +6,6 @@ exports.activate = function (context) {
     const Utf8BOM = "\ufeff";
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
-    const previewAuthority = "extensible-markdown-preview";
 
     const vscode = require('vscode');
     const util = require('util');
@@ -33,8 +32,8 @@ exports.activate = function (context) {
                     cssCode = fs.readFileSync(absolute, encoding);
                 style += util.format(htmlTemplateSet.embeddedStyle, cssCode);
             } else {
-                let relative = path.relative(path.dirname(fileName), rootPath);
-                relative =  path.join(relative, css[index])
+                const relativePath = path.relative(path.dirname(fileName), rootPath);
+                const relative =  path.join(relativePath, css[index])
                     .replace(/\\/g, '/');
                 style += util.format(htmlTemplateSet.style, relative);
             } //if
@@ -75,7 +74,7 @@ exports.activate = function (context) {
             require('child_process').exec(output);
     }; //successAction
 
-    const command = function (action, previewSourceTextEditor) {
+    const command = function (action) {
         try {
             if (!lazy.settings)
                 lazy.settings = semantic.getSettings(importContext);
@@ -161,14 +160,14 @@ exports.activate = function (context) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
                 return;
             } //if
-            return action(lazy.settings, previewSourceTextEditor);
+            return action(lazy.settings);
         } catch (ex) {
             console.log(ex);
             vscode.window.showErrorMessage(ex.toString() + " Markdown conversion failed.");
         } //exception
     }; //command
 
-    const convertOne = function (settings, previewSourceTextEditor) {
+    const convertOne = function (settings) {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage("Open Markdown file (.md)");
@@ -192,19 +191,7 @@ exports.activate = function (context) {
         successAction(editor.document.fileName, outputFileName, settings);
     } //convertOne
 
-    const previewOne = function (settings, previewSourceTextEditor) {
-        if (!previewSourceTextEditor)
-            vscode.window.showErrorMessage("Open Markdown file (.md)");
-        const text = previewSourceTextEditor.document.getText();
-        return transcodeText(
-            text,
-            previewSourceTextEditor.document.fileName,
-            "", //title
-            settings.css,
-            true);
-    } //previewOne
-
-    const convertSet = function (settings, previewSourceTextEditor) {
+    const convertSet = function (settings) {
         vscode.workspace.findFiles("**/*.md").then(function (files) {
             let count = 0;
             let lastInput = "";
@@ -232,16 +219,13 @@ exports.activate = function (context) {
         });
     } //convertSet
 
-    const previewUri =
-        vscode.Uri.parse(util.format("%s://authority/%s", previewAuthority, previewAuthority));
-
     const TextDocumentContentProvider = (function () {
         function TextDocumentContentProvider() {
             this.changeSourceHandler = new vscode.EventEmitter();
         } //TextDocumentContentProvider
         TextDocumentContentProvider.prototype.provideTextDocumentContent = function (uri) {
             if (this.currentSourceTextEditor)
-                return command(previewOne, this.currentSourceTextEditor);
+                return command(previewOne);
         }; //TextDocumentContentProvider.prototype.provideTextDocumentContent
         Object.defineProperty(TextDocumentContentProvider.prototype, "onDidChange", {
             get: function () { return this.changeSourceHandler.event; }, enumerable: true, configurable: true
@@ -325,26 +309,6 @@ exports.activate = function (context) {
         updateDecorators();
     }); //vscode.workspace.onDidChangeConfiguration
 
-    const previewCommand = function (columns) {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
-        if (editor.document.languageId != markdownId)
-            vscode.window.showWarningMessage("Extensible Markdown Converter: Not a Markdown source");
-        const fileName = editor.document.fileName;
-        if (!fileName) fileName = "unsaved";
-        provider.currentSourceTextEditor = editor;
-        return vscode.commands.executeCommand(
-            "vscode.previewHtml", previewUri, columns,
-            util.format("Preview '%s'", path.basename(fileName)));
-    }; //previewCommand
-
-    const registration = vscode.workspace.registerTextDocumentContentProvider(previewAuthority, provider);
-    context.subscriptions.push(vscode.commands.registerCommand("extensible.markdown.showPreview", function () {
-        previewCommand(vscode.ViewColumn.One);
-    }), registration);
-    context.subscriptions.push(vscode.commands.registerCommand("extensible.markdown.showPreviewToSide", function () {
-        previewCommand(vscode.ViewColumn.Two);
-    }), registration);
     context.subscriptions.push(
         vscode.commands.registerCommand('extensible.markdown.convertToHtml', function () {
             command(convertOne);

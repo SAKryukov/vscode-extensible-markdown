@@ -2,7 +2,7 @@
     "name": "convert-markdown-to-html",
     "displayName": "Extensible Markdown Converter",
     "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
-    "version": "5.8.1",
+    "version": "6.0.0",
     "publisher": "sakryukov",
     "author": {
         "name": "Sergey A Kryukov",
@@ -32,35 +32,19 @@
         "markdown.markdownItPlugins": true,
         "commands": [
             {
-                "command": "extensible.markdown.showPreview",
-                "title": "Markdown: Open &Preview",
-                "icon": "images/preview.svg"
-            },
-            {
-                "command": "extensible.markdown.showPreviewToSide",
-                "title": "Markdown: Open Preview to the &Side"
-            },
-            {
                 "command": "extensible.markdown.convertToHtml",
-                "title": "Markdown: Convert to &HTML",
+                "title": "Markdown: Convert to HTML",
                 "icon": "images/logo.svg"
             },
             {
                 "command": "extensible.markdown.convertToHtml.all",
-                "title": "Markdown: Convert to HTML all .md files in &Workspace"
+                "title": "Markdown: Convert to HTML all .md files in Workspace"
             }
         ],
         "keybindings": [
             {
-                "command": "extensible.markdown.showPreview",
-                "key": "ctrl+shift+v",
-                "mac": "cmd+shift+v",
-                "when": "editorTextFocus"
-            },
-            {
-                "command": "extensible.markdown.showPreviewToSide",
-                "key": "ctrl+k v",
-                "mac": "cmd+k v",
+                "command": "extensible.markdown.convertToHtml",
+                "key": "alt+F5",
                 "when": "editorTextFocus"
             }
         ],
@@ -70,24 +54,9 @@
                     "when": "resourceLangId == markdown",
                     "command": "extensible.markdown.convertToHtml",
                     "group": "navigation"
-                },
-                {
-                    "when": "resourceLangId == markdown",
-                    "command": "extensible.markdown.showPreview",
-                    "group": "navigation"
                 }
             ],
             "editor/context": [
-                {
-                    "when": "editorTextFocus && resourceLangId == markdown",
-                    "command": "extensible.markdown.showPreview",
-                    "group": "markdownPreview"
-                },
-                {
-                    "when": "editorTextFocus && resourceLangId == markdown",
-                    "command": "extensible.markdown.showPreviewToSide",
-                    "group": "markdownPreview"
-                },
                 {
                     "when": "editorTextFocus && resourceLangId == markdown",
                     "command": "extensible.markdown.convertToHtml",
@@ -313,9 +282,6 @@
     "devDependencies": {
         "vscode": "^1.14.1"
     },
-    "extensionDependencies": [
-        "vscode.markdown"
-    ],
     "__metadata": {
         "id": "2274c865-8de3-4905-b3ee-661afa12b4c5",
         "publisherId": "d1ee7a62-4a9b-4f51-94ff-cb9d0dc5a6c9",

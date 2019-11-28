@@ -1,7 +1,7 @@
 	body > p:first-child { font-size: 180%; text-align: center; margin-bottom: 0; }
 	body > p:nth-child(2) { text-align: right; }
 	code { font-size: 120%; font-weight: bold; }
-        pre, code { color: darkGreen; padding:0; font-family: 'Consolas', sans-serif }
+	pre, code { color: darkGreen; padding:0; font-family: 'Consolas', sans-serif }
 	pre code { color: black; font-weight: normal; font-size: 94%; }
         pre { background-color: antiqueWhite; }
         html, body, p { font-family: 'Verdana', 'Ububtu', serif; }

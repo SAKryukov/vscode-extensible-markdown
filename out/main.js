@@ -15,14 +15,12 @@ exports.activate = function (context) {
     const semantic = require('./semantic');
     const idToc = require("./id.toc.js");
 
-    const lazy = { lastOutputChannel: null, setupMarkdown: undefined, settings: undefined, decorationTypeSet: [] };
-
-    let inheritedMarkdown = null;
+    const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
     const transcodeText = function (text, fileName, title, css, embedCss, rootPath) {
         text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
-        const result = lazy.setupMarkdown.render(text);
+        const result = lazy.markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
@@ -90,87 +88,6 @@ exports.activate = function (context) {
 
     const command = function (action) {
         try {
-            if (!lazy.settings)
-                lazy.settings = semantic.getSettings(importContext);
-            const optionSet = (function () {
-                let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
-                result.html = lazy.settings.allowHTML;
-                result.typographer = lazy.settings.typographer;
-                result.linkify = lazy.settings.linkify;
-                result.breaks = lazy.settings.br;
-                if (lazy.settings.typographer) {
-                    if (!lazy.settings.smartQuotes)
-                        result.quotes = defaultSmartQuotes;
-                    else if (!lazy.settings.smartQuotes.length)
-                        result.quotes = defaultSmartQuotes;
-                    else if (lazy.settings.smartQuotes.length < defaultSmartQuotes.length)
-                        result.quotes = defaultSmartQuotes;
-                    else
-                        result.quotes = lazy.settings.smartQuotes;
-                } //if settings.typographer
-                return result;
-            })(); //optionSet
-            const additionalPlugins = (function () {
-                let result = [];
-                if (!lazy.settings.additionalPlugins) return result;
-                if (!lazy.settings.additionalPlugins.plugins) return result;
-                if (!lazy.settings.additionalPlugins.plugins.length) return result;
-                if (lazy.settings.additionalPlugins.plugins.length < 1) return result;
-                let effectiveParentPath = lazy.settings.additionalPlugins.absolutePath;
-                if (!effectiveParentPath) {
-                    let relativePath = lazy.settings.additionalPlugins.relativePath;
-                    if (!relativePath) return result;
-                    relativePath = relativePath.toString();
-                    const rootPath = vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri).uri.fsPath;
-                    effectiveParentPath = path.join(rootPath, relativePath);
-                } //if 
-                if (!effectiveParentPath) return result;
-                if (!fs.existsSync(effectiveParentPath.toString())) return result;
-                for (let pluginDataProperty in lazy.settings.additionalPlugins.plugins) {
-                    const pluginData = lazy.settings.additionalPlugins.plugins[pluginDataProperty];
-                    if (!pluginData.name) continue;
-                    const effectivePath =
-                        path.join(effectiveParentPath.toString(), pluginData.name.toString());
-                    if (!fs.existsSync(effectivePath)) continue;
-                    if (!pluginData.enable) continue;
-                    result.push({ name: effectivePath, options: pluginData.options });
-                } // loop settings.additionalPlugins.plugins
-                return result;
-            }()); //additionalPlugins
-            if (!lazy.setupMarkdown)
-                lazy.setupMarkdown = (function () { // modify, depending in settings
-                    let md = inheritedMarkdown;
-                    if (!md) return;
-                    md.set(optionSet);
-                    //SA??? to restore
-                    md.use(idToc, {
-                        excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
-                        defaultListElement: lazy.settings.tocListType,
-                        listElements: lazy.settings.listElements,
-                        defaultListElementAttributeSet: lazy.settings.defaultListElementAttributeSet,
-                        listElementAttributeSets: lazy.settings.listElementAttributeSets,
-                        //itemPrefixes: ... don't do it for now, maybe we can implement auto-numbering later
-                        enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
-                        idPrefix: lazy.settings.headingIdPrefix,
-                        //stringModule: require(path.join(extensionPath, "string")), //SA??? extension path is not defined
-                        tocRegex: lazy.settings.tocRegex,
-                        includeLevel: lazy.settings.tocIncludeLevels,
-                        tocContainerClass: lazy.settings.tocContainerClass,
-                        tocListType: lazy.settings.tocListType,
-                        //autoNumbering: lazy.settings.autoNumbering, //SA??? causes exception
-                        autoNumberingRegex: lazy.settings.autoNumberingRegex,
-                    });
-                    for (let pluginData in additionalPlugins) {
-                        let plugin;
-                        try {
-                            plugin = require(additionalPlugins[pluginData].name);
-                        } catch (requireException) {
-                            continue;
-                        } //exception
-                        md = md.use(plugin, additionalPlugins[pluginData].options);
-                    } // using additionalPlugins
-                    return md;
-                })();
             if (!vscode.workspace.workspaceFolders) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
                 return;
@@ -209,7 +126,7 @@ exports.activate = function (context) {
     const convertSet = function (settings) {
         vscode.workspace.findFiles("**/*.md").then(function (files) {
             if (!files || files.length < 1)
-                return  vscode.window.showInformationMessage("No Markdown files found");
+                return  vscode.window.showWarningMessage("No Markdown files found");
             const inputs = [];
             const outputs = [];
             for (let index = 0; index < files.length; ++index) {
@@ -320,7 +237,7 @@ exports.activate = function (context) {
     }); //vscode.workspace.onDidChangeTextDocument
     vscode.workspace.onDidChangeConfiguration(function (e) {
         lazy.settings = undefined;
-        lazy.setupMarkdown = undefined;
+        lazy.markdownIt = undefined;
         updateDecorators();
     }); //vscode.workspace.onDidChangeConfiguration
 
@@ -333,10 +250,99 @@ exports.activate = function (context) {
             command(convertSet);
         }));
 
+    const setupMarkdown = (baseImplementation) => {
+        if (lazy.markdownIt)
+            return baseImplementation;
+        if (!lazy.settings)
+            lazy.settings = semantic.getSettings(importContext);
+        const optionSet = (function () {
+            let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
+            result.html = lazy.settings.allowHTML;
+            result.typographer = lazy.settings.typographer;
+            result.linkify = lazy.settings.linkify;
+            result.breaks = lazy.settings.br;
+            if (lazy.settings.typographer) {
+                if (!lazy.settings.smartQuotes)
+                    result.quotes = defaultSmartQuotes;
+                else if (!lazy.settings.smartQuotes.length)
+                    result.quotes = defaultSmartQuotes;
+                else if (lazy.settings.smartQuotes.length < defaultSmartQuotes.length)
+                    result.quotes = defaultSmartQuotes;
+                else
+                    result.quotes = lazy.settings.smartQuotes;
+            } //if settings.typographer
+            return result;
+        })(); //optionSet
+        const additionalPlugins = (function () {
+            let result = [];
+            if (!lazy.settings.additionalPlugins) return result;
+            if (!lazy.settings.additionalPlugins.plugins) return result;
+            if (!lazy.settings.additionalPlugins.plugins.length) return result;
+            if (lazy.settings.additionalPlugins.plugins.length < 1) return result;
+            let effectiveParentPath = lazy.settings.additionalPlugins.absolutePath;
+            if (!effectiveParentPath) {
+                let relativePath = lazy.settings.additionalPlugins.relativePath;
+                if (!relativePath) return result;
+                relativePath = relativePath.toString();
+                const rootPath = vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri).uri.fsPath;
+                effectiveParentPath = path.join(rootPath, relativePath);
+            } //if 
+            if (!effectiveParentPath) return result;
+            if (!fs.existsSync(effectiveParentPath.toString())) return result;
+            for (let pluginDataProperty in lazy.settings.additionalPlugins.plugins) {
+                const pluginData = lazy.settings.additionalPlugins.plugins[pluginDataProperty];
+                if (!pluginData.name) continue;
+                const effectivePath =
+                    path.join(effectiveParentPath.toString(), pluginData.name.toString());
+                if (!fs.existsSync(effectivePath)) continue;
+                if (!pluginData.enable) continue;
+                result.push({ name: effectivePath, options: pluginData.options });
+            } // loop settings.additionalPlugins.plugins
+            return result;
+        }()); //additionalPlugins
+        lazy.markdownIt = (function () { // modify, depending in settings
+            let md = baseImplementation;
+            if (!md) return;
+            md.set(optionSet);
+            //SA??? to restore
+            md.use(idToc, {
+                excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
+                defaultListElement: lazy.settings.tocListType,
+                listElements: lazy.settings.listElements,
+                defaultListElementAttributeSet: lazy.settings.defaultListElementAttributeSet,
+                listElementAttributeSets: lazy.settings.listElementAttributeSets,
+                //itemPrefixes: ... don't do it for now, maybe we can implement auto-numbering later
+                enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
+                idPrefix: lazy.settings.headingIdPrefix,
+                //stringModule: require(path.join(extensionPath, "string")), //SA??? extension path is not defined
+                tocRegex: lazy.settings.tocRegex,
+                includeLevel: lazy.settings.tocIncludeLevels,
+                tocContainerClass: lazy.settings.tocContainerClass,
+                tocListType: lazy.settings.tocListType,
+                //autoNumbering: lazy.settings.autoNumbering, //SA??? causes exception
+                autoNumberingRegex: lazy.settings.autoNumberingRegex,
+            });
+            for (let pluginData in additionalPlugins) {
+                let plugin;
+                try {
+                    plugin = require(additionalPlugins[pluginData].name);
+                } catch (requireException) {
+                    continue;
+                } //exception
+                md = md.use(plugin, additionalPlugins[pluginData].options);
+            } // using additionalPlugins
+            return md;
+        })();
+        return baseImplementation;
+    }; //setupMarkdown
+        
     return {
         extendMarkdownIt: baseImplementation => {
-            inheritedMarkdown = baseImplementation;
-            return baseImplementation;
+            try {
+                return setupMarkdown(baseImplementation);
+            } catch (ex) {
+                vscode.window.showErrorMessage("Extensible Markdown Converter activation failed"); //SA???
+            }
         }
     };
 

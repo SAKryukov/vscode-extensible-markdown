@@ -15,14 +15,14 @@ exports.activate = function (context) {
     const semantic = require('./semantic');
     const idToc = require("./id.toc.js");
 
-    const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
+    const lazy = { lastOutputChannel: null, setupMarkdown: undefined, settings: undefined, decorationTypeSet: [] };
 
     let inheritedMarkdown = null;
 
     const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
     const transcodeText = function (text, fileName, title, css, embedCss, rootPath) {
         text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
-        const result = lazy.markdownIt.render(text);
+        const result = lazy.setupMarkdown.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
@@ -62,23 +62,30 @@ exports.activate = function (context) {
     }; //convertText
 
     const successAction = function (inputs, outputs, settings) {
-        if (settings.reportSuccess) 
-            if (lazy.lastOutputChannel)
-                lazy.lastOutputChannel.dispose();
-                lazy.lastOutputChannel = vscode.window.createOutputChannel("Converted to HTML");
-                const count = inputs.length;
-                for (let index = 0; index < count; ++index) {
-                    lazy.lastOutputChannel.appendLine("Markdown file");
-                    lazy.lastOutputChannel.appendLine(`${inputs[index]}`);
-                    lazy.lastOutputChannel.appendLine("is converted to");
-                    lazy.lastOutputChannel.appendLine(`${outputs[index]}`);
-                    lazy.lastOutputChannel.appendLine('');
-                    if (settings.showHtmlInBrowser) //SA???
-                        require('child_process').exec(outputs[index]);
-                } //loop
-            if (count > 1)
+        const childProcess = require('child_process');
+        const count = inputs.length;
+        if (!settings.reportSuccess) {
+            if (settings.showHtmlInBrowser)
+                for (let index = 0; index < count; ++index)
+                    childProcess.exec(outputs[index]);
+            return;
+        } //if
+        if (lazy.lastOutputChannel)
+            lazy.lastOutputChannel.clear();
+        else
+            lazy.lastOutputChannel = vscode.window.createOutputChannel("Converted to HTML");
+        for (let index = 0; index < count; ++index) {
+            lazy.lastOutputChannel.appendLine("Markdown file");
+            lazy.lastOutputChannel.appendLine(`${inputs[index]}`);
+            lazy.lastOutputChannel.appendLine("is converted to");
+            lazy.lastOutputChannel.appendLine(`${outputs[index]}`);
+            lazy.lastOutputChannel.appendLine('');
+            if (settings.showHtmlInBrowser)
+                childProcess.exec(outputs[index]);
+        } //loop
+        if (count > 1)
             lazy.lastOutputChannel.appendLine(`${count} Markdown files files converted to HTML`);
-            lazy.lastOutputChannel.show(true);
+        lazy.lastOutputChannel.show(true);
     }; //successAction
 
     const command = function (action) {
@@ -130,8 +137,8 @@ exports.activate = function (context) {
                 } // loop settings.additionalPlugins.plugins
                 return result;
             }()); //additionalPlugins
-            if (!lazy.markdownIt)
-                lazy.markdownIt = (function () { // modify, depending in settings
+            if (!lazy.setupMarkdown)
+                lazy.setupMarkdown = (function () { // modify, depending in settings
                     let md = inheritedMarkdown;
                     if (!md) return;
                     md.set(optionSet);
@@ -313,7 +320,7 @@ exports.activate = function (context) {
     }); //vscode.workspace.onDidChangeTextDocument
     vscode.workspace.onDidChangeConfiguration(function (e) {
         lazy.settings = undefined;
-        lazy.markdownIt = undefined;
+        lazy.setupMarkdown = undefined;
         updateDecorators();
     }); //vscode.workspace.onDidChangeConfiguration
 
@@ -327,9 +334,9 @@ exports.activate = function (context) {
         }));
 
     return {
-        extendMarkdownIt(md) {
-            inheritedMarkdown = md;
-            return md;
+        extendMarkdownIt: baseImplementation => {
+            inheritedMarkdown = baseImplementation;
+            return baseImplementation;
         }
     };
 

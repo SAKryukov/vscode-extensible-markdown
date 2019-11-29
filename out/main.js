@@ -122,6 +122,7 @@ exports.activate = function (context) {
             if (!lazy.markdownIt)
                 lazy.markdownIt = (function () { // modify, depending in settings
                     let md = inheritedMarkdown;
+                    if (!md) return;
                     md.set(optionSet);
                     //SA??? to restore
                     md.use(idToc, {
@@ -189,6 +190,8 @@ exports.activate = function (context) {
 
     const convertSet = function (settings) {
         vscode.workspace.findFiles("**/*.md").then(function (files) {
+            if (!files || files.length < 1)
+                return  vscode.window.showInformationMessage("No Markdown files found");
             let count = 0;
             let lastInput = "";
             let lastOutput = "";

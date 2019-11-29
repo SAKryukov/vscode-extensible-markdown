@@ -1,24 +1,29 @@
 "use strict";
 
-exports.activate = function (context) {
+exports.activate = context => {
 
     const encoding = "utf8";
     const Utf8BOM = "\ufeff";
+    const stringEmpty = "";
+    const commonDirectorySeparator = "/";
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
+    const extensionManifiestFileName = "package.json";
 
-    const vscode = require('vscode');
-    const util = require('util');
-    const fs = require('fs');
-    const path = require('path');
-    const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
-    const semantic = require('./semantic');
+    const vscode = require("vscode");
+    const util = require("util");
+    const fs = require("fs");
+    const path = require("path");
+    const childProcess = require("child_process");
+    const semantic = require("./semantic");
     const idToc = require("./id.toc.js");
+    const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
 
     const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
-    const transcodeText = function (text, fileName, title, css, embedCss, rootPath) {
+    
+    const transcodeText = (text, fileName, title, css, embedCss, rootPath) => {
         text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
         const result = lazy.markdownIt.render(text);
         let style = "";
@@ -32,7 +37,7 @@ exports.activate = function (context) {
             } else {
                 const relativePath = path.relative(path.dirname(fileName), rootPath);
                 const relative =  path.join(relativePath, css[index])
-                    .replace(/\\/g, '/');
+                    .replace(/\\/g, commonDirectorySeparator);
                 style += util.format(htmlTemplateSet.style, relative);
             } //if
             if (index < css.length - 1) style += "\n";
@@ -44,7 +49,7 @@ exports.activate = function (context) {
             result);
     }; //transcodeText
 
-    const convertText = function (text, fileName, title, css, embedCss, outputPath, rootPath) {
+    const convertText = (text, fileName, title, css, embedCss, outputPath, rootPath) => {
         let result = transcodeText(text, fileName, title, css, embedCss, rootPath);
         const effectiveOutputPath = outputPath ?
             path.join(rootPath, outputPath) : path.dirname(fileName);
@@ -59,8 +64,7 @@ exports.activate = function (context) {
         return output;
     }; //convertText
 
-    const successAction = function (inputs, outputs, settings) {
-        const childProcess = require('child_process');
+    const successAction = (inputs, outputs, settings) => {
         const count = inputs.length;
         if (!settings.reportSuccess) {
             if (settings.showHtmlInBrowser)
@@ -77,7 +81,7 @@ exports.activate = function (context) {
             lazy.lastOutputChannel.appendLine(`${inputs[index]}`);
             lazy.lastOutputChannel.appendLine("is converted to");
             lazy.lastOutputChannel.appendLine(`${outputs[index]}`);
-            lazy.lastOutputChannel.appendLine('');
+            lazy.lastOutputChannel.appendLine(stringEmpty);
             if (settings.showHtmlInBrowser)
                 childProcess.exec(outputs[index]);
         } //loop
@@ -86,7 +90,7 @@ exports.activate = function (context) {
         lazy.lastOutputChannel.show(true);
     }; //successAction
 
-    const command = function (action) {
+    const command = action => {
         try {
             if (!vscode.workspace.workspaceFolders) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
@@ -99,7 +103,7 @@ exports.activate = function (context) {
         } //exception
     }; //command
 
-    const convertOne = function (settings) {
+    const convertOne = settings => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             vscode.window.showErrorMessage("Open Markdown file (.md)");
@@ -123,7 +127,7 @@ exports.activate = function (context) {
         successAction([editor.document.fileName], [outputFileName], settings);
     } //convertOne
 
-    const convertSet = function (settings) {
+    const convertSet = settings => {
         vscode.workspace.findFiles("**/*.md").then(function (files) {
             if (!files || files.length < 1)
                 return  vscode.window.showWarningMessage("No Markdown files found");
@@ -169,7 +173,7 @@ exports.activate = function (context) {
     }()); //TextDocumentContentProvider
     const provider = new TextDocumentContentProvider();
 
-    const updateDecorators = function () {
+    const updateDecorators = () => {
         if (!vscode.window.activeTextEditor) return;
         const document = vscode.window.activeTextEditor.document;
         if (document.languageId != markdownId) return;
@@ -180,7 +184,7 @@ exports.activate = function (context) {
         let decoratorSet = [];
         if (matches) {
             if (matches.all) {
-                const title = matches.title ? matches.title.toString() : '';
+                const title = matches.title ? matches.title.toString() : stringEmpty;
                 decoratorSet = [{
                     range: semantic.getVSCodeRange(vscode, document, matches.start, matches.all),
                     hoverMessage: util.format("Title: \"%s\"", title)
@@ -220,14 +224,14 @@ exports.activate = function (context) {
     } //updateDecorators
     updateDecorators();
 
-    vscode.workspace.onDidOpenTextDocument(function (textDocument) {
+    vscode.workspace.onDidOpenTextDocument(textDocument => {
         if (textDocument.languageId == markdownId)
             updateDecorators();
     });
-    vscode.window.onDidChangeActiveTextEditor(function (editor) {
+    vscode.window.onDidChangeActiveTextEditor(editor => {
         updateDecorators();
     }, null, context.subscriptions);
-    vscode.workspace.onDidChangeTextDocument(function (e) {
+    vscode.workspace.onDidChangeTextDocument(e => {
         if (e.document === vscode.window.activeTextEditor.document)
             provider.update(previewUri);
         if (e.document.languageId == "css")
@@ -235,18 +239,18 @@ exports.activate = function (context) {
         else if (e.document.languageId == markdownId)
             updateDecorators();
     }); //vscode.workspace.onDidChangeTextDocument
-    vscode.workspace.onDidChangeConfiguration(function (e) {
+    vscode.workspace.onDidChangeConfiguration(e => {
         lazy.settings = undefined;
         lazy.markdownIt = undefined;
         updateDecorators();
     }); //vscode.workspace.onDidChangeConfiguration
 
     context.subscriptions.push(
-        vscode.commands.registerCommand('extensible.markdown.convertToHtml', function () {
+        vscode.commands.registerCommand("extensible.markdown.convertToHtml", () => {
             command(convertOne);
         }));
     context.subscriptions.push(
-        vscode.commands.registerCommand('extensible.markdown.convertToHtml.all', function () {
+        vscode.commands.registerCommand("extensible.markdown.convertToHtml.all", () => {
             command(convertSet);
         }));
 
@@ -256,7 +260,7 @@ exports.activate = function (context) {
         if (!lazy.settings)
             lazy.settings = semantic.getSettings(importContext);
         const optionSet = (() => {
-            let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
+            let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it would be a crime not to close tags
             result.html = lazy.settings.allowHTML;
             result.typographer = lazy.settings.typographer;
             result.linkify = lazy.settings.linkify;
@@ -273,7 +277,6 @@ exports.activate = function (context) {
             } //if settings.typographer
             return result;
         })(); //optionSet
-        optionSet = null;
         const additionalPlugins = (() => {
             let result = [];
             if (!lazy.settings.additionalPlugins) return result;
@@ -312,7 +315,6 @@ exports.activate = function (context) {
                 listElements: lazy.settings.listElements,
                 defaultListElementAttributeSet: lazy.settings.defaultListElementAttributeSet,
                 listElementAttributeSets: lazy.settings.listElementAttributeSets,
-                //itemPrefixes: ... don't do it for now, maybe we can implement auto-numbering later
                 enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                 idPrefix: lazy.settings.headingIdPrefix,
                 //stringModule: require(path.join(extensionPath, "string")), //SA??? extension path is not defined
@@ -338,7 +340,7 @@ exports.activate = function (context) {
     }; //setupMarkdown
     
     const getManifest = () => {
-        const pathName = path.join(context.extensionPath, "package.json");
+        const pathName = path.join(context.extensionPath, extensionManifiestFileName);
         const content = fs.readFileSync(pathName).toString();
         return JSON.parse(content);
     } //pathName
@@ -355,4 +357,4 @@ exports.activate = function (context) {
 
 }; //exports.activate
 
-exports.deactivate = function deactivate() { };
+exports.deactivate = () => { };

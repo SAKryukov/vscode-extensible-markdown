@@ -15,7 +15,7 @@ exports.activate = function (context) {
     const semantic = require('./semantic');
     const idToc = require("./id.toc.js");
 
-    const lazy = { markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
+    const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     let inheritedMarkdown = null;
 
@@ -61,13 +61,24 @@ exports.activate = function (context) {
         return output;
     }; //convertText
 
-    const successAction = function (input, output, settings) {
-        if (settings.reportSuccess)
-            vscode.window.showInformationMessage(
-                `Markdown file "${path.basename(input)}" is converted to: "${path.basename(output)}"\n\nDirectory:\n${path.dirname(output)}`,
-                {modal: true});
-        if (settings.showHtmlInBrowser)
-            require('child_process').exec(output);
+    const successAction = function (inputs, outputs, settings) {
+        if (settings.reportSuccess) 
+            if (lazy.lastOutputChannel)
+                lazy.lastOutputChannel.dispose();
+                lazy.lastOutputChannel = vscode.window.createOutputChannel("Converted to HTML");
+                const count = inputs.length;
+                for (let index = 0; index < count; ++index) {
+                    lazy.lastOutputChannel.appendLine("Markdown file");
+                    lazy.lastOutputChannel.appendLine(`${inputs[index]}`);
+                    lazy.lastOutputChannel.appendLine("is converted to");
+                    lazy.lastOutputChannel.appendLine(`${outputs[index]}`);
+                    lazy.lastOutputChannel.appendLine('');
+                    if (settings.showHtmlInBrowser) //SA???
+                        require('child_process').exec(outputs[index]);
+                } //loop
+            if (count > 1)
+            lazy.lastOutputChannel.appendLine(`${count} Markdown files files converted to HTML`);
+            lazy.lastOutputChannel.show(true);
     }; //successAction
 
     const command = function (action) {
@@ -185,38 +196,34 @@ exports.activate = function (context) {
                 settings.embedCss,
                 settings.outputPath,
                 rootPath);
-        successAction(editor.document.fileName, outputFileName, settings);
+        successAction([editor.document.fileName], [outputFileName], settings);
     } //convertOne
 
     const convertSet = function (settings) {
         vscode.workspace.findFiles("**/*.md").then(function (files) {
             if (!files || files.length < 1)
                 return  vscode.window.showInformationMessage("No Markdown files found");
-            let count = 0;
-            let lastInput = "";
-            let lastOutput = "";
+            const inputs = [];
+            const outputs = [];
             for (let index = 0; index < files.length; ++index) {
                 const fileName = files[index].fsPath;
                 const text = fs.readFileSync(fileName, encoding);
-                lastInput = fileName;
+                inputs.push(fileName);
                 const rootPath = vscode.workspace.getWorkspaceFolder(files[index]).uri.fsPath;
-                lastOutput = convertText(
+                outputs.push(convertText(
                     text,
                     fileName,
                     semantic.titleFinder(text, settings),
                     settings.css,
                     settings.embedCss,
                     settings.outputPath,
-                    rootPath);
-                ++count;
+                    rootPath));
             } //loop
             if (settings.reportSuccess)
-                if (count == 0)
+                if (inputs.length < 1)
                     vscode.window.showWarningMessage("No .md files found in the workspace");
-                else if (count == 1)
-                    successAction(lastInput, lastOutput, settings);
                 else
-                    vscode.window.showInformationMessage(`${count} markdown files converted to HTML`, {modal: true});
+                    successAction(inputs, outputs, settings);
         });
     } //convertSet
 

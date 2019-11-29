@@ -317,7 +317,7 @@ exports.activate = context => {
                 listElementAttributeSets: lazy.settings.listElementAttributeSets,
                 enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                 idPrefix: lazy.settings.headingIdPrefix,
-                //stringModule: require(path.join(extensionPath, "string")), //SA??? extension path is not defined
+                //stringModule: require(path.join(context.extensionPath, "string")), //SA??? extension path is not defined
                 tocRegex: lazy.settings.tocRegex,
                 includeLevel: lazy.settings.tocIncludeLevels,
                 tocContainerClass: lazy.settings.tocContainerClass,

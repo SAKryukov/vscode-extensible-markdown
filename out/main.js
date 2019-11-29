@@ -62,14 +62,10 @@ exports.activate = function (context) {
     }; //convertText
 
     const successAction = function (input, output, settings) {
-        if (settings.reportSuccess) {
+        if (settings.reportSuccess)
             vscode.window.showInformationMessage(
-                util.format('Directory: "%s"', path.dirname(output)))
-            vscode.window.showInformationMessage(
-                util.format('Markdown file "%s" is converted to: "%s"',
-                    path.basename(input),
-                    path.basename(output)));
-        } //if
+                `Markdown file "${path.basename(input)}" is converted to: "${path.basename(output)}"\n\nDirectory:\n${path.dirname(output)}`,
+                {modal: true});
         if (settings.showHtmlInBrowser)
             require('child_process').exec(output);
     }; //successAction
@@ -200,13 +196,15 @@ exports.activate = function (context) {
                 const fileName = files[index].fsPath;
                 const text = fs.readFileSync(fileName, encoding);
                 lastInput = fileName;
+                const rootPath = vscode.workspace.getWorkspaceFolder(files[index]).uri.fsPath;
                 lastOutput = convertText(
                     text,
                     fileName,
                     semantic.titleFinder(text, settings),
                     settings.css,
                     settings.embedCss,
-                    settings.outputPath);
+                    settings.outputPath,
+                    rootPath);
                 ++count;
             } //loop
             if (settings.reportSuccess)
@@ -215,7 +213,7 @@ exports.activate = function (context) {
                 else if (count == 1)
                     successAction(lastInput, lastOutput, settings);
                 else
-                    vscode.window.showInformationMessage(count + " files converted to HTML");
+                    vscode.window.showInformationMessage(`${count} markdown files converted to HTML`, {modal: true});
         });
     } //convertSet
 

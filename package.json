@@ -44,8 +44,12 @@
         "keybindings": [
             {
                 "command": "extensible.markdown.convertToHtml",
-                "key": "alt+F5",
+                "key": "alt+S",
                 "when": "editorTextFocus"
+            },
+            {
+                "command": "extensible.markdown.convertToHtml.all",
+                "key": "alt+A"
             }
         ],
         "menus": {

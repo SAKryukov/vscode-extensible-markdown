@@ -255,7 +255,7 @@ exports.activate = function (context) {
             return baseImplementation;
         if (!lazy.settings)
             lazy.settings = semantic.getSettings(importContext);
-        const optionSet = (function () {
+        const optionSet = (() => {
             let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it's a crime not to close tags
             result.html = lazy.settings.allowHTML;
             result.typographer = lazy.settings.typographer;
@@ -273,7 +273,8 @@ exports.activate = function (context) {
             } //if settings.typographer
             return result;
         })(); //optionSet
-        const additionalPlugins = (function () {
+        optionSet = null;
+        const additionalPlugins = (() => {
             let result = [];
             if (!lazy.settings.additionalPlugins) return result;
             if (!lazy.settings.additionalPlugins.plugins) return result;
@@ -299,8 +300,8 @@ exports.activate = function (context) {
                 result.push({ name: effectivePath, options: pluginData.options });
             } // loop settings.additionalPlugins.plugins
             return result;
-        }()); //additionalPlugins
-        lazy.markdownIt = (function () { // modify, depending in settings
+        })(); //additionalPlugins
+        lazy.markdownIt = (() => { // modify, depending in settings
             let md = baseImplementation;
             if (!md) return;
             md.set(optionSet);
@@ -335,14 +336,20 @@ exports.activate = function (context) {
         })();
         return baseImplementation;
     }; //setupMarkdown
-        
+    
+    const getManifest = () => {
+        const pathName = path.join(context.extensionPath, "package.json");
+        const content = fs.readFileSync(pathName).toString();
+        return JSON.parse(content);
+    } //pathName
+
     return {
         extendMarkdownIt: baseImplementation => {
             try {
                 return setupMarkdown(baseImplementation);
             } catch (ex) {
-                vscode.window.showErrorMessage("Extensible Markdown Converter activation failed"); //SA???
-            }
+                vscode.window.showErrorMessage(`${getManifest().displayName}: activation failed`);
+            } //exception
         }
     };
 

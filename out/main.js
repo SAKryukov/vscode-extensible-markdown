@@ -221,27 +221,23 @@ exports.activate = context => {
                 lazy.decorationTypeSet.push(plugin.decorationType);
             } //loop plugins
         } //loop additional plug-ins
-    } //updateDecorators
+    }; //updateDecorators
     updateDecorators();
 
     vscode.workspace.onDidOpenTextDocument(textDocument => {
         if (textDocument.languageId == markdownId)
             updateDecorators();
     });
-    vscode.window.onDidChangeActiveTextEditor(editor => {
+    vscode.window.onDidChangeActiveTextEditor(e=> {
         updateDecorators();
     }, null, context.subscriptions);
     vscode.workspace.onDidChangeTextDocument(e => {
-        if (e.document === vscode.window.activeTextEditor.document)
-            provider.update(previewUri);
-        if (e.document.languageId == "css")
-            lazy.settings = undefined;
-        else if (e.document.languageId == markdownId)
+        if (e.document.languageId == markdownId)
             updateDecorators();
     }); //vscode.workspace.onDidChangeTextDocument
     vscode.workspace.onDidChangeConfiguration(e => {
-        lazy.settings = undefined;
-        lazy.markdownIt = undefined;
+        if (lazy.markdownIt)
+            setupMarkdown(lazy.markdownIt);
         updateDecorators();
     }); //vscode.workspace.onDidChangeConfiguration
 
@@ -255,8 +251,7 @@ exports.activate = context => {
         }));
 
     const setupMarkdown = (baseImplementation) => {
-        if (lazy.markdownIt)
-            return baseImplementation;
+        lazy.markdownIt = baseImplementation;
         if (!lazy.settings)
             lazy.settings = semantic.getSettings(importContext);
         const optionSet = (() => {
@@ -304,12 +299,11 @@ exports.activate = context => {
             } // loop settings.additionalPlugins.plugins
             return result;
         })(); //additionalPlugins
-        lazy.markdownIt = (() => { // modify, depending in settings
-            let md = baseImplementation;
+        const setupUsage = ((md) => {
             if (!md) return;
             md.set(optionSet);
             //SA??? to restore
-            md.use(idToc, {
+            const usage = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                 defaultListElement: lazy.settings.tocListType,
                 listElements: lazy.settings.listElements,
@@ -324,7 +318,8 @@ exports.activate = context => {
                 tocListType: lazy.settings.tocListType,
                 //autoNumbering: lazy.settings.autoNumbering, //SA??? causes exception
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
-            });
+            };
+            md.use(idToc, usage);
             for (let pluginData in additionalPlugins) {
                 let plugin;
                 try {
@@ -334,8 +329,7 @@ exports.activate = context => {
                 } //exception
                 md = md.use(plugin, additionalPlugins[pluginData].options);
             } // using additionalPlugins
-            return md;
-        })();
+        })(lazy.markdownIt);
         return baseImplementation;
     }; //setupMarkdown
     

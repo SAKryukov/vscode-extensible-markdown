@@ -25,7 +25,8 @@ exports.activate = context => {
     
     const transcodeText = (text, fileName, title, css, embedCss, rootPath) => {
         text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
-        const result = lazy.markdownIt.render(text);
+        let result = lazy.markdownIt.render(text);
+        result = result.replace(/\s*?data-line\=\"[0-9]*?\" class\=\"code-line\"\s*?\>/g, ">"); //removing VSCODE-specific items
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
@@ -301,6 +302,7 @@ exports.activate = context => {
         })(); //additionalPlugins
         const setupUsage = ((md) => {
             if (!md) return;
+            optionSet.highlight = null;
             md.set(optionSet);
             //SA??? to restore
             const usage = {

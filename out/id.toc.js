@@ -181,7 +181,7 @@ module.exports = (md, options) => {
         //const headingOpenPrevious = md.renderer.rules.heading_open; //SA??? removed to disable VSCode classes and id attributes
         md.renderer.rules.heading_open = function (tokens, index, options, object, renderer) {
             tokens[index].attrs = tokens[index].attrs || [];
-            let title = tokens[index + 1].children.reduce(function (accumulator, child) {
+            let title = tokens[index + 1].children.reduce((accumulator, child) => {
                 return accumulator + child.content;
             }, "");
             // some not-so-pathological cases create redundant md.renderer.rules.heading_open call, so:

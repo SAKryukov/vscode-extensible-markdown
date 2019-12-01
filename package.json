@@ -231,14 +231,6 @@
                     "type": "boolean",
                     "default": true
                 },
-                "markdown.extension.convertToHtml.options.linkify": {
-                    "type": "boolean",
-                    "default": false
-                },
-                "markdown.extension.convertToHtml.options.br": {
-                    "type": "boolean",
-                    "default": true
-                },
                 "markdown.extension.convertToHtml.options.typographer": {
                     "type": "boolean",
                     "default": true

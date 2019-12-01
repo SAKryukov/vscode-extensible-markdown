@@ -39,8 +39,6 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
         autoNumberingRegex: thisExtensionSection["autoNumberingRegex"],
         // options:
         allowHTML: thisMarkdownItOptionSection["allowHTML"],
-        linkify: thisMarkdownItOptionSection["linkify"],
-        br: thisMarkdownItOptionSection["br"],
         typographer: thisMarkdownItOptionSection["typographer"],
         smartQuotes: thisMarkdownItOptionSection["smartQuotes"],
         additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"],

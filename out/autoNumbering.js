@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = function (options, headingLevel) {
+module.exports = (options, headingLevel) => {
 
     function getOption(optionSet, level, property, defaultValue) {
         if (!defaultValue) defaultValue = '';
@@ -14,7 +14,7 @@ module.exports = function (options, headingLevel) {
         return propertyValue;
     } //getOption
 
-    const initializeAutoNumbering = function (tokens) {
+    const initializeAutoNumbering = tokens => {
         const effectiveOptions = options.autoNumbering;
         if (!effectiveOptions) return null;
         if (!effectiveOptions.enable) return null;
@@ -22,24 +22,24 @@ module.exports = function (options, headingLevel) {
             level: -1,
             levels: [],
             effectiveOptions: effectiveOptions,
-            getSeparator: function (level) {
+            getSeparator: level => {
                 return getOption(effectiveOptions, level, "separator", effectiveOptions.defaultSeparator);
             },
-            getStart: function (level) {
+            getStart: level => {
                 return getOption(effectiveOptions, level, "start", effectiveOptions.defaultStart)
             },
-            getPrefix: function (level) {
+            getPrefix: level => {
                 return getOption(effectiveOptions, level, "prefix", effectiveOptions.defaultPrefix);
             },
-            getSuffix: function (level) {
+            getSuffix: level => {
                 return getOption(effectiveOptions, level, "suffix", effectiveOptions.defaultSuffix);
             },
-            getStandAlong: function (level) {
+            getStandAlong: level => {
                 return getOption(effectiveOptions, level, "standAlong", effectiveOptions.defaultPrefix);
             }
         }; //theSet
 
-        theSet.getAccumulator = function (level) {
+        theSet.getAccumulator = level => {
             if (!theSet.levels[theSet.level]) return '';
             if (!theSet.levels[theSet.level].accumulator)
                 return theSet.levels[theSet.level].number;
@@ -48,7 +48,7 @@ module.exports = function (options, headingLevel) {
                 + theSet.levels[theSet.level].number
         }; //theSet.getAccumulator
 
-        theSet.getNumberingText = function (level) {
+        theSet.getNumberingText = level => {
             const standAlong = theSet.getStandAlong(level);
             return (!standAlong) && theSet.levels[level].accumulator.length > 0 ?
                 theSet.levels[level].accumulator
@@ -59,7 +59,7 @@ module.exports = function (options, headingLevel) {
         return theSet;
     }; //initializeAutoNumbering
 
-    const iterateAutoNumbering = function (excludeFromToc, autoSet, token) {
+    const iterateAutoNumbering = (excludeFromToc, autoSet, token) => {
         if (!autoSet) return '';
         if (excludeFromToc) return '';
         const level = headingLevel(token);

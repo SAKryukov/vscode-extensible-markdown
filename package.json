@@ -15,7 +15,7 @@
         "url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"
     },
     "engines": {
-        "vscode": ">=1.14.1"
+        "vscode": ">=1.40.0"
     },
     "categories": [
         "Other"
@@ -44,7 +44,7 @@
         "keybindings": [
             {
                 "command": "extensible.markdown.convertToHtml",
-                "key": "alt+S",
+                "key": "alt+Q`",
                 "when": "editorTextFocus"
             },
             {

@@ -23,7 +23,7 @@ const defaultOptions = {
 }; //defaultOptions
 defaultOptions.bulletedListType = defaultOptions.defaultListElement;
 
-module.exports = function (md, options) {
+module.exports = (md, options) => {
 
     const util = require("util");
     const autoNumbering = require("./autoNumbering");
@@ -55,7 +55,7 @@ module.exports = function (md, options) {
     let idCounts = { headings: 0, toc: 0 };
     let idSet = [];
 
-    md.core.ruler.before("normalize", "detectAutoNumbering", function (state) {
+    md.core.ruler.before("normalize", "detectAutoNumbering", state => {
         let regexp;
         try {
             regexp = new RegExp(options.autoNumberingRegex);
@@ -115,7 +115,7 @@ module.exports = function (md, options) {
         } //exception
     }); //md.core.ruler.before
 
-    md.core.ruler.before("inline", "buildToc", function (state) {
+    md.core.ruler.before("inline", "buildToc", state => {
         if (!options.enableHeadingId)   // inconsistent with having toc/no-toc tags, 
             return;                     // so leave them as is
         let tocRegexp = options.tocRegex;
@@ -142,12 +142,10 @@ module.exports = function (md, options) {
         firstTime = false;
     }); //md.core.ruler.before
 
-    const slugify = function (s, used) {
+    const slugify = (s, used) => {
         let slug = options.idPrefix +
             s.replace(/ /g, '-')
-                .replace(/[^A-Za-z0-9\-\.\_]/g, function (match) {
-                    return match.codePointAt().toString(16);
-                }).toLowerCase();
+                .replace(/[^A-Za-z0-9\-\.\_]/g, match => { return match.codePointAt().toString(16); }).toLowerCase();
         while (used[slug])
             slug += '.';
         used[slug] = slug;

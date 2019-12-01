@@ -13,14 +13,14 @@ const properties = [
     "Separator"
 ];
 
-const defaultKeywords = (function (defaultKeyword, properties) {
+const defaultKeywords = ((defaultKeyword, properties) => {
     const result = [];
     for (const property of properties)
         result.push(defaultKeyword + property);
     return result;
 })(defaultKeyword, properties);
 
-const headingKeywords = (function (properties) {
+const headingKeywords = (properties => {
     const result = [];
     for (const property of properties)
         result.push(property.toLowerCase());
@@ -28,19 +28,19 @@ const headingKeywords = (function (properties) {
     return result;
 })(properties);
 
-const headingRegexp = (function(headingKeywords) {
+const headingRegexp = (headingKeywords => {
     const keywordSet = headingKeywords.join("|");
     const expression = util.format("^[ |\t]*h([1-6])\\.(%s)[ |\t]*:[ |\t]*(.*)", keywordSet);
     return new RegExp(expression);
 })(headingKeywords);
 
-const topLevelRegexp = (function(defaultKeywords, enableKeyword) {
+const topLevelRegexp = ((defaultKeywords, enableKeyword) => {
     const keywordSet = [defaultKeywords.join("|"), enableKeyword].join("|");
     const expression = util.format("^[ |\t]*?(%s)[ |\t]*:[ |\t]*(.*)", keywordSet);
     return new RegExp(expression);
 })(defaultKeywords, enableKeyword);
 
-const splitRegex = (function() {
+const splitRegex = (() => {
     return new RegExp("[\n\r]");
 })();
 
@@ -107,7 +107,7 @@ function parse(text) {
     return result;
 } //parse
 
-module.exports = function (optionText) {
+module.exports = optionText => {
     let result = parse(optionText);
     if (!isLegitimateParsingResult(result))
         result = undefined;

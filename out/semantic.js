@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports.getHtmlTemplateSet = function (path, fs, encoding) {
+module.exports.getHtmlTemplateSet = (path, fs, encoding) => {
     return {
         html: fs.readFileSync(path.join(__dirname, "/template-html.txt"), encoding),
         style: fs.readFileSync(path.join(__dirname + "/template-style.txt"), encoding),
@@ -9,7 +9,7 @@ module.exports.getHtmlTemplateSet = function (path, fs, encoding) {
     }
 }; //getHtmlTemplateSet
 
-module.exports.getSettings = function (importContext) { // see package.json, "configuration":
+module.exports.getSettings = importContext => { // see package.json, "configuration":
     const thisExtensionSection =
         importContext.vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
     const thisMarkdownItOptionSection =
@@ -96,7 +96,7 @@ module.exports.getSettings = function (importContext) { // see package.json, "co
     return settings;
 }; //getSettings
 
-module.exports.titleFinder = function (text, settings) {
+module.exports.titleFinder = (text, settings) => {
     if (!settings.titleLocatorRegex) return null;
     try {
         const regexp = new RegExp(settings.titleLocatorRegex, "m");
@@ -109,7 +109,7 @@ module.exports.titleFinder = function (text, settings) {
     } //exception
 }; //titleFinder
 
-module.exports.getVSCodeRange = function (vscode, document, start, match) {
+module.exports.getVSCodeRange = (vscode, document, start, match) => {
     return new vscode.Range(
         document.positionAt(start),
         document.positionAt(start + match.length));
@@ -119,12 +119,12 @@ module.exports.getVSCodeRange = function (vscode, document, start, match) {
 // thenableRegex("1(.*?)2)", input, 0).then(function(start, len, groups) {
 //     //...
 // })
-module.exports.thenableRegex = function (regexPattern, input, isMultiline) {
+module.exports.thenableRegex = (regexPattern, input, isMultiline) => {
     let options = isMultiline ? "gm" : "g";
     try {
         const regexp = new RegExp(regexPattern, options);
         let match = regexp.exec(input);
-        const then = function (callback) {
+        const then = callback => {
             while (match != null) {
                 let groups = [];
                 for (let index = 0; index < match.length; ++index)
@@ -135,12 +135,12 @@ module.exports.thenableRegex = function (regexPattern, input, isMultiline) {
         } // then
         return { then: then };
     } catch (ex) {
-        return { then: function () { } };
+        return { then: () => { } };
     };
 }; //thenableRegex
 
-module.exports.replaceIncludes = function (importContext, input, hostFileName, settings) {
-    const readFile = function(fileName) {
+module.exports.replaceIncludes = (importContext, input, hostFileName, settings) => {
+    const readFile = fileName => {
         try {
             return importContext.fs.readFileSync(fileName, importContext.encoding);
         } catch (ex) {
@@ -149,7 +149,7 @@ module.exports.replaceIncludes = function (importContext, input, hostFileName, s
     }; //readFile
     const invalidRegexMessage = importContext.util.format(settings.includeLocatorInvalidRegexMessageFormat, settings.includeLocatorRegex);
     let result = input;
-    const replaceOne = function (regex) {
+    const replaceOne = regex => {
         const match = regex.exec(result);
         if (!match) return false; 
         if (match.length != 2) { result = invalidRegexMessage; return false; }

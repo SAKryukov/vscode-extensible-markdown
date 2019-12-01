@@ -45,7 +45,7 @@ exports.activate = context => {
         } //loop
         return util.format(htmlTemplateSet.html,
             title ?
-                title : util.format("Converted from: %s", path.basename(fileName)),
+                title : `Converted from: ${path.basename(fileName)}`,
             style,
             result);
     }; //transcodeText
@@ -302,7 +302,7 @@ exports.activate = context => {
             if (!md) return;
             optionSet.highlight = null;
             optionSet.xhtmlOut = true;
-            optionSet.langPrefix = null;
+            optionSet.langPrefix = null; //SA??? to implement: selective choice of language (C#, Javascript, etc.) for code fence
             md.set(optionSet);
             const usage = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
@@ -316,7 +316,7 @@ exports.activate = context => {
                 includeLevel: lazy.settings.tocIncludeLevels,
                 tocContainerClass: lazy.settings.tocContainerClass,
                 tocListType: lazy.settings.tocListType,
-                autoNumbering: lazy.settings.autoNumbering, //SA??? causes exception
+                autoNumbering: lazy.settings.autoNumbering,
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
             };
             md.use(idToc, usage);

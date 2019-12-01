@@ -203,15 +203,9 @@ module.exports = function (md, options) {
     } //addIdAttributes
 
     function createToc(state) {
-        md.renderer.rules[tocFunctionNames.open] = function (tokens, index) {
-            return util.format("<div class=\"%s\">", options.tocContainerClass);
-        }; // open
         md.renderer.rules[tocFunctionNames.body] = function (tokens, index) {
             return createTocTree(0, state.tokens)[1];
         }; //body
-        md.renderer.rules[tocFunctionNames.close] = function (tokens, index) {
-            return "</div>";
-        }; //close
     } //createToc
 
     function detectAndPushToc(tocRegexp) {
@@ -221,12 +215,10 @@ module.exports = function (md, options) {
             const match = tocRegexp.exec(state.src);
             if (!match) return false;
             if (match.length < 1) return false;
-            state.push(tocFunctionNames.open, ruleName, 1);
             state.push(tocFunctionNames.body, ruleName, 0);
-            state.push(tocFunctionNames.close, ruleName, -1);
             state.src = "";
             return true;
-        });
+        }); //md.inline.ruler.before
     } //detectAndPushToc
 
     function createTocTree(tokenIndex, tokens) {
@@ -247,7 +239,7 @@ module.exports = function (md, options) {
             } //if
             if (usedIds.excludeFromToc[currentTokenIndex] == token || options.includeLevel.indexOf(level) == -1) {
                 currentTokenIndex++;
-                ++idCounts.toc; // one id is skipped
+                ++idCounts.toc; // one id is skipped //SA???
                 continue;
             } //if
             if (currentLevel) {
@@ -268,7 +260,7 @@ module.exports = function (md, options) {
                 } //if
             } else
                 currentLevel = level; // We init with the first found level
-            const tocSlug = idSet[idCounts.toc].id;
+            const tocSlug = idSet[idCounts.toc].id; // SA??? bug here
             const prefix = idSet[idCounts.toc].prefix;
             ++idCounts.toc;
             listItemContent = util.format("<li>%s<a href=\"#%s\">", prefix, tocSlug);
@@ -297,10 +289,8 @@ module.exports = function (md, options) {
         if (options.listElementAttributeSets)
             for (const index in options.defaultListElementAttributeSet)
                 if (options.listElementAttributeSets.length < 1)
-                    elementAttributes += util.format(" %s=\"%s\"",
-                        index,
-                        options.defaultListElementAttributeSet[index]);
-        return util.format("<%s%s>%s</%s>", listTag, elementAttributes, headings.join(""), listTag);
+                    elementAttributes += " " + `${index}="${options.defaultListElementAttributeSet[index]}"`;
+        return `<${listTag}${elementAttributes} class="${options.tocContainerClass}">${headings.join("")}</${listTag}>`;
     } //listElement
 
     function populateWithDefault(value, defaultValue) { // special edition: it does not populate Array

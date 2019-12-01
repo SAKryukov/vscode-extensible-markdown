@@ -303,8 +303,9 @@ exports.activate = context => {
         const setupUsage = ((md) => {
             if (!md) return;
             optionSet.highlight = null;
+            optionSet.xhtmlOut = true;
+            optionSet.langPrefix = null;
             md.set(optionSet);
-            //SA??? to restore
             const usage = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                 defaultListElement: lazy.settings.tocListType,
@@ -313,12 +314,11 @@ exports.activate = context => {
                 listElementAttributeSets: lazy.settings.listElementAttributeSets,
                 enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                 idPrefix: lazy.settings.headingIdPrefix,
-                //stringModule: require(path.join(context.extensionPath, "string")), //SA??? extension path is not defined
                 tocRegex: lazy.settings.tocRegex,
                 includeLevel: lazy.settings.tocIncludeLevels,
                 tocContainerClass: lazy.settings.tocContainerClass,
                 tocListType: lazy.settings.tocListType,
-                //autoNumbering: lazy.settings.autoNumbering, //SA??? causes exception
+                autoNumbering: lazy.settings.autoNumbering, //SA??? causes exception
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
             };
             md.use(idToc, usage);

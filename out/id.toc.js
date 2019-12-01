@@ -29,7 +29,23 @@ module.exports = function (md, options) {
     const autoNumbering = require("./autoNumbering");
     const autoNumberingParser = require("./autoNumbering.optionParser");
 
-    if (!options) options = {};
+    if (options) {
+        const isObject = obj => { return obj && obj.constructor == Object; };
+        function clone(source) {
+            let target = {};
+            for (let index in source)
+                if (source.hasOwnProperty(index))
+                    if (isObject(source[index]))
+                        target[index] = clone(source[index]);
+                    else
+                        target[index] = source[index];
+            return target;
+        } //clone
+        options = clone(options);    
+    } else
+        options = {};
+
+    options.autoNumbering.enable = true;
     populateWithDefault(options, defaultOptions);
 
     // no magic function names:

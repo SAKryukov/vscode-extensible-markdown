@@ -81,7 +81,7 @@
         },
         "configuration": {
             "type": "object",
-            "title": "Markdown convert to HTML configuration",
+            "title": "Extensible Markdown Converter HTML configuration",
             "properties": {
                 "markdown.extension.convertToHtml.reportSuccess": {
                     "type": "boolean",
@@ -93,7 +93,7 @@
                 },
                 "markdown.extension.convertToHtml.embedCss": {
                     "type": "boolean",
-                    "default": false
+                    "default": true
                 },
                 "markdown.extension.convertToHtml.outputPath": {
                     "type": "string",

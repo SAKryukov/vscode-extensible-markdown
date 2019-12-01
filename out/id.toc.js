@@ -45,7 +45,6 @@ module.exports = function (md, options) {
     } else
         options = {};
 
-    options.autoNumbering.enable = true;
     populateWithDefault(options, defaultOptions);
 
     // no magic function names:

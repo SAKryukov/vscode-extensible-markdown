@@ -165,7 +165,7 @@ module.exports = function (md, options) {
 
     function addIdAttributes() {
         if (!firstTime) return;
-        const headingOpenPrevious = md.renderer.rules.heading_open;
+        //const headingOpenPrevious = md.renderer.rules.heading_open; //SA??? removed to disable VSCode classes and id attributes
         md.renderer.rules.heading_open = function (tokens, index, options, object, renderer) {
             tokens[index].attrs = tokens[index].attrs || [];
             let title = tokens[index + 1].children.reduce(function (accumulator, child) {
@@ -179,10 +179,10 @@ module.exports = function (md, options) {
                 prefix = idSet[idCounts.headings].prefix;
                 ++idCounts.headings;
             } //if
-            if (headingOpenPrevious)
-                return headingOpenPrevious.apply(this, arguments) + prefix;
-            else
-                return renderer.renderToken.apply(renderer, arguments) + prefix;
+            // if (headingOpenPrevious) //SA??? removed to disable VSCode classes and id attributes
+            //     return headingOpenPrevious.apply(this, arguments) + prefix;
+            // else
+            return renderer.renderToken.apply(renderer, arguments) + prefix;
             //SA!!! APPEND text to return to add prefix to heading content
         }; //md.renderer.rules.heading_open
     } //addIdAttributes

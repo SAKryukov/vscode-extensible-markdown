@@ -48,7 +48,6 @@ module.exports = (md, options) => {
     populateWithDefault(options, defaultOptions);
 
     // no magic function names:
-    const tocFunctionNames = { open: "tocOpen", close: "tocClose", body: "tocBody" };
     const ruleName = "toc"; // works with null, but let's care about other plug-ins
     let firstTime = true;
     let usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
@@ -200,7 +199,7 @@ module.exports = (md, options) => {
     } //addIdAttributes
 
     function createToc(state) {
-        md.renderer.rules[tocFunctionNames.body] = function (tokens, index) {
+        md.renderer.rules[ruleName] = function (tokens, index) {
             return createTocTree(0, state.tokens)[1];
         }; //body
     } //createToc
@@ -212,7 +211,7 @@ module.exports = (md, options) => {
             const match = tocRegexp.exec(state.src);
             if (!match) return false;
             if (match.length < 1) return false;
-            state.push(tocFunctionNames.body, ruleName, 0);
+            state.push(ruleName, 0);
             state.src = "";
             return true;
         }); //md.inline.ruler.before

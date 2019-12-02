@@ -132,7 +132,6 @@ module.exports = (md, options) => {
             excludeFromTocRegex = new RegExp(options.excludeFromTocRegex, "m");
         //
         usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
-        idCounts = { headings: 0, toc: 0 };
         idSet = [];
         buildIdSet(idSet, state.tokens, excludeFromTocRegex);
         addIdAttributes();
@@ -226,6 +225,7 @@ module.exports = (md, options) => {
             subHeadings,
             currentTokenIndex = tokenIndex;
         const size = tokens.length;
+        idCounts = { headings: 0, toc: 0 };
         while (currentTokenIndex < size) {
             const token = tokens[currentTokenIndex];
             const heading = tokens[currentTokenIndex - 1];

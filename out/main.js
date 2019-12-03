@@ -323,7 +323,7 @@ exports.activate = context => {
             const attributionOptions = {
                 //SA???
             };
-            //md.use(attribution, attributionOptions); //SA??? under development
+            md.use(attribution, attributionOptions); //SA??? under development
             for (let pluginData in additionalPlugins) {
                 let plugin;
                 try {

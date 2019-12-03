@@ -305,10 +305,7 @@ exports.activate = context => {
             md.set(optionSet);
             const idTopOptions = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
-                defaultListElement: lazy.settings.tocListType,
-                listElements: lazy.settings.listElements,
-                defaultListElementAttributeSet: lazy.settings.defaultListElementAttributeSet,
-                listElementAttributeSets: lazy.settings.listElementAttributeSets,
+                tocItemIndentInEm: lazy.settings.tocItemIndentInEm,
                 enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
                 headingIdPrefix: lazy.settings.headingIdPrefix,
                 tocRegex: lazy.settings.tocRegex,

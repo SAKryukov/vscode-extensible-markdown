@@ -15,10 +15,7 @@ const defaultOptions = {
     tocContainerClass: "toc",
     tocRegex: "^\\[\\]\\(toc\\)",
     excludeFromTocRegex: "\\[\\]\\(notoc\\)",
-    defaultListElement: "ul",
-    listElements: ["ul", "ul", "ul", "ul", "ul", "ul"],
-    defaultListElementAttributeSet: { style: "list-style-type: none;" },
-    listElementAttributeSets: [],
+    tocItemIndentInEm: 2,
     headingIdPrefix: "heading."
 }; //defaultOptions
 defaultOptions.bulletedListType = defaultOptions.defaultListElement;
@@ -136,10 +133,10 @@ module.exports = (md, options) => {
             for (let index in headingSet)
                 headingSet[index].level -= zeroIndent;        
         })();
-        renderedHtml = "\n";
+        renderedHtml = `\n`;
         for (let index in headingSet) {
             let element = headingSet[index];
-            renderedHtml += `<p style="margin:0; margin-left: ${(element.level + 1) * 2}em;"><a href="#${element.id}">${element.content}</a></p>\n`;
+            renderedHtml += `<span style="margin-left: ${(element.level + 1) * options.tocItemIndentInEm}em;"><a href="#${element.id}">${element.content}</a></span><br/>\n`;
         } //loop
         return renderedHtml;
     }; //buildToc

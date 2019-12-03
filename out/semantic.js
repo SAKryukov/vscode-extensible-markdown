@@ -31,10 +31,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         outputPath: thisExtensionSection["outputPath"],
         css: sharedSection["styles"],
         excludeFromTocRegex: thisExtensionSection["excludeFromTocRegex"],
-        defaultListElement: thisExtensionSection["defaultListElement"],
-        listElements: thisExtensionSection["listElements"],
-        defaultListElementAttributeSet: thisExtensionSection["defaultListElementAttributeSet"],
-        listElementAttributeSets: thisExtensionSection["listElementAttributeSets"],
+        tocItemIndentInEm: thisExtensionSection["tocItemIndentInEm"],
         autoNumbering: thisExtensionSection["autoNumbering"],
         autoNumberingRegex: thisExtensionSection["autoNumberingRegex"],
         // options:

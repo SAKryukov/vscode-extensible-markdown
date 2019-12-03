@@ -125,6 +125,10 @@
                     "type": "string",
                     "default": "^\\{toc\\}"
                 },
+                "markdown.extension.convertToHtml.tocItemIndentInEm": {
+                    "type": "int",
+                    "default": 3
+                },
                 "markdown.extension.convertToHtml.excludeFromTocRegex": {
                     "type": "string",
                     "default": "\\{notoc\\}"
@@ -160,31 +164,6 @@
                 "markdown.extension.convertToHtml.tocContainerClass": {
                     "type": "string",
                     "default": "toc"
-                },
-                "markdown.extension.convertToHtml.defaultListElement": {
-                    "type": "string",
-                    "default": "ul"
-                },
-                "markdown.extension.convertToHtml.listElements": {
-                    "type": "array",
-                    "default": [
-                        "ul",
-                        "ul",
-                        "ul",
-                        "ul",
-                        "ul",
-                        "ul"
-                    ]
-                },
-                "markdown.extension.convertToHtml.defaultListElementAttributeSet": {
-                    "type": "object",
-                    "default": {
-                        "style": "list-style-type: none;"
-                    }
-                },
-                "markdown.extension.convertToHtml.listElementAttributeSets": {
-                    "type": "array",
-                    "default": []
                 },
                 "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",

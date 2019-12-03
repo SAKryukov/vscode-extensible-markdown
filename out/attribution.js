@@ -44,6 +44,14 @@ module.exports = (md, options) => {
         createdRules.add(ruleName);
     }; //detectAttributes
 
+    const renderDefault = (tokens, index, options, object, renderer, previousHandler, defaultHtml) => {
+        if (previousHandler)
+            return(previousHandler(tokens, index, options, object, renderer))
+        else
+            return defaultHtml;
+    }; //renderDefault
+
+    const previousRenderFence = md.renderer.rules.fence;
     md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
         const content = tokens[index].content;
         if (index in tokenDictionary) {
@@ -51,9 +59,10 @@ module.exports = (md, options) => {
             const languageId = data.match[data.pattern.attributeValue];
             return `<pre lang="${languageId}">${content}</pre>`;
         } else
-            return `<pre>${content}</pre>`;
+            return renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
     }; //md.renderer.rules.fence
 
+    const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.paragraph_open = (tokens, index, options, object, renderer) => {
         if (index in tokenDictionary) {
             const data = tokenDictionary[index];
@@ -61,9 +70,10 @@ module.exports = (md, options) => {
             const attributeValue = data.pattern.attributeValue.constructor == String ? data.pattern.attributeValue : data.match[data.pattern.attributeValue];
             return `<p ${attribute}="${attributeValue}">`;    
         } else
-            return `<p>`;
+            return renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.paragraph_open
 
+    const previousRenderEmOpen = md.renderer.rules.em_open;
     md.renderer.rules.em_open = (tokens, index, options, object, renderer) => {
         const text = tokens[index + 1].content;
         const match = abbreviationRegexp.exec(text);
@@ -72,7 +82,7 @@ module.exports = (md, options) => {
             tokens[index + 2].tag = "abbr";
             return `<abbr title="${match[1]}">`;
         } else
-            return "<em>";
+            return renderDefault(tokens, index, options, object, renderer, previousRenderEmOpen, `<em>`);
     }; //md.renderer.rules.em_open
 
     detectAttributes("attribution");

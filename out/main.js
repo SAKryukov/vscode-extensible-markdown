@@ -17,6 +17,7 @@ exports.activate = context => {
     const childProcess = require("child_process");
     const semantic = require("./semantic");
     const idToc = require("./id.toc.js");
+    const attribution = require("./attribution.js");
     const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
 
     const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
@@ -256,7 +257,9 @@ exports.activate = context => {
         if (!lazy.settings)
             lazy.settings = semantic.getSettings(importContext);
         const optionSet = (() => {
-            let result = { xhtmlOut: true }; // it closes all tags, like in <br />, non-default, but it would be a crime not to close tags
+            // result.langPrefix: SA??? to implement: selective choice of language (C#, Javascript, etc.) for code fence
+            // result.xhtmlOut: it closes all tags, like in <br />, non-default, but it would be a crime not to close tags:
+            let result = { xhtmlOut: true, highlight: null, langPrefix: null };
             result.html = lazy.settings.allowHTML;
             result.typographer = lazy.settings.typographer;
             if (lazy.settings.typographer) {
@@ -300,11 +303,8 @@ exports.activate = context => {
         })(); //additionalPlugins
         const setupUsage = ((md) => {
             if (!md) return;
-            optionSet.highlight = null;
-            optionSet.xhtmlOut = true;
-            optionSet.langPrefix = null; //SA??? to implement: selective choice of language (C#, Javascript, etc.) for code fence
             md.set(optionSet);
-            const usage = {
+            const idTopOptions = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                 defaultListElement: lazy.settings.tocListType,
                 listElements: lazy.settings.listElements,
@@ -319,7 +319,11 @@ exports.activate = context => {
                 autoNumbering: lazy.settings.autoNumbering,
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
             };
-            md.use(idToc, usage);
+            md.use(idToc, idTopOptions);
+            const attributionOptions = {
+                //SA???
+            };
+            //md.use(attribution, attributionOptions); //SA??? under development
             for (let pluginData in additionalPlugins) {
                 let plugin;
                 try {

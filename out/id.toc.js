@@ -54,7 +54,7 @@ module.exports = (md, options) => {
     let idCounts = { headings: 0, toc: 0 };
     let idSet = [];
 
-    md.core.ruler.before("normalize", "detectAutoNumbering", state => {
+    md.core.ruler.before("block", "detectAutoNumbering", state => {
         let regexp;
         try {
             regexp = new RegExp(options.autoNumberingRegex);
@@ -114,7 +114,7 @@ module.exports = (md, options) => {
         } //exception
     }); //md.core.ruler.before
 
-    md.core.ruler.before("linkify", "buildToc", state => {
+    md.core.ruler.after("block", "buildToc", state => {
         if (!options.enableHeadingId)   // inconsistent with having toc/no-toc tags, 
             return;                     // so leave them as is
         let tocRegexp = options.tocRegex;

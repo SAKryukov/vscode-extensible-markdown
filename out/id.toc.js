@@ -136,7 +136,7 @@ module.exports = (md, options) => {
         renderedHtml = `\n`;
         for (let index in headingSet) {
             let element = headingSet[index];
-            renderedHtml += `<span style="margin-left: ${(element.level + 1) * options.tocItemIndentInEm}em;"><a href="#${element.id}">${element.content}</a></span><br/>\n`;
+            renderedHtml += `<span style="margin-left: ${element.level * options.tocItemIndentInEm}em;"><a href="#${element.id}">${element.content}</a></span><br/>\n`;
         } //loop
         return renderedHtml;
     }; //buildToc

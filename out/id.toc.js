@@ -125,10 +125,15 @@ module.exports = (md, options) => {
             if (!isParagraph && !isHeading) continue;
             const contentToken = state.tokens[index + 1];
             if (isParagraph)
-                if (tocRegex.exec(contentToken.content))
+                if (tocRegex.exec(contentToken.content)) {
                     tocLocations.push(index);
+                    utility.cleanInline(contentToken, tocRegex);
+                }
             if (!isHeading) continue;
-            if (excludeFromTocRegex.exec(contentToken.content)) continue;
+            if (excludeFromTocRegex.exec(contentToken.content)) {
+                utility.cleanInline(contentToken, excludeFromTocRegex);
+                continue;
+            } 
             const id = utility.slugify(contentToken.content, usedIds, options.headingIdPrefix);
             headingSet[index] = { index: index, id: id, level: token.level, tag: token.tag };
         } // loop state.tokens

@@ -18,14 +18,6 @@ module.exports = (md, options) => {
         pattern.regexp = new RegExp(pattern.regexpString);
     const tokenDictionary = {};
 
-    function cleanInline(token, regexp) {
-        if (token.children)
-            for (let childToken of token.children)
-                cleanInline(childToken, regexp);
-        if (token.type != "inline")
-            token.content = token.content.replace(regexp, "");
-    } //cleanInline
-
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
         md.core.ruler.push(ruleName, state => {
@@ -38,7 +30,7 @@ module.exports = (md, options) => {
                     if (!match) continue;
                     tokenDictionary[index] = { text: text, pattern: pattern, match: match };
                     currentToken.hidden = true;
-                    cleanInline(currentToken, pattern.regexp);
+                    utility.cleanInline(currentToken, pattern.regexp);
                 } //loop patterns
             } //loop tokens
             return true;

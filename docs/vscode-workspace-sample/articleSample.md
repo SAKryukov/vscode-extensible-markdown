@@ -48,7 +48,7 @@ which is important for headings like "Contents" or "Table of Contents" -->
 
 ## Contents
 
-{toc}
+[](toc)
 
 <!-- CodeProject requires level-22 will it dec 2 heading for top-level section headers : -->
  

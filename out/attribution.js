@@ -26,7 +26,7 @@ module.exports = (md, options) => {
 
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
-        md.core.ruler.before('linkify', ruleName, function (state, silent) {
+        md.core.ruler.push(ruleName, function (state, silent) {
             if (silent) return false;
             for (let index = 0; index < state.tokens.length - 1; ++index) {
                 const token = state.tokens[index];

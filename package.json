@@ -15,7 +15,8 @@
         "url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"
     },
     "engines": {
-        "vscode": ">=1.40.0"
+      
+  "vscode": ">=1.40.0"
     },
     "categories": [
         "Other"
@@ -44,7 +45,7 @@
         "keybindings": [
             {
                 "command": "extensible.markdown.convertToHtml",
-                "key": "alt+Q`",
+                "key": "alt+Q",
                 "when": "editorTextFocus"
             },
             {
@@ -101,7 +102,7 @@
                 },
                 "markdown.extension.convertToHtml.titleLocatorRegex": {
                     "type": "string",
-                    "default": "^(.*?)\\[\\]\\(title\\)"
+                    "default": "^(.*?)\\{title\\}"
                 },
                 "markdown.extension.convertToHtml.titleLocatorDecoratorStyle": {
                     "type": "object",
@@ -122,11 +123,11 @@
                 },
                 "markdown.extension.convertToHtml.tocRegex": {
                     "type": "string",
-                    "default": "^\\[\\]\\(toc\\)"
+                    "default": "^\\{toc\\}"
                 },
                 "markdown.extension.convertToHtml.excludeFromTocRegex": {
                     "type": "string",
-                    "default": "\\[\\]\\(notoc\\)"
+                    "default": "\\{notoc\\}"
                 },
                 "markdown.extension.convertToHtml.tocDecoratorStyle": {
                     "type": "object",

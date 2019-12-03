@@ -122,7 +122,7 @@
                 },
                 "markdown.extension.convertToHtml.tocRegex": {
                     "type": "string",
-                    "default": "^\\{toc\\}"
+                    "default": "^\\[\\]\\(toc\\)"
                 },
                 "markdown.extension.convertToHtml.excludeFromTocRegex": {
                     "type": "string",

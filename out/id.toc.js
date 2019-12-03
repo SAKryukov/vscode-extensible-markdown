@@ -114,7 +114,7 @@ module.exports = (md, options) => {
         } //exception
     }); //md.core.ruler.before
 
-    md.core.ruler.before("inline", "buildToc", state => {
+    md.core.ruler.before("linkify", "buildToc", state => {
         if (!options.enableHeadingId)   // inconsistent with having toc/no-toc tags, 
             return;                     // so leave them as is
         let tocRegexp = options.tocRegex;

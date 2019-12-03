@@ -126,7 +126,7 @@
                 },
                 "markdown.extension.convertToHtml.excludeFromTocRegex": {
                     "type": "string",
-                    "default": "\\{notoc\\}"
+                    "default": "\\[\\]\\(notoc\\)"
                 },
                 "markdown.extension.convertToHtml.tocDecoratorStyle": {
                     "type": "object",

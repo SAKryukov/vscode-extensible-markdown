@@ -167,7 +167,7 @@
                 },
                 "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",
-                    "default": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)"
+                    "default": "\\{include\\(([^\\s]+?)\\)\\}"
                 },
                 "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": {
                     "type": "string",

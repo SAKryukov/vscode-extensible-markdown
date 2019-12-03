@@ -46,9 +46,9 @@ It's convenient to mark the part of HTML to paste in the CodeProject submission 
 <!-- Markdown extension "notoc" is the way to avoid adding some heading to the Table of Contents,
 which is important for headings like "Contents" or "Table of Contents" -->
 
-## Contents
+## Contents{notoc}
 
-[](toc)
+{toc}
 
 <!-- CodeProject requires level-22 will it dec 2 heading for top-level section headers : -->
  
@@ -145,7 +145,7 @@ Make sure manually created `id` values never break uniqueness. It's the best to 
 
 This is a sample of includes: `.vscode/settings.json`":
 ```
-[](include(.vscode/settings.json))
+{include(./style.css)}
 ```
 
 ## Important Warning

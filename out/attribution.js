@@ -6,9 +6,9 @@ module.exports = (md, options) => {
 
     const createdRules = new Set();
 
-    const abbreviationRegexp = new RegExp(/\{(.+?)\}/);
+    const abbreviationRegexp = new RegExp(/\{(.+?)\}/); // in **: *{Request for Comments}RFC*
     const patterns = [
-        { name: "fence language", regexpString: "\\{(.+?)}\\)", type: "fence", field: "info", attribute: "lang", attributeValue: 1 },
+        { name: "fence language", regexpString: "\\{(.+?)\\}", type: "fence", field: "info", attribute: "lang", attributeValue: 1 },
         { name: "class", regexpString: "\\{\\.(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: "class", attributeValue: 1 },
         { name: "title", regexpString: "\\{\\^(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: "title", attributeValue: 1 },
         { name: "attribute=value", regexpString: "\\{(.+?)\\=(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: 1, attributeValue: 2 },

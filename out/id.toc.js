@@ -19,7 +19,7 @@ const defaultOptions = {
     listElements: ["ul", "ul", "ul", "ul", "ul", "ul"],
     defaultListElementAttributeSet: { style: "list-style-type: none;" },
     listElementAttributeSets: [],
-    idPrefix: "headings."
+    headingIdPrefix: "heading."
 }; //defaultOptions
 defaultOptions.bulletedListType = defaultOptions.defaultListElement;
 
@@ -141,7 +141,7 @@ module.exports = (md, options) => {
     }); //md.core.ruler.before
 
     const slugify = (s, used) => {
-        let slug = options.idPrefix +
+        let slug = options.headingIdPrefix +
             s.replace(/ /g, '-')
                 .replace(/[^A-Za-z0-9\-\.\_]/g, match => { return match.codePointAt().toString(16); }).toLowerCase();
         while (used[slug])

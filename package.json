@@ -185,10 +185,6 @@
                     "type": "array",
                     "default": []
                 },
-                "markdown.extension.convertToHtml.idPrefix": {
-                    "type": "string",
-                    "default": "headings."
-                },
                 "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",
                     "default": "\\[\\]\\(include\\(([^\\s]+?)\\)\\)"

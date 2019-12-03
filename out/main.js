@@ -310,7 +310,7 @@ exports.activate = context => {
                 defaultListElementAttributeSet: lazy.settings.defaultListElementAttributeSet,
                 listElementAttributeSets: lazy.settings.listElementAttributeSets,
                 enableHeadingId: lazy.settings.headingId, // false => no id in headings => no TOC 
-                idPrefix: lazy.settings.headingIdPrefix,
+                headingIdPrefix: lazy.settings.headingIdPrefix,
                 tocRegex: lazy.settings.tocRegex,
                 includeLevel: lazy.settings.tocIncludeLevels,
                 tocContainerClass: lazy.settings.tocContainerClass,

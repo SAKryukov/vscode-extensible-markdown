@@ -1,8 +1,8 @@
-All in One Toolchain for Article Writing with Visual Studio Code<br><small>(Code Samples)</small>[](title)
+All in One Toolchain for Article Writing with Visual Studio Code<br><small>(Code Samples)</small>{title}
 
 [Sergey A Kryukov](http://www.sakryukov.org)
  
-The marker `[](title)` is used to define text for HTML  `<head><title>...</title></head>`.
+The marker `\{title\}` is used to define text for HTML  `<head><title>...</title></head>`.
 
 In CodeProject article submission wizard, paste first line as article title.
 
@@ -46,9 +46,9 @@ It's convenient to mark the part of HTML to paste in the CodeProject submission 
 <!-- Markdown extension "notoc" is the way to avoid adding some heading to the Table of Contents,
 which is important for headings like "Contents" or "Table of Contents" -->
 
-## Contents[](notoc)
+## Contents
 
-[](toc)
+{toc}
 
 <!-- CodeProject requires level-22 will it dec 2 heading for top-level section headers : -->
  

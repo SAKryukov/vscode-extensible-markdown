@@ -27,7 +27,6 @@ exports.activate = context => {
     const transcodeText = (text, fileName, title, css, embedCss, rootPath) => {
         text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
         let result = lazy.markdownIt.render(text);
-        result = result.replace(/\s*?data-line\=\"[0-9]*?\" class\=\"code-line\"\s*?\>/g, ">"); //removing VSCODE-specific items
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {

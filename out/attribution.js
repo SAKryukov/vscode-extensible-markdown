@@ -4,15 +4,25 @@ module.exports = (md, options) => {
 
     const createdRules = new Set();
 
+    const abbreviationRegexp = new RegExp(/\{(.+?)\}/);
     const patterns = [
-        { name: "fence language", regexpString: "\\[\\]\\((.+?)\\)", type: "fence", field: "info", attribute: "lang", attributeValue: 1 },
-        { name: "attribute=value", regexpString: "\\[\\]\\((.+?)\\=(.+?)\\)", type: "paragraph_open", token: +1, field: "content", attribute: 1, attributeValue: 2 },
-        { name: "class", regexpString: "\\[\\]\\(\\.(.+?)\\)", type: "paragraph_open", token: +1, field: "content", attribute: "class", attributeValue: 1 },
-        { name: "article title", regexpString: "\\[\\]\\(title\\)", type: "paragraph_open", token: +1, nextTokenType: "inline", field: "content", attribute: "class", attributeValue: "title" },
+        { name: "fence language", regexpString: "\\{(.+?)}\\)", type: "fence", field: "info", attribute: "lang", attributeValue: 1 },
+        { name: "class", regexpString: "\\{\\.(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: "class", attributeValue: 1 },
+        { name: "title", regexpString: "\\{\\^(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: "title", attributeValue: 1 },
+        { name: "attribute=value", regexpString: "\\{(.+?)\\=(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: 1, attributeValue: 2 },
+        { name: "article title", regexpString: "\\{title\\}", type: "paragraph_open", token: +1, nextTokenType: "inline", field: "content", attribute: "class", attributeValue: "title" },
     ];
     for (let pattern of patterns)
         pattern.regexp = new RegExp(pattern.regexpString);
     const tokenDictionary = {};
+
+    function cleanInline(token, regexp) {
+        if (token.children)
+            for (let childToken of token.children)
+                cleanInline(childToken, regexp);
+        if (token.type != "inline")
+            token.content = token.content.replace(regexp, "");
+    } //cleanInline
 
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
@@ -26,6 +36,8 @@ module.exports = (md, options) => {
                     const match = pattern.regexp.exec(text);
                     if (!match) continue;
                     tokenDictionary[index] = { text: text, pattern: pattern, match: match };
+                    currentToken.hidden = true;
+                    cleanInline(currentToken, pattern.regexp);
                 } //loop patterns
             } //loop tokens
             return true;
@@ -41,7 +53,7 @@ module.exports = (md, options) => {
             return `<pre lang="${languageId}">${content}</pre>`;
         } else
             return `<pre>${content}</pre>`;
-    } //md.renderer.rules.fence
+    }; //md.renderer.rules.fence
 
     md.renderer.rules.paragraph_open = (tokens, index, options, object, renderer) => {
         if (index in tokenDictionary) {
@@ -51,7 +63,18 @@ module.exports = (md, options) => {
             return `<p ${attribute}="${attributeValue}">`;    
         } else
             return `<p>`;
-    } //md.renderer.paragraph_open
+    }; //md.renderer.paragraph_open
+
+    md.renderer.rules.em_open = (tokens, index, options, object, renderer) => {
+        const text = tokens[index + 1].content;
+        const match = abbreviationRegexp.exec(text);
+        tokens[index + 1].content = text.replace(abbreviationRegexp, "");
+        if (match && match[1]) {
+            tokens[index + 2].tag = "abbr";
+            return `<abbr title="${match[1]}">`;
+        } else
+            return "<em>";
+    }; //md.renderer.rules.em_open
 
     detectAttributes("attribution");
 

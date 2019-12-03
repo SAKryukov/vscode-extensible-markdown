@@ -27,10 +27,7 @@ module.exports = (md, options) => {
     const autoNumbering = require("./autoNumbering");
     const autoNumberingParser = require("./autoNumbering.optionParser");
 
-    let renderedHtml = null;
-    let usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
-    let headingSet = {};
-    let tocLocations = [];
+    let renderedHtml, usedIds, headingSet, tocLocations;
     const cleanUp = () => {
         renderedHtml = null;
         usedIds = { headings: {}, toc: {}, excludeFromToc: {} };

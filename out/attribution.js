@@ -1,5 +1,8 @@
 "use strict";
 
+const path = require("path");
+const moduleName = path.basename(module.id);
+
 module.exports = (md, options) => {
 
     const utility = require("./utility");
@@ -72,6 +75,6 @@ module.exports = (md, options) => {
             return utility.renderDefault(tokens, index, options, object, renderer, previousRenderEmOpen, `<em>`);
     }; //md.renderer.rules.em_open
 
-    detectAttributes("attribution");
+    detectAttributes(moduleName);
 
 }; //module.exports

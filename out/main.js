@@ -16,8 +16,9 @@ exports.activate = context => {
     const path = require("path");
     const childProcess = require("child_process");
     const semantic = require("./semantic");
-    const idToc = require("./id.toc.js");
-    const attribution = require("./attribution.js");
+    const idToc = require("./id.toc");
+    const attribution = require("./attribution"); 
+    const replacements = require("./replacements");
     const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
 
     const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
@@ -319,7 +320,8 @@ exports.activate = context => {
             const attributionOptions = {
                 //SA???
             };
-            md.use(attribution, attributionOptions); //SA??? under development
+            md.use(attribution, attributionOptions);
+            md.use(replacements, {});
             for (let pluginData in additionalPlugins) {
                 let plugin;
                 try {

@@ -38,7 +38,7 @@ module.exports = (md, options) => {
         createdRules.add(ruleName);
     }; //detectAttributes
 
-    const previousRenderFence = md.renderer.rules.fence;
+    //const previousRenderFence = md.renderer.rules.fence; // remove VSCode-specific class and data
     md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
         const content = tokens[index].content;
         if (index in tokenDictionary) {
@@ -46,7 +46,7 @@ module.exports = (md, options) => {
             const languageId = data.match[data.pattern.attributeValue];
             return `<pre lang="${languageId}">${content}</pre>`;
         } else
-            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
+            return `<pre>${content}</pre>`;
     }; //md.renderer.rules.fence
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;

@@ -30,6 +30,18 @@ module.exports = (md, options) => {
     const autoNumbering = require("./autoNumbering");
     const autoNumberingParser = require("./autoNumbering.optionParser");
 
+    let renderedHtml = null;
+    let usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
+    let headingSet = {};
+    let tocLocations = [];
+    const cleanUp = () => {
+        renderedHtml = null;
+        usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
+        headingSet = {};
+        tocLocations = [];
+    };
+    cleanUp();
+    
     if (options) {
         const isObject = obj => { return obj && obj.constructor == Object; };
         function clone(source) {
@@ -48,10 +60,6 @@ module.exports = (md, options) => {
 
     utility.populateWithDefault(options, defaultOptions);
 
-    // no magic function names:
-    let usedIds = { headings: {}, toc: {}, excludeFromToc: {} };
-    const headingSet = {};
-    const tocLocations = [];    
     const tocRegex = new RegExp(options.tocRegex);
     const excludeFromTocRegex = new RegExp(options.excludeFromTocRegex);
 
@@ -117,6 +125,25 @@ module.exports = (md, options) => {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    const buildToc = () => {
+        if (renderedHtml) return renderedHtml;
+        (() => {
+            let zeroIndent = Number.MAX_VALUE;
+            for (let index in headingSet) {
+                const level = headingSet[index].level;
+                if (level < zeroIndent) zeroIndent = level;
+            } //loop zeroIndent
+            for (let index in headingSet)
+                headingSet[index].level -= zeroIndent;        
+        })();
+        renderedHtml = "\n";
+        for (let index in headingSet) {
+            let element = headingSet[index];
+            renderedHtml += `<p style="margin:0; margin-left: ${(element.level + 1) * 2}em;"><a href="#${element.id}">${element.content}</a></p>\n`;
+        } //loop
+        return renderedHtml;
+    }; //buildToc
+
     md.core.ruler.after("block", "buildToc", state => {
         for (let index = 0; index < state.tokens.length; ++index) {
             const token = state.tokens[index];
@@ -135,9 +162,11 @@ module.exports = (md, options) => {
                 continue;
             } 
             const id = utility.slugify(contentToken.content, usedIds, options.headingIdPrefix);
-            headingSet[index] = { index: index, id: id, level: token.level, tag: token.tag };
+            headingSet[index] = { index: index, id: id, content: contentToken.content, level: utility.htmlHeadingLevel(token.tag), tag: token.tag };
         } // loop state.tokens
     }); //md.core.ruler.after
+
+    md.core.ruler.before("normalize", "cleanUp", state => { cleanUp(); });
 
     const previousRenderHeadingOpen = md.renderer.rules.heading_open;
     md.renderer.rules.heading_open = (tokens, index, options, object, renderer) => {
@@ -149,10 +178,9 @@ module.exports = (md, options) => {
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.paragraph_open = (tokens, index, options, object, renderer) => {
-        for (let tocLocation of tocLocations) {
+        for (let tocLocation of tocLocations)
             if (index == tocLocation)
-                return "<p> ha ha ha";
-        }
+                return `<p>${buildToc()}`;
         return utility.renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.rules.paragraph_open
 

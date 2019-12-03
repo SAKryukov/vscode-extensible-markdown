@@ -26,8 +26,7 @@ module.exports = (md, options) => {
 
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
-        md.core.ruler.push(ruleName, function (state, silent) {
-            if (silent) return false;
+        md.core.ruler.push(ruleName, state => {
             for (let index = 0; index < state.tokens.length - 1; ++index) {
                 const token = state.tokens[index];
                 for (let pattern of patterns) {

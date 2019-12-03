@@ -2,6 +2,8 @@
 
 module.exports = (md, options) => {
 
+    const utility = require("./utility");
+
     const createdRules = new Set();
 
     const abbreviationRegexp = new RegExp(/\{(.+?)\}/);
@@ -44,13 +46,6 @@ module.exports = (md, options) => {
         createdRules.add(ruleName);
     }; //detectAttributes
 
-    const renderDefault = (tokens, index, options, object, renderer, previousHandler, defaultHtml) => {
-        if (previousHandler)
-            return(previousHandler(tokens, index, options, object, renderer))
-        else
-            return defaultHtml;
-    }; //renderDefault
-
     const previousRenderFence = md.renderer.rules.fence;
     md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
         const content = tokens[index].content;
@@ -59,7 +54,7 @@ module.exports = (md, options) => {
             const languageId = data.match[data.pattern.attributeValue];
             return `<pre lang="${languageId}">${content}</pre>`;
         } else
-            return renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
+            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
     }; //md.renderer.rules.fence
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
@@ -70,7 +65,7 @@ module.exports = (md, options) => {
             const attributeValue = data.pattern.attributeValue.constructor == String ? data.pattern.attributeValue : data.match[data.pattern.attributeValue];
             return `<p ${attribute}="${attributeValue}">`;    
         } else
-            return renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
+            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.paragraph_open
 
     const previousRenderEmOpen = md.renderer.rules.em_open;
@@ -82,7 +77,7 @@ module.exports = (md, options) => {
             tokens[index + 2].tag = "abbr";
             return `<abbr title="${match[1]}">`;
         } else
-            return renderDefault(tokens, index, options, object, renderer, previousRenderEmOpen, `<em>`);
+            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderEmOpen, `<em>`);
     }; //md.renderer.rules.em_open
 
     detectAttributes("attribution");

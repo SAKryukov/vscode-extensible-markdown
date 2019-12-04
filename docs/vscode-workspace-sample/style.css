@@ -1,4 +1,4 @@
-	body > p:first-child { font-size: 180%; text-align: center; margin-bottom: 0; }
+	.title { font-size: 280%; text-align: center; margin-bottom: 0; }
 	body > p:nth-child(2) { text-align: right; }
 	code { font-size: 120%; font-weight: bold; }
 	pre, code { color: darkGreen; padding:0; font-family: 'Consolas', sans-serif }

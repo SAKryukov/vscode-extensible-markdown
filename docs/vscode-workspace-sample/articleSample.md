@@ -1,6 +1,6 @@
 All in One Toolchain for Article Writing with Visual Studio Code<br><small>(Code Samples)</small>{title}
 
-[Sergey A Kryukov](http://www.sakryukov.org)
+[Sergey A Kryukov](http://www.sakryukov.org){.author}
  
 The marker `\{title\}` is used to define text for HTML  `<head><title>...</title></head>`.
 

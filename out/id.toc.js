@@ -18,7 +18,6 @@ const defaultOptions = {
     tocItemIndentInEm: 2,
     headingIdPrefix: "heading."
 }; //defaultOptions
-defaultOptions.bulletedListType = defaultOptions.defaultListElement;
 
 module.exports = (md, options) => {
 
@@ -34,7 +33,6 @@ module.exports = (md, options) => {
         headingSet = {};
         tocLocations = [];
     };
-    cleanUp();
     
     if (options) {
         const isObject = obj => { return obj && obj.constructor == Object; };
@@ -139,6 +137,7 @@ module.exports = (md, options) => {
     }; //buildToc
 
     md.core.ruler.after("block", "buildToc", state => {
+        cleanUp();
         for (let index = 0; index < state.tokens.length; ++index) {
             const token = state.tokens[index];
             const isParagraph = token.type == "paragraph_open";
@@ -160,10 +159,8 @@ module.exports = (md, options) => {
         } // loop state.tokens
     }); //md.core.ruler.after
 
-    md.core.ruler.before("normalize", "cleanUp", state => { cleanUp(); });
-
     const previousRenderHeadingOpen = md.renderer.rules.heading_open;
-    md.renderer.rules.heading_open = (tokens, index, options, object, renderer) => {
+    md.renderer.rules.heading_open = (tokens, index, initialOptions, object, renderer) => {
         const heading = headingSet[index];
         if (!heading)
             return utility.renderDefault(tokens, index, options, object, renderer, previousRenderHeadingOpen, `<${tokens[index].tag}>`);
@@ -171,10 +168,10 @@ module.exports = (md, options) => {
     }; //md.renderer.rules.heading_open
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
-    md.renderer.rules.paragraph_open = (tokens, index, options, object, renderer) => {
+    md.renderer.rules.paragraph_open = (tokens, index, initialOptions, object, renderer) => {
         for (let tocLocation of tocLocations)
             if (index == tocLocation)
-                return `<p>${buildToc()}`;
+                return `<p class="${options.tocContainerClass}">${buildToc()}`;
         return utility.renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.rules.paragraph_open
 

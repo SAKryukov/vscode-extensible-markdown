@@ -13,11 +13,12 @@ module.exports = (md, options) => {
     const patterns = [
         { name: "class", regexp: /\{\.(.+?)\}/g, attribute: mergedAttribute, attributeValue: 1 },
         { name: "document title", regexp: /\{title\}/g, attribute: "class", attributeValue: "title", isDocumentTitlePattern: true },
-        { name: "attribute=value", regexp: /\{(.+?)\=(.+?)\}/g, attribute: 1, attributeValue: 2 },
+        { name: "attribute=value", regexp: /\{([a-z]*?)\=(.+?)\}/g, attribute: 1, attributeValue: 2 },
     ];
     const blockPatterns = {
         "fence": { textToken: +0, textField: "info" },
         "paragraph_open": { textToken: +1, textField: "content" },
+        "blockquote_open": { textToken: +2, textField: "content" },
     };
 
     const createdRules = new Set();
@@ -26,6 +27,7 @@ module.exports = (md, options) => {
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
         md.core.ruler.push(ruleName, state => {
+            tokenDictionary = {};
             let documentTitleToken = null;
             let documentTitleTokenType = null;
             semantic.documentTitle = null;
@@ -79,15 +81,15 @@ module.exports = (md, options) => {
         return attributePart;
     } //parseAttributePart
 
-    // const previousRenderFence = null; //md.renderer.rules.fence; // remove VSCode-specific class and data
-    // md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
-    //     const attributePart = parseAttributePart(index);
-    //     const content = tokens[index].content;
-    //     if (attributePart)
-    //         return `<pre${attributePart}>${content}</pre>`;
-    //     else
-    //         return utility.renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
-    // }; //md.renderer.rules.fence
+    const previousRenderFence = null; //md.renderer.rules.fence; // remove VSCode-specific class and data
+    md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
+        const attributePart = parseAttributePart(index);
+        const content = tokens[index].content;
+        if (attributePart)
+            return `<pre${attributePart}>${content}</pre>`;
+        else
+            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
+    }; //md.renderer.rules.fence
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.paragraph_open = (tokens, index, options, object, renderer) => {
@@ -97,6 +99,15 @@ module.exports = (md, options) => {
         else
             return utility.renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.paragraph_open
+
+    const previousRenderBlockquoteOpen = md.renderer.rules.paragraph_open;
+    md.renderer.rules.blockquote_open = (tokens, index, options, object, renderer) => {
+        const attributePart = parseAttributePart(index);
+        if (attributePart)
+            return `<blockquote${attributePart}>`;
+        else
+            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderBlockquoteOpen, `<p>`);
+    }; //md.renderer.blockquote_open
 
     const previousRenderEmOpen = md.renderer.rules.em_open;
     md.renderer.rules.em_open = (tokens, index, options, object, renderer) => {

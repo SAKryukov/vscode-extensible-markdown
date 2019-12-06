@@ -1,6 +1,7 @@
 "use strict";
 
 const path = require("path");
+const semantic = require("./semantic");
 const moduleName = path.basename(module.id);
 
 module.exports = (md, options) => {
@@ -11,7 +12,7 @@ module.exports = (md, options) => {
     const mergedAttribute = "class";
     const patterns = [
         { name: "class", regexp: /\{\.(.+?)\}/g, attribute: mergedAttribute, attributeValue: 1 },
-        { name: "article title", regexp: /\{title\}/g, attribute: "class", attributeValue: "title" },
+        { name: "document title", regexp: /\{title\}/g, attribute: "class", attributeValue: "title", isDocumentTitlePattern: true },
         { name: "attribute=value", regexp: /\{(.+?)\=(.+?)\}/g, attribute: 1, attributeValue: 2 },
     ];
     const blockPatterns = {
@@ -25,6 +26,9 @@ module.exports = (md, options) => {
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
         md.core.ruler.push(ruleName, state => {
+            let documentTitleToken = null;
+            let documentTitleTokenType = null;
+            semantic.documentTitle = null;
             for (let index = 0; index < state.tokens.length; ++index) {
                 const token = state.tokens[index];
                 const blockPattern = blockPatterns[token.type];
@@ -49,8 +53,14 @@ module.exports = (md, options) => {
                         attributes[attribute] = attributeValue;
                         ++attributeCount;
                         utility.cleanInline(currentToken, pattern.regexp);
+                        if (pattern.isDocumentTitlePattern) {
+                            documentTitleToken = currentToken;
+                            documentTitleTokenType = token.type;
+                        } //if
                     } //loop
                 } //loop patterns
+                if (documentTitleToken)
+                    semantic.documentTitle = documentTitleToken[blockPatterns[documentTitleTokenType].textField];
                 if (attributeCount > 0)
                     tokenDictionary[index] = attributes;
             } //loop tokens

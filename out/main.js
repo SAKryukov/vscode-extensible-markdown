@@ -25,7 +25,7 @@ exports.activate = context => {
 
     const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
     
-    const transcodeText = (text, fileName, title, css, embedCss, rootPath) => {
+    const transcodeText = (text, fileName, css, embedCss, rootPath) => {
         text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
         let result = lazy.markdownIt.render(text);
         let style = "";
@@ -45,14 +45,13 @@ exports.activate = context => {
             if (index < css.length - 1) style += "\n";
         } //loop
         return util.format(htmlTemplateSet.html,
-            title ?
-                title : `Converted from: ${path.basename(fileName)}`,
+            semantic.documentTitle ? semantic.documentTitle : `Converted from: ${path.basename(fileName)}`,
             style,
             result);
     }; //transcodeText
 
-    const convertText = (text, fileName, title, css, embedCss, outputPath, rootPath) => {
-        let result = transcodeText(text, fileName, title, css, embedCss, rootPath);
+    const convertText = (text, fileName, css, embedCss, outputPath, rootPath) => {
+        let result = transcodeText(text, fileName, css, embedCss, rootPath);
         const effectiveOutputPath = outputPath ?
             path.join(rootPath, outputPath) : path.dirname(fileName);
         if (!fs.existsSync(effectiveOutputPath))
@@ -114,14 +113,10 @@ exports.activate = context => {
         if (editor.document.languageId != markdownId) return;
         const text = editor.document.getText();
         const rootPath = vscode.workspace.getWorkspaceFolder(editor.document.uri).uri.fsPath;
-        const titleObject = semantic.titleFinder(text, settings);
-        const title = titleObject ?
-            titleObject.title : null;
         const outputFileName =
             convertText(
                 text,
                 editor.document.fileName,
-                title,
                 settings.css,
                 settings.embedCss,
                 settings.outputPath,
@@ -143,7 +138,6 @@ exports.activate = context => {
                 outputs.push(convertText(
                     text,
                     fileName,
-                    semantic.titleFinder(text, settings),
                     settings.css,
                     settings.embedCss,
                     settings.outputPath,
@@ -182,20 +176,6 @@ exports.activate = context => {
         if (!lazy.settings)
             lazy.settings = semantic.getSettings(importContext);
         const text = vscode.window.activeTextEditor.document.getText();
-        const matches = semantic.titleFinder(text, lazy.settings);
-        let decoratorSet = [];
-        if (matches) {
-            if (matches.all) {
-                const title = matches.title ? matches.title.toString() : stringEmpty;
-                decoratorSet = [{
-                    range: semantic.getVSCodeRange(vscode, document, matches.start, matches.all),
-                    hoverMessage: util.format("Title: \"%s\"", title)
-                }];
-            } //if matches.all
-        } //if matches
-        vscode.window.activeTextEditor.setDecorations(
-            lazy.settings.titleDecorationType,
-            decoratorSet);
         // clean:
         for (let index in lazy.decorationTypeSet)
             vscode.window.activeTextEditor.setDecorations(lazy.decorationTypeSet[index], []);

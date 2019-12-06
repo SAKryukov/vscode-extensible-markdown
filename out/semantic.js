@@ -93,18 +93,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     return settings;
 }; //getSettings
 
-module.exports.titleFinder = (text, settings) => {
-    if (!settings.titleLocatorRegex) return null;
-    try {
-        const regexp = new RegExp(settings.titleLocatorRegex, "m");
-        const found = regexp.exec(text);
-        if (!found) return null;
-        if (found.length < 2) return null; // match itself + group inside
-        return { start: found.index, all: found[0], title: found[1] };
-    } catch (ex) {
-        return null;
-    } //exception
-}; //titleFinder
+module.exports.documentTitle = "";
 
 module.exports.getVSCodeRange = (vscode, document, start, match) => {
     return new vscode.Range(

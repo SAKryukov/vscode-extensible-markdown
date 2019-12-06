@@ -7,59 +7,84 @@ module.exports = (md, options) => {
 
     const utility = require("./utility");
 
-    const createdRules = new Set();
-
     const abbreviationRegexp = new RegExp(/\{(.+?)\}/); // in **: *{Request for Comments}RFC*
+    const mergedAttribute = "class";
     const patterns = [
-        { name: "fence language", regexpString: "\\{(.+?)\\}", type: "fence", field: "info", attribute: "lang", attributeValue: 1 },
-        { name: "class", regexpString: "\\{\\.(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: "class", attributeValue: 1 },
-        { name: "title", regexpString: "\\{\\^(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: "title", attributeValue: 1 },
-        { name: "attribute=value", regexpString: "\\{(.+?)\\=(.+?)\\}", type: "paragraph_open", token: +1, field: "content", attribute: 1, attributeValue: 2 },
-        { name: "article title", regexpString: "\\{title\\}", type: "paragraph_open", token: +1, nextTokenType: "inline", field: "content", attribute: "class", attributeValue: "title" },
+        { name: "class", regexp: /\{\.(.+?)\}/g, attribute: mergedAttribute, attributeValue: 1 },
+        { name: "article title", regexp: /\{title\}/g, attribute: "class", attributeValue: "title" },
+        { name: "attribute=value", regexp: /\{(.+?)\=(.+?)\}/g, attribute: 1, attributeValue: 2 },
     ];
-    for (let pattern of patterns)
-        pattern.regexp = new RegExp(pattern.regexpString);
-    const tokenDictionary = {};
+    const blockPatterns = {
+        "fence": { textToken: +0, textField: "info" },
+        "paragraph_open": { textToken: +1, textField: "content" },
+    };
+
+    const createdRules = new Set();
+    let tokenDictionary = {};
 
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
         md.core.ruler.push(ruleName, state => {
-            for (let index = 0; index < state.tokens.length - 1; ++index) {
+            for (let index = 0; index < state.tokens.length; ++index) {
                 const token = state.tokens[index];
+                const blockPattern = blockPatterns[token.type];
+                if (!blockPattern) continue;
+                const attributes = { };
+                let attributeCount = 0;
                 for (let pattern of patterns) {
-                    const currentToken = pattern.token ? state.tokens[parseInt(index) + pattern.token] : token;
-                    const text = currentToken[pattern.field];
-                    const match = pattern.regexp.exec(text);
-                    if (!match) continue;
-                    tokenDictionary[index] = { text: text, pattern: pattern, match: match };
-                    currentToken.hidden = true;
-                    utility.cleanInline(currentToken, pattern.regexp);
+                    const currentToken = blockPattern.textToken ? state.tokens[parseInt(index) + blockPattern.textToken] : token;
+                    const text = currentToken[blockPattern.textField];
+                    const matchStrings = text.match(pattern.regexp);
+                    if (!matchStrings) continue;
+                    for (let matchString of matchStrings) {
+                        const match = pattern.regexp.exec(matchString);
+                        if (!match) continue;
+                        const attribute = pattern.attribute.constructor == String ? pattern.attribute : match[pattern.attribute];
+                        let attributeValue = pattern.attributeValue.constructor == String ? pattern.attributeValue : match[pattern.attributeValue];
+                        if (attribute == mergedAttribute) {
+                            const currentAttribute = attributes[attribute];
+                            if (currentAttribute)
+                                attributeValue += ` ${currentAttribute}`;
+                        } //merged classes
+                        attributes[attribute] = attributeValue;
+                        ++attributeCount;
+                        utility.cleanInline(currentToken, pattern.regexp);
+                    } //loop
                 } //loop patterns
+                if (attributeCount > 0)
+                    tokenDictionary[index] = attributes;
             } //loop tokens
             return true;
-        });    
+        });
         createdRules.add(ruleName);
-    }; //detectAttributes
+    }; //detectAttributes++
 
-    //const previousRenderFence = md.renderer.rules.fence; // remove VSCode-specific class and data
-    md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
-        const content = tokens[index].content;
+    const parseAttributePart = index => {
+        let attributePart = "";
         if (index in tokenDictionary) {
-            const data = tokenDictionary[index];
-            const languageId = data.match[data.pattern.attributeValue];
-            return `<pre lang="${languageId}">${content}</pre>`;
-        } else
-            return `<pre>${content}</pre>`;
-    }; //md.renderer.rules.fence
+            const attributes = tokenDictionary[index];
+            for (let attribute in attributes)
+                    attributePart += ` ${attribute}="${attributes[attribute]}"`;
+        } //if
+        return attributePart;
+    } //parseAttributePart
+
+    // const previousRenderFence = null; //md.renderer.rules.fence; // remove VSCode-specific class and data
+    // md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
+    //     const attributePart = parseAttributePart(index);
+    //     const content = tokens[index].content;
+    //     if (attributePart)
+    //         return `<pre${attributePart}>${content}</pre>`;
+    //     else
+    //         return utility.renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
+    // }; //md.renderer.rules.fence
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.paragraph_open = (tokens, index, options, object, renderer) => {
-        if (index in tokenDictionary) {
-            const data = tokenDictionary[index];
-            const attribute = data.pattern.attribute.constructor == String ? data.pattern.attribute : data.match[data.pattern.attribute];
-            const attributeValue = data.pattern.attributeValue.constructor == String ? data.pattern.attributeValue : data.match[data.pattern.attributeValue];
-            return `<p ${attribute}="${attributeValue}">`;    
-        } else
+        const attributePart = parseAttributePart(index);
+        if (attributePart)
+            return `<p${attributePart}>`;
+        else
             return utility.renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.paragraph_open
 

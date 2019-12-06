@@ -237,7 +237,6 @@ exports.activate = context => {
         if (!lazy.settings)
             lazy.settings = semantic.getSettings(importContext);
         const optionSet = (() => {
-            // result.langPrefix: SA??? to implement: selective choice of language (C#, Javascript, etc.) for code fence
             // result.xhtmlOut: it closes all tags, like in <br />, non-default, but it would be a crime not to close tags:
             let result = { xhtmlOut: true, highlight: null, langPrefix: null };
             result.html = lazy.settings.allowHTML;
@@ -297,11 +296,8 @@ exports.activate = context => {
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
             };
             md.use(idToc, idTopOptions);
-            const attributionOptions = {
-                //SA???
-            };
-            md.use(attribution, attributionOptions);
-            md.use(replacements, {});
+            md.use(attribution, { titleLocatorRegex: lazy.settings.titleLocatorRegex });
+            md.use(replacements, { });
             for (let pluginData in additionalPlugins) {
                 let plugin;
                 try {

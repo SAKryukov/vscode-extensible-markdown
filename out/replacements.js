@@ -20,6 +20,10 @@ module.exports = (md, options) => {
         { find: /\.\</g, replace: "∈" }, // .< element of
         { find: /\<\|/g, replace: "⊂" }, // <| subset of
         { find: /\|\>/g, replace: "⊃" }, // |> superset of
+        { find: /\@left/g, replace: "←" }, // @left
+        { find: /\@right/g, replace: "→" }, // @left
+        { find: /\@up/g, replace: "↑" }, // @left
+        { find: /\@down/g, replace: "↓" }, // @left
     ];
 
     md.core.ruler.after("replacements", "extra_replacements", state => {

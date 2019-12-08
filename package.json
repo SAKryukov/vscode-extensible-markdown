@@ -102,7 +102,7 @@
                 },
                 "markdown.extension.convertToHtml.titleLocatorRegex": {
                     "type": "string",
-                    "default": "^(.*?)\\{title\\}"
+                    "default": "\\{title\\}"
                 },
                 "markdown.extension.convertToHtml.titleLocatorDecoratorStyle": {
                     "type": "object",
@@ -123,7 +123,7 @@
                 },
                 "markdown.extension.convertToHtml.tocRegex": {
                     "type": "string",
-                    "default": "^\\{toc\\}"
+                    "default": "^\\@toc$"
                 },
                 "markdown.extension.convertToHtml.tocItemIndentInEm": {
                     "type": "int",
@@ -167,7 +167,7 @@
                 },
                 "markdown.extension.convertToHtml.includeLocatorRegex": {
                     "type": "string",
-                    "default": "\\{include\\(([^\\s]+?)\\)\\}"
+                    "default": "^\\@include\\(([^\\s]+?)\\)$"
                 },
                 "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": {
                     "type": "string",

@@ -117,6 +117,52 @@ module.exports = (md, options) => {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    const autoNumberGenerator = {
+        init: function (){
+            this.enabled = false;
+            this.broken = false;
+            this.stack = [];
+            this.current = { level: undefined, index: 0, previousPrefix: "" };
+        },
+        brokenContent: function(content) { return `???. ${content}`; },
+        contentFromCurrent: function(content) {
+            return `${this.current.previousPrefix}.${this.current.index + 1} ${content}`;
+        },
+        currentFromParent: function() {
+            const previousPrefix = this.current.previousPrefix ? this.current.previousPrefix + ".1" : "1";
+            return  { level: this.current.level + 1, index: 0, previousPrefix: previousPrefix };
+        },
+        generate: function (tocLevel, content) {
+            if (!this.enabled) return content;
+            if (this.broken) return content;
+            if (this.current.level == undefined) {
+                this.current.level = tocLevel;
+            } else if (tocLevel == this.current.level) {
+                ++this.current.index;
+            } else if (tocLevel == this.current.level + 1) {
+                this.stack.push(this.current);
+                this.current = this.currentFromParent();
+            } else if (tocLevel < this.current.level) {
+                const popCount = this.current.level - tocLevel;
+                if (popCount > this.stack.length) {
+                    this.broken = true;
+                    return this.brokenContent(content);
+                } //if
+                let last = undefined;
+                for (let index = 0; index < popCount; ++index)
+                    last = this.stack.pop();
+                this.current = this.currentFromParent();
+            } else {
+                this.broken == true;
+                return this.brokenContent(content);
+            } //if
+            return this.contentFromCurrent(content);
+        },
+        stack: [],
+    }; //autoNumberGenerator
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     const buildToc = () => {
         if (renderedHtml) return renderedHtml;
         (() => {
@@ -138,6 +184,7 @@ module.exports = (md, options) => {
 
     md.core.ruler.after("block", "buildToc", state => {
         cleanUp();
+        autoNumberGenerator.init();
         for (let index = 0; index < state.tokens.length; ++index) {
             const token = state.tokens[index];
             const isParagraph = token.type == "paragraph_open";
@@ -155,7 +202,9 @@ module.exports = (md, options) => {
                 continue;
             } 
             const id = utility.slugify(contentToken.content, usedIds, options.headingIdPrefix);
-            headingSet[index] = { index: index, id: id, content: contentToken.content, level: utility.htmlHeadingLevel(token.tag), tag: token.tag };
+            const level = utility.htmlHeadingLevel(token.tag);
+            const content = autoNumberGenerator.generate(level, contentToken.content);
+            headingSet[index] = { index: index, id: id, content: content, level: level, tag: token.tag };
         } // loop state.tokens
     }); //md.core.ruler.after
 

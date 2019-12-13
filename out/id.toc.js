@@ -119,29 +119,31 @@ module.exports = (md, options) => {
 
     const autoNumberGenerator = {
         init: function (){
-            this.enabled = false;
+            this.enabled = true;
             this.broken = false;
             this.stack = [];
-            this.current = { level: undefined, index: 0, previousPrefix: "" };
+            this.current = { level: undefined, index: 0, parentPrefix: "", prefix: undefined };
+        },
+        newCurrent: function(level) {
+            return { level: level, index: 0, parentPrefix: this.current.prefix, prefix: undefined };
         },
         brokenContent: function(content) { return `???. ${content}`; },
-        contentFromCurrent: function(content) {
-            return `${this.current.previousPrefix}.${this.current.index + 1} ${content}`;
+        formPrefix: function() {
+            this.current.prefix = this.current.parentPrefix ?
+                `${this.current.parentPrefix}.${(this.current.index + 1).toString()}`
+                : `${(this.current.index + 1).toString()}`;
         },
-        currentFromParent: function() {
-            const previousPrefix = this.current.previousPrefix ? this.current.previousPrefix + ".1" : "1";
-            return  { level: this.current.level + 1, index: 0, previousPrefix: previousPrefix };
-        },
+        numberedContent: function(content) { return `${this.current.prefix} ${content}`; },
         generate: function (tocLevel, content) {
             if (!this.enabled) return content;
-            if (this.broken) return content;
+            if (this.broken) return this.brokenContent(content);
             if (this.current.level == undefined) {
                 this.current.level = tocLevel;
             } else if (tocLevel == this.current.level) {
                 ++this.current.index;
             } else if (tocLevel == this.current.level + 1) {
                 this.stack.push(this.current);
-                this.current = this.currentFromParent();
+                this.current = this.newCurrent(tocLevel);
             } else if (tocLevel < this.current.level) {
                 const popCount = this.current.level - tocLevel;
                 if (popCount > this.stack.length) {
@@ -151,14 +153,15 @@ module.exports = (md, options) => {
                 let last = undefined;
                 for (let index = 0; index < popCount; ++index)
                     last = this.stack.pop();
-                this.current = this.currentFromParent();
+                this.current = last;
+                ++this.current.index;
             } else {
                 this.broken == true;
                 return this.brokenContent(content);
             } //if
-            return this.contentFromCurrent(content);
+            this.formPrefix();
+            return this.numberedContent(content);
         },
-        stack: [],
     }; //autoNumberGenerator
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,7 @@
 
 const defaultOptions = {
     enableHeadingId: true,
-    autoNumberingRegex: "^\\[\\]\\(\\=numbering([\\s\\S]*?)\\=\\)",
+    autoNumberingRegex: "^\\@\\(numbering\\s*?(\\{[\\s\\S]*?)\\}\\s*?\\)",
     autoNumbering: {
         "enable": false,
         "pattern": [],
@@ -13,8 +13,8 @@ const defaultOptions = {
     },
     includeLevel: [1, 2, 3, 4, 5, 6],
     tocContainerClass: "toc",
-    tocRegex: "^\\[\\]\\(toc\\)",
-    excludeFromTocRegex: "\\[\\]\\(notoc\\)",
+    tocRegex: "^\\@toc$",
+    excludeFromTocRegex: "\\{notoc\\}",
     tocItemIndentInEm: 2,
     headingIdPrefix: "heading."
 }; //defaultOptions
@@ -23,7 +23,6 @@ module.exports = (md, options) => {
 
     const util = require("util");
     const utility = require("./utility");
-    const autoNumbering = require("./autoNumbering");
     const autoNumberingParser = require("./autoNumbering.optionParser");
 
     let renderedHtml, usedIds, headingSet, tocLocations;
@@ -119,7 +118,6 @@ module.exports = (md, options) => {
 
     const autoNumberGenerator = {
         init: function (){
-            this.enabled = true;
             this.broken = false;
             this.stack = [];
             this.current = { level: undefined, index: 0, parentPrefix: "", prefix: undefined };
@@ -135,7 +133,7 @@ module.exports = (md, options) => {
         },
         numberedContent: function(content) { return `${this.current.prefix} ${content}`; },
         generate: function (tocLevel, content) {
-            if (!this.enabled) return content;
+            if (!options.autoNumbering.enable) return content;
             if (this.broken) return this.brokenContent(content);
             if (this.current.level == undefined) {
                 this.current.level = tocLevel;

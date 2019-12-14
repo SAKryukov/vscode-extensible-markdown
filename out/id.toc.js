@@ -11,7 +11,7 @@ const defaultOptions = {
         "defaultStart": 1,
         "defaultSeparator": "."
     },
-    includeLevel: [1, 2, 3, 4, 5, 6],
+    tocIncludeLevels: [1, 2, 3, 4, 5, 6],
     tocContainerClass: "toc",
     tocRegex: "^\\@toc$",
     excludeFromTocRegex: "\\{notoc\\}",
@@ -52,7 +52,7 @@ module.exports = (md, options) => {
 
     utility.populateWithDefault(options, defaultOptions);
 
-    const tocIncludeLevelSet = new Set([1, 2, 2, 3]);
+    const tocIncludeLevelSet = new Set(options.tocIncludeLevels);
     const tocRegex = new RegExp(options.tocRegex);
     const excludeFromTocRegex = new RegExp(options.excludeFromTocRegex);
 
@@ -74,7 +74,7 @@ module.exports = (md, options) => {
             if (!match) return;
             if (!match.length) return;
             if (match.length < 2) return;
-            let privilegedOptions = JSON.parse(match[1]);
+            let privilegedOptions = JSON.parse(match[1].replace(/(['"])?([a-z0-9A-Z_]+)(['"])?\s*:/g, '"$2": '));
             utility.populateWithDefault(privilegedOptions, options.autoNumbering);
             options.autoNumbering = privilegedOptions;
         } catch (ex) {

@@ -24,6 +24,7 @@ module.exports = (md, options) => {
     const util = require("util");
     const utility = require("./utility");
     const autoNumberingParser = require("./autoNumbering.optionParser");
+    const autoNumbering = require("./autoNumbering");
 
     let renderedHtml, usedIds, headingSet, tocLocations;
     const cleanUp = () => {
@@ -130,19 +131,8 @@ module.exports = (md, options) => {
         getEffectiveLevelOptions: function(level) {
             if (level in this.levelOptionDictionary)
                 return this.levelOptionDictionary[level];
-            const effectiveOptions = {
-                suffix: options.autoNumbering.defaultSuffix,
-                prefix: options.autoNumbering.defaultPrefix,
-                start: options.autoNumbering.defaultStart,
-                separator: options.autoNumbering.defaultSeparator,
-                standAlong: false
-            };
-            if (!options.autoNumbering.pattern[level]) return effectiveOptions;
-            if (options.autoNumbering.pattern[level].suffix != undefined) effectiveOptions.suffix = options.autoNumbering.pattern[level].suffix;
-            if (options.autoNumbering.pattern[level].prefix != undefined) effectiveOptions.prefix = options.autoNumbering.pattern[level].prefix;
-            if (options.autoNumbering.pattern[level].start != undefined) effectiveOptions.start = options.autoNumbering.pattern[level].start;
-            if (options.autoNumbering.pattern[level].separator != undefined) effectiveOptions.separator = options.autoNumbering.pattern[level].separator;
-            if (options.autoNumbering.pattern[level].standAlong != undefined) effectiveOptions.standAlong = options.autoNumbering.pattern[level].standAlong;
+            const effectiveOptions = autoNumbering.getEffectiveLevelOptions(options, level);
+            this.levelOptionDictionary[level] = effectiveOptions;
             return effectiveOptions;
         },
         formPrefix: function(effectiveLevelOptions) {

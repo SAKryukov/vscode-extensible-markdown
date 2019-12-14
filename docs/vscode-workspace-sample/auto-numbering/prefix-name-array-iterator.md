@@ -1,13 +1,17 @@
-[](=numbering {
+@(numbering {
     enable: true
     defaultSuffix: " "
     h2.prefix: "Chapter "
-    h2.suffix: ": "
+    h2.suffix: "! "
+    h2.separator: "-"
     h2.start: ["One", "Two", "Three"]
-    h4.start; "a"
-    h4.suffix: ") 
+    h4.start: "a"
+    h4.suffix: " "
     h2.standAlong: true
-}=)
+})
+
+@toc
+
 
 [](include(body.md))
 

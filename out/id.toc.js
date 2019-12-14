@@ -121,17 +121,36 @@ module.exports = (md, options) => {
             this.broken = false;
             this.stack = [];
             this.current = { level: undefined, index: 0, parentPrefix: "", prefix: undefined };
+            this.levelOptionDictionary = {};
         },
         newCurrent: function(level) {
             return { level: level, index: 0, parentPrefix: this.current.prefix, prefix: undefined };
         },
         brokenContent: function(content) { return `???. ${content}`; },
-        formPrefix: function() {
-            this.current.prefix = this.current.parentPrefix ?
-                `${this.current.parentPrefix}.${(this.current.index + 1).toString()}`
-                : `${(this.current.index + 1).toString()}`;
+        getEffectiveLevelOptions: function(level) {
+            if (level in this.levelOptionDictionary)
+                return this.levelOptionDictionary[level];
+            const effectiveOptions = {
+                suffix: options.autoNumbering.defaultSuffix,
+                prefix: options.autoNumbering.defaultPrefix,
+                start: options.autoNumbering.defaultStart,
+                separator: options.autoNumbering.defaultSeparator,
+            };
+            if (!options.autoNumbering.pattern[level]) return effectiveOptions;
+            if (options.autoNumbering.pattern[level].suffix != undefined) effectiveOptions.suffix = options.autoNumbering.pattern[level].suffix;
+            if (options.autoNumbering.pattern[level].prefix != undefined) effectiveOptions.prefix = options.autoNumbering.pattern[level].prefix;
+            if (options.autoNumbering.pattern[level].start != undefined) effectiveOptions.start = options.autoNumbering.pattern[level].start;
+            if (options.autoNumbering.pattern[level].separator != undefined) effectiveOptions.separator = options.autoNumbering.pattern[level].separator;
+            return effectiveOptions;
         },
-        numberedContent: function(content) { return `${this.current.prefix} ${content}`; },
+        formPrefix: function() {
+            const levelOptions = this.getEffectiveLevelOptions(this.current.level);
+            this.current.prefix = this.current.parentPrefix ?
+                `${levelOptions.prefix}${this.current.parentPrefix}${levelOptions.separator}${(this.current.index + 1).toString()}`
+                :
+                `${levelOptions.prefix}${levelOptions.separator}${(this.current.index + 1).toString()}`;
+        },
+        numberedContent: function(content) { return `${this.current.prefix}${content}`; },
         generate: function (tocLevel, content) {
             if (!options.autoNumbering.enable) return content;
             if (this.broken) return this.brokenContent(content);

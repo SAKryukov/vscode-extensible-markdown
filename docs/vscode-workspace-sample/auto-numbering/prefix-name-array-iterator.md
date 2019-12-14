@@ -2,13 +2,13 @@
     enable: true
     defaultSeparator: "."
     defaultSuffix: " "
-    h2.prefix: "Chapter # "
-    h2.suffix: "! "
+    h2.prefix: "Глава "
+    h2.suffix: ": "
     h2.separator: "-"
-    h2.start: ["One", "Two", "Three"]
+    h2.start: ["первая", "вторая", "третья"]
     h4.start: "a"
     h4.suffix: "-"
-    h4.standAlong: true
+    h3.standAlong: true
 }
 
 @toc
@@ -33,4 +33,10 @@ No more names in "start": ["One", "Two", "Three", "Four"]
 #### 4aa
 
 #### 4bb
+
+### even more
+
+## Good
+
+## Bad, but graceful degradation
 

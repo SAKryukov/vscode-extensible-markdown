@@ -118,14 +118,15 @@ module.exports = (md, options) => {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const autoNumberGenerator = {
-        init: function (){
+        init: function() {
             this.broken = false;
             this.stack = [];
-            this.current = { level: undefined, index: 0, parentPrefix: "", prefix: undefined };
+            this.current = { level: undefined, indexIterator: undefined, parentPrefix: "", prefix: undefined };
             this.levelOptionDictionary = {};
         },
         newCurrent: function(level) {
-            return { level: level, index: 0, parentPrefix: this.current.prefix, prefix: undefined, standAlong: false };
+            const effectiveLevelOptions = this.getEffectiveLevelOptions(level);
+            return { level: level, indexIterator: new autoNumbering.Iterator(effectiveLevelOptions.start), parentPrefix: this.current.prefix, prefix: undefined, standAlong: false };
         },
         brokenContent: function(content) { return `???. ${content}`; },
         getEffectiveLevelOptions: function(level) {
@@ -136,7 +137,8 @@ module.exports = (md, options) => {
             return effectiveOptions;
         },
         formPrefix: function(effectiveLevelOptions) {
-            this.current.prefix = `${(this.current.index + 1).toString()}`; 
+            this.current.prefix = this.current.indexIterator.toString();
+            this.current.indexIterator.next();
             if (this.current.parentPrefix && (!effectiveLevelOptions.standAlong))
             this.current.prefix = `${this.current.parentPrefix}${effectiveLevelOptions.separator}${this.current.prefix}`;
         },
@@ -146,8 +148,10 @@ module.exports = (md, options) => {
         generate: function (tocLevel, content) {
             if (!options.autoNumbering.enable) return content;
             if (this.broken) return this.brokenContent(content);
+            const effectiveLevelOptions = this.getEffectiveLevelOptions(tocLevel);
             if (this.current.level == undefined) {
                 this.current.level = tocLevel;
+                this.current.indexIterator = new autoNumbering.Iterator(effectiveLevelOptions.start);
             } else if (tocLevel == this.current.level) {
                 ++this.current.index;
             } else if (tocLevel == this.current.level + 1) {
@@ -168,7 +172,6 @@ module.exports = (md, options) => {
                 this.broken == true;
                 return this.brokenContent(content);
             } //if
-            const effectiveLevelOptions = this.getEffectiveLevelOptions(tocLevel);
             this.formPrefix(effectiveLevelOptions);
             return this.numberedContent(content, effectiveLevelOptions);
         },

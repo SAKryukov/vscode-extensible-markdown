@@ -2,7 +2,7 @@
 
 const defaultOptions = {
     enableHeadingId: true,
-    autoNumberingRegex: "^\\@numbering\\s*?(\\{[\\s\\S]*?)\\}\\s*?",
+    autoNumberingRegex: "^\\@numbering\\s*?(\\{[\\s\\S]*?\\})",
     autoNumbering: {
         "enable": false,
         "pattern": [],
@@ -52,6 +52,7 @@ module.exports = (md, options) => {
 
     utility.populateWithDefault(options, defaultOptions);
 
+    const tocIncludeLevelSet = new Set([1, 2, 2, 3]);
     const tocRegex = new RegExp(options.tocRegex);
     const excludeFromTocRegex = new RegExp(options.excludeFromTocRegex);
 
@@ -147,6 +148,7 @@ module.exports = (md, options) => {
         },
         generate: function (tocLevel, content) {
             if (!options.autoNumbering.enable) return content;
+            if (!tocIncludeLevelSet.has(tocLevel + 1)) return content;
             if (this.broken) return this.brokenContent(content);
             const effectiveLevelOptions = this.getEffectiveLevelOptions(tocLevel);
             if (this.current.level == undefined) {
@@ -187,12 +189,15 @@ module.exports = (md, options) => {
                 const level = headingSet[index].level;
                 if (level < zeroIndent) zeroIndent = level;
             } //loop zeroIndent
-            for (let index in headingSet)
-                headingSet[index].level -= zeroIndent;        
+            for (let index in headingSet) {
+                headingSet[index].tocLevel = headingSet[index].level;
+                headingSet[index].level -= zeroIndent;
+            }      
         })();
         renderedHtml = `\n`;
         for (let index in headingSet) {
             let element = headingSet[index];
+            if (!tocIncludeLevelSet.has(element.tocLevel + 1)) continue;
             renderedHtml += `<a style="margin-left: ${element.level * options.tocItemIndentInEm}em;" href="#${element.id}">${element.content}</a><br/>\n`;
         } //loop
         return renderedHtml;

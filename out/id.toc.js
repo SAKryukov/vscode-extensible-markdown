@@ -2,7 +2,7 @@
 
 const defaultOptions = {
     enableHeadingId: true,
-    autoNumberingRegex: "^\\@\\(numbering\\s*?(\\{[\\s\\S]*?)\\}\\s*?\\)",
+    autoNumberingRegex: "^\\@numbering\\s*?(\\{[\\s\\S]*?)\\}\\s*?",
     autoNumbering: {
         "enable": false,
         "pattern": [],

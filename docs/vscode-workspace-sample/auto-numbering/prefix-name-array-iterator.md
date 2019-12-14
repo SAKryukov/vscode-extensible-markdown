@@ -1,7 +1,7 @@
 @(numbering {
     enable: true
     defaultSuffix: " "
-    h2.prefix: "Chapter "
+    h2.prefix: "Chapter # "
     h2.suffix: "! "
     h2.separator: "-"
     h2.start: ["One", "Two", "Three"]
@@ -16,6 +16,8 @@
 [](include(body.md))
 
 ## Out of Chapter Names
+
+### next2
 
 No more names in "start": ["One", "Two", "Three", "Four"]
 

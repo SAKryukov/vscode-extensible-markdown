@@ -124,7 +124,7 @@ module.exports = (md, options) => {
             this.levelOptionDictionary = {};
         },
         newCurrent: function(level) {
-            return { level: level, index: 0, parentPrefix: this.current.prefix, prefix: undefined };
+            return { level: level, index: 0, parentPrefix: this.current.prefix, prefix: undefined, standAlong: false };
         },
         brokenContent: function(content) { return `???. ${content}`; },
         getEffectiveLevelOptions: function(level) {
@@ -135,22 +135,24 @@ module.exports = (md, options) => {
                 prefix: options.autoNumbering.defaultPrefix,
                 start: options.autoNumbering.defaultStart,
                 separator: options.autoNumbering.defaultSeparator,
+                standAlong: false
             };
             if (!options.autoNumbering.pattern[level]) return effectiveOptions;
             if (options.autoNumbering.pattern[level].suffix != undefined) effectiveOptions.suffix = options.autoNumbering.pattern[level].suffix;
             if (options.autoNumbering.pattern[level].prefix != undefined) effectiveOptions.prefix = options.autoNumbering.pattern[level].prefix;
             if (options.autoNumbering.pattern[level].start != undefined) effectiveOptions.start = options.autoNumbering.pattern[level].start;
             if (options.autoNumbering.pattern[level].separator != undefined) effectiveOptions.separator = options.autoNumbering.pattern[level].separator;
+            if (options.autoNumbering.pattern[level].standAlong != undefined) effectiveOptions.standAlong = options.autoNumbering.pattern[level].standAlong;
             return effectiveOptions;
         },
-        formPrefix: function() {
-            const levelOptions = this.getEffectiveLevelOptions(this.current.level);
-            this.current.prefix = this.current.parentPrefix ?
-                `${levelOptions.prefix}${this.current.parentPrefix}${levelOptions.separator}${(this.current.index + 1).toString()}`
-                :
-                `${levelOptions.prefix}${levelOptions.separator}${(this.current.index + 1).toString()}`;
+        formPrefix: function(effectiveLevelOptions) {
+            this.current.prefix = `${(this.current.index + 1).toString()}`; 
+            if (this.current.parentPrefix && (!effectiveLevelOptions.standAlong))
+            this.current.prefix = `${this.current.parentPrefix}${effectiveLevelOptions.separator}${this.current.prefix}`;
         },
-        numberedContent: function(content) { return `${this.current.prefix}${content}`; },
+        numberedContent: function(content, effectiveLevelOptions) {
+            return `${effectiveLevelOptions.prefix}${this.current.prefix}${effectiveLevelOptions.suffix}${content}`;
+        },
         generate: function (tocLevel, content) {
             if (!options.autoNumbering.enable) return content;
             if (this.broken) return this.brokenContent(content);
@@ -176,8 +178,9 @@ module.exports = (md, options) => {
                 this.broken == true;
                 return this.brokenContent(content);
             } //if
-            this.formPrefix();
-            return this.numberedContent(content);
+            const effectiveLevelOptions = this.getEffectiveLevelOptions(tocLevel);
+            this.formPrefix(effectiveLevelOptions);
+            return this.numberedContent(content, effectiveLevelOptions);
         },
     }; //autoNumberGenerator
 

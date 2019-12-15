@@ -55,63 +55,19 @@ module.exports = (md, options) => {
     const tocIncludeLevelSet = new Set(options.tocIncludeLevels);
     const tocRegex = new RegExp(options.tocRegex);
     const excludeFromTocRegex = new RegExp(options.excludeFromTocRegex);
+    const enumerationRuleSetRegexp = new RegExp(options.autoNumberingRegex);
 
     md.core.ruler.before("block", "detectAutoNumbering", state => {
-        let regexp;
+        const match = enumerationRuleSetRegexp.exec(state.src);
+        if (!match) return;
         try {
-            regexp = new RegExp(options.autoNumberingRegex);
-        } catch (ex) {
-            state.src = util.format(
-                "<h1>Invalid auto-numbering Regular Expression: %s<br/><br/>%s</h1>",
-                ex.toString(),
-                options.autoNumberingRegex);
-            return;
-        } //exception
-        let failedJsonParse = false;
-        let match;
-        try {
-            match = regexp.exec(state.src);
-            if (!match) return;
-            if (!match.length) return;
-            if (match.length < 2) return;
-            let privilegedOptions = JSON.parse(match[1]);
-            utility.populateWithDefault(privilegedOptions, options.autoNumbering);
-            options.autoNumbering = privilegedOptions;
-        } catch (ex) {
-            // alternative:
-            let privilegedOptions;
-            try {
-                privilegedOptions = autoNumberingParser(match[1]);
-                if (privilegedOptions) {
-                    utility.populateWithDefault(privilegedOptions, options.autoNumbering);
-                    options.autoNumbering = privilegedOptions;
-                    return;
-                } // else let exception go
-            } catch (newFormatException) {
-                // continue with JSON
-            }
-            // end alternative
-            failedJsonParse = true;
-            const errorString = ex.toString();
-            const errorTerms = errorString.split(' ');
-            let errorPosition;
-            for (const term of errorTerms) {
-                errorPosition = parseInt(term);
-                if (errorPosition) break;
-            } //loop
-            let matchText = match[1] && match[1].length > 0 ? match[1] : '';
-            if (errorPosition && matchText) {
-                matchText = [
-                    matchText.slice(0, errorPosition),
-                    "<b style=\"background-color:red; color:yellow;\"> &blacktriangleright;</b>",
-                    matchText.slice(errorPosition)].join('');
-            } //if
-            state.src = util.format(
-                "<h1>Invalid auto-numbering JSON structure:</h1><h1>%s:</h1><big><pre>%s</pre></big>",
-                errorString,
-                matchText);
+            const privilegedOptions = autoNumberingParser(match[1]);
+            if (privilegedOptions) {
+                utility.populateWithDefault(privilegedOptions, options.autoNumbering);
+                options.autoNumbering = privilegedOptions;
+            } // if
         } finally {
-            if (match && !failedJsonParse)
+            if (match)
                 state.src = state.src.slice(match[0].length, state.src.length);
         } //exception
     }); //md.core.ruler.before

@@ -30,13 +30,13 @@ const headingKeywords = (properties => {
 
 const headingRegexp = (headingKeywords => {
     const keywordSet = headingKeywords.join("|");
-    const expression = `^\\s*?h([1-6])\\.${keywordSet}\\s*?:\\s*?(.*)$`;
+    const expression = `^\\s*?h([1-6])\\.(${keywordSet})\\s*?:\\s*?(.*?)\\,?\\s*?$`;
     return new RegExp(expression);
 })(headingKeywords);
 
 const topLevelRegexp = ((defaultKeywords, enableKeyword) => {
     const keywordSet = [defaultKeywords.join("|"), enableKeyword].join("|");
-    const expression = `^\\s*?(${keywordSet})\\s*?:\\s*?(.*)$`;
+    const expression = `^\\s*?(${keywordSet})\\s*?:\\s*?(.*?)\\,?\\s*?$`;
     return new RegExp(expression);
 })(defaultKeywords, enableKeyword);
 

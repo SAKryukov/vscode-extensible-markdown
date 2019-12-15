@@ -63,7 +63,7 @@ module.exports = (md, options) => {
         try {
             const privilegedOptions = autoNumberingParser(match[1]);
             if (privilegedOptions) {
-                utility.populateWithDefault(privilegedOptions, options.autoNumbering);
+                utility.populateWithDefault(privilegedOptions, defaultOptions.autoNumbering);
                 options.autoNumbering = privilegedOptions;
             } // if
         } finally {

@@ -193,7 +193,7 @@
                 },
                 "markdown.extension.convertToHtml.autoNumberingRegex": {
                     "type": "string",
-                    "default": "^\\@numbering\\s*?(\\{[\\s\\S]*?\\})"
+                    "default": "^\\@numbering\\s*?\\{([\\s\\S]*?)\\}"
                 },
                 "markdown.extension.convertToHtml.autoNumberingDecoratorStyle": {
                     "type": "object",

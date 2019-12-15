@@ -30,13 +30,13 @@ const headingKeywords = (properties => {
 
 const headingRegexp = (headingKeywords => {
     const keywordSet = headingKeywords.join("|");
-    const expression = util.format("^[ |\t]*h([1-6])\\.(%s)[ |\t]*:[ |\t]*(.*)", keywordSet);
+    const expression = `^\\s*?h([1-6])\\.${keywordSet}\\s*?:\\s*?(.*)$`;
     return new RegExp(expression);
 })(headingKeywords);
 
 const topLevelRegexp = ((defaultKeywords, enableKeyword) => {
     const keywordSet = [defaultKeywords.join("|"), enableKeyword].join("|");
-    const expression = util.format("^[ |\t]*?(%s)[ |\t]*:[ |\t]*(.*)", keywordSet);
+    const expression = `^\\s*?(${keywordSet})\\s*?:\\s*?(.*)$`;
     return new RegExp(expression);
 })(defaultKeywords, enableKeyword);
 
@@ -65,11 +65,6 @@ function parsePropertyValue(text) {
     else if (bra == "\"" && ket == "\"")
         return slice;
 } //parsePropertyValue
-
-function isLegitimateParsingResult(result) {
-    if (result && result.parsedPropertyCount && result.parsedHeadingPropertyCount)
-        return (result.parsedPropertyCount + result.parsedHeadingPropertyCount) > 0;
-} //isLegitimateParsingResult
 
 function parse(text) {
     const result = {
@@ -109,7 +104,5 @@ function parse(text) {
 
 module.exports = optionText => {
     let result = parse(optionText);
-    if (!isLegitimateParsingResult(result))
-        result = undefined;
     return result;
 }; //module.exports

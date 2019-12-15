@@ -74,7 +74,7 @@ module.exports = (md, options) => {
             if (!match) return;
             if (!match.length) return;
             if (match.length < 2) return;
-            let privilegedOptions = JSON.parse(match[1].replace(/(['"])?([a-z0-9A-Z_]+)(['"])?\s*:/g, '"$2": '));
+            let privilegedOptions = JSON.parse(match[1]);
             utility.populateWithDefault(privilegedOptions, options.autoNumbering);
             options.autoNumbering = privilegedOptions;
         } catch (ex) {

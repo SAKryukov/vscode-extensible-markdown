@@ -1,8 +1,8 @@
 {
-    "name": "convert-markdown-to-html",
-    "displayName": "Extensible Markdown Converter",
-    "description": "Converts Markdown to HTML and saves in files, can be extended by any of the markdown-it plug-ins",
-    "version": "6.0.0",
+    "name": "extensible-markdown",
+    "displayName": "Extensible Markdown",
+    "description": "Converts Markdown to HTML and saves in files, implements TOC with optional heading auto-numbering, HTML abbreviations, attributes, additional substitutions and can be extended by any of the markdown-it plug-ins",
+    "version": "6.1.0",
     "publisher": "sakryukov",
     "author": {
         "name": "Sergey A Kryukov",
@@ -12,11 +12,11 @@
     "icon": "images/logo.png",
     "repository": {
         "type": "git",
-        "url": "https://github.com/SAKryukov/vscode-markdown-to-html.git"
+        "url": "https://github.com/SAKryukov/vscode-extensible-markdown.git"
     },
     "engines": {
       
-  "vscode": ">=1.40.0"
+  "vscode": ">=1.40.2"
     },
     "categories": [
         "Other"
@@ -247,12 +247,6 @@
                 "editor.wordWrap": "on"
             }
         }
-    },
-    "dependencies": {
-        "vscode": "^1.14.1"
-    },
-    "devDependencies": {
-        "vscode": "^1.14.1"
     },
     "__metadata": {
         "id": "2274c865-8de3-4905-b3ee-661afa12b4c5",

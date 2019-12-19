@@ -58,6 +58,7 @@ module.exports = (md, options) => {
     const enumerationRuleSetRegexp = new RegExp(options.autoNumberingRegex);
 
     md.core.ruler.before("block", "detectAutoNumbering", state => {
+        options.autoNumbering = defaultOptions.autoNumbering;
         const match = enumerationRuleSetRegexp.exec(state.src);
         if (!match) return;
         try {

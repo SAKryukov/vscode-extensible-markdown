@@ -84,27 +84,27 @@
             "type": "object",
             "title": "Extensible Markdown Converter HTML configuration",
             "properties": {
-                "markdown.extension.convertToHtml.reportSuccess": {
+                "markdown.extensibleMarkdown.convertToHtml.reportSuccess": {
                     "type": "boolean",
                     "default": true
                 },
-                "markdown.extension.convertToHtml.showHtmlInBrowser": {
+                "markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser": {
                     "type": "boolean",
                     "default": false
                 },
-                "markdown.extension.convertToHtml.embedCss": {
+                "markdown.extensibleMarkdown.convertToHtml.embedCss": {
                     "type": "boolean",
                     "default": true
                 },
-                "markdown.extension.convertToHtml.outputPath": {
+                "markdown.extensibleMarkdown.convertToHtml.outputPath": {
                     "type": "string",
                     "default": ""
                 },
-                "markdown.extension.convertToHtml.titleLocatorRegex": {
+                "markdown.extensibleMarkdown.titleLocatorRegex": {
                     "type": "string",
                     "default": "\\{title\\}"
                 },
-                "markdown.extension.convertToHtml.titleLocatorDecoratorStyle": {
+                "markdown.extensibleMarkdown.titleLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "copy",
@@ -113,27 +113,27 @@
                         "backgroundColor": "rgba(0, 0, 60, 0.5)"
                     }
                 },
-                "markdown.extension.convertToHtml.headingId": {
+                "markdown.extensibleMarkdown.headingId": {
                     "type": "boolean",
                     "default": true
                 },
-                "markdown.extension.convertToHtml.headingIdPrefix": {
+                "markdown.extensibleMarkdown.headingIdPrefix": {
                     "type": "string",
                     "default": "heading."
                 },
-                "markdown.extension.convertToHtml.tocRegex": {
+                "markdown.extensibleMarkdown.tocRegex": {
                     "type": "string",
                     "default": "^\\@toc$"
                 },
-                "markdown.extension.convertToHtml.tocItemIndentInEm": {
+                "markdown.extensibleMarkdown.tocItemIndentInEm": {
                     "type": "int",
                     "default": 3
                 },
-                "markdown.extension.convertToHtml.excludeFromTocRegex": {
+                "markdown.extensibleMarkdown.excludeFromTocRegex": {
                     "type": "string",
                     "default": "\\{notoc\\}"
                 },
-                "markdown.extension.convertToHtml.tocDecoratorStyle": {
+                "markdown.extensibleMarkdown.tocDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "cell",
@@ -142,7 +142,7 @@
                         "backgroundColor": "rgba(255, 160, 0, 0.6)"
                     }
                 },
-                "markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle": {
+                "markdown.extensibleMarkdown.excludeFromTocLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "border": "thin solid black",
@@ -150,7 +150,7 @@
                         "backgroundColor": "rgba(0, 0, 0, 0.4)"
                     }
                 },
-                "markdown.extension.convertToHtml.tocIncludeLevels": {
+                "markdown.extensibleMarkdown.tocIncludeLevels": {
                     "type": "array",
                     "default": [
                         1,
@@ -161,23 +161,23 @@
                         6
                     ]
                 },
-                "markdown.extension.convertToHtml.tocContainerClass": {
+                "markdown.extensibleMarkdown.tocContainerClass": {
                     "type": "string",
                     "default": "toc"
                 },
-                "markdown.extension.convertToHtml.includeLocatorRegex": {
+                "markdown.extensibleMarkdown.includeLocatorRegex": {
                     "type": "string",
                     "default": "^\\@include\\(([^\\s]+?)\\)$"
                 },
-                "markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat": {
+                "markdown.extensibleMarkdown.includeLocatorInvalidRegexMessageFormat": {
                     "type": "string",
                     "default": "!!! invalid Regular Expression of include:  \"%s\" !!!"
                 },
-                "markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat": {
+                "markdown.extensibleMarkdown.includeLocatorFileReadFailureMessageFormat": {
                     "type": "string",
                     "default": "!!! failed to read file \"%s\" !!!"
                 },
-                "markdown.extension.convertToHtml.includeLocatorDecoratorStyle": {
+                "markdown.extensibleMarkdown.includeLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "margin": "10px",
@@ -187,15 +187,11 @@
                         "backgroundColor": "rgba(0, 0, 250, 0.2)"
                     }
                 },
-                "markdown.extension.convertToHtml.autoNumbering": {
-                    "type": "object",
-                    "default": { "enable": false }
-                },
-                "markdown.extension.convertToHtml.autoNumberingRegex": {
+                "markdown.extensibleMarkdown.autoNumberingRegex": {
                     "type": "string",
                     "default": "^\\@numbering\\s*?\\{([\\s\\S]*?)\\}"
                 },
-                "markdown.extension.convertToHtml.autoNumberingDecoratorStyle": {
+                "markdown.extensibleMarkdown.autoNumberingDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "copy",
@@ -203,19 +199,19 @@
                         "backgroundColor": "rgba(255, 255, 0, 0.5)"
                     }
                 },
-                "markdown.extension.convertToHtml.options.allowHTML": {
+                "markdown.extensibleMarkdown.options.allowHTML": {
                     "type": "boolean",
                     "default": true
                 },
-                "markdown.extension.convertToHtml.options.typographer": {
+                "markdown.extensibleMarkdown.options.typographer": {
                     "type": "boolean",
                     "default": true
                 },
-                "markdown.extension.convertToHtml.options.smartQuotes": {
+                "markdown.extensibleMarkdown.options.smartQuotes": {
                     "type": "string",
                     "default": "“”‘’"
                 },
-                "markdown.extension.convertToHtml.options.additionalPlugins": {
+                "markdown.extensibleMarkdown.options.additionalPlugins": {
                     "type": "object",
                     "default": {
                         "absolutePath": "",

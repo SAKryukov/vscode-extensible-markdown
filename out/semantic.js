@@ -11,14 +11,17 @@ module.exports.getHtmlTemplateSet = (path, fs, encoding) => {
 
 module.exports.getSettings = importContext => { // see package.json, "configuration":
     const thisExtensionSection =
-        importContext.vscode.workspace.getConfiguration("markdown.extension.convertToHtml");
+        importContext.vscode.workspace.getConfiguration("markdown.extensibleMarkdown");
+    const thisConvertToHtmlSection =
+        importContext.vscode.workspace.getConfiguration("markdown.extensibleMarkdown.convertToHtml");
     const thisMarkdownItOptionSection =
-        importContext.vscode.workspace.getConfiguration("markdown.extension.convertToHtml.options");
+        importContext.vscode.workspace.getConfiguration("markdown.extensibleMarkdown.options");
     const sharedSection = importContext.vscode.workspace.getConfiguration(importContext.markdownId);
     const settings = {
-        reportSuccess: thisExtensionSection["reportSuccess"],
-        showHtmlInBrowser: thisExtensionSection["showHtmlInBrowser"],
-        embedCss: thisExtensionSection["embedCss"],
+        reportSuccess: thisConvertToHtmlSection["reportSuccess"],
+        showHtmlInBrowser: thisConvertToHtmlSection["showHtmlInBrowser"],
+        embedCss: thisConvertToHtmlSection["embedCss"],
+        outputPath: thisConvertToHtmlSection["outputPath"],
         titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
         headingId: thisExtensionSection["headingId"],
         headingIdPrefix: thisExtensionSection["headingIdPrefix"],
@@ -28,7 +31,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         includeLocatorRegex: thisExtensionSection["includeLocatorRegex"],
         includeLocatorInvalidRegexMessageFormat: thisExtensionSection["includeLocatorInvalidRegexMessageFormat"],
         includeLocatorFileReadFailureMessageFormat: thisExtensionSection["includeLocatorFileReadFailureMessageFormat"],
-        outputPath: thisExtensionSection["outputPath"],
         css: sharedSection["styles"],
         excludeFromTocRegex: thisExtensionSection["excludeFromTocRegex"],
         tocItemIndentInEm: thisExtensionSection["tocItemIndentInEm"],

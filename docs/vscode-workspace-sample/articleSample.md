@@ -139,7 +139,9 @@ Make sure manually created `id` values never break uniqueness. It's the best to 
 
 ## Images
 
-![Sergey A Kryukov, WiDEsk](http://sakryukov.org/freeware/WD.png)
+![Markdown logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/64px-Markdown-mark.svg.png)
+
+![GitHub logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png)
 
 ## Using File Includes
 

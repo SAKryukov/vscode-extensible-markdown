@@ -291,8 +291,6 @@ exports.activate = context => {
                 tocRegex: lazy.settings.tocRegex,
                 includeLevel: lazy.settings.tocIncludeLevels,
                 tocContainerClass: lazy.settings.tocContainerClass,
-                tocListType: lazy.settings.tocListType,
-                autoNumbering: lazy.settings.autoNumbering,
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
             };
             md.use(idToc, idTopOptions);

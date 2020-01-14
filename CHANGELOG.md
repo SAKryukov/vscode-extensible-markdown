@@ -80,7 +80,7 @@ Version 5.8.0
 
 * Added settings option: "markdown.extension.convertToHtml.tocIncludeLevels", default [1, 2, 3, 4, 5, 6]
 * Added settings option: "markdown.extension.convertToHtml.tocContainerClass", default "toc"
-* Added settings option: "markdown.extension.convertToHtml.tocListType", default "ul"
+* Added settings option: "markdown.extension.convertToHtml.tocListType", default "ul" (later removed SA???)
 
 ## Version 4.0.0
 

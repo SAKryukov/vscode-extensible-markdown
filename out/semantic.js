@@ -34,7 +34,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         css: sharedSection["styles"],
         excludeFromTocRegex: thisExtensionSection["excludeFromTocRegex"],
         tocItemIndentInEm: thisExtensionSection["tocItemIndentInEm"],
-        autoNumbering: thisExtensionSection["autoNumbering"],
+        autoNumbering: thisExtensionSection["autoNumberingxxx. 333"],
         autoNumberingRegex: thisExtensionSection["autoNumberingRegex"],
         // options:
         allowHTML: thisMarkdownItOptionSection["allowHTML"],

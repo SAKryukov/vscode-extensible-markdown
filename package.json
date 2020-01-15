@@ -136,7 +136,7 @@
                         "cursor": "copy",
                         "borderRadius": "5px",
                         "color": "white",
-                        "backgroundColor": "rgba(60, 10, 20, 0.5)"
+                        "backgroundColor": "rgba(160, 0, 40, 0.5)"
                     }
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
@@ -160,17 +160,13 @@
                     "type": "string",
                     "default": "heading."
                 },
-                "markdown.extensibleMarkdown.tocRegex": {
-                    "type": "string",
-                    "default": "^\\@toc$"
-                },
                 "markdown.extensibleMarkdown.tocItemIndentInEm": {
                     "type": "int",
                     "default": 3
                 },
-                "markdown.extensibleMarkdown.excludeFromTocRegex": {
+                "markdown.extensibleMarkdown.tocRegex": {
                     "type": "string",
-                    "default": "\\{notoc\\}"
+                    "default": "^\\@toc$"
                 },
                 "markdown.extensibleMarkdown.tocDecoratorStyle": {
                     "type": "object",
@@ -180,6 +176,10 @@
                         "color": "white",
                         "backgroundColor": "rgba(255, 160, 0, 0.6)"
                     }
+                },
+                "markdown.extensibleMarkdown.excludeFromTocRegex": {
+                    "type": "string",
+                    "default": "\\{notoc\\}"
                 },
                 "markdown.extensibleMarkdown.excludeFromTocLocatorDecoratorStyle": {
                     "type": "object",
@@ -240,15 +240,22 @@
                 },
                 "markdown.extensibleMarkdown.options.allowHTML": {
                     "type": "boolean",
-                    "default": true
+                    "default": true,
+                    "description": "Allows HTML markup in Markdown"
                 },
                 "markdown.extensibleMarkdown.options.typographer": {
                     "type": "boolean",
                     "default": true
                 },
+                "markdown.extensibleMarkdown.options.typographerExtensions": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Optionally replaces !==, !=, !||, !~~, <=, >=, !~, -+, -:, ||, ~~, ===, ==, !.<, .<, <|, |>, @left, @right, @up and @down with mathematical operators and arrows"
+                },
                 "markdown.extensibleMarkdown.options.smartQuotes": {
                     "type": "string",
-                    "default": "“”‘’"
+                    "default": "“”‘’",
+                    "description": "Enables markdown-it embedded smart quotes feature"
                 },
                 "markdown.extensibleMarkdown.options.additionalPlugins": {
                     "type": "object",

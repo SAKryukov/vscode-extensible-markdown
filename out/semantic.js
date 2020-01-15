@@ -41,6 +41,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         // options:
         allowHTML: thisMarkdownItOptionSection["allowHTML"],
         typographer: thisMarkdownItOptionSection["typographer"],
+        typographerExtensions: thisMarkdownItOptionSection["typographerExtensions"],
         smartQuotes: thisMarkdownItOptionSection["smartQuotes"],
         additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"],
     } //settings
@@ -79,6 +80,24 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         tooltipFormat: "Exclude from Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["excludeFromTocLocatorDecoratorStyle"]) 
+    });
+    settings.pluginSyntaxDecorators.push({
+        regexString: settings.abbreviationRegex,
+        tooltipFormat: "Abbreviation explanation followed by abbreviation",
+        decorationType: importContext.vscode.window.createTextEditorDecorationType(
+            thisExtensionSection["abbreviationDecoratorStyle"]) 
+    });
+    settings.pluginSyntaxDecorators.push({
+        regexString: settings.attributeRegex,
+        tooltipFormat: "HTML attribute = attribute value",
+        decorationType: importContext.vscode.window.createTextEditorDecorationType(
+            thisExtensionSection["attributeDecoratorStyle"]) 
+    });
+    settings.pluginSyntaxDecorators.push({
+        regexString: settings.cssClassRegex,
+        tooltipFormat: "CSS class",
+        decorationType: importContext.vscode.window.createTextEditorDecorationType(
+            thisExtensionSection["cssClassDecoratorStyle"]) 
     });
     //
     settings.pluginSyntaxDecorators.push({

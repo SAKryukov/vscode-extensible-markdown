@@ -11,6 +11,8 @@
     h3.standAlong: true
 }
 
+The{title} title
+
 {.cls}Rweer{class=newClass}
 
 @toc
@@ -21,7 +23,7 @@
 ## Out of Chapter Names
 
 ### next2
-
+1
 #### 4a
 
 #### 4b
@@ -40,7 +42,7 @@ No more names in "start": ["One", "Two", "Three", "Four"]
 
 ## Good
 
-This a is *{Request for Comments}RFC* #1. 
+This a is *{Request for Comments}RFC* #1.{a=b}
 ## Bad, but graceful degradation
 
 

@@ -4,7 +4,7 @@ module.exports = (md, options) => {
 
     const patterns = [
         { find: /!\=\=/g, replace: "≢" }, // !== not identical
-        { find: /!\=/g, replace: "≠" }, // !== not equal
+        { find: /!\=/g, replace: "≠" }, // != not equal
         { find: /!\|\|/g, replace: "∦" }, // !|| not parallel
         { find: /!\~\~/g, replace: "≉" }, // !~~ not almost equal
         { find: /<\=/g, replace: "≤" }, // <= less or equal
@@ -21,9 +21,9 @@ module.exports = (md, options) => {
         { find: /\<\|/g, replace: "⊂" }, // <| subset of
         { find: /\|\>/g, replace: "⊃" }, // |> superset of
         { find: /\@left/g, replace: "←" }, // @left
-        { find: /\@right/g, replace: "→" }, // @left
-        { find: /\@up/g, replace: "↑" }, // @left
-        { find: /\@down/g, replace: "↓" }, // @left
+        { find: /\@right/g, replace: "→" }, // @right
+        { find: /\@up/g, replace: "↑" }, // @up
+        { find: /\@down/g, replace: "↓" }, // @down
     ];
 
     md.core.ruler.after("replacements", "extra_replacements", state => {

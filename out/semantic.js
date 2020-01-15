@@ -24,6 +24,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         outputPath: thisConvertToHtmlSection["outputPath"],
         titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
         abbreviationRegex: thisExtensionSection["abbreviationRegex"],
+        abbreviationDecoratorRegex: thisExtensionSection["abbreviationDecoratorRegex"],
         attributeRegex: thisExtensionSection["attributeRegex"],
         cssClassRegex: thisExtensionSection["cssClassRegex"],
         headingId: thisExtensionSection["headingId"],
@@ -45,9 +46,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         smartQuotes: thisMarkdownItOptionSection["smartQuotes"],
         additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"],
     } //settings
-    settings.titleDecorationType =
-        importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["titleLocatorDecoratorStyle"]);
     if (!settings.additionalPlugins) return settings;
     settings.pluginSyntaxDecorators = [];
     for (let plugin in settings.additionalPlugins.plugins) {
@@ -70,6 +68,11 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         } //loop decorators
     } //loop
     settings.pluginSyntaxDecorators.push({
+        regexString: settings.titleLocatorRegex,
+        decorationType: importContext.vscode.window.createTextEditorDecorationType(
+            thisExtensionSection["titleLocatorDecoratorStyle"]) 
+    });
+    settings.pluginSyntaxDecorators.push({
         regexString: settings.includeLocatorRegex,
         tooltipFormat: "include %s",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
@@ -82,7 +85,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
             thisExtensionSection["excludeFromTocLocatorDecoratorStyle"]) 
     });
     settings.pluginSyntaxDecorators.push({
-        regexString: settings.abbreviationRegex,
+        regexString: settings.abbreviationDecoratorRegex,
         tooltipFormat: "Abbreviation explanation followed by abbreviation",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["abbreviationDecoratorStyle"]) 

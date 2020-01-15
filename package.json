@@ -107,23 +107,29 @@
                 "markdown.extensibleMarkdown.titleLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
-                        "cursor": "copy",
+                        "cursor": "grab",
+                        "fontWeight": "bold",
                         "borderRadius": "5px",
                         "color": "yellow",
-                        "backgroundColor": "rgba(0, 0, 60, 0.5)"
+                        "backgroundColor": "darkRed"
                     }
                 },
                 "markdown.extensibleMarkdown.abbreviationRegex": {
                     "type": "string",
                     "default": "\\{(.+?)\\}"
                 },
+                "markdown.extensibleMarkdown.abbreviationDecoratorRegex": {
+                    "type": "string",
+                    "default": "\\*\\{(.+?)\\}.+?\\*"
+                },
                 "markdown.extensibleMarkdown.abbreviationDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "copy",
                         "borderRadius": "5px",
-                        "color": "yellow",
-                        "backgroundColor": "rgba(0, 60, 20, 0.5)"
+                        "border": "thin dashed black",
+                        "color": "darkRed",
+                        "backgroundColor": "gold"
                     }
                 },
                 "markdown.extensibleMarkdown.attributeRegex": {
@@ -136,7 +142,7 @@
                         "cursor": "copy",
                         "borderRadius": "5px",
                         "color": "white",
-                        "backgroundColor": "rgba(160, 0, 40, 0.5)"
+                        "backgroundColor": "darkViolet"
                     }
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
@@ -148,8 +154,8 @@
                     "default": {
                         "cursor": "copy",
                         "borderRadius": "5px",
-                        "color": "white",
-                        "backgroundColor": "rgba(10, 10, 20, 0.5)"
+                        "color": "yellow",
+                        "backgroundColor": "darkBlue"
                     }
                 },
                 "markdown.extensibleMarkdown.headingId": {
@@ -172,9 +178,11 @@
                     "type": "object",
                     "default": {
                         "cursor": "cell",
-                        "border": "thin solid black",
-                        "color": "white",
-                        "backgroundColor": "rgba(255, 160, 0, 0.6)"
+                        "fontWeight": "bold",
+                        "borderRadius": "5px",
+                        "border": "thin solid darkMagenta",
+                        "color": "darkMagenta",
+                        "backgroundColor": "lightBlue"
                     }
                 },
                 "markdown.extensibleMarkdown.excludeFromTocRegex": {
@@ -184,9 +192,10 @@
                 "markdown.extensibleMarkdown.excludeFromTocLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
-                        "border": "thin solid black",
-                        "color": "white",
-                        "backgroundColor": "rgba(0, 0, 0, 0.4)"
+                        "border": "thin dotted black",
+                        "borderRadius": "5px",
+                        "color": "black",
+                        "backgroundColor": "lightGoldenrodYellow"
                     }
                 },
                 "markdown.extensibleMarkdown.tocIncludeLevels": {
@@ -219,11 +228,10 @@
                 "markdown.extensibleMarkdown.includeLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
-                        "margin": "10px",
                         "cursor": "copy",
                         "borderRadius": "5px",
                         "color": "black",
-                        "backgroundColor": "rgba(0, 0, 250, 0.2)"
+                        "backgroundColor": "lightgreen"
                     }
                 },
                 "markdown.extensibleMarkdown.autoNumberingRegex": {

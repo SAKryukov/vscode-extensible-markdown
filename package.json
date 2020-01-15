@@ -113,6 +113,45 @@
                         "backgroundColor": "rgba(0, 0, 60, 0.5)"
                     }
                 },
+                "markdown.extensibleMarkdown.abbreviationRegex": {
+                    "type": "string",
+                    "default": "\\{(.+?)\\}"
+                },
+                "markdown.extensibleMarkdown.abbreviationDecoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "cursor": "copy",
+                        "borderRadius": "5px",
+                        "color": "yellow",
+                        "backgroundColor": "rgba(0, 60, 20, 0.5)"
+                    }
+                },
+                "markdown.extensibleMarkdown.attributeRegex": {
+                    "type": "string",
+                    "default": "\\{([a-z]+?)\\=(.+?)\\}"
+                },
+                "markdown.extensibleMarkdown.attributeDecoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "cursor": "copy",
+                        "borderRadius": "5px",
+                        "color": "white",
+                        "backgroundColor": "rgba(60, 10, 20, 0.5)"
+                    }
+                },
+                "markdown.extensibleMarkdown.cssClassRegex": {
+                    "type": "string",
+                    "default": "\\{\\.(.+?)\\}"
+                },
+                "markdown.extensibleMarkdown.cssClassDecoratorStyle": {
+                    "type": "object",
+                    "default": {
+                        "cursor": "copy",
+                        "borderRadius": "5px",
+                        "color": "white",
+                        "backgroundColor": "rgba(10, 10, 20, 0.5)"
+                    }
+                },
                 "markdown.extensibleMarkdown.headingId": {
                     "type": "boolean",
                     "default": true

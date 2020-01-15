@@ -294,7 +294,12 @@ exports.activate = context => {
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
             };
             md.use(idToc, idTopOptions);
-            md.use(attribution, { titleLocatorRegex: lazy.settings.titleLocatorRegex });
+            md.use(attribution, {
+                titleLocatorRegex: lazy.settings.titleLocatorRegex,
+                abbreviationRegex: lazy.settings.abbreviationRegex,
+                attributeRegex: lazy.settings.attributeRegex,
+                cssClassRegex: lazy.settings.cssClassRegex,
+            });
             md.use(replacements, { });
             for (let pluginData in additionalPlugins) {
                 let plugin;

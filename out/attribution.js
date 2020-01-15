@@ -8,12 +8,12 @@ module.exports = (md, options) => {
 
     const utility = require("./utility");
 
-    const abbreviationRegexp = new RegExp(/\{(.+?)\}/); // in **: *{Request for Comments}RFC*
+    const abbreviationRegexp = new RegExp(options.abbreviationRegex); // in **: *{Request for Comments}RFC*
     const mergedAttribute = "class";
     const patterns = [
-        { name: "class", regexp: /\{\.(.+?)\}/g, attribute: mergedAttribute, attributeValue: 1 },
+        { name: "class", regexp: new RegExp(options.cssClassRegex, "g"), attribute: mergedAttribute, attributeValue: 1 },
         { name: "document title", regexp: new RegExp(options.titleLocatorRegex), attribute: "class", attributeValue: "title", isDocumentTitlePattern: true },
-        { name: "attribute=value", regexp: /\{([a-z]+?)\=(.+?)\}/g, attribute: 1, attributeValue: 2 },
+        { name: "attribute=value", regexp: new RegExp(options.attributeRegex, "g"), attribute: 1, attributeValue: 2 },
     ];
     const blockPatterns = {
         "fence": { textToken: +0, textField: "info" },

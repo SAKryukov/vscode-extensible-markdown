@@ -11,6 +11,8 @@
     h3.standAlong: true
 }
 
+{.cls}Rweer{class=newClass}
+
 @toc
 
 
@@ -38,5 +40,7 @@ No more names in "start": ["One", "Two", "Three", "Four"]
 
 ## Good
 
+This a is *{Request for Comments}RFC* #1. 
 ## Bad, but graceful degradation
+
 

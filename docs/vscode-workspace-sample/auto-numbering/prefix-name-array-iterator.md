@@ -13,7 +13,7 @@
 
 The{title} title
 
-{.cls}Rweer{class=newClass}
+{.cls}Rweer{someattribute=newClass}
 
 @toc
 
@@ -21,7 +21,7 @@ This a is *{Request for Comments}RFC* #1.{a=b}
 
 @include(body.md)
 
-## Out of Chapter Names{notoc}
+## Out of Chapter Names
 
 ### next
 1

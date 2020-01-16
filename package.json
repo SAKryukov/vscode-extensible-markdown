@@ -100,6 +100,10 @@
                     "type": "string",
                     "default": ""
                 },
+                "markdown.extensibleMarkdown.convertToHtml.titleClassName": {
+                    "type": "string",
+                    "default": "title"
+                },
                 "markdown.extensibleMarkdown.titleLocatorRegex": {
                     "type": "string",
                     "default": "\\{title\\}"
@@ -135,7 +139,7 @@
                 },
                 "markdown.extensibleMarkdown.attributeRegex": {
                     "type": "string",
-                    "default": "\\{([a-z]+?)\\=([^\\{^\\}]+?)\\}"
+                    "default": "\\{([a-z]+?)\\=([^\"^\\{^\\}]+?)\\}"
                 },
                 "markdown.extensibleMarkdown.attributeDecoratorStyle": {
                     "type": "object",
@@ -148,7 +152,7 @@
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
                     "type": "string",
-                    "default": "\\{\\.([^\\{^\\}]+?)\\}"
+                    "default": "\\{\\.([^\"^\\{^\\}]+?)\\}"
                 },
                 "markdown.extensibleMarkdown.cssClassDecoratorStyle": {
                     "type": "object",
@@ -188,7 +192,7 @@
                 },
                 "markdown.extensibleMarkdown.excludeFromTocRegex": {
                     "type": "string",
-                    "default": "\\{notoc\\}"
+                    "default": "\\{no-toc\\}"
                 },
                 "markdown.extensibleMarkdown.excludeFromTocLocatorDecoratorStyle": {
                     "type": "object",

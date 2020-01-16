@@ -22,6 +22,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         showHtmlInBrowser: thisConvertToHtmlSection["showHtmlInBrowser"],
         embedCss: thisConvertToHtmlSection["embedCss"],
         outputPath: thisConvertToHtmlSection["outputPath"],
+        titleClassName: thisConvertToHtmlSection["titleClassName"],
         titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
         abbreviationRegex: thisExtensionSection["abbreviationRegex"],
         abbreviationDecoratorRegex: thisExtensionSection["abbreviationDecoratorRegex"],
@@ -69,36 +70,37 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     } //loop
     settings.pluginSyntaxDecorators.push({
         regexString: settings.titleLocatorRegex,
+        tooltipFormat: `Current paragraph is considered as a title used as an HTML \"title\" attribute; it also has CSS class \"${settings.titleClassName}; its style can be defined in CSS`,
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["titleLocatorDecoratorStyle"]) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.includeLocatorRegex,
-        tooltipFormat: "include %s",
+        tooltipFormat: "include file \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["includeLocatorDecoratorStyle"]) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.excludeFromTocRegex,
-        tooltipFormat: "Exclude from Table of Contents",
+        tooltipFormat: "Exclude current header from Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["excludeFromTocLocatorDecoratorStyle"]) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.abbreviationDecoratorRegex,
-        tooltipFormat: "Abbreviation explanation followed by abbreviation",
+        tooltipFormat: "Explanation \"%s\" followed by corresponding abbreviation or acronym",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["abbreviationDecoratorStyle"]) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.attributeRegex,
-        tooltipFormat: "HTML attribute = attribute value",
+        tooltipFormat: "HTML attribute %s=\"...\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["attributeDecoratorStyle"]) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.cssClassRegex,
-        tooltipFormat: "CSS class",
+        tooltipFormat: "CSS class \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection["cssClassDecoratorStyle"]) 
     });

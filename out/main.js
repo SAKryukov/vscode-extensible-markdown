@@ -300,6 +300,7 @@ exports.activate = context => {
                 abbreviationRegex: lazy.settings.abbreviationRegex,
                 attributeRegex: lazy.settings.attributeRegex,
                 cssClassRegex: lazy.settings.cssClassRegex,
+                titleClassName: lazy.settings.titleClassName,
             });
             md.use(replacements, { });
             if (!lazy.settings.typographerExtensions)

@@ -12,7 +12,7 @@ module.exports = (md, options) => {
     const mergedAttribute = "class";
     const patterns = [
         { name: "class", regexp: new RegExp(options.cssClassRegex, "g"), attribute: mergedAttribute, attributeValue: 1 },
-        { name: "document title", regexp: new RegExp(options.titleLocatorRegex), attribute: "class", attributeValue: "title", isDocumentTitlePattern: true },
+        { name: "document title", regexp: new RegExp(options.titleLocatorRegex), attribute: "class", attributeValue: options.titleClassName, isDocumentTitlePattern: true },
         { name: "attribute=value", regexp: new RegExp(options.attributeRegex, "g"), attribute: 1, attributeValue: 2 },
     ];
     const blockPatterns = {

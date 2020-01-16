@@ -135,7 +135,7 @@
                 },
                 "markdown.extensibleMarkdown.attributeRegex": {
                     "type": "string",
-                    "default": "\\{([a-z]+?)\\=(.+?)\\}"
+                    "default": "\\{([a-z]+?)\\=([^\\{^\\}]+?)\\}"
                 },
                 "markdown.extensibleMarkdown.attributeDecoratorStyle": {
                     "type": "object",
@@ -148,7 +148,7 @@
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
                     "type": "string",
-                    "default": "\\{\\.(.+?)\\}"
+                    "default": "\\{\\.([^\\{^\\}]+?)\\}"
                 },
                 "markdown.extensibleMarkdown.cssClassDecoratorStyle": {
                     "type": "object",

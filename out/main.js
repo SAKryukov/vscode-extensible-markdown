@@ -9,6 +9,7 @@ exports.activate = context => {
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
     const extensionManifiestFileName = "package.json";
+    const typographerExtensionsRule = "extended_replacements";
 
     const vscode = require("vscode");
     const util = require("util");
@@ -301,6 +302,8 @@ exports.activate = context => {
                 cssClassRegex: lazy.settings.cssClassRegex,
             });
             md.use(replacements, { });
+            if (!lazy.settings.typographerExtensions)
+                md.disable(typographerExtensionsRule);
             for (let pluginData in additionalPlugins) {
                 let plugin;
                 try {

@@ -26,7 +26,7 @@ module.exports = (md, options) => {
         { find: /\@down/g, replace: "↓" }, // @down
     ];
 
-    md.core.ruler.after("replacements", "extra_replacements", state => {
+    md.core.ruler.after("replacements", "extended_replacements", state => {
         for (let index = state.tokens.length - 1; index >= 0; --index) {
             const token = state.tokens[index];
             if (token.type != "inline") continue;

@@ -125,9 +125,10 @@
                 "markdown.extensibleMarkdown.abbreviationDecoratorStyle": {
                     "type": "object",
                     "default": {
-                        "cursor": "copy",
+                        "cursor": "zoom-in",
                         "borderRadius": "5px",
                         "border": "thin dashed black",
+                        "margin": 10,
                         "color": "darkRed",
                         "backgroundColor": "gold"
                     }
@@ -152,7 +153,7 @@
                 "markdown.extensibleMarkdown.cssClassDecoratorStyle": {
                     "type": "object",
                     "default": {
-                        "cursor": "copy",
+                        "cursor": "default",
                         "borderRadius": "5px",
                         "color": "yellow",
                         "backgroundColor": "darkBlue"
@@ -177,10 +178,10 @@
                 "markdown.extensibleMarkdown.tocDecoratorStyle": {
                     "type": "object",
                     "default": {
-                        "cursor": "cell",
+                        "cursor": "context-menu",
                         "fontWeight": "bold",
-                        "borderRadius": "5px",
-                        "border": "thin solid darkMagenta",
+                        "border": "1px solid darkMagenta",
+                        "margin": "3px",
                         "color": "darkMagenta",
                         "backgroundColor": "lightBlue"
                     }
@@ -192,6 +193,7 @@
                 "markdown.extensibleMarkdown.excludeFromTocLocatorDecoratorStyle": {
                     "type": "object",
                     "default": {
+                        "cursor": "no-drop",
                         "border": "thin dotted black",
                         "borderRadius": "5px",
                         "color": "black",
@@ -229,7 +231,9 @@
                     "type": "object",
                     "default": {
                         "cursor": "copy",
-                        "borderRadius": "5px",
+                        "borderRadius": "0px",
+                        "padding": "3px",
+                        "border": "thin solid black",
                         "color": "black",
                         "backgroundColor": "lightgreen"
                     }
@@ -241,9 +245,9 @@
                 "markdown.extensibleMarkdown.autoNumberingDecoratorStyle": {
                     "type": "object",
                     "default": {
-                        "cursor": "copy",
+                        "cursor": "default",
                         "color": "darkRed",
-                        "backgroundColor": "rgba(255, 255, 0, 0.5)"
+                        "backgroundColor": "yellow"
                     }
                 },
                 "markdown.extensibleMarkdown.options.allowHTML": {

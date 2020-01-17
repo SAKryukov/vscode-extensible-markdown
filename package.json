@@ -115,7 +115,7 @@
                         "fontWeight": "bold",
                         "borderRadius": "5px",
                         "color": "yellow",
-                        "backgroundColor": "darkRed"
+                        "backgroundColor": "Maroon"
                     }
                 },
                 "markdown.extensibleMarkdown.abbreviationRegex": {
@@ -131,10 +131,10 @@
                     "default": {
                         "cursor": "zoom-in",
                         "borderRadius": "5px",
-                        "border": "thin dashed black",
+                        "border": "thin dashed Maroon",
                         "margin": 10,
-                        "color": "darkRed",
-                        "backgroundColor": "gold"
+                        "color": "Maroon",
+                        "backgroundColor": "Gold"
                     }
                 },
                 "markdown.extensibleMarkdown.attributeRegex": {
@@ -145,9 +145,10 @@
                     "type": "object",
                     "default": {
                         "cursor": "copy",
-                        "borderRadius": "5px",
-                        "color": "white",
-                        "backgroundColor": "darkViolet"
+                        "border": "thin solid Indigo",
+                        "borderRadius": "3px",
+                        "color": "Indigo",
+                        "backgroundColor": "Lavender"
                     }
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
@@ -158,9 +159,10 @@
                     "type": "object",
                     "default": {
                         "cursor": "default",
-                        "borderRadius": "5px",
-                        "color": "yellow",
-                        "backgroundColor": "darkBlue"
+                        "border": "thin dotted Maroon",
+                        "borderRadius": "3px",
+                        "color": "Maroon",
+                        "backgroundColor": "Pink"
                     }
                 },
                 "markdown.extensibleMarkdown.headingId": {
@@ -182,12 +184,12 @@
                 "markdown.extensibleMarkdown.tocDecoratorStyle": {
                     "type": "object",
                     "default": {
+                        "letterSpacing": "1px",
                         "cursor": "context-menu",
                         "fontWeight": "bold",
-                        "border": "1px solid darkMagenta",
-                        "margin": "3px",
-                        "color": "darkMagenta",
-                        "backgroundColor": "lightBlue"
+                        "outline": "2px solid Indigo",
+                        "color": "yellow",
+                        "backgroundColor": "Indigo"
                     }
                 },
                 "markdown.extensibleMarkdown.excludeFromTocRegex": {
@@ -239,7 +241,7 @@
                         "padding": "3px",
                         "border": "thin solid black",
                         "color": "black",
-                        "backgroundColor": "lightgreen"
+                        "backgroundColor": "PaleGreen"
                     }
                 },
                 "markdown.extensibleMarkdown.autoNumberingRegex": {
@@ -250,8 +252,8 @@
                     "type": "object",
                     "default": {
                         "cursor": "default",
-                        "color": "darkRed",
-                        "backgroundColor": "yellow"
+                        "color": "Maroon",
+                        "backgroundColor": "Cornsilk"
                     }
                 },
                 "markdown.extensibleMarkdown.options.allowHTML": {

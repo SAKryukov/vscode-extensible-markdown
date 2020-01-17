@@ -260,6 +260,7 @@ exports.activate = context => {
         })(); //additionalPlugins
         const setupUsage = (md => {
             if (!md) return;
+            md.set(optionSet);
             const idTopOptions = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                 tocItemIndentInEm: lazy.settings.tocItemIndentInEm,

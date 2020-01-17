@@ -24,6 +24,7 @@ module.exports = (md, options) => {
         { find: /\@right/g, replace: "→" }, // @right
         { find: /\@up/g, replace: "↑" }, // @up
         { find: /\@down/g, replace: "↓" }, // @down
+        { find: /\@imply/g, replace: "⇒" }, //@imply
     ];
 
     md.core.ruler.after("replacements", "extended_replacements", state => {

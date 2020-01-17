@@ -152,24 +152,6 @@ exports.activate = context => {
         });
     } //convertSet
 
-    const TextDocumentContentProvider = (function () {
-        function TextDocumentContentProvider() {
-            this.changeSourceHandler = new vscode.EventEmitter();
-        } //TextDocumentContentProvider
-        TextDocumentContentProvider.prototype.provideTextDocumentContent = function (uri) {
-            if (this.currentSourceTextEditor)
-                return command(previewOne);
-        }; //TextDocumentContentProvider.prototype.provideTextDocumentContent
-        Object.defineProperty(TextDocumentContentProvider.prototype, "onDidChange", {
-            get: function () { return this.changeSourceHandler.event; }, enumerable: true, configurable: true
-        });
-        TextDocumentContentProvider.prototype.update = function (uri) {
-            this.changeSourceHandler.fire(uri);
-        }; //TextDocumentContentProvider.prototype.update
-        return TextDocumentContentProvider;
-    }()); //TextDocumentContentProvider
-    const provider = new TextDocumentContentProvider();
-
     const updateDecorators = () => {
         if (!vscode.window.activeTextEditor) return;
         const document = vscode.window.activeTextEditor.document;
@@ -212,30 +194,25 @@ exports.activate = context => {
             updateDecorators();
     });
     vscode.window.onDidChangeActiveTextEditor(e=> {
-        updateDecorators();
+        if (e.document && e.document.languageId == markdownId)
+            updateDecorators();
     }, null, context.subscriptions);
     vscode.workspace.onDidChangeTextDocument(e => {
-        if (e.document.languageId == markdownId)
+        if (e.document && e.document.languageId == markdownId)
             updateDecorators();
     }); //vscode.workspace.onDidChangeTextDocument
     vscode.workspace.onDidChangeConfiguration(e => {
         if (lazy.markdownIt)
-            setupMarkdown(lazy.markdownIt);
-        updateDecorators();
+            setupMarkdown(lazy.markdownIt, true);
+        updateDecorators(); // it checks up active text editor and its document anyway
     }); //vscode.workspace.onDidChangeConfiguration
 
-    context.subscriptions.push(
-        vscode.commands.registerCommand("extensible.markdown.convertToHtml", () => {
-            command(convertOne);
-        }));
-    context.subscriptions.push(
-        vscode.commands.registerCommand("extensible.markdown.convertToHtml.all", () => {
-            command(convertSet);
-        }));
-
-    const setupMarkdown = (baseImplementation) => {
-        lazy.markdownIt = baseImplementation;
-        if (!lazy.settings)
+    const setupMarkdown = (baseImplementation, updateSettings) => {
+        if (updateSettings)
+            lazy.markdownIt = new baseImplementation.constructor();
+        else
+            lazy.markdownIt = baseImplementation;
+        if (!lazy.settings || updateSettings)
             lazy.settings = semantic.getSettings(importContext);
         const optionSet = (() => {
             // result.xhtmlOut: it closes all tags, like in <br />, non-default, but it would be a crime not to close tags:
@@ -281,9 +258,8 @@ exports.activate = context => {
             } // loop settings.additionalPlugins.plugins
             return result;
         })(); //additionalPlugins
-        const setupUsage = ((md) => {
+        const setupUsage = (md => {
             if (!md) return;
-            md.set(optionSet);
             const idTopOptions = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                 tocItemIndentInEm: lazy.settings.tocItemIndentInEm,
@@ -318,17 +294,25 @@ exports.activate = context => {
         return baseImplementation;
     }; //setupMarkdown
     
-    const getManifest = () => {
-        const pathName = path.join(context.extensionPath, extensionManifiestFileName);
-        const content = fs.readFileSync(pathName).toString();
-        return JSON.parse(content);
-    } //pathName
+    context.subscriptions.push(
+        vscode.commands.registerCommand("extensible.markdown.convertToHtml", () => {
+            command(convertOne);
+        }));
+    context.subscriptions.push(
+        vscode.commands.registerCommand("extensible.markdown.convertToHtml.all", () => {
+            command(convertSet);
+        }));
 
     return {
         extendMarkdownIt: baseImplementation => {
             try {
                 return setupMarkdown(baseImplementation);
             } catch (ex) {
+                const getManifest = () => {
+                    const pathName = path.join(context.extensionPath, extensionManifiestFileName);
+                    const content = fs.readFileSync(pathName).toString();
+                    return JSON.parse(content);
+                } //getManifest            
                 vscode.window.showErrorMessage(`${getManifest().displayName}: activation failed`);
             } //exception
         }

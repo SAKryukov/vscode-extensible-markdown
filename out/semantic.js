@@ -40,6 +40,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         excludeFromTocRegex: thisExtensionSection["excludeFromTocRegex"],
         tocItemIndentInEm: thisExtensionSection["tocItemIndentInEm"],
         autoNumberingRegex: thisExtensionSection["autoNumberingRegex"],
+        autoNumberingBrokenHierarchy: thisExtensionSection["autoNumbering"]["brokenHierarchy"],
         // options:
         allowHTML: thisMarkdownItOptionSection["allowHTML"],
         typographer: thisMarkdownItOptionSection["typographer"],

@@ -270,6 +270,7 @@ exports.activate = context => {
                 includeLevel: lazy.settings.tocIncludeLevels,
                 tocContainerClass: lazy.settings.tocContainerClass,
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
+                autoNumberingBrokenHierarchy: lazy.settings.autoNumberingBrokenHierarchy,
             };
             md.use(idToc, idTopOptions);
             md.use(attribution, {

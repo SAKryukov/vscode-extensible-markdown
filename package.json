@@ -82,7 +82,7 @@
         },
         "configuration": {
             "type": "object",
-            "title": "Extensible Markdown Converter HTML configuration",
+            "title": "Extensible Markdown",
             "properties": {
                 "markdown.extensibleMarkdown.convertToHtml.reportSuccess": {
                     "type": "boolean",
@@ -255,6 +255,10 @@
                         "color": "Maroon",
                         "backgroundColor": "Cornsilk"
                     }
+                },
+                "markdown.extensibleMarkdown.autoNumbering.brokenHierarchy": {
+                    "type": "string",
+                    "default": "??? "
                 },
                 "markdown.extensibleMarkdown.options.allowHTML": {
                     "type": "boolean",

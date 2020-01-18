@@ -70,7 +70,7 @@ module.exports = (md, options) => {
             const effectiveLevelOptions = this.getEffectiveLevelOptions(level);
             return { level: level, indexIterator: new autoNumbering.Iterator(effectiveLevelOptions.start), parentPrefix: this.current.prefix, prefix: undefined, standAlong: false };
         },
-        brokenContent: function(content) { return `???. ${content}`; },
+        brokenContent: function(content) { return `${options.autoNumberingBrokenHierarchy}${content}`; },
         getEffectiveLevelOptions: function(level) {
             if (level in this.levelOptionDictionary)
                 return this.levelOptionDictionary[level];

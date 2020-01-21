@@ -10,43 +10,40 @@ module.exports.getHtmlTemplateSet = (path, fs, encoding) => {
 }; //getHtmlTemplateSet
 
 module.exports.getSettings = importContext => { // see package.json, "configuration":
-    const thisExtensionSection =
-        importContext.vscode.workspace.getConfiguration("markdown.extensibleMarkdown");
-    const thisConvertToHtmlSection =
-        importContext.vscode.workspace.getConfiguration("markdown.extensibleMarkdown.convertToHtml");
-    const thisMarkdownItOptionSection =
-        importContext.vscode.workspace.getConfiguration("markdown.extensibleMarkdown.options");
-    const sharedSection = importContext.vscode.workspace.getConfiguration(importContext.markdownId);
+    const configuration = importContext.vscode.workspace.getConfiguration();
+    const thisExtensionSection = configuration.markdown.extensibleMarkdown;
+    const thisConvertToHtmlSection = thisExtensionSection.convertToHtml;
+    const thisMarkdownItOptionSection = thisExtensionSection.options;
     const settings = {
-        reportSuccess: thisConvertToHtmlSection["reportSuccess"],
-        showHtmlInBrowser: thisConvertToHtmlSection["showHtmlInBrowser"],
-        embedCss: thisConvertToHtmlSection["embedCss"],
-        outputPath: thisConvertToHtmlSection["outputPath"],
-        titleClassName: thisConvertToHtmlSection["titleClassName"],
-        titleLocatorRegex: thisExtensionSection["titleLocatorRegex"],
-        abbreviationRegex: thisExtensionSection["abbreviationRegex"],
-        abbreviationDecoratorRegex: thisExtensionSection["abbreviationDecoratorRegex"],
-        attributeRegex: thisExtensionSection["attributeRegex"],
-        cssClassRegex: thisExtensionSection["cssClassRegex"],
-        headingId: thisExtensionSection["headingId"],
-        headingIdPrefix: thisExtensionSection["headingIdPrefix"],
-        tocRegex: thisExtensionSection["tocRegex"],
-        tocIncludeLevels: thisExtensionSection["tocIncludeLevels"],
-        tocContainerClass: thisExtensionSection["tocContainerClass"],
-        includeLocatorRegex: thisExtensionSection["includeLocatorRegex"],
-        includeLocatorInvalidRegexMessageFormat: thisExtensionSection["includeLocatorInvalidRegexMessageFormat"],
-        includeLocatorFileReadFailureMessageFormat: thisExtensionSection["includeLocatorFileReadFailureMessageFormat"],
-        css: sharedSection["styles"],
-        excludeFromTocRegex: thisExtensionSection["excludeFromTocRegex"],
-        tocItemIndentInEm: thisExtensionSection["tocItemIndentInEm"],
-        autoNumberingRegex: thisExtensionSection["autoNumberingRegex"],
-        autoNumberingBrokenHierarchy: thisExtensionSection["autoNumbering"]["brokenHierarchy"],
+        reportSuccess: thisConvertToHtmlSection.reportSuccess,
+        showHtmlInBrowser: thisConvertToHtmlSection.showHtmlInBrowser,
+        embedCss: thisConvertToHtmlSection.embedCss,
+        outputPath: thisConvertToHtmlSection.outputPath,
+        titleClassName: thisConvertToHtmlSection.titleClassName,
+        titleLocatorRegex: thisExtensionSection.titleLocatorRegex,
+        abbreviationRegex: thisExtensionSection.abbreviationRegex,
+        abbreviationDecoratorRegex: thisExtensionSection.abbreviationDecoratorRegex,
+        attributeRegex: thisExtensionSection.attributeRegex,
+        cssClassRegex: thisExtensionSection.cssClassRegex,
+        headingId: thisExtensionSection.headingId,
+        headingIdPrefix: thisExtensionSection.headingIdPrefix,
+        tocRegex: thisExtensionSection.TOC.regex,
+        tocIncludeLevels: thisExtensionSection.TOC.includeLevels,
+        tocContainerClass: thisExtensionSection.TOC.containerClass,
+        excludeFromTocRegex: thisExtensionSection.TOC.excludeHeaderRegex,
+        tocItemIndentInEm: thisExtensionSection.TOC.itemIndentInEm,
+        autoNumberingRegex: thisExtensionSection.TOC.autoNumberingRegex,
+        autoNumberingBrokenHierarchy: thisExtensionSection.TOC.autoNumbering.brokenHierarchy,
+        includeLocatorRegex: thisExtensionSection.includeLocatorRegex,
+        includeLocatorInvalidRegexMessageFormat: thisExtensionSection.includeLocatorInvalidRegexMessageFormat,
+        includeLocatorFileReadFailureMessageFormat: thisExtensionSection.includeLocatorFileReadFailureMessageFormat,
+        css: configuration.markdown.styles,
         // options:
-        allowHTML: thisMarkdownItOptionSection["allowHTML"],
-        typographer: thisMarkdownItOptionSection["typographer"],
-        typographerExtensions: thisMarkdownItOptionSection["typographerExtensions"],
-        smartQuotes: thisMarkdownItOptionSection["smartQuotes"],
-        additionalPlugins: thisMarkdownItOptionSection["additionalPlugins"],
+        allowHTML: thisMarkdownItOptionSection.allowHTML,
+        typographer: thisMarkdownItOptionSection.typographer,
+        typographerExtensions: thisMarkdownItOptionSection.typographerExtensions,
+        smartQuotes: thisMarkdownItOptionSection.smartQuotes,
+        additionalPlugins: thisMarkdownItOptionSection.additionalPlugins,
     } //settings
     if (!settings.additionalPlugins) return settings;
     settings.pluginSyntaxDecorators = [];
@@ -73,51 +70,51 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         regexString: settings.titleLocatorRegex,
         tooltipFormat: `Current paragraph is considered as a title used as an HTML \"title\" attribute; it also has CSS class \"${settings.titleClassName}; its style can be defined in CSS`,
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["titleLocatorDecoratorStyle"]) 
+            thisExtensionSection.titleLocatorDecoratorStyle) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.includeLocatorRegex,
         tooltipFormat: "include file \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["includeLocatorDecoratorStyle"]) 
+            thisExtensionSection.includeLocatorDecoratorStyle) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.excludeFromTocRegex,
         tooltipFormat: "Exclude current header from Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["excludeFromTocLocatorDecoratorStyle"]) 
+            thisExtensionSection.TOC.excludeHeader.DecoratorStyle) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.abbreviationDecoratorRegex,
         tooltipFormat: "Explanation \"%s\" followed by corresponding abbreviation or acronym",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["abbreviationDecoratorStyle"]) 
+            thisExtensionSection.abbreviationDecoratorStyle) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.attributeRegex,
         tooltipFormat: "HTML attribute %s=\"...\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["attributeDecoratorStyle"]) 
+            thisExtensionSection.attributeDecoratorStyle) 
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.cssClassRegex,
         tooltipFormat: "CSS class \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["cssClassDecoratorStyle"]) 
+            thisExtensionSection.cssClassDecoratorStyle) 
     });
     //
     settings.pluginSyntaxDecorators.push({
         regexString: settings.tocRegex,
         tooltipFormat: "Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["tocDecoratorStyle"]) 
+            thisExtensionSection.TOC.decoratorStyle) 
     });
     settings.pluginSyntaxDecorators.push({
         relativeToWholeText: true, // special case: regex is not 
         regexString: settings.autoNumberingRegex,
         tooltipFormat: "Auto-Numbering Settings",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection["autoNumberingDecoratorStyle"]) 
+            thisExtensionSection.TOC.autoNumberingDecoratorStyle) 
     });
     return settings;
 }; //getSettings

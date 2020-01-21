@@ -173,15 +173,16 @@
                     "type": "string",
                     "default": "heading."
                 },
-                "markdown.extensibleMarkdown.tocItemIndentInEm": {
+                "markdown.extensibleMarkdown.TOC.itemIndentInEm": {
                     "type": "int",
                     "default": 3
                 },
-                "markdown.extensibleMarkdown.tocRegex": {
+                "markdown.extensibleMarkdown.TOC.regex": {
+                    "description": "Regular Expression used to detect location of Table of Contents",
                     "type": "string",
                     "default": "^\\@toc$"
                 },
-                "markdown.extensibleMarkdown.tocDecoratorStyle": {
+                "markdown.extensibleMarkdown.TOC.decoratorStyle": {
                     "type": "object",
                     "default": {
                         "letterSpacing": "1px",
@@ -192,11 +193,11 @@
                         "backgroundColor": "Indigo"
                     }
                 },
-                "markdown.extensibleMarkdown.excludeFromTocRegex": {
+                "markdown.extensibleMarkdown.TOC.excludeHeaderRegex": {
                     "type": "string",
                     "default": "\\{no-toc\\}"
                 },
-                "markdown.extensibleMarkdown.excludeFromTocLocatorDecoratorStyle": {
+                "markdown.extensibleMarkdown.TOC.excludeHeader.DecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "no-drop",
@@ -206,7 +207,7 @@
                         "backgroundColor": "lightGoldenrodYellow"
                     }
                 },
-                "markdown.extensibleMarkdown.tocIncludeLevels": {
+                "markdown.extensibleMarkdown.TOC.includeLevels": {
                     "type": "array",
                     "default": [
                         1,
@@ -217,7 +218,7 @@
                         6
                     ]
                 },
-                "markdown.extensibleMarkdown.tocContainerClass": {
+                "markdown.extensibleMarkdown.TOC.containerClass": {
                     "type": "string",
                     "default": "toc"
                 },
@@ -244,11 +245,11 @@
                         "backgroundColor": "PaleGreen"
                     }
                 },
-                "markdown.extensibleMarkdown.autoNumberingRegex": {
+                "markdown.extensibleMarkdown.TOC.autoNumberingRegex": {
                     "type": "string",
                     "default": "^\\@numbering\\s*?\\{([\\s\\S]*?)\\}"
                 },
-                "markdown.extensibleMarkdown.autoNumberingDecoratorStyle": {
+                "markdown.extensibleMarkdown.TOC.autoNumberingDecoratorStyle": {
                     "type": "object",
                     "default": {
                         "cursor": "default",
@@ -256,7 +257,7 @@
                         "backgroundColor": "Cornsilk"
                     }
                 },
-                "markdown.extensibleMarkdown.autoNumbering.brokenHierarchy": {
+                "markdown.extensibleMarkdown.TOC.autoNumbering.brokenHierarchy": {
                     "type": "string",
                     "default": "??? "
                 },
@@ -309,7 +310,7 @@
                 "editor.folding": false,
                 "editor.lineNumbers": "off",
                 "editor.wordWrap": "on"
-            }
+             }
         }
     },
     "__metadata": {

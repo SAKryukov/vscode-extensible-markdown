@@ -2,25 +2,19 @@
 
 const path = require("path");
 const semantic = require("./semantic");
+const utility = require("./utility");
 const moduleName = path.basename(module.id);
 
 module.exports = (md, options) => {
 
     const utility = require("./utility");
 
-    const createRegExp  = (patternString, isGlobal) => {
-        if (!patternString) return null;
-        if (patternString.trim().length < 1) return null;
-        const option = isGlobal ? "g" : undefined;
-        return new RegExp(patternString, option);
-    }; //createRegExp
-
-    const abbreviationRegexp = createRegExp(options.abbreviationRegex, false); // in **: *{Request for Comments}RFC*
+    const abbreviationRegexp = utility.createOptionalRegExp(options.abbreviationRegex, false); // in **: *{Request for Comments}RFC*
     const mergedAttribute = "class";
     const patterns = [
-        { name: "class", regexp: createRegExp(options.cssClassRegex, true), attribute: mergedAttribute, attributeValue: 1 },
-        { name: "document title", regexp: createRegExp(options.titleLocatorRegex, false), attribute: "class", attributeValue: options.titleClassName, isDocumentTitlePattern: true },
-        { name: "attribute=value", regexp: createRegExp(options.attributeRegex, true), attribute: 1, attributeValue: 2 },
+        { name: "class", regexp: utility.createOptionalRegExp(options.cssClassRegex, true), attribute: mergedAttribute, attributeValue: 1 },
+        { name: "document title", regexp: utility.createOptionalRegExp(options.titleLocatorRegex, false), attribute: "class", attributeValue: options.titleClassName, isDocumentTitlePattern: true },
+        { name: "attribute=value", regexp: utility.createOptionalRegExp(options.attributeRegex, true), attribute: 1, attributeValue: 2 },
     ];
     const blockPatterns = {
         "fence": { textToken: +0, textField: "info" },

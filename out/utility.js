@@ -38,3 +38,11 @@ module.exports.cleanInline = (token, regexp) => {
 } //module.exports.cleanInline
 
 module.exports.htmlHeadingLevel = tag => { return parseInt(tag.substr(1)) - 1; };
+
+module.exports.createOptionalRegExp = (patternString, isGlobal) => {
+    if (!patternString) return null;
+    if (patternString.trim().length < 1) return null;
+    const option = isGlobal ? "g" : undefined;
+    return new RegExp(patternString, option);
+}; //createOptionalRegExp
+

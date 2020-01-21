@@ -85,30 +85,37 @@
             "title": "Extensible Markdown",
             "properties": {
                 "markdown.extensibleMarkdown.convertToHtml.reportSuccess": {
+                    "description": "Report successful conversion to HTML file",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser": {
+                    "description": "Upon successful conversion to HTML file, show it in the default Web browser",
                     "type": "boolean",
                     "default": false
                 },
                 "markdown.extensibleMarkdown.convertToHtml.embedCss": {
+                    "description": "Embed CSS files in an output HTML file, otherwise reference external CSS files",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown.extensibleMarkdown.convertToHtml.outputPath": {
+                    "description": "Specifies output directory for HTML files, relative to workspace directory; if the path is empty string, write HTML in the same directory of the input file",
                     "type": "string",
                     "default": ""
                 },
                 "markdown.extensibleMarkdown.convertToHtml.titleClassName": {
+                    "description": "CSS class name for document title",
                     "type": "string",
                     "default": "title"
                 },
                 "markdown.extensibleMarkdown.titleLocatorRegex": {
+                    "description": "Regular expression used to identify the paragraph used as a document title",
                     "type": "string",
                     "default": "\\{title\\}"
                 },
                 "markdown.extensibleMarkdown.titleLocatorDecoratorStyle": {
+                    "description": "Decorator style for the title locator syntax",
                     "type": "object",
                     "default": {
                         "cursor": "grab",
@@ -119,14 +126,17 @@
                     }
                 },
                 "markdown.extensibleMarkdown.abbreviationRegex": {
+                    "markdownDescription": "Regular expression for abbreviation syntax, implemented as an extension of *emphasis* (\\*\\*) syntax",
                     "type": "string",
                     "default": "\\{(.+?)\\}"
                 },
                 "markdown.extensibleMarkdown.abbreviationDecoratorRegex": {
+                    "markdownDescription": "Regular expression for the Decorator of abbreviation syntax, implemented as an extension of *emphasis* (\\*\\*) syntax",
                     "type": "string",
                     "default": "\\*\\{(.+?)\\}.+?\\*"
                 },
                 "markdown.extensibleMarkdown.abbreviationDecoratorStyle": {
+                    "markdownDescription": "Decorator style for abbreviation syntax, implemented as an extension of *emphasis* (\\*\\*) syntax",
                     "type": "object",
                     "default": {
                         "cursor": "zoom-in",
@@ -138,10 +148,12 @@
                     }
                 },
                 "markdown.extensibleMarkdown.attributeRegex": {
+                    "description": "Regular expression for attribute syntax",
                     "type": "string",
                     "default": "\\{([a-z]+?)\\=([^\"^\\{^\\}]+?)\\}"
                 },
                 "markdown.extensibleMarkdown.attributeDecoratorStyle": {
+                    "description": "Decorator style for attribute syntax",
                     "type": "object",
                     "default": {
                         "cursor": "copy",
@@ -152,10 +164,12 @@
                     }
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
+                    "description": "Regular expression for CSS class syntax",
                     "type": "string",
                     "default": "\\{\\.([^\"^\\{^\\}]+?)\\}"
                 },
                 "markdown.extensibleMarkdown.cssClassDecoratorStyle": {
+                    "description": "Decorator style for CSS class syntax",
                     "type": "object",
                     "default": {
                         "cursor": "default",
@@ -166,23 +180,27 @@
                     }
                 },
                 "markdown.extensibleMarkdown.headingId": {
+                    "description": "Enable heading id attrubutes; not that this feature should be enabled is Table of Contents is used; it is recommended to keep it enabled in all cases",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown.extensibleMarkdown.headingIdPrefix": {
+                    "description": "Prefix string for id attributes of headings",
                     "type": "string",
                     "default": "heading."
                 },
                 "markdown.extensibleMarkdown.TOC.itemIndentInEm": {
+                    "description": "Basic value of indent for a Table of Contents item in em units; this value is multiplied by the depth of nesting of each item",
                     "type": "int",
                     "default": 3
                 },
                 "markdown.extensibleMarkdown.TOC.regex": {
-                    "description": "Regular Expression used to detect location of Table of Contents",
+                    "description": "Regular Expression used to detect the location of Table of Contents",
                     "type": "string",
                     "default": "^\\@toc$"
                 },
                 "markdown.extensibleMarkdown.TOC.decoratorStyle": {
+                    "description": "Decorator style for the Table of Content marker",
                     "type": "object",
                     "default": {
                         "letterSpacing": "1px",
@@ -194,10 +212,12 @@
                     }
                 },
                 "markdown.extensibleMarkdown.TOC.excludeHeaderRegex": {
+                    "description": "Regular expression for the syntax of a heading element to be excluded from Table of Contents",
                     "type": "string",
                     "default": "\\{no-toc\\}"
                 },
                 "markdown.extensibleMarkdown.TOC.excludeHeader.DecoratorStyle": {
+                    "description": "Decorator style for the syntax of a heading element to be excluded from Table of Contents",
                     "type": "object",
                     "default": {
                         "cursor": "no-drop",
@@ -208,6 +228,7 @@
                     }
                 },
                 "markdown.extensibleMarkdown.TOC.includeLevels": {
+                    "description": "An array of 0 to 6 elements representing the levels of headings to be included in Table of Contents, can contain number 1 to 6",
                     "type": "array",
                     "default": [
                         1,
@@ -219,22 +240,27 @@
                     ]
                 },
                 "markdown.extensibleMarkdown.TOC.containerClass": {
+                    "description": "CSS class of the HTML element containing Table of Contents",
                     "type": "string",
                     "default": "toc"
                 },
                 "markdown.extensibleMarkdown.includeLocatorRegex": {
+                    "description": "Regular expression of file include syntax",
                     "type": "string",
                     "default": "^\\@include\\(([^\\s]+?)\\)$"
                 },
                 "markdown.extensibleMarkdown.includeLocatorInvalidRegexMessageFormat": {
+                    "description": "Format of message generated in output HTML if include file is not found; %s represents the file name",
                     "type": "string",
                     "default": "!!! invalid Regular Expression of include:  \"%s\" !!!"
                 },
                 "markdown.extensibleMarkdown.includeLocatorFileReadFailureMessageFormat": {
+                    "description": "Format of message generated in output HTML if include file cannot be read; %s represents the file name",
                     "type": "string",
                     "default": "!!! failed to read file \"%s\" !!!"
                 },
                 "markdown.extensibleMarkdown.includeLocatorDecoratorStyle": {
+                    "description": "Decorator style for file include syntax",
                     "type": "object",
                     "default": {
                         "cursor": "copy",
@@ -246,10 +272,12 @@
                     }
                 },
                 "markdown.extensibleMarkdown.TOC.autoNumberingRegex": {
+                    "description": "Regular expression used to locate the Table of Contents auto-numbering rule set",
                     "type": "string",
                     "default": "^\\@numbering\\s*?\\{([\\s\\S]*?)\\}"
                 },
                 "markdown.extensibleMarkdown.TOC.autoNumberingDecoratorStyle": {
+                    "description": "Decorator style for the syntax used for the definition of the Table of Contents auto-numbering rule set",
                     "type": "object",
                     "default": {
                         "cursor": "default",
@@ -258,29 +286,32 @@
                     }
                 },
                 "markdown.extensibleMarkdown.TOC.autoNumbering.brokenHierarchy": {
+                    "description": "The prefix to the Table of Contents item used to indicate broken hierarchy of headings",
                     "type": "string",
                     "default": "??? "
                 },
                 "markdown.extensibleMarkdown.options.allowHTML": {
+                    "description": "Allow HTML markup in Markdown",
                     "type": "boolean",
                     "default": true,
-                    "description": "Allows HTML markup in Markdown"
                 },
                 "markdown.extensibleMarkdown.options.typographer": {
+                    "description": "Enable markdown-it built-in typographer feature",
                     "type": "boolean",
                     "default": true
                 },
                 "markdown.extensibleMarkdown.options.typographerExtensions": {
+                    "description": "Replace !==, !=, !||, !~~, <=, >=, !~, -+, -:, ||, ~~, ===, ==, !.<, .<, <|, |>, @left, @right, @up and @down with mathematical operators and arrows",
                     "type": "boolean",
-                    "default": true,
-                    "description": "Optionally replaces !==, !=, !||, !~~, <=, >=, !~, -+, -:, ||, ~~, ===, ==, !.<, .<, <|, |>, @left, @right, @up and @down with mathematical operators and arrows"
+                    "default": true
                 },
                 "markdown.extensibleMarkdown.options.smartQuotes": {
+                    "description": "Enable markdown-it built-in smart quotes feature",
                     "type": "string",
-                    "default": "“”‘’",
-                    "description": "Enables markdown-it embedded smart quotes feature"
+                    "default": "“”‘’"
                 },
                 "markdown.extensibleMarkdown.options.additionalPlugins": {
+                    "description": "Set of additional markdown-it plugins",
                     "type": "object",
                     "default": {
                         "absolutePath": "",

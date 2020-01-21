@@ -110,7 +110,7 @@
                     "default": "title"
                 },
                 "markdown.extensibleMarkdown.titleLocatorRegex": {
-                    "description": "Regular expression used to identify the paragraph used as a document title",
+                    "description": "Regular expression used to identify the paragraph used as a document title; if this string is empty, the feature is disabled",
                     "type": "string",
                     "default": "\\{title\\}"
                 },
@@ -131,7 +131,7 @@
                     "default": "\\{(.+?)\\}"
                 },
                 "markdown.extensibleMarkdown.abbreviationDecoratorRegex": {
-                    "markdownDescription": "Regular expression for the Decorator of abbreviation syntax, implemented as an extension of *emphasis* (\\*\\*) syntax",
+                    "markdownDescription": "Regular expression for the Decorator of abbreviation syntax, implemented as an extension of *emphasis* (\\*\\*) syntax; if this string is empty, the feature is disabled",
                     "type": "string",
                     "default": "\\*\\{(.+?)\\}.+?\\*"
                 },
@@ -148,7 +148,7 @@
                     }
                 },
                 "markdown.extensibleMarkdown.attributeRegex": {
-                    "description": "Regular expression for attribute syntax",
+                    "description": "Regular expression for attribute syntax; if this string is empty, the feature is disabled",
                     "type": "string",
                     "default": "\\{([a-z]+?)\\=([^\"^\\{^\\}]+?)\\}"
                 },
@@ -164,7 +164,7 @@
                     }
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
-                    "description": "Regular expression for CSS class syntax",
+                    "description": "Regular expression for CSS class syntax; if this string is empty, the feature is disabled",
                     "type": "string",
                     "default": "\\{\\.([^\"^\\{^\\}]+?)\\}"
                 },

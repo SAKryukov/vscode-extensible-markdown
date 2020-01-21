@@ -8,12 +8,19 @@ module.exports = (md, options) => {
 
     const utility = require("./utility");
 
-    const abbreviationRegexp = new RegExp(options.abbreviationRegex); // in **: *{Request for Comments}RFC*
+    const createRegExp  = (patternString, isGlobal) => {
+        if (!patternString) return null;
+        if (patternString.trim().length < 1) return null;
+        const option = isGlobal ? "g" : undefined;
+        return new RegExp(patternString, option);
+    }; //createRegExp
+
+    const abbreviationRegexp = createRegExp(options.abbreviationRegex, false); // in **: *{Request for Comments}RFC*
     const mergedAttribute = "class";
     const patterns = [
-        { name: "class", regexp: new RegExp(options.cssClassRegex, "g"), attribute: mergedAttribute, attributeValue: 1 },
-        { name: "document title", regexp: new RegExp(options.titleLocatorRegex), attribute: "class", attributeValue: options.titleClassName, isDocumentTitlePattern: true },
-        { name: "attribute=value", regexp: new RegExp(options.attributeRegex, "g"), attribute: 1, attributeValue: 2 },
+        { name: "class", regexp: createRegExp(options.cssClassRegex, true), attribute: mergedAttribute, attributeValue: 1 },
+        { name: "document title", regexp: createRegExp(options.titleLocatorRegex, false), attribute: "class", attributeValue: options.titleClassName, isDocumentTitlePattern: true },
+        { name: "attribute=value", regexp: createRegExp(options.attributeRegex, true), attribute: 1, attributeValue: 2 },
     ];
     const blockPatterns = {
         "fence": { textToken: +0, textField: "info" },
@@ -38,6 +45,7 @@ module.exports = (md, options) => {
                 const attributes = { };
                 let attributeCount = 0;
                 for (let pattern of patterns) {
+                    if (!pattern.regexp) continue;
                     const currentToken = blockPattern.textToken ? state.tokens[parseInt(index) + blockPattern.textToken] : token;
                     const text = currentToken[blockPattern.textField];
                     const matchStrings = text.match(pattern.regexp);
@@ -69,7 +77,7 @@ module.exports = (md, options) => {
             return true;
         });
         createdRules.add(ruleName);
-    }; //detectAttributes++
+    }; //detectAttributes
 
     const parseAttributePart = index => {
         let attributePart = "";
@@ -109,18 +117,20 @@ module.exports = (md, options) => {
             return utility.renderDefault(tokens, index, options, object, renderer, previousRenderBlockquoteOpen, `<p>`);
     }; //md.renderer.blockquote_open
 
-    const previousRenderEmOpen = md.renderer.rules.em_open;
-    md.renderer.rules.em_open = (tokens, index, options, object, renderer) => {
-        const text = tokens[index + 1].content;
-        const match = abbreviationRegexp.exec(text);
-        tokens[index + 1].content = text.replace(abbreviationRegexp, "");
-        if (match && match[1]) {
-            tokens[index + 2].tag = "abbr";
-            return `<abbr title="${match[1]}">`;
-        } else
-            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderEmOpen, `<em>`);
-    }; //md.renderer.rules.em_open
-
+    if (abbreviationRegexp) {
+        const previousRenderEmOpen = md.renderer.rules.em_open;
+        md.renderer.rules.em_open = (tokens, index, options, object, renderer) => {
+            const text = tokens[index + 1].content;
+            const match = abbreviationRegexp.exec(text);
+            tokens[index + 1].content = text.replace(abbreviationRegexp, "");
+            if (match && match[1]) {
+                tokens[index + 2].tag = "abbr";
+                return `<abbr title="${match[1]}">`;
+            } else
+                return utility.renderDefault(tokens, index, options, object, renderer, previousRenderEmOpen, `<em>`);
+        }; //md.renderer.rules.em_open    
+    } //if abbreviationRegexp
+    
     detectAttributes(moduleName);
 
 }; //module.exports

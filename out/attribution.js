@@ -27,6 +27,13 @@ module.exports = (md, options) => {
 
     const detectAttributes = (ruleName) => {
         if (createdRules.has(ruleName)) return;
+        let hasEnabledPattern = false;
+        for (let pattern of patterns)
+            if (pattern.regexp) {
+                hasEnabledPattern = true;
+                break;
+            } //if enabled pattern
+        if (!hasEnabledPattern) return;
         md.core.ruler.push(ruleName, state => {
             tokenDictionary = {};
             let documentTitleToken = null;

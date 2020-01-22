@@ -84,11 +84,6 @@
             "type": "object",
             "title": "Extensible Markdown",
             "properties": {
-                "markdown.extensibleMarkdown.convertToHtml.reportSuccess": {
-                    "description": "Report successful conversion to HTML file",
-                    "type": "boolean",
-                    "default": true
-                },
                 "markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser": {
                     "description": "Upon successful conversion to HTML file, show it in the default Web browser",
                     "type": "boolean",
@@ -104,7 +99,7 @@
                     "type": "string",
                     "default": ""
                 },
-                "markdown.extensibleMarkdown.convertToHtml.titleClassName": {
+                "markdown.extensibleMarkdown.titleClassName": {
                     "description": "CSS class name for document title",
                     "type": "string",
                     "default": "title"

@@ -68,12 +68,6 @@ exports.activate = context => {
 
     const successAction = (inputs, outputs, settings) => {
         const count = inputs.length;
-        if (!settings.reportSuccess) {
-            if (settings.showHtmlInBrowser)
-                for (let index = 0; index < count; ++index)
-                    childProcess.exec(outputs[index]);
-            return;
-        } //if
         if (lazy.lastOutputChannel)
             lazy.lastOutputChannel.clear();
         else
@@ -144,11 +138,10 @@ exports.activate = context => {
                     settings.outputPath,
                     rootPath));
             } //loop
-            if (settings.reportSuccess)
-                if (inputs.length < 1)
-                    vscode.window.showWarningMessage("No .md files found in the workspace");
-                else
-                    successAction(inputs, outputs, settings);
+            if (inputs.length < 1)
+                vscode.window.showWarningMessage("No .md files found in the workspace");
+            else
+                successAction(inputs, outputs, settings);
         });
     } //convertSet
 
@@ -261,7 +254,7 @@ exports.activate = context => {
         const setupUsage = (md => {
             if (!md) return;
             md.set(optionSet);
-            const idTopOptions = {
+            const idTocOptions = {
                 excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
                 tocItemIndentInEm: lazy.settings.tocItemIndentInEm,
                 headingIdPrefix: lazy.settings.headingIdPrefix,
@@ -271,7 +264,7 @@ exports.activate = context => {
                 autoNumberingRegex: lazy.settings.autoNumberingRegex,
                 autoNumberingBrokenHierarchy: lazy.settings.autoNumberingBrokenHierarchy,
             };
-            md.use(idToc, idTopOptions);
+            md.use(idToc, idTocOptions);
             md.use(attribution, {
                 titleLocatorRegex: lazy.settings.titleLocatorRegex,
                 abbreviationRegex: lazy.settings.abbreviationRegex,

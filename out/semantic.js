@@ -12,14 +12,9 @@ module.exports.getHtmlTemplateSet = (path, fs, encoding) => {
 module.exports.getSettings = importContext => { // see package.json, "configuration":
     const configuration = importContext.vscode.workspace.getConfiguration();
     const thisExtensionSection = configuration.markdown.extensibleMarkdown;
-    const thisConvertToHtmlSection = thisExtensionSection.convertToHtml;
-    const thisMarkdownItOptionSection = thisExtensionSection.options;
     const settings = {
-        reportSuccess: thisConvertToHtmlSection.reportSuccess,
-        showHtmlInBrowser: thisConvertToHtmlSection.showHtmlInBrowser,
-        embedCss: thisConvertToHtmlSection.embedCss,
-        outputPath: thisConvertToHtmlSection.outputPath,
-        titleClassName: thisConvertToHtmlSection.titleClassName,
+        css: configuration.markdown.styles,
+        titleClassName: thisExtensionSection.titleClassName,
         titleLocatorRegex: thisExtensionSection.titleLocatorRegex,
         abbreviationRegex: thisExtensionSection.abbreviationRegex,
         abbreviationDecoratorRegex: thisExtensionSection.abbreviationDecoratorRegex,
@@ -36,13 +31,16 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         includeLocatorRegex: thisExtensionSection.includeLocatorRegex,
         includeLocatorInvalidRegexMessageFormat: thisExtensionSection.includeLocatorInvalidRegexMessageFormat,
         includeLocatorFileReadFailureMessageFormat: thisExtensionSection.includeLocatorFileReadFailureMessageFormat,
-        css: configuration.markdown.styles,
+        // conversion to HTML:
+        showHtmlInBrowser: thisExtensionSection.convertToHtml.showHtmlInBrowser,
+        embedCss: thisExtensionSection.convertToHtml.embedCss,
+        outputPath: thisExtensionSection.convertToHtml.outputPath,
         // options:
-        allowHTML: thisMarkdownItOptionSection.allowHTML,
-        typographer: thisMarkdownItOptionSection.typographer,
-        typographerExtensions: thisMarkdownItOptionSection.typographerExtensions,
-        smartQuotes: thisMarkdownItOptionSection.smartQuotes,
-        additionalPlugins: thisMarkdownItOptionSection.additionalPlugins,
+        allowHTML: thisExtensionSection.options.allowHTML,
+        typographer: thisExtensionSection.options.typographer,
+        typographerExtensions: thisExtensionSection.options.typographerExtensions,
+        smartQuotes: thisExtensionSection.options.smartQuotes,
+        additionalPlugins: thisExtensionSection.options.additionalPlugins,
     } //settings
     if (!settings.additionalPlugins) return settings;
     settings.pluginSyntaxDecorators = [];

@@ -25,7 +25,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         abbreviationDecoratorRegex: thisExtensionSection.abbreviationDecoratorRegex,
         attributeRegex: thisExtensionSection.attributeRegex,
         cssClassRegex: thisExtensionSection.cssClassRegex,
-        headingId: thisExtensionSection.headingId,
         headingIdPrefix: thisExtensionSection.headingIdPrefix,
         tocRegex: thisExtensionSection.TOC.regex,
         tocIncludeLevels: thisExtensionSection.TOC.includeLevels,

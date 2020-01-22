@@ -179,11 +179,6 @@
                         "backgroundColor": "Pink"
                     }
                 },
-                "markdown.extensibleMarkdown.headingId": {
-                    "description": "Enable heading id attrubutes; not that this feature should be enabled is Table of Contents is used; it is recommended to keep it enabled in all cases",
-                    "type": "boolean",
-                    "default": true
-                },
                 "markdown.extensibleMarkdown.headingIdPrefix": {
                     "description": "Prefix string for id attributes of headings",
                     "type": "string",
@@ -293,7 +288,7 @@
                 "markdown.extensibleMarkdown.options.allowHTML": {
                     "description": "Allow HTML markup in Markdown",
                     "type": "boolean",
-                    "default": true,
+                    "default": true
                 },
                 "markdown.extensibleMarkdown.options.typographer": {
                     "description": "Enable markdown-it built-in typographer feature",

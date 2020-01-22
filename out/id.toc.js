@@ -1,7 +1,6 @@
 "use strict";
 
 const defaultOptions = {
-    enableHeadingId: true,
     autoNumberingRegex: "^\\@numbering\\s*?\\{([\\s\\S]*?)\\}",
     autoNumbering: {
         enable: false,

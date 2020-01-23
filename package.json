@@ -28,7 +28,7 @@
         "onLanguage:markdown",
         "onCommand:extensible.markdown.convertToHtml.all"
     ],
-    "main": "./out/main.js",
+    "main": "./extension/main.js",
     "contributes": {
         "markdown.markdownItPlugins": true,
         "commands": [

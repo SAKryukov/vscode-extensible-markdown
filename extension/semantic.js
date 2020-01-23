@@ -67,51 +67,51 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         regexString: settings.titleLocatorRegex,
         tooltipFormat: `Current paragraph is considered as a title used as an HTML \"title\" attribute; it also has CSS class \"${settings.titleClassName}; its style can be defined in CSS`,
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.titleLocatorDecoratorStyle) 
+            thisExtensionSection.titleLocatorDecoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.includeLocatorRegex,
         tooltipFormat: "include file \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.includeLocatorDecoratorStyle) 
+            thisExtensionSection.includeLocatorDecoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.excludeFromTocRegex,
         tooltipFormat: "Exclude current header from Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.TOC.excludeHeader.DecoratorStyle) 
+            thisExtensionSection.TOC.excludeHeader.DecoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.abbreviationDecoratorRegex,
         tooltipFormat: "Explanation \"%s\" followed by corresponding abbreviation or acronym",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.abbreviationDecoratorStyle) 
+            thisExtensionSection.abbreviationDecoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.attributeRegex,
         tooltipFormat: "HTML attribute %s=\"...\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.attributeDecoratorStyle) 
+            thisExtensionSection.attributeDecoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.cssClassRegex,
         tooltipFormat: "CSS class \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.cssClassDecoratorStyle) 
+            thisExtensionSection.cssClassDecoratorStyle)
     });
     //
     settings.pluginSyntaxDecorators.push({
         regexString: settings.tocRegex,
         tooltipFormat: "Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.TOC.decoratorStyle) 
+            thisExtensionSection.TOC.decoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         relativeToWholeText: true, // special case: regex is not 
         regexString: settings.autoNumberingRegex,
         tooltipFormat: "Auto-Numbering Settings",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.TOC.autoNumberingDecoratorStyle) 
+            thisExtensionSection.TOC.autoNumberingDecoratorStyle)
     });
     return settings;
 }; //getSettings
@@ -160,7 +160,7 @@ module.exports.replaceIncludes = (importContext, input, hostFileName, settings) 
     let result = input;
     const replaceOne = regex => {
         const match = regex.exec(result);
-        if (!match) return false; 
+        if (!match) return false;
         if (match.length != 2) { result = invalidRegexMessage; return false; }
         const includefileName = importContext.path.join(
             importContext.path.dirname(hostFileName),

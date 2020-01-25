@@ -221,7 +221,7 @@ exports.activate = context => {
                     result.quotes = defaultSmartQuotes;
                 else
                     result.quotes = lazy.settings.thisExtensionSettings.options.smartQuotes;
-            } //if settings.typographer
+            } //if typographer
             return result;
         })(); //optionSet
         const additionalPlugins = (() => {

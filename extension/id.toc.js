@@ -170,19 +170,19 @@ module.exports = (md, options) => {
     }); //md.core.ruler.after
 
     const previousRenderHeadingOpen = md.renderer.rules.heading_open;
-    md.renderer.rules.heading_open = (tokens, index, initialOptions, object, renderer) => {
+    md.renderer.rules.heading_open = (tokens, index, ruleOptions, object, renderer) => {
         const heading = headingSet[index];
         if (!heading)
-            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderHeadingOpen, `<${tokens[index].tag}>`);
+            return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderHeadingOpen, `<${tokens[index].tag}>`);
         return `<${headingSet[index].tag} id="${headingSet[index].id}">`;
     }; //md.renderer.rules.heading_open
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
-    md.renderer.rules.paragraph_open = (tokens, index, initialOptions, object, renderer) => {
+    md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
         for (let tocLocation of tocLocations)
             if (index == tocLocation)
                 return `<p class="${options.tocContainerClass}">${buildToc()}`;
-        return utility.renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
+        return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.rules.paragraph_open
 
 }; //module.exports

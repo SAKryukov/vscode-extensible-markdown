@@ -267,7 +267,7 @@ exports.activate = context => {
             md.use(idToc, idTocOptions);
             md.use(attribution, lazy.settings.attribution);
             md.use(replacements, { });
-            if (!lazy.settings.typographerExtensions)
+            if (!lazy.settings.thisExtensionSettings.options.typographerExtensions)
                 md.disable(typographerExtensionsRule);
             for (let pluginData in additionalPlugins) {
                 let plugin;

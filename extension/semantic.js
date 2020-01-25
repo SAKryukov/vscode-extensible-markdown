@@ -1,5 +1,7 @@
 "use strict";
 
+const utility = require("./utility");
+
 module.exports.getHtmlTemplateSet = (path, fs, encoding) => {
     return {
         html: fs.readFileSync(path.join(__dirname, "/template-html.txt"), encoding),
@@ -13,7 +15,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     const configuration = importContext.vscode.workspace.getConfiguration();
     const thisExtensionSection = configuration.markdown.extensibleMarkdown;
     const settings = {
-        css: configuration.markdown.styles,
         titleClassName: thisExtensionSection.titleClassName,
         titleLocatorRegex: thisExtensionSection.titleLocatorRegex,
         abbreviationRegex: thisExtensionSection.abbreviationRegex,
@@ -41,6 +42,17 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         typographerExtensions: thisExtensionSection.options.typographerExtensions,
         smartQuotes: thisExtensionSection.options.smartQuotes,
         additionalPlugins: thisExtensionSection.options.additionalPlugins,
+        // new!!!
+        css: configuration.markdown.styles, // from embedded markdown extension
+        thisExtensionSettings: configuration.markdown.extensibleMarkdown,
+        attribution: {
+            titleLocatorRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.titleLocatorRegex, false),
+            abbreviationRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.abbreviationRegex, false),
+            abbreviationDecoratorRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.abbreviationDecoratorRegex, false),
+            attributeRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.attributeRegex, true),
+            cssClassRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.cssClassRegex, true),
+            titleClassName: configuration.markdown.extensibleMarkdown.titleClassName,
+        }
     } //settings
     if (!settings.additionalPlugins) return settings;
     settings.pluginSyntaxDecorators = [];
@@ -63,12 +75,13 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
             settings.pluginSyntaxDecorators.push(decoratorData);
         } //loop decorators
     } //loop
-    settings.pluginSyntaxDecorators.push({
-        regexString: settings.titleLocatorRegex,
-        tooltipFormat: `Current paragraph is considered as a title used as an HTML \"title\" attribute; it also has CSS class \"${settings.titleClassName}; its style can be defined in CSS`,
-        decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.titleLocatorDecoratorStyle)
-    });
+    if (settings.attribution.titleLocatorRegex)
+        settings.pluginSyntaxDecorators.push({
+            regexString: settings.titleLocatorRegex,
+            tooltipFormat: `Current paragraph is considered as a title used as an HTML \"title\" attribute; it also has CSS class \"${settings.titleClassName}; its style can be defined in CSS`,
+            decorationType: importContext.vscode.window.createTextEditorDecorationType(
+                thisExtensionSection.titleLocatorDecoratorStyle)
+        });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.includeLocatorRegex,
         tooltipFormat: "include file \"%s\"",
@@ -81,24 +94,27 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection.TOC.excludeHeader.DecoratorStyle)
     });
-    settings.pluginSyntaxDecorators.push({
-        regexString: settings.abbreviationDecoratorRegex,
-        tooltipFormat: "Explanation \"%s\" followed by corresponding abbreviation or acronym",
-        decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.abbreviationDecoratorStyle)
-    });
-    settings.pluginSyntaxDecorators.push({
-        regexString: settings.attributeRegex,
-        tooltipFormat: "HTML attribute %s=\"...\"",
-        decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.attributeDecoratorStyle)
-    });
-    settings.pluginSyntaxDecorators.push({
-        regexString: settings.cssClassRegex,
-        tooltipFormat: "CSS class \"%s\"",
-        decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.cssClassDecoratorStyle)
-    });
+    if (settings.attribution.abbreviationDecoratorRegex)
+        settings.pluginSyntaxDecorators.push({
+            regexString: settings.abbreviationDecoratorRegex,
+            tooltipFormat: "Explanation \"%s\" followed by corresponding abbreviation or acronym",
+            decorationType: importContext.vscode.window.createTextEditorDecorationType(
+                thisExtensionSection.abbreviationDecoratorStyle)
+        });
+    if (settings.attribution.attributeRegex)
+        settings.pluginSyntaxDecorators.push({
+            regexString: settings.attributeRegex,
+            tooltipFormat: "HTML attribute %s=\"...\"",
+            decorationType: importContext.vscode.window.createTextEditorDecorationType(
+                thisExtensionSection.attributeDecoratorStyle)
+        });
+    if (settings.attribution.cssClassRegex)
+        settings.pluginSyntaxDecorators.push({
+            regexString: settings.cssClassRegex,
+            tooltipFormat: "CSS class \"%s\"",
+            decorationType: importContext.vscode.window.createTextEditorDecorationType(
+                thisExtensionSection.cssClassDecoratorStyle)
+        });
     //
     settings.pluginSyntaxDecorators.push({
         regexString: settings.tocRegex,

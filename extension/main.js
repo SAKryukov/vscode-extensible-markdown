@@ -16,7 +16,7 @@ exports.activate = context => {
     const fs = require("fs");
     const path = require("path");
     const childProcess = require("child_process");
-    const semantic = require("./semantic");
+    const setup = require("./setup");
     const idToc = require("./id.toc");
     const attribution = require("./attribution"); 
     const replacements = require("./replacements");
@@ -24,10 +24,10 @@ exports.activate = context => {
 
     const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
-    const htmlTemplateSet = semantic.getHtmlTemplateSet(path, fs, encoding);
+    const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);
     
     const transcodeText = (text, fileName, css, embedCss, rootPath) => {
-        text = semantic.replaceIncludes(importContext, text, fileName, lazy.settings);
+        text = setup.replaceIncludes(importContext, text, fileName, lazy.settings);
         let result = lazy.markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
@@ -46,7 +46,7 @@ exports.activate = context => {
             if (index < css.length - 1) style += "\n";
         } //loop
         return util.format(htmlTemplateSet.html,
-            semantic.documentTitle ? semantic.documentTitle : `Converted from: ${path.basename(fileName)}`,
+            setup.documentTitle ? setup.documentTitle : `Converted from: ${path.basename(fileName)}`,
             style,
             result);
     }; //transcodeText
@@ -150,7 +150,7 @@ exports.activate = context => {
         const document = vscode.window.activeTextEditor.document;
         if (document.languageId != markdownId) return;
         if (!lazy.settings)
-            lazy.settings = semantic.getSettings(importContext);
+            lazy.settings = setup.getSettings(importContext);
         const text = vscode.window.activeTextEditor.document.getText();
         // clean:
         for (let index in lazy.decorationTypeSet)
@@ -164,13 +164,13 @@ exports.activate = context => {
                 let decoratorSet = [];
                 const document = vscode.window.activeTextEditor.document;
                 const text = document.getText();
-                semantic.thenableRegex(plugin.regexString, text, !plugin.relativeToWholeText).then(
+                setup.thenableRegex(plugin.regexString, text, !plugin.relativeToWholeText).then(
                     function (start, length, groups) {
                         let title = plugin.tooltipFormat;
                         if (groups[1] && title.includes("%s"))
                             title = util.format(title, groups[1].toString());
                         decoratorSet.push({
-                            range: semantic.getVSCodeRange(vscode, document, start, groups[0]),
+                            range: setup.getVSCodeRange(vscode, document, start, groups[0]),
                             hoverMessage: title
                         });
                     }); //looped occurrences and groups
@@ -206,7 +206,7 @@ exports.activate = context => {
         else
             lazy.markdownIt = baseImplementation;
         if (!lazy.settings || updateSettings)
-            lazy.settings = semantic.getSettings(importContext);
+            lazy.settings = setup.getSettings(importContext);
         const optionSet = (() => {
             // result.xhtmlOut: it closes all tags, like in <br />, non-default, but it would be a crime not to close tags:
             let result = { xhtmlOut: true, highlight: null, langPrefix: null };

@@ -1,7 +1,7 @@
 "use strict";
 
 const path = require("path");
-const semantic = require("./semantic");
+const setup = require("./setup");
 const utility = require("./utility");
 const moduleName = path.basename(module.id);
 
@@ -38,7 +38,7 @@ module.exports = (md, options) => {
             tokenDictionary = {};
             let documentTitleToken = null;
             let documentTitleTokenType = null;
-            semantic.documentTitle = null;
+            setup.documentTitle = null;
             for (let index = 0; index < state.tokens.length; ++index) {
                 const token = state.tokens[index];
                 const blockPattern = blockPatterns[token.type];
@@ -71,7 +71,7 @@ module.exports = (md, options) => {
                     } //loop
                 } //loop patterns
                 if (documentTitleToken)
-                    semantic.documentTitle = documentTitleToken[blockPatterns[documentTitleTokenType].textField];
+                    setup.documentTitle = documentTitleToken[blockPatterns[documentTitleTokenType].textField];
                 if (attributeCount > 0)
                     tokenDictionary[index] = attributes;
             } //loop tokens

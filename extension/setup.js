@@ -15,12 +15,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     const configuration = importContext.vscode.workspace.getConfiguration();
     const thisExtensionSection = configuration.markdown.extensibleMarkdown;
     const settings = {
-        titleClassName: thisExtensionSection.titleClassName,
-        titleLocatorRegex: thisExtensionSection.titleLocatorRegex,
-        abbreviationRegex: thisExtensionSection.abbreviationRegex,
-        abbreviationDecoratorRegex: thisExtensionSection.abbreviationDecoratorRegex,
-        attributeRegex: thisExtensionSection.attributeRegex,
-        cssClassRegex: thisExtensionSection.cssClassRegex,
         headingIdPrefix: thisExtensionSection.headingIdPrefix,
         tocRegex: thisExtensionSection.TOC.regex,
         tocIncludeLevels: thisExtensionSection.TOC.includeLevels,
@@ -36,12 +30,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         showHtmlInBrowser: thisExtensionSection.convertToHtml.showHtmlInBrowser,
         embedCss: thisExtensionSection.convertToHtml.embedCss,
         outputPath: thisExtensionSection.convertToHtml.outputPath,
-        // options:
-        allowHTML: thisExtensionSection.options.allowHTML,
-        typographer: thisExtensionSection.options.typographer,
-        typographerExtensions: thisExtensionSection.options.typographerExtensions,
-        smartQuotes: thisExtensionSection.options.smartQuotes,
-        additionalPlugins: thisExtensionSection.options.additionalPlugins,
         // new!!!
         css: configuration.markdown.styles, // from embedded markdown extension
         thisExtensionSettings: configuration.markdown.extensibleMarkdown,
@@ -53,31 +41,33 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
             cssClassRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.cssClassRegex, true),
             titleClassName: configuration.markdown.extensibleMarkdown.titleClassName,
         }
-    } //settings
-    if (!settings.additionalPlugins) return settings;
+    }; //settings
+    if (settings.additionalPlugins) {
+        settings.pluginSyntaxDecorators = [];
+        for (let plugin in settings.additionalPlugins.plugins) {
+            const pluginInstance = settings.additionalPlugins.plugins[plugin];
+            if (!pluginInstance) continue;
+            if (!pluginInstance.syntacticDecorators) continue;
+            for (let decorator in pluginInstance.syntacticDecorators) {
+                const decoratorInstance = pluginInstance.syntacticDecorators[decorator];
+                if (!decoratorInstance) continue;
+                if (!decoratorInstance.enable) continue;
+                if (!decoratorInstance.regexString) continue;
+                if (!decoratorInstance.style) continue;
+                const decoratorData = {
+                    regexString: decoratorInstance.regexString,
+                    tooltipFormat: decoratorInstance.tooltipFormat,
+                    decorationType: importContext.vscode.window.createTextEditorDecorationType(
+                        decoratorInstance.style)
+                };
+                settings.pluginSyntaxDecorators.push(decoratorData);
+            } //loop decorators
+        } //loop
+    } //if settings.additionalPlugins
     settings.pluginSyntaxDecorators = [];
-    for (let plugin in settings.additionalPlugins.plugins) {
-        const pluginInstance = settings.additionalPlugins.plugins[plugin];
-        if (!pluginInstance) continue;
-        if (!pluginInstance.syntacticDecorators) continue;
-        for (let decorator in pluginInstance.syntacticDecorators) {
-            const decoratorInstance = pluginInstance.syntacticDecorators[decorator];
-            if (!decoratorInstance) continue;
-            if (!decoratorInstance.enable) continue;
-            if (!decoratorInstance.regexString) continue;
-            if (!decoratorInstance.style) continue;
-            const decoratorData = {
-                regexString: decoratorInstance.regexString,
-                tooltipFormat: decoratorInstance.tooltipFormat,
-                decorationType: importContext.vscode.window.createTextEditorDecorationType(
-                    decoratorInstance.style)
-            };
-            settings.pluginSyntaxDecorators.push(decoratorData);
-        } //loop decorators
-    } //loop
     if (settings.attribution.titleLocatorRegex)
         settings.pluginSyntaxDecorators.push({
-            regexString: settings.titleLocatorRegex,
+            regexString: settings.attribution.titleLocatorRegex.source,
             tooltipFormat: `Current paragraph is considered as a title used as an HTML \"title\" attribute; it also has CSS class \"${settings.titleClassName}; its style can be defined in CSS`,
             decorationType: importContext.vscode.window.createTextEditorDecorationType(
                 thisExtensionSection.titleLocatorDecoratorStyle)
@@ -96,21 +86,21 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     });
     if (settings.attribution.abbreviationDecoratorRegex)
         settings.pluginSyntaxDecorators.push({
-            regexString: settings.abbreviationDecoratorRegex,
+            regexString: settings.attribution.abbreviationDecoratorRegex.source,
             tooltipFormat: "Explanation \"%s\" followed by corresponding abbreviation or acronym",
             decorationType: importContext.vscode.window.createTextEditorDecorationType(
                 thisExtensionSection.abbreviationDecoratorStyle)
         });
     if (settings.attribution.attributeRegex)
         settings.pluginSyntaxDecorators.push({
-            regexString: settings.attributeRegex,
+            regexString: settings.attribution.attributeRegex.source,
             tooltipFormat: "HTML attribute %s=\"...\"",
             decorationType: importContext.vscode.window.createTextEditorDecorationType(
                 thisExtensionSection.attributeDecoratorStyle)
         });
     if (settings.attribution.cssClassRegex)
         settings.pluginSyntaxDecorators.push({
-            regexString: settings.cssClassRegex,
+            regexString: settings.attribution.cssClassRegex.source,
             tooltipFormat: "CSS class \"%s\"",
             decorationType: importContext.vscode.window.createTextEditorDecorationType(
                 thisExtensionSection.cssClassDecoratorStyle)

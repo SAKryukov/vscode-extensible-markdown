@@ -210,17 +210,17 @@ exports.activate = context => {
         const optionSet = (() => {
             // result.xhtmlOut: it closes all tags, like in <br />, non-default, but it would be a crime not to close tags:
             let result = { xhtmlOut: true, highlight: null, langPrefix: null };
-            result.html = lazy.settings.allowHTML;
-            result.typographer = lazy.settings.typographer;
-            if (lazy.settings.typographer) {
-                if (!lazy.settings.smartQuotes)
+            result.html = lazy.settings.thisExtensionSettings.options.allowHTML;
+            result.typographer = lazy.settings.thisExtensionSettings.options.typographer;
+            if (lazy.settings.thisExtensionSettings.options.typographer) {
+                if (!lazy.settings.thisExtensionSettings.options.smartQuotes)
                     result.quotes = defaultSmartQuotes;
-                else if (!lazy.settings.smartQuotes.length)
+                else if (!lazy.settings.thisExtensionSettings.options.smartQuotes.length)
                     result.quotes = defaultSmartQuotes;
-                else if (lazy.settings.smartQuotes.length < defaultSmartQuotes.length)
+                else if (lazy.settings.thisExtensionSettings.options.smartQuotes.length < defaultSmartQuotes.length)
                     result.quotes = defaultSmartQuotes;
                 else
-                    result.quotes = lazy.settings.smartQuotes;
+                    result.quotes = lazy.settings.thisExtensionSettings.options.smartQuotes;
             } //if settings.typographer
             return result;
         })(); //optionSet
@@ -265,13 +265,7 @@ exports.activate = context => {
                 autoNumberingBrokenHierarchy: lazy.settings.autoNumberingBrokenHierarchy,
             };
             md.use(idToc, idTocOptions);
-            md.use(attribution, {
-                titleLocatorRegex: lazy.settings.titleLocatorRegex,
-                abbreviationRegex: lazy.settings.abbreviationRegex,
-                attributeRegex: lazy.settings.attributeRegex,
-                cssClassRegex: lazy.settings.cssClassRegex,
-                titleClassName: lazy.settings.titleClassName,
-            });
+            md.use(attribution, lazy.settings.attribution);
             md.use(replacements, { });
             if (!lazy.settings.typographerExtensions)
                 md.disable(typographerExtensionsRule);

@@ -1,20 +1,17 @@
 "use strict";
 
-const path = require("path");
-const setup = require("./setup");
-const utility = require("./utility");
-const moduleName = path.basename(module.id);
-
 module.exports = (md, options) => {
 
+    const path = require("path");
+    const moduleName = path.basename(module.id);    
+    const setup = require("./setup");
     const utility = require("./utility");
 
-    const abbreviationRegexp = utility.createOptionalRegExp(options.abbreviationRegex, false); // in **: *{Request for Comments}RFC*
     const mergedAttribute = "class";
     const patterns = [
-        { name: "class", regexp: utility.createOptionalRegExp(options.cssClassRegex, true), attribute: mergedAttribute, attributeValue: 1 },
-        { name: "document title", regexp: utility.createOptionalRegExp(options.titleLocatorRegex, false), attribute: "class", attributeValue: options.titleClassName, isDocumentTitlePattern: true },
-        { name: "attribute=value", regexp: utility.createOptionalRegExp(options.attributeRegex, true), attribute: 1, attributeValue: 2 },
+        { name: "class", regexp: options.cssClassRegex, attribute: mergedAttribute, attributeValue: 1 },
+        { name: "document title", regexp: options.titleLocatorRegex, attribute: "class", attributeValue: options.titleClassName, isDocumentTitlePattern: true },
+        { name: "attribute=value", regexp: options.attributeRegex, attribute: 1, attributeValue: 2 },
     ];
     const blockPatterns = {
         "fence": { textToken: +0, textField: "info" },
@@ -91,46 +88,46 @@ module.exports = (md, options) => {
     } //parseAttributePart
 
     const previousRenderFence = null; //md.renderer.rules.fence; // remove VSCode-specific class and data
-    md.renderer.rules.fence = (tokens, index, options, object, renderer) => {
+    md.renderer.rules.fence = (tokens, index, ruleOptions, object, renderer) => {
         const attributePart = parseAttributePart(index);
         const content = tokens[index].content;
         if (attributePart)
             return `<pre${attributePart}>${content}</pre>`;
         else
-            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
+            return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
     }; //md.renderer.rules.fence
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
-    md.renderer.rules.paragraph_open = (tokens, index, options, object, renderer) => {
+    md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
         const attributePart = parseAttributePart(index);
         if (attributePart)
             return `<p${attributePart}>`;
         else
-            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderParagraphOpen, `<p>`);
+            return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.paragraph_open
 
     const previousRenderBlockquoteOpen = md.renderer.rules.paragraph_open;
-    md.renderer.rules.blockquote_open = (tokens, index, options, object, renderer) => {
+    md.renderer.rules.blockquote_open = (tokens, index, ruleOptions, object, renderer) => {
         const attributePart = parseAttributePart(index);
         if (attributePart)
             return `<blockquote${attributePart}>`;
         else
-            return utility.renderDefault(tokens, index, options, object, renderer, previousRenderBlockquoteOpen, `<p>`);
+            return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderBlockquoteOpen, `<p>`);
     }; //md.renderer.blockquote_open
 
-    if (abbreviationRegexp) {
+    if (options.abbreviationRegex) { // in **: *{Request for Comments}RFC*
         const previousRenderEmOpen = md.renderer.rules.em_open;
-        md.renderer.rules.em_open = (tokens, index, options, object, renderer) => {
+        md.renderer.rules.em_open = (tokens, index, ruleOptions, object, renderer) => {
             const text = tokens[index + 1].content;
-            const match = abbreviationRegexp.exec(text);
-            tokens[index + 1].content = text.replace(abbreviationRegexp, "");
+            const match = options.abbreviationRegex.exec(text);
+            tokens[index + 1].content = text.replace(options.abbreviationRegex, "");
             if (match && match[1]) {
                 tokens[index + 2].tag = "abbr";
                 return `<abbr title="${match[1]}">`;
             } else
-                return utility.renderDefault(tokens, index, options, object, renderer, previousRenderEmOpen, `<em>`);
+                return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderEmOpen, `<em>`);
         }; //md.renderer.rules.em_open    
-    } //if abbreviationRegexp
+    } //if options.abbreviationRegexp
     
     detectAttributes(moduleName);
 

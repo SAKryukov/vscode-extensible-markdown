@@ -20,7 +20,6 @@ const defaultOptions = {
 
 module.exports = (md, options) => {
 
-    const util = require("util");
     const utility = require("./utility");
     const autoNumberingParser = require("./autoNumbering.optionParser");
     const autoNumbering = require("./autoNumbering");

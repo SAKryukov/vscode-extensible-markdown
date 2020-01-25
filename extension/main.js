@@ -20,8 +20,8 @@ exports.activate = context => {
     const idToc = require("./id.toc");
     const attribution = require("./attribution"); 
     const replacements = require("./replacements");
-    const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
 
+    const importContext = { vscode: vscode, util: util, fs: fs, path: path, markdownId: markdownId };
     const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);

@@ -1,7 +1,5 @@
 "use strict";
 
-const util = require("util");
-
 const defaultKeyword = "default";
 const enableKeyword = "enable";
 const trueKeyword = "true";

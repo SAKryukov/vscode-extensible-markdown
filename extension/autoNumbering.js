@@ -24,7 +24,7 @@ function Iterator(first) {
         } //if
         return this;
     } //next
-} //module.exports.Iterator
+} //Iterator
 
 module.exports.Iterator = Iterator;
 

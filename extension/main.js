@@ -18,6 +18,7 @@ exports.activate = context => {
     const childProcess = require("child_process");
     const utility = require("./utility");
     const setup = require("./setup");
+    const includes = require("./includes"); 
     const idToc = require("./id.toc");
     const attribution = require("./attribution"); 
     const replacements = require("./replacements");
@@ -254,6 +255,7 @@ exports.activate = context => {
         const setupUsage = (md => {
             if (!md) return;
             md.set(optionSet);
+            md.use(includes, lazy.settings.thisExtensionSettings.includes);
             md.use(idToc, lazy.settings);
             md.use(attribution, lazy.settings.attribution);
             md.use(replacements, { });

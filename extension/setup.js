@@ -62,10 +62,10 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
                 thisExtensionSection.titleLocatorDecoratorStyle)
         });
     settings.pluginSyntaxDecorators.push({
-        regexString: settings.thisExtensionSettings.includeLocatorRegex,
+        regexString: settings.thisExtensionSettings.includes.locatorRegex,
         tooltipFormat: "include file \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
-            thisExtensionSection.includeLocatorDecoratorStyle)
+            thisExtensionSection.includes.locatorDecoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         regexString: settings.thisExtensionSettings.TOC.excludeHeaderRegex,

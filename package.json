@@ -234,22 +234,22 @@
                     "type": "string",
                     "default": "toc"
                 },
-                "markdown.extensibleMarkdown.includeLocatorRegex": {
+                "markdown.extensibleMarkdown.includes.locatorRegex": {
                     "description": "Regular expression of file include syntax",
                     "type": "string",
                     "default": "^\\@include\\(([^\\s]+?)\\)$"
                 },
-                "markdown.extensibleMarkdown.includeLocatorInvalidRegexMessageFormat": {
+                "markdown.extensibleMarkdown.includes.invalidRegexMessageFormat": {
                     "description": "Format of message generated in output HTML if include file is not found; %s represents the file name",
                     "type": "string",
                     "default": "!!! invalid Regular Expression of include:  \"%s\" !!!"
                 },
-                "markdown.extensibleMarkdown.includeLocatorFileReadFailureMessageFormat": {
+                "markdown.extensibleMarkdown.includes.fileReadFailureMessageFormat": {
                     "description": "Format of message generated in output HTML if include file cannot be read; %s represents the file name",
                     "type": "string",
                     "default": "!!! failed to read file \"%s\" !!!"
                 },
-                "markdown.extensibleMarkdown.includeLocatorDecoratorStyle": {
+                "markdown.extensibleMarkdown.includes.locatorDecoratorStyle": {
                     "description": "Decorator style for file include syntax",
                     "type": "object",
                     "default": {

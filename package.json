@@ -309,11 +309,11 @@
                         "plugins": [
                             {
                                 "name": "",
-                                "enable": true,
+                                "enable": false,
                                 "options": {},
                                 "syntacticDecorators": [
                                     {
-                                        "enable": true,
+                                        "enable": false,
                                         "regexString": "",
                                         "tooltipFormat": "%s",
                                         "style": {}

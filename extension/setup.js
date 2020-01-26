@@ -15,17 +15,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     const configuration = importContext.vscode.workspace.getConfiguration();
     const thisExtensionSection = configuration.markdown.extensibleMarkdown;
     const settings = {
-        headingIdPrefix: thisExtensionSection.headingIdPrefix,
-        tocRegex: thisExtensionSection.TOC.regex,
-        tocIncludeLevels: thisExtensionSection.TOC.includeLevels,
-        tocContainerClass: thisExtensionSection.TOC.containerClass,
-        excludeFromTocRegex: thisExtensionSection.TOC.excludeHeaderRegex,
-        tocItemIndentInEm: thisExtensionSection.TOC.itemIndentInEm,
-        autoNumberingRegex: thisExtensionSection.TOC.autoNumberingRegex,
-        autoNumberingBrokenHierarchy: thisExtensionSection.TOC.autoNumbering.brokenHierarchy,
-        includeLocatorRegex: thisExtensionSection.includeLocatorRegex,
-        includeLocatorInvalidRegexMessageFormat: thisExtensionSection.includeLocatorInvalidRegexMessageFormat,
-        includeLocatorFileReadFailureMessageFormat: thisExtensionSection.includeLocatorFileReadFailureMessageFormat,
         // conversion to HTML:
         showHtmlInBrowser: thisExtensionSection.convertToHtml.showHtmlInBrowser,
         embedCss: thisExtensionSection.convertToHtml.embedCss,
@@ -42,10 +31,11 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
             titleClassName: configuration.markdown.extensibleMarkdown.titleClassName,
         }
     }; //settings
-    if (settings.additionalPlugins) {
+    settings.pluginSyntaxDecorators = [];
+    if (settings.thisExtensionSettings.options.additionalPlugins) {
         settings.pluginSyntaxDecorators = [];
-        for (let plugin in settings.additionalPlugins.plugins) {
-            const pluginInstance = settings.additionalPlugins.plugins[plugin];
+        for (let plugin in settings.thisExtensionSettings.options.additionalPlugins.plugins) {
+            const pluginInstance = settings.thisExtensionSettings.options.additionalPlugins.plugins[plugin];
             if (!pluginInstance) continue;
             if (!pluginInstance.syntacticDecorators) continue;
             for (let decorator in pluginInstance.syntacticDecorators) {
@@ -64,7 +54,6 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
             } //loop decorators
         } //loop
     } //if settings.additionalPlugins
-    settings.pluginSyntaxDecorators = [];
     if (settings.attribution.titleLocatorRegex)
         settings.pluginSyntaxDecorators.push({
             regexString: settings.attribution.titleLocatorRegex.source,
@@ -73,13 +62,13 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
                 thisExtensionSection.titleLocatorDecoratorStyle)
         });
     settings.pluginSyntaxDecorators.push({
-        regexString: settings.includeLocatorRegex,
+        regexString: settings.thisExtensionSettings.includeLocatorRegex,
         tooltipFormat: "include file \"%s\"",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection.includeLocatorDecoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
-        regexString: settings.excludeFromTocRegex,
+        regexString: settings.thisExtensionSettings.TOC.excludeHeaderRegex,
         tooltipFormat: "Exclude current header from Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection.TOC.excludeHeader.DecoratorStyle)
@@ -107,14 +96,14 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
         });
     //
     settings.pluginSyntaxDecorators.push({
-        regexString: settings.tocRegex,
+        regexString: settings.thisExtensionSettings.TOC.regex,
         tooltipFormat: "Table of Contents",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection.TOC.decoratorStyle)
     });
     settings.pluginSyntaxDecorators.push({
         relativeToWholeText: true, // special case: regex is not 
-        regexString: settings.autoNumberingRegex,
+        regexString: settings.thisExtensionSettings.TOC.autoNumberingRegex,
         tooltipFormat: "Auto-Numbering Settings",
         decorationType: importContext.vscode.window.createTextEditorDecorationType(
             thisExtensionSection.TOC.autoNumberingDecoratorStyle)

@@ -15,19 +15,19 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     const configuration = importContext.vscode.workspace.getConfiguration();
     const thisExtensionSection = configuration.markdown.extensibleMarkdown;
     const settings = {
-        // conversion to HTML:
-        showHtmlInBrowser: thisExtensionSection.convertToHtml.showHtmlInBrowser,
-        embedCss: thisExtensionSection.convertToHtml.embedCss,
-        outputPath: thisExtensionSection.convertToHtml.outputPath,
-        // new!!!
         css: configuration.markdown.styles, // from embedded markdown extension
         thisExtensionSettings: configuration.markdown.extensibleMarkdown,
         attribution: {
-            titleLocatorRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.titleLocatorRegex, false),
-            abbreviationRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.abbreviationRegex, false),
-            abbreviationDecoratorRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.abbreviationDecoratorRegex, false),
-            attributeRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.attributeRegex, true),
-            cssClassRegex: utility.createOptionalRegExp(configuration.markdown.extensibleMarkdown.cssClassRegex, true),
+            titleLocatorRegex: utility.createOptionalRegExp(
+                configuration.markdown.extensibleMarkdown.titleLocatorRegex, false),
+            abbreviationRegex: utility.createOptionalRegExp(
+                configuration.markdown.extensibleMarkdown.abbreviationRegex, false),
+            abbreviationDecoratorRegex: utility.createOptionalRegExp(
+                configuration.markdown.extensibleMarkdown.abbreviationDecoratorRegex, false),
+            attributeRegex: utility.createOptionalRegExp(
+                configuration.markdown.extensibleMarkdown.attributeRegex, true),
+            cssClassRegex: utility.createOptionalRegExp(
+                configuration.markdown.extensibleMarkdown.cssClassRegex, true),
             titleClassName: configuration.markdown.extensibleMarkdown.titleClassName,
         }
     }; //settings

@@ -78,7 +78,7 @@ exports.activate = context => {
             lazy.lastOutputChannel.appendLine("is converted to");
             lazy.lastOutputChannel.appendLine(`${outputs[index]}`);
             lazy.lastOutputChannel.appendLine(stringEmpty);
-            if (settings.showHtmlInBrowser)
+            if (settings.thisExtensionSettings.convertToHtml.showHtmlInBrowser)
                 childProcess.exec(outputs[index]);
         } //loop
         if (count > 1)
@@ -113,8 +113,8 @@ exports.activate = context => {
                 text,
                 editor.document.fileName,
                 settings.css,
-                settings.embedCss,
-                settings.outputPath,
+                settings.thisExtensionSettings.convertToHtml.embedCss,
+                settings.thisExtensionSettings.convertToHtml.outputPath,
                 rootPath);
         successAction([editor.document.fileName], [outputFileName], settings);
     } //convertOne
@@ -134,8 +134,8 @@ exports.activate = context => {
                     text,
                     fileName,
                     settings.css,
-                    settings.embedCss,
-                    settings.outputPath,
+                    settings.thisExtensionSettings.convertToHtml.embedCss,
+                    settings.thisExtensionSettings.convertToHtml.outputPath,
                     rootPath));
             } //loop
             if (inputs.length < 1)

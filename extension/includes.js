@@ -3,6 +3,8 @@
 module.exports = (md, options) => {
 
     const utility = require("./utility");
+    const locatorRegex = utility.createOptionalRegExp(options.includes.locatorRegex, true);
+    if (!locatorRegex) return;
 
     const replaceIncludes = source => {
         const result = source;

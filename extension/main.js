@@ -255,10 +255,13 @@ exports.activate = context => {
         const setupUsage = (md => {
             if (!md) return;
             md.set(optionSet);
-            md.use(includes, lazy.settings.thisExtensionSettings.includes);
+            md.use(includes, {
+                includes: lazy.settings.thisExtensionSettings.includes,
+                importContext: importContext
+            });
             md.use(idToc, lazy.settings);
             md.use(attribution, lazy.settings.attribution);
-            md.use(replacements, { });
+            md.use(replacements);
             if (!lazy.settings.thisExtensionSettings.options.typographerExtensions)
                 md.disable(typographerExtensionsRule);
             for (let pluginData in additionalPlugins) {

@@ -16,6 +16,7 @@ exports.activate = context => {
     const fs = require("fs");
     const path = require("path");
     const childProcess = require("child_process");
+    const utility = require("./utility");
     const setup = require("./setup");
     const idToc = require("./id.toc");
     const attribution = require("./attribution"); 
@@ -27,7 +28,6 @@ exports.activate = context => {
     const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);
     
     const transcodeText = (text, fileName, css, embedCss, rootPath) => {
-        text = setup.replaceIncludes(importContext, text, fileName, lazy.settings);
         let result = lazy.markdownIt.render(text);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
@@ -164,7 +164,7 @@ exports.activate = context => {
                 let decoratorSet = [];
                 const document = vscode.window.activeTextEditor.document;
                 const text = document.getText();
-                setup.thenableRegex(plugin.regexString, text, !plugin.relativeToWholeText).then(
+                utility.thenableRegex(plugin.regexString, text, !plugin.relativeToWholeText).then(
                     function (start, length, groups) {
                         let title = plugin.tooltipFormat;
                         if (groups[1] && title.includes("%s"))

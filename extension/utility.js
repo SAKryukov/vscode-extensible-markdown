@@ -46,3 +46,26 @@ module.exports.createOptionalRegExp = (patternString, isGlobal) => {
     return new RegExp(patternString, option);
 }; //createOptionalRegExp
 
+// usage:
+// thenableRegex("1(.*?)2)", input, 0).then(function(start, len, groups) {
+//     //...
+// })
+module.exports.thenableRegex = (regexPattern, input, isMultiline) => {
+    let options = isMultiline ? "gm" : "g";
+    try {
+        const regexp = new RegExp(regexPattern, options);
+        let match = regexp.exec(input);
+        const then = callback => {
+            while (match != null) {
+                let groups = [];
+                for (let index = 0; index < match.length; ++index)
+                    groups.push(match[index]);
+                callback(match.index, match[0].length, groups);
+                match = regexp.exec(input);
+            } //loop
+        } // then
+        return { then: then };
+    } catch (ex) {
+        return { then: () => { } };
+    };
+}; //thenableRegex

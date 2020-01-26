@@ -1,29 +1,22 @@
 "use strict";
 
-const defaultOptions = {
-    autoNumberingRegex: "^\\@numbering\\s*?\\{([\\s\\S]*?)\\}",
-    autoNumbering: {
-        enable: false,
-        pattern: [],
-        defaultSuffix: ". ",
-        defaultPrefix: "",
-        defaultStart: 1,
-        defaultSeparator: "."
-    },
-    tocIncludeLevels: [1, 2, 3, 4, 5, 6],
-    tocContainerClass: "toc",
-    tocRegex: "^\\@toc$",
-    excludeFromTocRegex: "\\{notoc\\}",
-    tocItemIndentInEm: 2,
-    headingIdPrefix: "heading."
-}; //defaultOptions
-
 module.exports = (md, options) => {
 
     const utility = require("./utility");
     const autoNumberingParser = require("./autoNumbering.optionParser");
     const autoNumbering = require("./autoNumbering");
 
+    const defaultOptions = {
+        autoNumbering: {
+            enable: false,
+            pattern: [],
+            defaultSuffix: ". ",
+            defaultPrefix: "",
+            defaultStart: 1,
+            defaultSeparator: "."
+        },
+    }; //defaultOptions
+        
     let renderedHtml, usedIds, headingSet, tocLocations;
     const cleanUp = () => {
         renderedHtml = null;
@@ -32,12 +25,10 @@ module.exports = (md, options) => {
         tocLocations = [];
     };
     
-    utility.populateWithDefault(options, defaultOptions);
-
-    const tocIncludeLevelSet = new Set(options.tocIncludeLevels);
-    const tocRegex = new RegExp(options.tocRegex);
-    const excludeFromTocRegex = new RegExp(options.excludeFromTocRegex);
-    const enumerationRuleSetRegexp = new RegExp(options.autoNumberingRegex);
+    const tocIncludeLevelSet = new Set(options.thisExtensionSettings.TOC.includeLevels);
+    const tocRegex = new RegExp(options.thisExtensionSettings.TOC.regex);
+    const excludeFromTocRegex = new RegExp(options.thisExtensionSettings.TOC.excludeHeaderRegex);
+    const enumerationRuleSetRegexp = new RegExp(options.thisExtensionSettings.TOC.autoNumberingRegex);
 
     md.core.ruler.before("block", "detectAutoNumbering", state => {
         options.autoNumbering = defaultOptions.autoNumbering;
@@ -68,7 +59,7 @@ module.exports = (md, options) => {
             const effectiveLevelOptions = this.getEffectiveLevelOptions(level);
             return { level: level, indexIterator: new autoNumbering.Iterator(effectiveLevelOptions.start), parentPrefix: this.current.prefix, prefix: undefined, standAlong: false };
         },
-        brokenContent: function(content) { return `${options.autoNumberingBrokenHierarchy}${content}`; },
+        brokenContent: function(content) { return `${options.thisExtensionSettings.TOC.autoNumbering.brokenHierarchy}${content}`; },
         getEffectiveLevelOptions: function(level) {
             if (level in this.levelOptionDictionary)
                 return this.levelOptionDictionary[level];
@@ -137,7 +128,7 @@ module.exports = (md, options) => {
         for (let index in headingSet) {
             let element = headingSet[index];
             if (!tocIncludeLevelSet.has(element.tocLevel + 1)) continue;
-            renderedHtml += `<a style="margin-left: ${element.level * options.tocItemIndentInEm}em;" href="#${element.id}">${element.content}</a><br/>\n`;
+            renderedHtml += `<a style="margin-left: ${element.level * options.thisExtensionSettings.TOC.itemIndentInEm}em;" href="#${element.id}">${element.content}</a><br/>\n`;
         } //loop
         return renderedHtml;
     }; //buildToc
@@ -161,7 +152,7 @@ module.exports = (md, options) => {
                 utility.cleanInline(contentToken, excludeFromTocRegex);
                 continue;
             } 
-            const id = utility.slugify(contentToken.content, usedIds, options.headingIdPrefix);
+            const id = utility.slugify(contentToken.content, usedIds, options.thisExtensionSettings.headingIdPrefix);
             const level = utility.htmlHeadingLevel(token.tag);
             const content = autoNumberGenerator.generate(level, contentToken.content);
             headingSet[index] = { index: index, id: id, content: content, level: level, tag: token.tag };
@@ -180,7 +171,7 @@ module.exports = (md, options) => {
     md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
         for (let tocLocation of tocLocations)
             if (index == tocLocation)
-                return `<p class="${options.tocContainerClass}">${buildToc()}`;
+                return `<p class="${options.thisExtensionSettings.TOC.containerClass}">${buildToc()}`;
         return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.rules.paragraph_open
 

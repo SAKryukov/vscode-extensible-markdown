@@ -254,17 +254,7 @@ exports.activate = context => {
         const setupUsage = (md => {
             if (!md) return;
             md.set(optionSet);
-            const idTocOptions = {
-                excludeFromTocRegex: lazy.settings.excludeFromTocRegex,
-                tocItemIndentInEm: lazy.settings.tocItemIndentInEm,
-                headingIdPrefix: lazy.settings.headingIdPrefix,
-                tocRegex: lazy.settings.tocRegex,
-                includeLevel: lazy.settings.tocIncludeLevels,
-                tocContainerClass: lazy.settings.tocContainerClass,
-                autoNumberingRegex: lazy.settings.autoNumberingRegex,
-                autoNumberingBrokenHierarchy: lazy.settings.autoNumberingBrokenHierarchy,
-            };
-            md.use(idToc, idTocOptions);
+            md.use(idToc, lazy.settings);
             md.use(attribution, lazy.settings.attribution);
             md.use(replacements, { });
             if (!lazy.settings.thisExtensionSettings.options.typographerExtensions)

@@ -1,5 +1,7 @@
 "use strict";
 
+const debugActivationException = false;
+
 exports.activate = context => {
 
     const encoding = "utf8";
@@ -24,7 +26,7 @@ exports.activate = context => {
     const replacements = require("./replacements");
 
     const importContext = { vscode: vscode, util: util, utility: utility, fs: fs, path: path, markdownId: markdownId };
-    const lazy = { lastOutputChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
+    const lazy = { lastЕrrorChannel: null, lastErrorChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);
     
@@ -69,22 +71,22 @@ exports.activate = context => {
 
     const successAction = (inputs, outputs, settings) => {
         const count = inputs.length;
-        if (lazy.lastOutputChannel)
-            lazy.lastOutputChannel.clear();
+        if (lazy.lastЕrrorChannel)
+            lazy.lastЕrrorChannel.clear();
         else
-            lazy.lastOutputChannel = vscode.window.createOutputChannel("Converted to HTML");
+            lazy.lastЕrrorChannel = vscode.window.createOutputChannel("Converted to HTML");
         for (let index = 0; index < count; ++index) {
-            lazy.lastOutputChannel.appendLine("Markdown file");
-            lazy.lastOutputChannel.appendLine(`${inputs[index]}`);
-            lazy.lastOutputChannel.appendLine("is converted to");
-            lazy.lastOutputChannel.appendLine(`${outputs[index]}`);
-            lazy.lastOutputChannel.appendLine(stringEmpty);
+            lazy.lastЕrrorChannel.appendLine("Markdown file");
+            lazy.lastЕrrorChannel.appendLine(`${inputs[index]}`);
+            lazy.lastЕrrorChannel.appendLine("is converted to");
+            lazy.lastЕrrorChannel.appendLine(`${outputs[index]}`);
+            lazy.lastЕrrorChannel.appendLine(stringEmpty);
             if (settings.thisExtensionSettings.convertToHtml.showHtmlInBrowser)
                 childProcess.exec(outputs[index]);
         } //loop
         if (count > 1)
-            lazy.lastOutputChannel.appendLine(`${count} Markdown files files converted to HTML`);
-        lazy.lastOutputChannel.show(true);
+            lazy.lastЕrrorChannel.appendLine(`${count} Markdown files files converted to HTML`);
+        lazy.lastЕrrorChannel.show(true);
     }; //successAction
 
     const command = action => {
@@ -273,7 +275,7 @@ exports.activate = context => {
                 } //exception
                 md = md.use(plugin, additionalPlugins[pluginData].options);
             } // using additionalPlugins
-        })(lazy.markdownIt);
+        }) (lazy.markdownIt);
         return baseImplementation;
     }; //setupMarkdown
     
@@ -286,18 +288,29 @@ exports.activate = context => {
             command(convertSet);
         }));
 
+    const activationExceptionHandler = ex => {
+        const getManifest = () => {
+            const pathName = path.join(context.extensionPath, extensionManifiestFileName);
+            const content = fs.readFileSync(pathName).toString();
+            return JSON.parse(content);
+        } //getManifest            
+        vscode.window.showErrorMessage(`${getManifest().displayName}: activation failed`);
+        if (lazy.lastЕrrorChannel)
+            lazy.lastЕrrorChannel.clear();
+        else
+            lazy.lastЕrrorChannel = vscode.window.createOutputChannel("Markdown Error");
+        lazy.lastЕrrorChannel.show(true);
+        lazy.lastЕrrorChannel.appendLine(ex.toString());
+        if (!debugActivationException) return;
+        lazy.lastЕrrorChannel.appendLine("Stack:");
+        lazy.lastЕrrorChannel.appendLine(ex.stack);
+    }; //activationExceptionHandler
+
     return {
         extendMarkdownIt: baseImplementation => {
             try {
                 return setupMarkdown(baseImplementation);
-            } catch (ex) {
-                const getManifest = () => {
-                    const pathName = path.join(context.extensionPath, extensionManifiestFileName);
-                    const content = fs.readFileSync(pathName).toString();
-                    return JSON.parse(content);
-                } //getManifest            
-                vscode.window.showErrorMessage(`${getManifest().displayName}: activation failed`);
-            } //exception
+            } catch (ex) { activationExceptionHandler(ex); }
         }
     };
 

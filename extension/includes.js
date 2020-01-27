@@ -5,17 +5,21 @@ module.exports = (md, options) => {
     const locatorRegex = options.importContext.utility.createOptionalRegExp(options.includes.locatorRegex, true);
     if (!locatorRegex) return;
 
-    const formatMessage = (formatString, text) =>  { return formatString.replace("%s", text); };
+    const formatMessage = (formatString, text, normalizePath) =>  {
+        if (normalizePath)
+            text = text.replace(/\\/g, "/");
+        return formatString.replace("%s", text);
+    }; //formatMessage
 
     const readFileContent = match => {
         const documentPath = options.importContext.path.dirname(options.importContext.vscode.window.activeTextEditor.document.fileName);
         const fileName = options.importContext.path.join(documentPath, match.file);
         if (! (options.importContext.fs.existsSync(fileName) && options.importContext.fs.lstatSync(fileName).isFile()))
-            return formatMessage(options.includes.fileNotFoundMessageFormat, fileName);
+            return formatMessage(options.includes.fileNotFoundMessageFormat, fileName, true);
         try {
             return  options.importContext.fs.readFileSync(fileName, options.importContext.encoding);
         } catch (ex) { 
-            return formatMessage(options.includes.fileReadFailureMessageFormat, fileName);            
+            return formatMessage(options.includes.fileReadFailureMessageFormat, fileName, true);            
         } //exception
     }; //readFileContent
 
@@ -24,7 +28,7 @@ module.exports = (md, options) => {
         let match = true;
         while (match = locatorRegex.exec(source)) {
             if (match.length != 2)
-                throw  `Invalid regular expression for includes: ${locatorRegex.src}`;
+                return  formatMessage(options.includes.invalidRegexMessageFormat, locatorRegex.source, true);
             matches.push({ match: match[0], file: match[1]});
         } //loop
         let result = source;

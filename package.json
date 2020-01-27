@@ -199,12 +199,12 @@
                 "markdown.extensibleMarkdown.includes.invalidRegexMessageFormat": {
                     "description": "Format of message generated in output HTML if include file is not found; %s represents the file name",
                     "type": "string",
-                    "default": "\n# Invalid Regular Expression of include:  \"%s\"\n"
+                    "default": "\n# Invalid regular expression for includes:  \"%s\"\n"
                 },
                 "markdown.extensibleMarkdown.includes.fileNotFoundMessageFormat": {
                     "description": "Format of message generated in output HTML if include file is not found; %s represents the file name",
                     "type": "string",
-                    "default": "\n# File\"%s\" not found\n"
+                    "default": "\n# File \"%s\" not found\n"
                 },
                 "markdown.extensibleMarkdown.includes.fileReadFailureMessageFormat": {
                     "description": "Format of message generated in output HTML if include file cannot be read; %s represents the file name",

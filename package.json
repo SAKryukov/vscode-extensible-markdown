@@ -95,7 +95,7 @@
                     "default": true
                 },
                 "markdown.extensibleMarkdown.convertToHtml.outputPath": {
-                    "description": "Specifies output directory for HTML files, relative to workspace directory; if the path is empty string, write HTML in the same directory of the input file",
+                    "description": "Specifies output directory for HTML files, relative to workspace directory.\nIf the path is null or empty string, write HTML in the same directory of the input file.",
                     "type": "string",
                     "default": ""
                 },
@@ -105,7 +105,7 @@
                     "default": "title"
                 },
                 "markdown.extensibleMarkdown.titleLocatorRegex": {
-                    "description": "Regular expression used to identify the paragraph used as a document title; if this string is empty, the feature is disabled",
+                    "description": "Regular expression used to identify the paragraph used as a document title.\nIf this string is null or empty, the feature is disabled.",
                     "type": "string",
                     "default": "\\{title\\}"
                 },
@@ -126,7 +126,7 @@
                     "default": "\\{(.+?)\\}"
                 },
                 "markdown.extensibleMarkdown.abbreviationDecoratorRegex": {
-                    "markdownDescription": "Regular expression for the Decorator of abbreviation syntax, implemented as an extension of *emphasis* (\\*\\*) syntax; if this string is empty, the feature is disabled",
+                    "markdownDescription": "Regular expression for the Decorator of abbreviation syntax, implemented as an extension of *emphasis* (\\*\\*) syntax.\nIf this string is null or empty, the feature is disabled.",
                     "type": "string",
                     "default": "\\*\\{(.+?)\\}.+?\\*"
                 },
@@ -143,7 +143,7 @@
                     }
                 },
                 "markdown.extensibleMarkdown.attributeRegex": {
-                    "description": "Regular expression for attribute syntax; if this string is empty, the feature is disabled",
+                    "description": "Regular expression for attribute syntax.\nIf this string is null or empty, the feature is disabled.",
                     "type": "string",
                     "default": "\\{([a-z]+?)\\=([^\"^\\{^\\}]+?)\\}"
                 },
@@ -159,7 +159,7 @@
                     }
                 },
                 "markdown.extensibleMarkdown.cssClassRegex": {
-                    "description": "Regular expression for CSS class syntax; if this string is empty, the feature is disabled",
+                    "description": "Regular expression for CSS class syntax.\nIf this string is null or empty, the feature is disabled.",
                     "type": "string",
                     "default": "\\{\\.([^\"^\\{^\\}]+?)\\}"
                 },
@@ -180,7 +180,7 @@
                     "default": "heading."
                 },
                 "markdown.extensibleMarkdown.includes.locatorRegex": {
-                    "description": "Regular expression of file include syntax",
+                    "description": "Regular expression for include syntax.\nIf this string is null or empty, the feature is disabled.",
                     "type": "string",
                     "default": "\\@include\\(([^\\s]+?)\\)"
                 },

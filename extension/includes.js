@@ -2,12 +2,34 @@
 
 module.exports = (md, options) => {
 
-    const utility = require("./utility");
-    const locatorRegex = utility.createOptionalRegExp(options.includes.locatorRegex, true);
+    const locatorRegex = options.importContext.utility.createOptionalRegExp(options.includes.locatorRegex, true);
     if (!locatorRegex) return;
 
+    const formatMessage = (formatString, text) =>  { return formatString.replace("%s", text); };
+
+    const readFileContent = match => {
+        const documentPath = options.importContext.path.dirname(options.importContext.vscode.window.activeTextEditor.document.fileName);
+        const fileName = options.importContext.path.join(documentPath, match.file);
+        if (! (options.importContext.fs.existsSync(fileName) && options.importContext.fs.lstatSync(fileName).isFile()))
+            return formatMessage(options.includes.fileNotFoundMessageFormat, fileName);
+        try {
+            return  options.importContext.fs.readFileSync(fileName, options.importContext.encoding);
+        } catch (ex) { 
+            return formatMessage(options.includes.fileReadFailureMessageFormat, fileName);            
+        } //exception
+    }; //readFileContent
+
     const replaceIncludes = source => {
-        const result = source;
+        const matches = [];
+        let match = true;
+        while (match = locatorRegex.exec(source)) {
+            if (match.length != 2)
+                throw  `Invalid regular expression for includes: ${locatorRegex.src}`;
+            matches.push({ match: match[0], file: match[1]});
+        } //loop
+        let result = source;
+        for (let match of matches)
+            result = result.replace(match.match, readFileContent(match));
         return result;
     }; //replaceIncludes
 
@@ -16,32 +38,3 @@ module.exports = (md, options) => {
     }); //before normalize
 
 }; //module.exports
-
-// module.exports.replaceIncludes = (importContext, input, hostFileName, settings) => {
-//     const readFile = fileName => {
-//         try {
-//             return importContext.fs.readFileSync(fileName, importContext.encoding);
-//         } catch (ex) {
-//             return importContext.util.format(settings.includeLocatorFileReadFailureMessageFormat, fileName);
-//         } //exception
-//     }; //readFile
-//     const invalidRegexMessage = importContext.util.format(settings.includes.invalidRegexMessageFormat, settings.thisExtensionSettings.includes.locatorRegex);
-//     let result = input;
-//     const replaceOne = regex => {
-//         const match = regex.exec(result);
-//         if (!match) return false;
-//         if (match.length != 2) { result = invalidRegexMessage; return false; }
-//         const includefileName = importContext.path.join(
-//             importContext.path.dirname(hostFileName),
-//             match[1]);
-//         result = result.replace(match[0], readFile(includefileName));
-//         return true;
-//     }; //replaceOne
-//     try {
-//         const regex = new RegExp(settings.thisExtensionSettings.includes.locatorRegex);
-//         do { } while (replaceOne(regex));
-//         return result;
-//     } catch (ex) {
-//         return input;
-//     } //exception
-// }; //replaceIncludes

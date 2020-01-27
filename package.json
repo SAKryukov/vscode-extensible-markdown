@@ -182,7 +182,7 @@
                 "markdown.extensibleMarkdown.includes.locatorRegex": {
                     "description": "Regular expression of file include syntax",
                     "type": "string",
-                    "default": "^\\@include\\(([^\\s]+?)\\)$"
+                    "default": "\\@include\\(([^\\s]+?)\\)"
                 },
                 "markdown.extensibleMarkdown.includes.locatorDecoratorStyle": {
                     "description": "Decorator style for file include syntax",
@@ -199,12 +199,17 @@
                 "markdown.extensibleMarkdown.includes.invalidRegexMessageFormat": {
                     "description": "Format of message generated in output HTML if include file is not found; %s represents the file name",
                     "type": "string",
-                    "default": "!!! invalid Regular Expression of include:  \"%s\" !!!"
+                    "default": "\n# Invalid Regular Expression of include:  \"%s\"\n"
+                },
+                "markdown.extensibleMarkdown.includes.fileNotFoundMessageFormat": {
+                    "description": "Format of message generated in output HTML if include file is not found; %s represents the file name",
+                    "type": "string",
+                    "default": "\n# File\"%s\" not found\n"
                 },
                 "markdown.extensibleMarkdown.includes.fileReadFailureMessageFormat": {
                     "description": "Format of message generated in output HTML if include file cannot be read; %s represents the file name",
                     "type": "string",
-                    "default": "!!! failed to read file \"%s\" !!!"
+                    "default": "\n# Failed to read file \"%s\"\n"
                 },
                 "markdown.extensibleMarkdown.TOC.itemIndentInEm": {
                     "description": "Basic value of indent for a Table of Contents item in em units; this value is multiplied by the depth of nesting of each item",

@@ -1,6 +1,7 @@
 "use strict";
 
 const debugActivationException = false;
+const customContextConditionName = "ExtensibleMarkdownReady";
 
 exports.activate = context => {
 
@@ -181,7 +182,7 @@ exports.activate = context => {
                     plugin.decorationType, decoratorSet);
                 lazy.decorationTypeSet.push(plugin.decorationType);
             } //loop plugins
-        } //loop additional plug-ins
+        } //loop additional plug-ins 
     }; //updateDecorators
     updateDecorators();
 
@@ -309,7 +310,9 @@ exports.activate = context => {
     return {
         extendMarkdownIt: baseImplementation => {
             try {
-                return setupMarkdown(baseImplementation);
+                const md = setupMarkdown(baseImplementation);
+                vscode.commands.executeCommand('setContext', customContextConditionName, true);
+                return md;
             } catch (ex) { activationExceptionHandler(ex); }
         }
     };

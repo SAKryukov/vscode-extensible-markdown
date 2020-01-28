@@ -50,31 +50,32 @@
             },
             {
                 "command": "extensible.markdown.convertToHtml.all",
-                "key": "alt+A"
+                "key": "alt+A",
             }
         ],
         "menus": {
             "editor/title": [
                 {
-                    "when": "resourceLangId == markdown",
+                    "when": "resourceLangId == markdown && ExtensibleMarkdownReady",
                     "command": "extensible.markdown.convertToHtml",
                     "group": "navigation"
                 }
             ],
             "editor/context": [
                 {
-                    "when": "editorTextFocus && resourceLangId == markdown",
+                    "when": "editorTextFocus && resourceLangId == markdown && ExtensibleMarkdownReady",
                     "command": "extensible.markdown.convertToHtml",
                     "group": "markdown"
                 },
                 {
-                    "when": "editorTextFocus",
+                    "when": "editorTextFocus && ExtensibleMarkdownReady",
                     "command": "extensible.markdown.convertToHtml.all",
                     "group": "markdown"
                 }
             ],
             "explorer/context": [
                 {
+                    "when": "ExtensibleMarkdownReady",
                     "command": "extensible.markdown.convertToHtml.all",
                     "group": "markdown"
                 }

@@ -10,4 +10,4 @@
     ]
 }=)
 
-[](include(body.md))
+@include(body.md)

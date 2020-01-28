@@ -1,7 +1,9 @@
 "use strict";
 
 const debugActivationException = false;
+
 const customContextConditionName = "ExtensibleMarkdownReady";
+const setContextCommand = "setContext"; // not documented in VSCode API documentation
 
 exports.activate = context => {
 
@@ -311,7 +313,7 @@ exports.activate = context => {
         extendMarkdownIt: baseImplementation => {
             try {
                 const md = setupMarkdown(baseImplementation);
-                vscode.commands.executeCommand('setContext', customContextConditionName, true);
+                vscode.commands.executeCommand(setContextCommand, customContextConditionName, true);
                 return md;
             } catch (ex) { activationExceptionHandler(ex); }
         }

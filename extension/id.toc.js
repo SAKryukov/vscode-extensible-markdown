@@ -167,6 +167,22 @@ module.exports = (md, options) => {
         return `<${headingSet[index].tag} id="${headingSet[index].id}">`;
     }; //md.renderer.rules.heading_open
 
+    // to remove data-... from links
+    const previousLinkOpen = md.renderer.rules.link_open;
+    md.renderer.rules.link_open = (tokens, index, ruleOptions, object, renderer) => {
+        let attributes = [];
+        if (tokens[index].type == "link_open") {
+            for (let attribute of tokens[index].attrs) {
+                if (!attribute[0].startsWith("data-"))
+                    attributes.push(`${attribute[0]}="${attribute[1]}"`);
+            } //loop
+        } //if
+        let open = "<a>";
+        if (attributes.length > 0)
+            open = `<a ${attributes.join(' ')}>`;
+        return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousLinkOpen, open);
+    }; //md.renderer.rules.heading_open
+
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
         for (let tocLocation of tocLocations)

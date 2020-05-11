@@ -178,7 +178,7 @@
                 "markdown.extensibleMarkdown.headingIdPrefix": {
                     "description": "Prefix string for id attributes of headings",
                     "type": "string",
-                    "default": "heading."
+                    "default": "heading-"
                 },
                 "markdown.extensibleMarkdown.includes.locatorRegex": {
                     "description": "Regular expression for include syntax.\nIf this string is null or empty, the feature is disabled.",

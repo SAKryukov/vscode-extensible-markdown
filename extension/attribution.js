@@ -15,6 +15,7 @@ module.exports = (md, options) => {
     ];
     const blockPatterns = {
         "fence": { textToken: +0, textField: "info" },
+        "list_item_open": { textToken: +2, textField: "content" },
         "paragraph_open": { textToken: +1, textField: "content" },
         "blockquote_open": { textToken: +2, textField: "content" },
     };
@@ -97,14 +98,24 @@ module.exports = (md, options) => {
             return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
     }; //md.renderer.rules.fence
 
-    const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
+    const previousRenderParagraphOpen = undefined; //SA???
     md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
+        if (tokens[index].level > 0) return "";
         const attributePart = parseAttributePart(index);
         if (attributePart)
             return `<p${attributePart}>`;
         else
             return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderParagraphOpen, `<p>`);
     }; //md.renderer.paragraph_open
+
+    const previousRenderListItemOpen = md.renderer.rules.list_item_open;
+    md.renderer.rules.list_item_open = (tokens, index, ruleOptions, object, renderer) => {
+        const attributePart = parseAttributePart(index);
+        if (attributePart)
+            return `<li${attributePart}>`;
+        else
+            return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderListItemOpen, `<li>`);
+    }; //md.renderer.rules.list_item_open
 
     const previousRenderBlockquoteOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.blockquote_open = (tokens, index, ruleOptions, object, renderer) => {

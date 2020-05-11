@@ -100,12 +100,16 @@ module.exports = (md, options) => {
 
     const previousRenderParagraphOpen = undefined; //SA???
     md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
-        if (tokens[index].level > 0) return "";
+        if (tokens[index].hidden) return "";
         const attributePart = parseAttributePart(index);
         if (attributePart)
             return `<p${attributePart}>`;
         else
             return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderParagraphOpen, `<p>`);
+    }; //md.renderer.paragraph_open
+
+    md.renderer.rules.paragraph_close = (tokens, index, ruleOptions, object, renderer) => {
+        return tokens[index].hidden ? "" : "</p>";
     }; //md.renderer.paragraph_open
 
     const previousRenderListItemOpen = md.renderer.rules.list_item_open;

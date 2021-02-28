@@ -13,7 +13,7 @@ exports.activate = context => {
     const commonDirectorySeparator = "/";
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
-    const extensionManifiestFileName = "package.json";
+    const extensionManifestFileName = "package.json";
     const typographerExtensionsRule = "extended_replacements";
 
     const vscode = require("vscode");
@@ -293,7 +293,7 @@ exports.activate = context => {
 
     const activationExceptionHandler = ex => {
         const getManifest = () => {
-            const pathName = path.join(context.extensionPath, extensionManifiestFileName);
+            const pathName = path.join(context.extensionPath, extensionManifestFileName);
             const content = fs.readFileSync(pathName).toString();
             return JSON.parse(content);
         } //getManifest            

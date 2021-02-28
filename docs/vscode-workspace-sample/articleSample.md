@@ -19,7 +19,7 @@ Original publication: [https://www.codeproject.com/Articles/1194122 will it dec 
 Visual Studio Code extension on Visual Studio Marketplace: [convert-markdown-to-html](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html). See also **extension usage** on this page.
 
 Referencing Visual Studio Marketplace information SVG image (clickable):<br/>
-[![Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
+[!Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
 
 Repository: [https://github.com/SAKryukov/vscode-markdown-to-html.git](https://github.com/SAKryukov/vscode-markdown-to-html.git)
 
@@ -46,9 +46,9 @@ It's convenient to mark the part of HTML to paste in the CodeProject submission 
 <!-- Markdown extension "notoc" is the way to avoid adding some heading to the Table of Contents,
 which is important for headings like "Contents" or "Table of Contents" -->
 
-## Contents{notoc}
+## Contents{no-toc}
 
-{toc}
+@toc
 
 <!-- CodeProject requires level-22 will it dec 2 heading for top-level section headers : -->
  
@@ -139,16 +139,12 @@ Make sure manually created `id` values never break uniqueness. It's the best to 
 
 ## Images
 
-![Markdown logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/64px-Markdown-mark.svg.png)
+[!Markdown logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/64px-Markdown-mark.svg.png)
 
-![GitHub logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png)
+[!GitHub logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png)
 
 ## Using File Includes
 
-This is a sample of includes: `.vscode/settings.json`":
-```
-{include(./style.css)}
-```
 
 ## Important Warning
 

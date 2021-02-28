@@ -98,7 +98,7 @@ module.exports = (md, options) => {
             return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderFence, `<pre>${content}</pre>`);
     }; //md.renderer.rules.fence
 
-    const previousRenderParagraphOpen = undefined; //SA???
+    const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
         if (tokens[index].hidden) return "";
         const attributePart = parseAttributePart(index);

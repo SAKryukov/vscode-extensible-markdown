@@ -31,16 +31,16 @@ module.exports = (md, options) => {
         for (let index = state.tokens.length - 1; index >= 0; --index) {
             const token = state.tokens[index];
             if (token.type != "inline") continue;
-            let insideAutolink = 0;
+            let insideAutoLink = 0;
             for (let childIndex = token.children.length - 1; childIndex >= 0; --childIndex) {
                 const childToken = token.children[childIndex];
                 if (childToken.info = "auto") {
                     if (childToken.type == "link_open")
-                        insideAutolink -= 1;
+                        insideAutoLink -= 1;
                     else if (childToken.type == "link_close")
-                        insideAutolink += 1;
+                        insideAutoLink += 1;
                     else if (childToken.type == "text") {
-                        if (!insideAutolink)
+                        if (!insideAutoLink)
                             for (let pattern of patterns)
                                 if (pattern.find.exec(childToken.content))
                                     childToken.content = childToken.content.replace(pattern.find, pattern.replace);

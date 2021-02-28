@@ -34,7 +34,11 @@
             {
                 "command": "extensible.markdown.convertToHtml",
                 "title": "Markdown: Convert to HTML",
-                "icon": "images/logo.svg"
+
+                "icon": {
+                    "dark": "images/logo.svg",
+                    "light": "images/logo.png"
+                }
             },
             {
                 "command": "extensible.markdown.convertToHtml.all",

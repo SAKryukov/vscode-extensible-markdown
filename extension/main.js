@@ -34,7 +34,10 @@ exports.activate = context => {
     const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);
     
     const transcodeText = (text, fileName, css, embedCss, rootPath) => {
-        let result = lazy.markdownIt.render(text, {});
+        let tokenList = lazy.markdownIt.parse(text, {});
+        const imageSet = { containingImages: [] };
+        const options = Object.assign({}, lazy.markdownIt.options);
+        let result = lazy.markdownIt.renderer.render(tokenList, options, imageSet);
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {

@@ -20,11 +20,18 @@ module.exports = (md, options) => {
         { find: /\.\</g, replace: "∈" }, // .< element of
         { find: /\<\|/g, replace: "⊂" }, // <| subset of
         { find: /\|\>/g, replace: "⊃" }, // |> superset of
+        { find: /\@!/g, replace: "¬" }, // @! not
+        { find: /\@all/g, replace: "∀" }, // @all universal quantifier
+        { find: /\@exists/g, replace: "∃" }, // @existence quantifier
+        { find: /\@empty/g, replace: "∅" }, // @empty set
+        { find: /\@union/g, replace: "∪" }, // @union of sets
+        { find: /\@intersection/g, replace: "∩" }, // @intersection set
         { find: /\@left/g, replace: "←" }, // @left
         { find: /\@right/g, replace: "→" }, // @right
         { find: /\@up/g, replace: "↑" }, // @up
         { find: /\@down/g, replace: "↓" }, // @down
         { find: /\@imply/g, replace: "⇒" }, //@imply
+        { find: /\@minus/g, replace: "−" }, //@minus, typographically correct
     ];
 
     md.core.ruler.after("replacements", "extended_replacements", state => {

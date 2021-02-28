@@ -1,3 +1,7 @@
+@numbering {
+    enable: true
+}
+
 All in One Toolchain for Article Writing with Visual Studio Code<br><small>(Code Samples)</small>{title}
 
 [Sergey A Kryukov](http://www.sakryukov.org){.author}
@@ -139,9 +143,9 @@ Make sure manually created `id` values never break uniqueness. It's the best to 
 
 ## Images
 
-[!Markdown logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/64px-Markdown-mark.svg.png)
+![Markdown logo](https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Markdown-mark.svg/64px-Markdown-mark.svg.png)
 
-[!GitHub logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png)
+![GitHub logo](https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Font_Awesome_5_brands_github.svg/54px-Font_Awesome_5_brands_github.svg.png)
 
 ## Using File Includes
 

@@ -19,7 +19,7 @@ Original publication: [https://www.codeproject.com/Articles/1194122 will it dec 
 Visual Studio Code extension on Visual Studio Marketplace: [convert-markdown-to-html](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html). See also **extension usage** on this page.
 
 Referencing Visual Studio Marketplace information SVG image (clickable):<br/>
-[!Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
+![Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
 
 Repository: [https://github.com/SAKryukov/vscode-markdown-to-html.git](https://github.com/SAKryukov/vscode-markdown-to-html.git)
 

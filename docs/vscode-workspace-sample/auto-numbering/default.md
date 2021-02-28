@@ -1,6 +1,10 @@
-[](=numbering {
-    enable: true
-}=)
+  ![a](a.png)
 
-[](include(body.md))
+# A
+
+## A.A
+
+# B
+
+## B.B
 

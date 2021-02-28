@@ -34,7 +34,7 @@ exports.activate = context => {
     const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);
     
     const transcodeText = (text, fileName, css, embedCss, rootPath) => {
-        let result = lazy.markdownIt.render(text);
+        let result = lazy.markdownIt.render(text, {});
         let style = "";
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
@@ -207,6 +207,8 @@ exports.activate = context => {
     }); //vscode.workspace.onDidChangeConfiguration
 
     const setupMarkdown = (baseImplementation, updateSettings) => {
+        if (!lazy.markdownIt)
+            lazy.markdownIt = baseImplementation;
         if (updateSettings)
             lazy.markdownIt = new baseImplementation.constructor();
         else
@@ -257,7 +259,7 @@ exports.activate = context => {
             } // loop settings.additionalPlugins.plugins
             return result;
         })(); //additionalPlugins
-        const setupUsage = (md => {
+        (md => { //setup usage:
             if (!md) return;
             md.set(optionSet);
             md.use(includes, {
@@ -278,7 +280,7 @@ exports.activate = context => {
                 } //exception
                 md = md.use(plugin, additionalPlugins[pluginData].options);
             } // using additionalPlugins
-        }) (lazy.markdownIt);
+        }) (lazy.markdownIt); //setup usage
         return baseImplementation;
     }; //setupMarkdown
     

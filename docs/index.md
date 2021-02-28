@@ -1,8 +1,8 @@
-VSCode: Extensible Markdown Converter[](title)
+VSCode: Extensible Markdown Converter{title}
 
 [*Sergey A Kryukov*](https://www.SAKryukov.org)
 
-[![Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
+![Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
 
 This package is the Visual Studio Code *extension* supporting [Markdown](https://en.wikipedia.org/wiki/Markdown). The extension depends on the built-in extension "VS Code Markdown" (`id="Microsoft.vscode-markdown"`) and adds important function: it reads Markdown content from a currently active editor and converts to an HTML file.
 
@@ -10,9 +10,9 @@ Since v. 2.0.0, the user can extend Markdown features by installing any of the [
 
 That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
-## Contents[](notoc)
+## Contents{no-toc}
 
-[](toc)
+@toc
 
 ## Features
 

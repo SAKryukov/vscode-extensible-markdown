@@ -15,8 +15,7 @@
         "url": "https://github.com/SAKryukov/vscode-extensible-markdown.git"
     },
     "engines": {
-      
-  "vscode": ">=1.40.2"
+        "vscode": ">=1.40.2"
     },
     "categories": [
         "Other"
@@ -50,7 +49,7 @@
             },
             {
                 "command": "extensible.markdown.convertToHtml.all",
-                "key": "alt+A",
+                "key": "alt+A"
             }
         ],
         "menus": {
@@ -337,7 +336,7 @@
                 "editor.folding": false,
                 "editor.lineNumbers": "off",
                 "editor.wordWrap": "on"
-             }
+            }
         }
     },
     "__metadata": {

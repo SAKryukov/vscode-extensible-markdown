@@ -155,7 +155,8 @@ module.exports = (md, options) => {
             const id = utility.slugify(contentToken.content, usedIds, options.thisExtensionSettings.headingIdPrefix);
             const level = utility.htmlHeadingLevel(token.tag);
             const content = autoNumberGenerator.generate(level, contentToken.content);
-            headingSet[index] = { index: index, id: id, content: content, level: level, tag: token.tag };
+            const prefix = content.slice(0, content.length - contentToken.content.length);
+            headingSet[index] = { index: index, id: id, content: content, prefix: prefix, level: level, tag: token.tag };
         } // loop state.tokens
     }); //md.core.ruler.after
 
@@ -164,7 +165,7 @@ module.exports = (md, options) => {
         const heading = headingSet[index];
         if (!heading)
             return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderHeadingOpen, `<${tokens[index].tag}>`);
-        return `<${headingSet[index].tag} id="${headingSet[index].id}">`;
+        return `<${headingSet[index].tag} id="${headingSet[index].id}">${headingSet[index].prefix} `;
     }; //md.renderer.rules.heading_open
 
     // to remove data-... from links

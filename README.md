@@ -8,7 +8,7 @@ Since v. 2.0.0, the user can extend Markdown features by installing any of the [
 
 That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
-See [detailed documentation](https://sakryukov.github.io/vscode-markdown-to-html).
+See [original publication](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode).
 
 ## Features
 
@@ -33,13 +33,3 @@ Alternatively, open the Command Palette ("`Ctrl+Shift+P`"/"`Cmd+Shift+P`" or `F1
 ## Settings
 
 The user can set up the extension of three levels: 1) general behavior of the commands, 2) detail of Markdown parsing and HTML production rules, 3) plug-ins options. The user can install additional plug-ins. If a plug-in has its own options, they are transparently passed from user or workspace "settings.json" to the plug-in.
-
-For detailed specifications, see the [documentation](https://sakryukov.github.io/vscode-markdown-to-html).
-
-## Credits
-
-The embedded [markdown-it](https://www.npmjs.com/package/markdown-it) was developed based on the study of two existing plug-ins. Even though there are almost no traces of the code of these contributions, they helped to learn some basic techniques:
-
-- [markdown-it-named-headers](https://github.com/leff/markdown-it-named-headers) by [Jason Brackins](https://github.com/leff)
-- [markdown-it-table-of-contents](https://github.com/Oktavilla/markdown-it-table-of-contents) by [Oktavilla](https://github.com/Oktavilla)
-

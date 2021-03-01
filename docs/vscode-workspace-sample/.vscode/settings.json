@@ -5,4 +5,5 @@
     "markdown.styles": [
         "style.css"
     ],
+    "markdown.preview.fontFamily": "",
 }

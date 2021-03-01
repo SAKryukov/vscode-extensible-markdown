@@ -59,7 +59,7 @@ module.exports = (md, options) => {
             const effectiveLevelOptions = this.getEffectiveLevelOptions(level);
             return { level: level, indexIterator: new autoNumbering.Iterator(effectiveLevelOptions.start), parentPrefix: this.current.prefix, prefix: undefined, standAlong: false };
         },
-        brokenContent: function(content) { return `${options.thisExtensionSettings.TOC.autoNumbering.brokenHierarchy}${content}`; },
+        brokenContent: function() { return `${options.thisExtensionSettings.TOC.autoNumbering.brokenHierarchy}`; },
         getEffectiveLevelOptions: function(level) {
             if (level in this.levelOptionDictionary)
                 return this.levelOptionDictionary[level];
@@ -73,13 +73,13 @@ module.exports = (md, options) => {
             if (this.current.parentPrefix && (!effectiveLevelOptions.standAlong))
             this.current.prefix = `${this.current.parentPrefix}${effectiveLevelOptions.separator}${this.current.prefix}`;
         },
-        numberedContent: function(content, effectiveLevelOptions) {
-            return `${effectiveLevelOptions.prefix}${this.current.prefix}${effectiveLevelOptions.suffix}${content}`;
+        numberedContent: function(effectiveLevelOptions) {
+            return `${effectiveLevelOptions.prefix}${this.current.prefix}${effectiveLevelOptions.suffix}`;
         },
-        generate: function (tocLevel, content) {
-            if (!options.autoNumbering.enable) return content;
-            if (!tocIncludeLevelSet.has(tocLevel + 1)) return content;
-            if (this.broken) return this.brokenContent(content);
+        generate: function (tocLevel) {
+            if (!options.autoNumbering.enable) return "";
+            if (!tocIncludeLevelSet.has(tocLevel + 1)) return "";
+            if (this.broken) return this.brokenContent();
             const effectiveLevelOptions = this.getEffectiveLevelOptions(tocLevel);
             if (this.current.level == undefined) {
                 this.current.level = tocLevel;
@@ -93,7 +93,7 @@ module.exports = (md, options) => {
                 const popCount = this.current.level - tocLevel;
                 if (popCount > this.stack.length) {
                     this.broken = true;
-                    return this.brokenContent(content);
+                    return this.brokenContent();
                 } //if
                 let last = undefined;
                 for (let index = 0; index < popCount; ++index)
@@ -102,10 +102,10 @@ module.exports = (md, options) => {
                 ++this.current.index;
             } else {
                 this.broken == true;
-                return this.brokenContent(content);
+                return this.brokenContent();
             } //if
             this.formPrefix(effectiveLevelOptions);
-            return this.numberedContent(content, effectiveLevelOptions);
+            return this.numberedContent(effectiveLevelOptions);
         },
     }; //autoNumberGenerator
 
@@ -154,9 +154,8 @@ module.exports = (md, options) => {
             } 
             const id = utility.slugify(contentToken.content, usedIds, options.thisExtensionSettings.headingIdPrefix);
             const level = utility.htmlHeadingLevel(token.tag);
-            const content = autoNumberGenerator.generate(level, contentToken.content);
-            const prefix = content.slice(0, content.length - contentToken.content.length);
-            headingSet[index] = { index: index, id: id, content: content, prefix: prefix, level: level, tag: token.tag };
+            const prefix = autoNumberGenerator.generate(level);
+            headingSet[index] = { index: index, id: id, content: prefix + contentToken.content, prefix: prefix, level: level, tag: token.tag };
         } // loop state.tokens
     }); //md.core.ruler.after
 
@@ -165,7 +164,7 @@ module.exports = (md, options) => {
         const heading = headingSet[index];
         if (!heading)
             return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderHeadingOpen, `<${tokens[index].tag}>`);
-        return `<${headingSet[index].tag} id="${headingSet[index].id}">${headingSet[index].prefix} `;
+        return `<${headingSet[index].tag} id="${headingSet[index].id}">${headingSet[index].prefix}`;
     }; //md.renderer.rules.heading_open
 
     // to remove data-... from links

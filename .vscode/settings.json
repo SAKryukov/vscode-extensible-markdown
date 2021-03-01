@@ -1,0 +1,8 @@
+{
+    "markdown.preview.scrollEditorWithPreview": false,
+    "markdown.preview.scrollPreviewWithEditor": false,
+    "editor.minimap.enabled": false,
+    "markdown.styles": [
+        "docs/style.css"
+    ],
+}

@@ -287,7 +287,7 @@
                 "markdown.extensibleMarkdown.TOC.autoNumbering.brokenHierarchy": {
                     "description": "The prefix to the Table of Contents item used to indicate broken hierarchy of headings",
                     "type": "string",
-                    "default": "??? "
+                    "default": "?[broken hierarchy of headings]? "
                 },
                 "markdown.extensibleMarkdown.options.allowHTML": {
                     "description": "Allow HTML markup in Markdown",

@@ -1,14 +1,14 @@
-# Replacements
+﻿Replacements{title}
 
-X: 2-:3
+Amount: 7-:8
 
 Equal or not: A=B, C!=D
 
-Relationship of order: z <= y, p >= f
+Order relation: z <= y, p >= f
 
 Tilde and not tilde c~d, a!~b
 
-Plus/minus: 10+-0.1
+Plus/minus: 10+-0.1, 16.2-+0.1
 
 Parallel of not: v||w, a!||b
 
@@ -18,9 +18,7 @@ Strictly equivalent: f===h
 
 Identical or not: F==G but A !== B
 
-Sets: A@unionB != @empty, E = C@intersectionD
-
-Set elements: n.<N but a!.<A
+Sets: A@unionB != @empty, E = C@intersectionD; n.<N but a!.<A
 
 Subset and superset: (A<|B) == (B|>A)
 
@@ -30,9 +28,9 @@ Dashes and minus: A -- B --- C; typographically correct minus: @minus1
 
 Imply: A @imply B, not: @!C
 
-Quantifiers:
-for @all o<|A @exists o'<|A', o'!=@empty: f(a) >= q
-
+Quantifiers:<br/>
+Definition of the limit of the function f(x)=b for x@rightx₀, O. L. Cauchy:<br/>
+@all ε>0 @exists δ>0: @all x.<R: 0 < |x−x₀| < δ  @imply |f(x)−b| < ε
 
 Copyright (C) sign, section sign (P), registered (R) sign, trademark(TM) sign.
 

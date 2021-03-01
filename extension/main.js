@@ -236,14 +236,15 @@ exports.activate = context => {
             return result;
         })(); //optionSet
         const additionalPlugins = (() => {
+            const additionalPlugins = lazy.settings.thisExtensionSettings.options.additionalPlugins;
             let result = [];
-            if (!lazy.settings.additionalPlugins) return result;
-            if (!lazy.settings.additionalPlugins.plugins) return result;
-            if (!lazy.settings.additionalPlugins.plugins.length) return result;
-            if (lazy.settings.additionalPlugins.plugins.length < 1) return result;
-            let effectiveParentPath = lazy.settings.additionalPlugins.absolutePath;
+            if (!additionalPlugins) return result;
+            if (!additionalPlugins.plugins) return result;
+            if (!additionalPlugins.plugins.length) return result;
+            if (additionalPlugins.plugins.length < 1) return result;
+            let effectiveParentPath = additionalPlugins.absolutePath;
             if (!effectiveParentPath) {
-                let relativePath = lazy.settings.additionalPlugins.relativePath;
+                let relativePath = additionalPlugins.relativePath;
                 if (!relativePath) return result;
                 relativePath = relativePath.toString();
                 const rootPath = vscode.workspace.getWorkspaceFolder(vscode.window.activeTextEditor.document.uri).uri.fsPath;
@@ -251,15 +252,15 @@ exports.activate = context => {
             } //if 
             if (!effectiveParentPath) return result;
             if (!fs.existsSync(effectiveParentPath.toString())) return result;
-            for (let pluginDataProperty in lazy.settings.additionalPlugins.plugins) {
-                const pluginData = lazy.settings.additionalPlugins.plugins[pluginDataProperty];
+            for (let pluginDataProperty in additionalPlugins.plugins) {
+                const pluginData = additionalPlugins.plugins[pluginDataProperty];
                 if (!pluginData.name) continue;
                 const effectivePath =
                     path.join(effectiveParentPath.toString(), pluginData.name.toString());
                 if (!fs.existsSync(effectivePath)) continue;
                 if (!pluginData.enable) continue;
                 result.push({ name: effectivePath, options: pluginData.options });
-            } // loop settings.additionalPlugins.plugins
+            } // loop additionalPlugins.plugins
             return result;
         })(); //additionalPlugins
         (md => { //setup usage:

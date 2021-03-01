@@ -5,5 +5,33 @@
     "markdown.styles": [
         "style.css"
     ],
-    "markdown.preview.fontFamily": "",
+    "markdown.extensibleMarkdown.options.additionalPlugins": {
+        "absolutePath": "/app/Node.js/node_modules",
+        "plugins": [
+            {
+                "name": "markdown-it-sub",
+                "enable": true,
+                "syntacticDecorators": [
+                    {
+                        "enable": true,
+                        "regexString": "\\~(.*?)\\~",
+                        "tooltipFormat": "Subscript: %s",
+                        "style": { "backgroundColor": "yellow" }
+                    }
+                ]
+            },
+            {
+                "name": "markdown-it-sup",
+                "enable": true,
+                "syntacticDecorators": [
+                    {
+                        "enable": true,
+                        "regexString": "\\^(.*?)\\^",
+                        "tooltipFormat": "Superscript: %s",
+                        "style": { "backgroundColor": "azure" }
+                    }
+                ]
+            }
+        ]
+    }
 }

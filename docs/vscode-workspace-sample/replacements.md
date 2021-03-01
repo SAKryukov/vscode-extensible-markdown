@@ -36,3 +36,5 @@ Copyright (C) sign, section sign (P), registered (R) sign, trademark(TM) sign.
 
 In the escaped form, they are just letters in brackets: (C\), (P\), (R\), (TM\).
 
+Typographically correct quotes: 'single', "double". Quotation characters are defined by settings: Markdown > Extensible Markdown > Options: Smart Quotes.
+

@@ -1,4 +1,4 @@
-# Extensible Markdown Converter
+# Extensible Markdown
 
 [![Latest Release](https://vsmarketplacebadge.apphb.com/version/sakryukov.convert-markdown-to-html.svg)](https://marketplace.visualstudio.com/items?itemName=sakryukov.convert-markdown-to-html)
 

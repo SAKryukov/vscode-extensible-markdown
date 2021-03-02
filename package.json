@@ -2,7 +2,7 @@
     "name": "extensible-markdown",
     "displayName": "Extensible Markdown",
     "description": "Converts Markdown to HTML and saves in files, implements TOC with optional heading auto-numbering, HTML abbreviations, attributes, additional substitutions and can be extended by any of the markdown-it plug-ins",
-    "version": "7.2.0",
+    "version": "8.0.0",
     "publisher": "sakryukov",
     "author": {
         "name": "Sergey A Kryukov",

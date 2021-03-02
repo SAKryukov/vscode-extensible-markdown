@@ -29,7 +29,7 @@ exports.activate = context => {
     const replacements = require("./replacements");
 
     const importContext = { vscode: vscode, util: util, utility: utility, fs: fs, path: path, markdownId: markdownId };
-    const lazy = { lastЕrrorChannel: null, lastErrorChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
+    const lazy = { lastErrorChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
 
     const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);
     
@@ -77,22 +77,22 @@ exports.activate = context => {
 
     const successAction = (inputs, outputs, settings) => {
         const count = inputs.length;
-        if (lazy.lastЕrrorChannel)
-            lazy.lastЕrrorChannel.clear();
+        if (lazy.lastErrorChannel)
+            lazy.lastErrorChannel.clear();
         else
-            lazy.lastЕrrorChannel = vscode.window.createOutputChannel("Converted to HTML");
+            lazy.lastErrorChannel = vscode.window.createOutputChannel("Converted to HTML");
         for (let index = 0; index < count; ++index) {
-            lazy.lastЕrrorChannel.appendLine("Markdown file");
-            lazy.lastЕrrorChannel.appendLine(`${inputs[index]}`);
-            lazy.lastЕrrorChannel.appendLine("is converted to");
-            lazy.lastЕrrorChannel.appendLine(`${outputs[index]}`);
-            lazy.lastЕrrorChannel.appendLine(stringEmpty);
+            lazy.lastErrorChannel.appendLine("Markdown file");
+            lazy.lastErrorChannel.appendLine(`${inputs[index]}`);
+            lazy.lastErrorChannel.appendLine("is converted to");
+            lazy.lastErrorChannel.appendLine(`${outputs[index]}`);
+            lazy.lastErrorChannel.appendLine(stringEmpty);
             if (settings.thisExtensionSettings.convertToHtml.showHtmlInBrowser)
                 childProcess.exec(outputs[index]);
         } //loop
         if (count > 1)
-            lazy.lastЕrrorChannel.appendLine(`${count} Markdown files files converted to HTML`);
-        lazy.lastЕrrorChannel.show(true);
+            lazy.lastErrorChannel.appendLine(`${count} Markdown files files converted to HTML`);
+        lazy.lastErrorChannel.show(true);
     }; //successAction
 
     const command = action => {
@@ -304,15 +304,15 @@ exports.activate = context => {
             return JSON.parse(content);
         } //getManifest            
         vscode.window.showErrorMessage(`${getManifest().displayName}: activation failed`);
-        if (lazy.lastЕrrorChannel)
-            lazy.lastЕrrorChannel.clear();
+        if (lazy.lastErrorChannel)
+            lazy.lastErrorChannel.clear();
         else
-            lazy.lastЕrrorChannel = vscode.window.createOutputChannel("Markdown Error");
-        lazy.lastЕrrorChannel.show(true);
-        lazy.lastЕrrorChannel.appendLine(ex.toString());
+            lazy.lastErrorChannel = vscode.window.createOutputChannel("Markdown Error");
+        lazy.lastErrorChannel.show(true);
+        lazy.lastErrorChannel.appendLine(ex.toString());
         if (!debugActivationException) return;
-        lazy.lastЕrrorChannel.appendLine("Stack:");
-        lazy.lastЕrrorChannel.appendLine(ex.stack);
+        lazy.lastErrorChannel.appendLine("Stack:");
+        lazy.lastErrorChannel.appendLine(ex.stack);
     }; //activationExceptionHandler
 
     return {

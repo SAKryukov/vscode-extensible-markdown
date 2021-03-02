@@ -6,24 +6,30 @@ Using Additional Plug-ins{title}
 
 @toc
 
+## Preface
+
+Extensible Markdown contains several embedded extensions to the Markdown syntax. Each extension can be enabled or disabled separately.
+
+However, it is called not "extensible", not just "extended" because anyone can add any number of additional [markdown-it](https://github.com/markdown-it/markdown-it) plugins. Each of those plugins can be configured in VSCode settings and also enabled or disabled separately. This is demonstrated on two existing markdown-it plugins.
+
 ## Installation of Plugins
 
-This demo requires installation of
+This demo requires the installation of
 
 * [markdown-it-sub](https://www.npmjs.com/package/markdown-it-sub)
 * [markdown-it-sup](https://www.npmjs.com/package/markdown-it-sup)
 
 For installation, [node.js](https://nodejs.org) should be installed. It comes with [npm](https://www.npmjs.com).
 
-All plugins can be installed locally, in any arbitrary directory. Choose such directory, make it a current (working) directory and launch [npm](https://www.npmjs.com) with command line, which is shown on the Web page of each plugin module. For example:
+All plugins can be installed locally, in any arbitrary directory. Choose such a directory, make it a current (working) directory and launch [npm](https://www.npmjs.com) with the command line, which is shown on the Web page of each plugin module. For example:
 
 ```
 npm install markdown-it-sub --save
 ```
 
-Then this directory should be specified in a workspace "settings.json" as absolute path or a path relative to workspace. Look at the [sample of settings](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/docs/vscode-workspace-sample/.vscode/settings.json), the option "`markdown.extensibleMarkdown.options.additionalPlugins`", see also the [sample shown below](#heading-settings).
+Then this directory should be specified in a workspace "settings.json" as an absolute path or a path relative to the workspace. Look at the [sample of settings](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/docs/vscode-workspace-sample/.vscode/settings.json), the option "`markdown.extensibleMarkdown.options.additionalPlugins`", see also the [sample shown below](#heading-settings).
 
-Importantly, syntax coloring does not require installation of corresponding plugin. It only needs to be mentioned in "settings.json" and not even necessarily enabled -- that's why "syntacticDecorators" have separate "enable" property. A plugin descriptor has only three properties: "name", "enable" and "syntacticDecorators". For syntax coloring, only "syntacticDecorators" needs to be present; first two, "name" and "enable" can be missing, contain wrong values, and so on.
+Importantly, syntax coloring does not require the installation of a corresponding plugin. It only needs to be mentioned in "settings.json" and not even necessarily enabled --- that's why "syntacticDecorators" have separate "enable" property. A plugin descriptor has only three properties: "name", "enable" and "syntacticDecorators". For syntax coloring, only the object "syntacticDecorators" needs to be present; the first two, "name" and "enable" can be missing, contain wrong values, and so on.
 The properties "name" and "enable" are important for Markdown processing by the plugins.
 
 ## Example: Using Subscripts and Superscripts

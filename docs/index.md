@@ -1,4 +1,4 @@
-VSCode: Extensible Markdown Converter{title}
+VSCode: Extensible Markdown{title}
 
 [*Sergey A Kryukov*](https://www.SAKryukov.org)
 
@@ -10,6 +10,29 @@ Since v. 2.0.0, the user can extend Markdown features by installing any of the [
 
 That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
+    New: SA???
+
+It is possible to adjust a Markdown-based article to CodeProject requirements. I would recommend:
+
+Use `@toc` for auto-built Table of Constants, and use it without auto-numbering, as HTML navigation is quite sufficient. Use regular Markdown headings starting from the level "##", that is "##", "###", etc. Instead of `#`, use a regular paragraph with the extended markup `{title}`.
+
+To the section "`## Contents`" itself, use the the extended markup `{no-toc}`. This way, this heading will not appear in the TOC.
+
+The auto-generated `id` values for the headings will be automatically used in the TOC. If you need to reference a heading element anywhere else, generate HTML at least one and see how it is referenced in your TOC, copy/paste it, for example: `as it is explained [in this section](#heading-usage)`.
+
+Use fenced code blocks to show source code. Add the `lang` and `id` attributes, which is made possible through the new Markdown extension, "attrubution" syntax. For example:
+
+````
+~~~ {lang=C#}{id=code-csharp-usage-sample}
+class MyClass { /* ... */ }
+~~~
+````
+
+The attribute `lang` will be used for proper syntax highlighting, and `id` can be used to reference a source code sample. For example: `in the sample [shown above](#code-csharp-usage-sample)...`
+
+Add regular HTML comments: before "`## Contents`", add `&lt;!-- copy to CodeProject from this point --&gt;`, and, at the very end `&lt;!-- copy to CodeProject to this point --&gt;`. When an HTML file is generated, located these two marks, copy the text between them, and paste to the source element of the CodeProject article submission wizard. Everything will be correct, no manual editing should be required.
+
+<!-- copy to CodeProject from here -->
 ## Contents{no-toc}
 
 @toc
@@ -407,3 +430,5 @@ Main purpose of such default-value object is to provide the user with a placehol
 First, the settings specify path to the directory where the set of additional plug-ins is installed, either "absolutePath" or "relativePath". There is no need to include both properties, but it if happens, "absolutePath" is considered first. If it is not defined (more exactly, evaluates to "false" in conditional expression), "relativePath" is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it's checked up if effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name `"node_modules"`.
 
 For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (`require`) each plugin, if its directory exists and the property "enable" is evaluates to `true`. If loading fails, the command execution continues with next plug-in. If a plug-in is successfully loaded, it's used by markdown-it, with options specified by the "options" object, which can be omitted.
+
+<!-- copy to CodeProject to here -->

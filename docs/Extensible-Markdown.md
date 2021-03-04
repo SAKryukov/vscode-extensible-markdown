@@ -1,4 +1,4 @@
-VSCode: Extensible Markdown{title}
+Extensible Markdown, a Visual Studio Code Extension{title}
 
 [*Sergey A Kryukov*](https://www.SAKryukov.org)
 
@@ -10,32 +10,36 @@ Since v. 2.0.0, the user can extend Markdown features by installing any of the [
 
 That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
-    New: SA???
 
-It is possible to adjust a Markdown-based article to CodeProject requirements. I would recommend:
-
-Use `@toc` for auto-built Table of Constants, and use it without auto-numbering, as HTML navigation is quite sufficient. Use regular Markdown headings starting from the level "##", that is "##", "###", etc. Instead of `#`, use a regular paragraph with the extended markup `{title}`.
-
-To the section "`## Contents`" itself, use the the extended markup `{no-toc}`. This way, this heading will not appear in the TOC.
-
-The auto-generated `id` values for the headings will be automatically used in the TOC. If you need to reference a heading element anywhere else, generate HTML at least one and see how it is referenced in your TOC, copy/paste it, for example: `as it is explained [in this section](#heading-usage)`.
-
-Use fenced code blocks to show source code. Add the `lang` and `id` attributes, which is made possible through the new Markdown extension, "attrubution" syntax. For example:
-
-````
-~~~ {lang=C#}{id=code-csharp-usage-sample}
-class MyClass { /* ... */ }
-~~~
-````
-
-The attribute `lang` will be used for proper syntax highlighting, and `id` can be used to reference a source code sample. For example: `in the sample [shown above](#code-csharp-usage-sample)...`
-
-Add regular HTML comments: before "`## Contents`", add `&lt;!-- copy to CodeProject from this point --&gt;`, and, at the very end `&lt;!-- copy to CodeProject to this point --&gt;`. When an HTML file is generated, located these two marks, copy the text between them, and paste to the source element of the CodeProject article submission wizard. Everything will be correct, no manual editing should be required.
 
 <!-- copy to CodeProject from here -->
 ## Contents{no-toc}
 
 @toc
+
+# Introduction and History
+
+The first article on this component was published in 2017: [All in One Toolchain for Article Writing with Visual Studio Code](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode).
+
+Initially, the main reason for creation of this tool was my desire to write CodeProject article offline from the beginning to the end, and then post it with the help of the article submission wizard in one shot, just by a single paste of the HTML code.
+
+The tools I wanted to use was Visual Studio Code (VSCode) and its embedded implementation of Markdown, [markdown-it](https://github.com/markdown-it/markdown-it). My initial problem was the export of already rendered HTML code.
+
+It worked well for me, a lot better than any other method. First of all, it ensured internal consistency of the entire document, first of all, due to the new features I added to the markdown-it: automatic generation of the `id` attributes of the headings and automatic generation of the Table of Contents (TOC).
+
+However, even with this generation, my article writing practice revealed, that this is not quite enough. I still had the submission in one shot, but I had certain number of fragments to be written in HTML, more than I wanted to. First of all, it was related to the need of referencing some elements other than headings, especially source code samples. A big annoyance was manual correction of the TOC styles. These requirements were well beyond the standard Markdown syntax. This way, to wikify the source code more, I stepped on the shaky way of extending the syntax. After all, it worked out pretty well, but through some stages of development.
+
+Since that time, the extension has changed radically, doubled the number of features and became more regular. It requires a lot more documentation. I also collected a lot more experience.
+
+In addition to CodeProject articles, I found that VSCode with Markdown is the best way to write just all kinds of documents. It was everything from small "readme" and git comments to pretty big chunks of documentation written to several companies, and even some private letters or chat post.
+
+I decided to forget all kinds of Office products and never get back to them. I even created two variants of the product successfully replacing those bulky Office presentation applications and published both of them on CodeProject: [Web Presentation, an Application in a Single File](https://www.codeproject.com/Articles/5286790/Web-Presentation-an-Application-in-a-Single-File) and [Web Presentation, the Other Way Around](https://www.codeproject.com/Articles/5290221/Web-Presentation-the-Other-Way-Around).
+
+For these reasons, I re-worked my [original article](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode) on the toolchain into the article focused on the specific requirement of CodeProject, and added the present article to serve as the product documentation.
+
+One of the worst problems was that VSCode extension API broke backward compatibility at least twice. My extension was published on the [Microsoft Marketplace](https://marketplace.visualstudio.com/VSCode), and the users started to complain. I had to remove the extension from the marketplace, and started to use the product for my own needs with the obsolete VSCode versions. After two fixes related to broken backward compatibility, I reviewed all parts of code, added good number of features and fixes and published the product under new name. Indeed, originally it was a Markdown converter to HTML, but later it grew up into a feature-rich extension, with extended Markdown syntax.
+
+More importantly, the extension is itself extensible, hence the name. With Extensible Markdown, a user can configure additional markdown-it plugins. Any existing markdown-it plugins found on node.js [npm](https://www.npmjs.com) can be used, or the user can write some new extensions, which is not an easy task though.
 
 ## Features
 
@@ -48,6 +52,81 @@ Add regular HTML comments: before "`## Contents`", add `&lt;!-- copy to CodeProj
 - Optional preview in the default Web browser;
 - Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching generated HTML file;
 - Configuration of all processing detail of the extension, "[markdown-it](https://www.npmjs.com/package/markdown-it)" and its plug-ins, from a single source.
+
+## Conversion to HTML
+
+## Usage by Plugin
+
+The class `MarkdownIt` implements the mechanism of dynamically loaded *plugins*. Four plugins are embedded in the Extensible Markdown extension and can be turned on or off by the settings elements MarkDown > Extensible Markdown. Also, the use can supply additional external plugins and configure them for use by Extensible Markdown. Each of those additional plugins can be turned on or off individually.
+
+The embedded plugins are: "Includes", "IDs and TOC", "Attribution", and "Replacements". Let's consider them one by one.
+
+### Includes
+
+An .md file can include one or more Markdown fragments placed in separate files. The syntax is:
+
+```
+@include(file name)
+```
+
+The markup should go without blank spaces, no blank spaced in the file name are accepted. If the is found, the Markdown content of the file is rendered, otherwise the detailed error message is rendered.
+
+### IDs and TOC
+
+In all cases, `id` attributes are generated for all headings (`#`, `##`, and so on).
+
+This markup is the placeholder for TOC:
+
+```
+@toc
+```
+
+Any heading can be excluded from TOC. Usually, it is used for the heading "Contents". To exclude a heading from TOC, the markup `{no-toc}` can be added on the same line, for example:
+
+```
+## Some Heading{no-toc}
+```
+
+Also, the headings of certain *levels* can be excluded from TOC. It is useful for deeper nesting level. For example, in this settings.json file only the headers of two levels are included in TOC, `##` and `###`:
+
+```
+{
+    "markdown.extensibleMarkdown.TOC.includeLevels": [ 2, 3 ]
+}
+```
+
+### Attribution
+
+#### Title
+
+The attribute {`title`} shown above is a special title class. It is used not only for CSS but to indicate the string used as the header title in the generated HTML document. The name for this class can be specified in settings: Markdown > Extensible Markdown > Title Class Name. For example:
+
+```
+The Title of the Document{title}
+```
+
+#### CSS Classes
+
+The markup `{`.`class name}` can be used to add a `class` attribute to a paragraph or a header. I should be placed on the same line. A class name should not contain space characters. Multiple classes can be specified for the same element; in this case, each class should go in a separate pair of `{}` brackets.
+
+#### Arbitrary Attributes
+
+An arbitrary attribute can be added to an element in the form <code>{name\=value}</code>. It is especially used for the fenced code blocks. For example, CodeProject requires the attribute `lang` to be used for syntax highlighting. The `id` attribute is useful is required to create an anchor in the article to reference code samples or some other elements.
+
+#### Abbreviations
+
+This feature uses the HTML &lt;`abbr`&gt; element and the attribute `title`. Place a mouse pointer over the acronym text and see the title showing the full description of the term:
+
+Example: *{Request for Comments}RFC*
+
+*Note: abbreviations always work for the generated HTML document in a Web browser, but not always in the VSCode preview. I think this is a specific bug of VSCode or the embedded version of Markdown-it.*
+
+### Replacements
+
+
+
+### Additional Custom Plugins
+
 
 ## Usage
 

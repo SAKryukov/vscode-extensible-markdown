@@ -7,6 +7,7 @@
         pre { background-color: antiqueWhite; }
         h1, h2, h3, h4, h5, h6 { border: none; margin-top: 1em; margin-bottom: 0.4em; }
 	p.title { font-size: 250%; }
+        blockquote { margin-left: 2em; }
         h1 { font-size: 200%; }
         h2 { font-size: 162%; }
         h3 { font-size: 134%; }

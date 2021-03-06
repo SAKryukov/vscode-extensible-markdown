@@ -95,38 +95,105 @@ Also, the headings of certain *levels* can be excluded from TOC. It is useful fo
 }
 ```
 
+For the implementation, see [id.toc.js](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/extension/id.toc.js).
+
 ### Attribution
+
+For the implementation see [attribution.js](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/extension/attribution.js).
 
 #### Title
 
-The attribute {`title`} shown above is a special title class. It is used not only for CSS but to indicate the string used as the header title in the generated HTML document. The name for this class can be specified in settings: Markdown > Extensible Markdown > Title Class Name. For example:
+The attribute `title` marks a paragraph playing the role of the document title. It is used to indicate the string used as the header title in the generated HTML document. Also, it sets up a special CSS class for this paragraph. The name for this class can be specified in settings: Markdown > Extensible Markdown > Title Class Name. For example:
 
 ```
-The Title of the Document{title}
+My Story{title}
 ```
 
 #### CSS Classes
 
-The markup `{`.`class name}` can be used to add a `class` attribute to a paragraph or a header. I should be placed on the same line. A class name should not contain space characters. Multiple classes can be specified for the same element; in this case, each class should go in a separate pair of `{}` brackets.
+The attribute starting with a dot, `.class_name` can be used to add a `class` attribute to a paragraph or a header. I should be placed on the same line. A class name should not contain space characters. Multiple classes can be specified for the same element; in this case, each class should go in a separate pair of `{}` brackets.
+
+For example:
+```
+Sergey A Kryukov{.author}
+
+Demo class{.demo}
+
+Multiple classes{.demo}{.author}
+```
 
 #### Arbitrary Attributes
 
-An arbitrary attribute can be added to an element in the form <code>{name\=value}</code>. It is especially used for the fenced code blocks. For example, CodeProject requires the attribute `lang` to be used for syntax highlighting. The `id` attribute is useful is required to create an anchor in the article to reference code samples or some other elements.
+An arbitrary attribute can be added to an element in the form `name=value`. It is especially used for the fenced code blocks. For example, CodeProject requires the attribute `lang` to be used for syntax highlighting. The `id` attribute is useful is required to create an anchor in the article to reference code samples or some other elements.
+
+For example:
+```
+Some paragraph {id=paragraph-of-interest}
+
+~~~ {lang=C#}{id=code.utilitySet}
+static class UtilitySet { /* ... */ }
+~~~
+```
 
 #### Abbreviations
 
 This feature uses the HTML &lt;`abbr`&gt; element and the attribute `title`. Place a mouse pointer over the acronym text and see the title showing the full description of the term:
 
-Example: *{Request for Comments}RFC*
+For example:
+
+```
+*{Request for Comments}RFC*
+```
 
 *Note: abbreviations always work for the generated HTML document in a Web browser, but not always in the VSCode preview. I think this is a specific bug of VSCode or the embedded version of Markdown-it.*
 
 ### Replacements
 
+Some combinations of characters are replaced with important characters not represented on most keyboard.
 
+Here are some examples:
+
+Amount: 7-:8
+
+Equal or not: A=B, C!=D
+
+Order relation: z <= y, p >= f
+
+Tilde and not tilde c~d, a!~b
+
+Plus/minus: 10+-0.1, 16.2-+0.1
+
+Parallel of not: v||w, a!||b
+
+Almost equal or not: d ~~ 10.4 mm, a !~~ b
+
+Strictly equivalent: f===h
+
+Identical or not: F==G but A !== B
+
+Sets: A@unionB != @empty, E = C@intersectionD; n.<N but a!.<A
+
+Subset and superset: (A<|B) == (B|>A)
+
+Arrows: @left @right @up @down
+
+Dashes and minus: A -- B --- C; typographically correct minus: @minus1
+
+Imply: A @imply B, not: @!C
+
+Quantifiers:<br/>
+Definition of the limit of the function f(x)=b for x@rightx₀, O. L. Cauchy:<br/>
+@all ε>0 @exists δ>0: @all x.<R: 0 < |x−x₀| < δ  @imply |f(x)−b| < ε
+
+Copyright (C) sign, section sign (P), registered (R) sign, trademark(TM) sign.
+
+In the escaped form, they are just letters in brackets: (C\), (P\), (R\), (TM\).
+
+Typographically correct quotes: 'single', "double". Quotation characters are defined by settings: Markdown > Extensible Markdown > Options: Smart Quotes.
+
+The source markup can be found in this [demo document "replacements.md"](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/docs/vscode-workspace-sample/replacements.md), for the implementation, see [replacements.js](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/extension/replacements.js).
 
 ### Additional Custom Plugins
-
 
 ## Usage
 

@@ -32,7 +32,7 @@ The HTML file is saved to the same directory as original Markdown file, if not s
 
 It is possible to adjust a Markdown-based article to CodeProject requirements. I would recommend:
 
-Use `@toc` for auto-built Table of Constants, and use it without auto-numbering, as HTML navigation is quite sufficient. Use regular Markdown headings starting from the level "##", that is "##", "###", etc. Instead of `#`, use a regular paragraph with the extended markup `{title}`.
+Use `@toc` for auto-built Table of Constants, and use it without auto-numbering, as HTML navigation is quite sufficient. Use regular Markdown headings starting from the level "##", that is "##", "###", etc. Instead of `#`, use a regular paragraph with the extended markup `???`.
 
 To the section "`## Contents`" itself, use the the extended markup `{no-toc}`. This way, this heading will not appear in the TOC.
 

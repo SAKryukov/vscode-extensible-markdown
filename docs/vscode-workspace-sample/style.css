@@ -14,3 +14,4 @@
         h5 { font-size: 105%; }
         h6 { font-size: 100%; }
         h1, h2, h3, h4, h5, h6 { margin-top: 1em; margin-bottom: 0.2em; }
+        blockquote { border-left: solid navy 2px; padding-left: 2em; }

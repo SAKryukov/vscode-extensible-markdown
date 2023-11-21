@@ -8,6 +8,8 @@ Since v. 2.0.0, the user can extend Markdown features by installing any of the [
 
 That said, there is no a need for different Markdown extensions. It's quite enough to have only the built-in extension combined with Extensible Markdown Converter. All required functionality can be assembled from available plug-ins using the single unified configuration design.
 
+[On Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)
+
 See [original publication](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode).
 
 ## Features

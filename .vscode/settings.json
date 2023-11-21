@@ -5,4 +5,5 @@
     "markdown.styles": [
         "docs/style.css"
     ],
+    "markdown.preview.typographer": true,
 }

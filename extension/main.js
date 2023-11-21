@@ -35,7 +35,8 @@ exports.activate = context => {
     
     const transcodeText = (text, fileName, css, embedCss, rootPath) => {
         let tokenList = lazy.markdownIt.parse(text, {});
-        const imageSet = { containingImages: [] };
+        //const imageSet = { containingImages: [] }; SA??? worked in older versions
+        const imageSet = {};
         const options = Object.assign({}, lazy.markdownIt.options);
         let result = lazy.markdownIt.renderer.render(tokenList, options, imageSet);
         let style = "";

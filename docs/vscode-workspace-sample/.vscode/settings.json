@@ -33,5 +33,6 @@
                 ]
             }
         ]
-    }
+    },
+    "markdown.preview.typographer": true
 }

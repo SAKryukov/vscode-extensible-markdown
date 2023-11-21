@@ -18,6 +18,7 @@ Advanced Auto-Numbering{title}{.title}
 
 @toc
 
+a -- a, b --- b, "c"
 
 @include(body.md)
 

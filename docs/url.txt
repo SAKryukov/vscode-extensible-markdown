@@ -4,3 +4,6 @@ https://markdown-it.github.io/markdown-it/
 https://github.com/markdown-it/markdown-it/blob/master/docs/development.md
 https://github.com/markdown-it/markdown-it/blob/master/docs/architecture.md
 https://github.com/nagaozen/markdown-it-toc-done-right
+
+To publish:
+https://marketplace.visualstudio.com/manage/publishers/sakryukov

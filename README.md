@@ -9,7 +9,7 @@ Since v.&thinsp;2.0.0, the user can extend Markdown features by installing any [
 ## References
 
 [Extensible Markdown On Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)<br/>
-[Detailed Documentation](https://sakryukov.github.io/vscode-extensible-markdown/Extensible-Markdown.html)<br/>
+[Detailed Documentation](https://sakryukov.github.io/vscode-extensible-markdown/index.html)<br/>
 [Original publication](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode)
 
 ## Features

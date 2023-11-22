@@ -6,10 +6,10 @@ The extension depends on the [node.js](https://nodejs.org) Markdown parser [&ldq
 
 Since v.&thinsp;2.0.0, the user can extend Markdown features by installing any [&ldquo;markdown-it&rdquo;](https://www.npmjs.com/package/markdown-it) plug-ins [abundantly available](https://www.npmjs.com/browse/keyword/markdown-it-plugin) in the [npm package registry](https://www.npmjs.com). All the packages can be configured from a single source: &ldquo;settings.json&rdquo;, [on the user or workspace level](https://code.visualstudio.com/docs/getstarted/settings).
 
-## Documentation
+## References
 
 [Extensible Markdown On Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)<br/>
-[Setting](https://sakryukov.github.io/vscode-extensible-markdown/Extensible-Markdown.html)<br/>
+[Detailed Documentation](https://sakryukov.github.io/vscode-extensible-markdown/Extensible-Markdown.html)<br/>
 [Original publication](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode)
 
 ## Features
@@ -20,7 +20,6 @@ Since v.&thinsp;2.0.0, the user can extend Markdown features by installing any [
 * User-configurable Markup syntax coloring for plug-ins;
 * Optional embedding of CSS in HTML;
 * Optional Detection of the document title based on user-configurable Regular Expression;
-* Optional preview in the default Web browser;
 * Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching the generated HTML file;
 * Configuration of all processing details of the extension, [&ldquo;markdown-it&rdquo;](https://www.npmjs.com/package/markdown-it) and its plug-ins, from a single source.
 

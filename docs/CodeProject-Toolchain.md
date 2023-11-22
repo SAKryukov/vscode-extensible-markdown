@@ -1,9 +1,8 @@
- All in One Toolchain for Article Writing with Visual Studio Code{title}
+All in One Toolchain for Article Writing with Visual Studio Code{title}
 
 [*Sergey A Kryukov*](https://www.SAKryukov.org){.author}
 
 [Original Publication](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode)
-
 
 <!-- copy to CodeProject from here -->
 ## Contents{no-toc}

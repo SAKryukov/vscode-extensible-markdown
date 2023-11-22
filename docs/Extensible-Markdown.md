@@ -241,14 +241,14 @@ Extensible Markdown adds three syntax elements to Markdown:
 
 In addition to these syntactic extensions, version 5.0.0 introduces two new TOC features enabled through configuration options, without any addition to the Markdown syntax. The rendering of list items of the TOC can be defined for the whole document, or separately per level of TOC. This way, the choice between `ul` (default) or `ul` list element can be done globally or per TOC level. Also, each of these elements can be given a global or level-dependent set of HTML *attributes*. One of the uses of these attributes is setting the attribute `class`. However, attributes are not limited to the classes. The possibility of adding arbitrary attributes is very important for the not-uncommon situation where the document hosting does not provide access to CSS. Instead, the inline `style` attribute can solve the problem. The configuration setting for these is described [below](#heading.extensible-markdown-converter-extension-options).
 
-By default, both elements use *pseudo-link* form based on Markdown *link* syntax. They take the form: `[](some-tag)`. Even when such an element produces an HTML anchor, it gives no clickable area (normally defined by the text between [] brackets). The user can create/modify "settings.json" to describe any other suitable syntax, which is done in the Regular Expression form.
+By default, both elements use *pseudo-link* form based on Markdown *link* syntax. They take the form: `{&#123;d=some-ID}`. The user can create/modify "settings.json" to describe any other suitable syntax, which is done in the Regular Expression form.
 
 Document title needs detection because HTML requires a text value for the `title` element of the element `head`. The idea is to use some available Markdown element, which is rendered on the HTML page, without replacing it, but by just tagging it as a title text.
 
 The default syntax for title detection is:
 
 ```
-The Name of The Document[](title)
+The Name of The Document{title}
 ```
 
 In this example, the text "The Name of The Document" is copied to the HTML `title`.
@@ -256,14 +256,14 @@ In this example, the text "The Name of The Document" is copied to the HTML `titl
 The default syntax for the file *include* is: {id=special.include.file}
 
 ```
-[](include( file-name... ))
+@include(file-name)
 // file-name expression should come without blank space characters
 ```
 
 A new feature in version 5.0.0 is the "no toc" tag. It is used to exclude some headings from the TOC. It can be important for headings like "Contents" or "Table of Contents". The default syntax for this tag is:
 
 ```
-&at;notoc
+{notoc}
 ```
 
 This tag works if it is placed at the end of a heading line. 
@@ -353,7 +353,7 @@ The value of the option "`markdown.extension.convertToHtml.options.smartQuotes`"
 This is the sample fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):{id=special-settings.json}
 
 ```json
-[](include(vscode-workspace-sample/.vscode/settings.json))
+@include(vscode-workspace-sample/.vscode/settings.json)
 ```
 
 The extension also uses "`markdown.styles`" option related to the extension "VS Code Markdown".
@@ -385,46 +385,7 @@ If the pattern match is successfully found in the Markdown document, it is writt
 
 It's important to understand that detection never modifies input Markdown text. The idea is to detect a specific text fragment present in the document. If Markdown rules rendering this text fragment are applied to the output HTML, it will be rendered, and the copy of this fragment will be written in the `title` element.
 
-Let's see how the default value of the "`markdown.extension.convertToHtml.titleLocatorRegex`" works.
-
-By default, the following regular expression is used:
-
-```
-^/(*.?)/[/]/(title/)
-```
-
-It means that the first occurrence of the text between the beginning of the line ("^" in [regular expressions](https://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended)) and "[](title)" will make a match. The *group* "(*.?)" (marked by round brackets) means that the arbitrary text in between will be detected as the match.
-
-For example, this line in a source Markdown document
-
-```
-My Article Name[](title)
-```
-will create two matches:
-
-0. `My Article Name[](title)`
-1. `My Article Name`
-
-The text of the second match corresponds to the group "(*.?)". It will be rendered as an HTML paragraph and written as the text values of its `title` element. Only the first occurrence of the matching text will be handled this way.
-
-In practice, this particular regular expression is useful as the very first *paragraph* of the document to produce the title string. It can be taken into account in the CSS, to render this paragraph accordingly. For example, the special CSS properties can be applied to the paragraph defined by the [child selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Child_selectors) combined with the [first-child](https://developer.mozilla.org/en-US/docs/Web/CSS/:first-child) [pseudo-class](https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes).
-
-CSS line example:
-
-```
-body > p:first-child { font-size: 240%; text-align: center; }
-```
-Alternatively, the heading element of some level (level 1, for example) could be used as a title. It will require the following regular expression:
-
-```
-^/# (*.?)/[/]/(title/)
-```
-Note the blank space between "#" and (*.?).
-
-Matching Markdown would be:<br/>
-```
-# My Article Name[](title)
-```
+The user can introduce alternative syntax for this feature by modifying the option "`markdown.extension.convertToHtml.titleLocatorRegex`".
 
 ### File Includes
 
@@ -443,7 +404,7 @@ By default, auto-numbering is not used. This is the case when both the auto-numb
 This is the representative sample of the fragment of the Markdown code using the extended syntax for passing the auto-numbering option. This is a tag that should come in the first position of the document file:
 
 ```
-[](=numbering {
+&;atnumbering {
     "enable": true,
     "defaultPrefix": "",
     "defaultSuffix": ". ",
@@ -456,15 +417,15 @@ This is the representative sample of the fragment of the Markdown code using the
         { "start": 1, "separator": ".", "standAlong": true },
         { "suffix": ") ", "start": "a", "separator":".", "standAlong":true }
     ]
-}=)
+}
 ```
 
 With default settings, the minimum in-document content of the in-document auto-numbering specification would be:
 
 ```
-[](=numbering {
+@numbering {
     "enable": true
-}=)
+}
 ```
 
 First of all, all options come on two levels: general for the entire document (named `default*`) and per heading level, described in the property `pattern`. The exclusion is the option `standAlong` which appears only in `patterns` and is only defined for individual heading levels. 
@@ -481,7 +442,7 @@ By default, a heading number is shown as a multi-component string including seve
 
 ### Simplified Auto-Numbering Options Format
 
-Version 3.6.1 introduces an alternative format for the auto-numbering. The format used previously is JSON; it still can be used, but it is not very suitable for human input and is not fault-tolerant. Presently, it takes precedence. If JSON parsing fails, the new parser tries to parse the content of the `[](= ... =)` tag using new grammar:
+Version 3.6.1 introduces an alternative format for the auto-numbering. The format used previously is JSON; it still can be used, but it is not very suitable for human input and is not fault-tolerant. The new parser tries to parse the content of the `@{ ... }` tag using new grammar:
 
 * Each property is placed on a separate line
 * Leading and trailing blank spaces and spaced between syntactic elements are ignored
@@ -507,8 +468,9 @@ Version 3.6.1 introduces an alternative format for the auto-numbering. The forma
 If a line fails to parse, it is ignored. It can be used for comments.
 
 Example of auto-numbering option in-document specifications:
+
 ```
-[](=numbering {
+@numbering {
     enable: true
     defaultSuffix: 1". "
     h2.prefix: "Chapter "
@@ -518,7 +480,7 @@ Example of auto-numbering option in-document specifications:
     h4.standAlong: true
     h5.start: "a"
     h5.suffix: ") "
-}=)
+}
 ```
 
 ## Additional Plug-ins
@@ -560,5 +522,3 @@ The main purpose of a such default-value object is to provide the user with a pl
 First, the settings specify the path to the directory where the set of additional plug-ins is installed, either "absolutePath" or "relativePath". There is no need to include both properties, but it if happens, "absolutePath" is considered first. If it is not defined (more exactly, evaluates to "false" in a conditional expression), `relativePath` is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it's checked to see if the effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name `"node_modules"`.
 
 For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (`require`) each plugin, if its directory exists and the property "enable" is evaluates to `true`. If loading fails, the command execution continues with the next plug-in. If a plug-in is successfully loaded, it's used by markdown-it, with options specified by the "options" object, which can be omitted.
-
-<!-- copy to CodeProject to here -->

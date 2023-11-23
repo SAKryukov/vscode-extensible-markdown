@@ -16,7 +16,7 @@
                         "enable": true,
                         "regexString": "\\~(.*?)\\~",
                         "tooltipFormat": "Subscript: %s",
-                        "style": { "backgroundColor": "LemonChiffon" }
+                        "style": { "backgroundColor": "lightSkyBlue" }
                     }
                 ]
             },
@@ -28,7 +28,7 @@
                         "enable": true,
                         "regexString": "\\^(.*?)\\^",
                         "tooltipFormat": "Superscript: %s",
-                        "style": { "backgroundColor": "LavenderBlush" }
+                        "style": { "backgroundColor": "aqua" }
                     }
                 ]
             }

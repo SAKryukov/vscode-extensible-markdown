@@ -91,7 +91,7 @@ Despite of this problem, uniqueness of the `id` values is not broken in the case
 
 Having said that, let's consider really working solution, based on creation of separate Visual Studio Code extension.
 
-## The Solution: Extensible Markdown Converter
+## The Solution: Extensible Markdown
 
 The techniques of extension development are described in the [Visual Studio Code documentation](https://code.visualstudio.com/docs/extensions/publish-extension).
 
@@ -99,7 +99,7 @@ The techniques of extension development are described in the [Visual Studio Code
 
 Main idea of the solution is this: instead of packaging full set on npm modules for Markdown support, we need to reuse the resources provided by the dependency extension "[VS Code Markdown](#vs-code-markdown-microsoft)":{id=src..main.js}
 
-<pre lang="Javascript">
+<pre lang="JavaScript">
 // extension host makes it always accessible to extensions:
 var vscode = require('vscode');  
 
@@ -147,7 +147,7 @@ Note that the function setting up `markdownIt` also loads *additional plug-ins*.
 
 Another interesting point is using *lazy evaluation*. The extension itself is loaded lazily, only on the events when it is really required. It would be tempting to perform relatively long operations, such as [markdown-it](https://www.npmjs.com/package/markdown-it) setup and processing of the setting, during extension activation, and not during execution of each commands. It won't work correctly though, because between commands the use can enter some changes rendering current state of [markdown-it](https://www.npmjs.com/package/markdown-it) or settings data invalid. In particular, the user can edit settings or simply one or another CSS file. Lazy evaluation combined with some invalidation mechanism solves this problem. This is how:{id=src..lazy.js}
 
-<pre lang="Javascript">
+<pre lang="JavaScript">
 const lazy = { markdownIt: undefined, settings: undefined };
 
 // ...
@@ -253,7 +253,7 @@ Auto-numbering "start" option can be any integer number or a string representing
 
 In implementation, an interesting point here is the universal `Iterator` covering all these cases: 
 
-<pre lang="Javascript">
+<pre lang="JavaScript">
 function Iterator(first) {
     if (first.constructor == Array) this.array = first;
     this.counter = this.array ? 0 : first;
@@ -284,7 +284,7 @@ function Iterator(first) {
 Let's see how it works.
 
 Let's say, we have the following Markdown fragment, included in other Markdown files, different in auto-numbering options:
-<pre lang="Javascript">
+<pre lang="JavaScript">
 ## Contents
 
 [](toc)
@@ -301,7 +301,7 @@ Let's say, we have the following Markdown fragment, included in other Markdown f
 </pre>
 
 To enable default auto-numbering include it in this way:
-<pre lang="Javascript">
+<pre lang="JavaScript">
 [](=numbering {
     enable: true
 }=)
@@ -314,7 +314,7 @@ It will give as the following TOC:
 <div class="toc"><ul style="list-style-type: none;"><li>1. <a href="#heading.contents">Contents</a></li><li>2. <a href="#heading.introduction">Introduction</a></li><li>3. <a href="#heading.something-else">Something Else</a><ul style="list-style-type: none;"><li>1. <a href="#heading.section">Section</a></li><li>2. <a href="#heading.another-section">Another Section</a><ul style="list-style-type: none;"><li>3.2.1. <a href="#heading.sub-section">Sub-Section</a></li></ul></li></ul></li></ul></div>
 
 Now, let's use some advanced auto-numbering options:
-<pre lang="Javascript">
+<pre lang="JavaScript">
 [](=numbering {
     enable: true
     defaultSuffix: " "
@@ -347,7 +347,7 @@ Also note heading number 1, 2 and "a)". This is where the "standAlong" option is
 
 The object `additionalPlugins` is constructed from the settings data in conservative manner: if something goes wrong, plug-in data is not added:{id=src..additional.plugins.js}
 
-<pre lang="Javascript">
+<pre lang="JavaScript">
 const additionalPlugins = (function () {
     let result = [];
     if (!settings.additionalPlugins) return result;
@@ -418,7 +418,7 @@ For other implementation detail, please see [original source code](https://githu
 
 All settings can be customized either globally (per user), or per *workspace*. We can use it to customize markdown preview and behavior (first of all, IntelliSense) to become suitable for the workspace used for article authoring. To do it per workspace, we need to create a file ".vscode/settings.json":{id=src..settings.json}
 
-<pre lang="Javascript">
+<pre lang="JavaScript">
 {
     "markdown.extension.convertToHtml.reportSuccess": true, // default
     "markdown.extension.convertToHtml.showHtmlInBrowser": false, // default
@@ -634,9 +634,9 @@ Updated documentation
 
 ## Conclusions
 
-After few prototypes of the solution and creation of the fully-fledged extension, I feel the result is pleasing.
+After few prototypes of the solution and creation of the fully-fledged extension, I feel the result is pleasing. Since the first version, I already wrote many CodeProject articles, including the present article, and other documents. For the CodeProject publications during last years, I never touched the article text manually on the CodeProject article submission page. Instead, I only used copy and paste of the HTML, produced by this extension.
 
-Even though Visual Studio Code looks still needs some stabilization time, it looks like its code and API are quite healthy and maintainable. It already gives us a great development tool, which now can be also used for article writing, with pleasure and piece in mind.
+Since the first version of Extensible Markdown, Visual Studio Code seriously matured and now looks stabe, healthy and maintainable. It makes a great development tool, which can be used for article writing, with pleasure and piece in mind.
 
 Happy writing!
 

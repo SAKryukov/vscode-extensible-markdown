@@ -1,7 +1,7 @@
 {
     "name": "extensible-markdown",
     "displayName": "Extensible Markdown",
-    "description": "Converts Markdown to HTML and saves in files, implements TOC with optional heading auto-numbering, HTML abbreviations, attributes, additional substitutions and can be extended by any of the markdown-it plug-ins",
+    "description": "Converts Markdown to HTML and saves in files, implements TOC with optional heading auto-numbering, HTML abbreviations, attributes, and additional substitutions and can be extended by any of the markdown-it plug-ins",
     "version": "8.3.2",
     "publisher": "sakryukov",
     "homepage": "http://www.SAKryukov.org",
@@ -99,12 +99,12 @@
             "title": "Extensible Markdown",
             "properties": {
                 "markdown.extensibleMarkdown.convertToHtml.openHtml": {
-                    "description": "Upon successful conversion to HTML file, open it in VSCode workspace;\nthis option is ignored if there are more then one file",
+                    "description": "Upon successful conversion to an HTML file, open it in VSCode workspace;\nthis option is ignored if there is more than one file",
                     "type": "boolean",
                     "default": false
                 },
                 "markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser": {
-                    "description": "Upon successful conversion to HTML file, show it in the default Web browser",
+                    "description": "Upon successful conversion to an HTML file, show it in the default Web browser",
                     "type": "boolean",
                     "default": false
                 },
@@ -114,7 +114,7 @@
                     "default": true
                 },
                 "markdown.extensibleMarkdown.convertToHtml.outputPath": {
-                    "description": "Specifies output directory for HTML files, relative to workspace directory.\nIf the path is null or empty string, write HTML in the same directory of the input file",
+                    "description": "Specifies output directory for HTML files, relative to workspace directory.\nIf the path is null or empty string, write HTML in the same directory of the input file.",
                     "type": "string",
                     "default": ""
                 },
@@ -231,12 +231,12 @@
                     "default": "\n# Failed to read file \"%s\"\n"
                 },
                 "markdown.extensibleMarkdown.TOC.itemIndentInEm": {
-                    "description": "Basic value of indent for a Table of Contents item in em units; this value is multiplied by the depth of nesting of each item",
+                    "description": "The basic value of indent for the Table of Contents item in em units; this value is multiplied by the depth of nesting of each item",
                     "type": "int",
                     "default": 3
                 },
                 "markdown.extensibleMarkdown.TOC.regex": {
-                    "description": "Regular Expression used to detect the location of Table of Contents",
+                    "description": "Regular Expression used to detect the location of the Table of Contents",
                     "type": "string",
                     "default": "^\\@toc$"
                 },
@@ -253,12 +253,12 @@
                     }
                 },
                 "markdown.extensibleMarkdown.TOC.excludeHeaderRegex": {
-                    "description": "Regular expression for the syntax of a heading element to be excluded from Table of Contents",
+                    "description": "Regular expression for the syntax of a heading element to be excluded from the Table of Contents",
                     "type": "string",
                     "default": "\\{no-toc\\}"
                 },
                 "markdown.extensibleMarkdown.TOC.excludeHeader.DecoratorStyle": {
-                    "description": "Decorator style for the syntax of a heading element to be excluded from Table of Contents",
+                    "description": "Decorator style for the syntax of a heading element to be excluded from the Table of Contents",
                     "type": "object",
                     "default": {
                         "cursor": "no-drop",
@@ -269,7 +269,7 @@
                     }
                 },
                 "markdown.extensibleMarkdown.TOC.includeLevels": {
-                    "description": "An array of 0 to 6 elements representing the levels of headings to be included in Table of Contents, can contain number 1 to 6",
+                    "description": "An array of 0 to 6 elements representing the levels of headings to be included in the Table of Contents, can contain numbers 1 to 6",
                     "type": "array",
                     "default": [
                         1,
@@ -281,7 +281,7 @@
                     ]
                 },
                 "markdown.extensibleMarkdown.TOC.containerClass": {
-                    "description": "CSS class of the HTML element containing Table of Contents",
+                    "description": "CSS class of the HTML element containing the Table of Contents",
                     "type": "string",
                     "default": "toc"
                 },
@@ -300,7 +300,7 @@
                     }
                 },
                 "markdown.extensibleMarkdown.TOC.autoNumbering.brokenHierarchy": {
-                    "description": "The prefix to the Table of Contents item used to indicate broken hierarchy of headings",
+                    "description": "The prefix to the Table of Contents item used to indicate the broken hierarchy of headings",
                     "type": "string",
                     "default": "?[broken hierarchy of headings]? "
                 },
@@ -315,7 +315,7 @@
                     "default": true
                 },
                 "markdown.extensibleMarkdown.options.typographerExtensions": {
-                    "description": "Replace !==, !=, !||, !~~, <=, >=, !~, -+, -:, ||, ~~, ===, ==, !.<, .<, <|, |>, @left, @right, @up and @down with mathematical operators and arrows",
+                    "description": "Replace !=, !||, <=, >=, !~, -+, -:, ||, ~~, ===, ==, !.<, .<, <|, |>, @!, @all, @exists, @empty, @union, @intersection, @left, @right, @up, @down, @imply and @minus with mathematical operators and arrows",
                     "type": "boolean",
                     "default": true
                 },

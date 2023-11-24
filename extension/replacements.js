@@ -3,10 +3,8 @@
 module.exports = (md, options) => {
 
     const patterns = [
-        { find: /!\=\=/g, replace: "≢" }, // !== not identical (bad!)
         { find: /!\=/g, replace: "≠" }, // != not equal
         { find: /!\|\|/g, replace: "∦" }, // !|| not parallel
-        { find: /!\~\~/g, replace: "≉" }, // !~~ not almost equal (bad!)
         { find: /<\=/g, replace: "≤" }, // <= less or equal
         { find: /\>\=/g, replace: "≥" }, // >= more or equal
         { find: /!\~/g, replace: "≁" }, // !~ not tilde

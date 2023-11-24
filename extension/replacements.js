@@ -3,10 +3,10 @@
 module.exports = (md, options) => {
 
     const patterns = [
-        { find: /!\=\=/g, replace: "≢" }, // !== not identical
+        { find: /!\=\=/g, replace: "≢" }, // !== not identical (bad!)
         { find: /!\=/g, replace: "≠" }, // != not equal
         { find: /!\|\|/g, replace: "∦" }, // !|| not parallel
-        { find: /!\~\~/g, replace: "≉" }, // !~~ not almost equal
+        { find: /!\~\~/g, replace: "≉" }, // !~~ not almost equal (bad!)
         { find: /<\=/g, replace: "≤" }, // <= less or equal
         { find: /\>\=/g, replace: "≥" }, // >= more or equal
         { find: /!\~/g, replace: "≁" }, // !~ not tilde
@@ -22,7 +22,7 @@ module.exports = (md, options) => {
         { find: /\|\>/g, replace: "⊃" }, // |> superset of
         { find: /\@!/g, replace: "¬" }, // @! not
         { find: /\@all/g, replace: "∀" }, // @all universal quantifier
-        { find: /\@exists/g, replace: "∃" }, // @existence quantifier
+        { find: /\@exists/g, replace: "∃" }, // @exists quantifier
         { find: /\@empty/g, replace: "∅" }, // @empty set
         { find: /\@union/g, replace: "∪" }, // @union of sets
         { find: /\@intersection/g, replace: "∩" }, // @intersection set

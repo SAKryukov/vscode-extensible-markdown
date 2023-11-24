@@ -223,7 +223,7 @@ exports.activate = context => {
             // result.xhtmlOut: it closes all tags, like in <br />, non-default, but it would be a crime not to close tags:
             let result = { xhtmlOut: true, highlight: null, langPrefix: null };
             result.html = lazy.settings.thisExtensionSettings.options.allowHTML;
-            result.typographer = lazy.settings.thisExtensionSettings.options.typographer;
+            result.typographer = lazy.markdownIt.options.typographer || lazy.settings.thisExtensionSettings.options.typographer;
             if (lazy.settings.thisExtensionSettings.options.typographer) {
                 if (!lazy.settings.thisExtensionSettings.options.smartQuotes)
                     result.quotes = defaultSmartQuotes;

@@ -14,3 +14,6 @@
         h4 { font-size: 114%; }
         h5 { font-size: 105%; }
         h6 { font-size: 100%; }
+        table { border-collapse: collapse; }
+        td, th { border: solid thin black; padding-left: 1em; padding-right: 1em; vertical-align: top; }
+        th { background-color: lightGray; }

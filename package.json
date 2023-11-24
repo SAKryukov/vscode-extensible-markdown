@@ -99,7 +99,7 @@
             "title": "Extensible Markdown",
             "properties": {
                 "markdown.extensibleMarkdown.convertToHtml.openHtml": {
-                    "description": "Upon successful conversion to HTML file, open it in VSCode workspace; this option is ignored if there are more then one file",
+                    "description": "Upon successful conversion to HTML file, open it in VSCode workspace;\nthis option is ignored if there are more then one file",
                     "type": "boolean",
                     "default": false
                 },
@@ -114,7 +114,7 @@
                     "default": true
                 },
                 "markdown.extensibleMarkdown.convertToHtml.outputPath": {
-                    "description": "Specifies output directory for HTML files, relative to workspace directory.\nIf the path is null or empty string, write HTML in the same directory of the input file.",
+                    "description": "Specifies output directory for HTML files, relative to workspace directory.\nIf the path is null or empty string, write HTML in the same directory of the input file",
                     "type": "string",
                     "default": ""
                 },

@@ -44,7 +44,6 @@ More importantly, the extension is itself extensible, hence the name. With Exten
 * User-configurable Markup syntax coloring for plug-ins;
 * Optional embedding of CSS in HTML;
 * Optional Detection of the document title based on user-configurable Regular Expression;
-* Optional preview in the default Web browser;
 * Preview in Visual Studio Code, in a full-size window or side by side, with styles fully matching the generated HTML file;
 * Configuration of all processing details of the extension, [&ldquo;markdown-it&rdquo;](https://www.npmjs.com/package/markdown-it) and its plug-ins, from a single source.
 
@@ -140,8 +139,6 @@ For example:
 *{Request for Comments}RFC*
 ```
 
-*Note: abbreviations always work for the generated HTML document in a Web browser, but not always in the VSCode preview. I think this is a specific bug of VSCode or the embedded version of Markdown-it.*
-
 ### Replacements
 
 Some combinations of characters are replaced with important characters not represented on most keyboards.
@@ -200,23 +197,8 @@ The HTML file is saved to the same directory as the original Markdown file, if n
 
 ### Preview
 
-The preview presents certain concerns because the built-in extension VSCode already implements the same two preview commands for Markdown.
-
-Anyway, the extension "Extensible Markdown" defines keybinding to overwrite default preview keybinding:
-
-* Open Preview: Ctrl+Shift+V
-* Open Preview to Side: Ctrl+K V
-
-The extension "Extensible Markdown" also defines how the preview looks.
-
-So, it's important to know the difference, to make sure the rendering is performed by Extensible Markdown.
-
-| Extension | Command | Command Title |
-| --- | --- | --- |
-| VS Code Markdown | markdown.showPreview | Markdown: Open Preview |
-| Extensible Markdown | extensible.markdown.showPreview | Markdown: Open &Preview |
-| VS Code Markdown | markdown.showPreviewToSide | Markdown: Open Preview to Side |
-| Extensible Markdown | extensible.markdown.showPreviewToSide | Markdown: Open Preview to &Side |
+Markdown preview is created using the available VSCode command "Open Preview...", Ctrl+K V or Ctrl+Shift V.
+Nevertheless, all the Extensible Markdown properties are used in preview, including extended systax.
 
 ## Extending of Markdown Syntax
 
@@ -294,14 +276,12 @@ Markdown-it can use other [node.js](https://nodejs.org) packages as plug-ins, ea
 
 | Name | Default | Description |
 | --- | --- | --- |
-| markdown.extension.convertToHtml.reportSuccess | true | Shows the message upon successful conversion, reports the names of the input and output files |
-| markdown.extension.convertToHtml.showHtmlInBrowser | false | Opens generated HTML file in the default browser |
-| markdown.extension.convertToHtml.embedCss | false | Used to embed CSS code found in CSS files in generated HTML |
-| markdown.extension.convertToHtml.outputPath | `""` | Specifies the output path for the generated HTML files, relative to the current workspace |
+| markdown.extensibleMarkdown.convertToHtml.openHtml | false | Upon successful conversion to HTML file, open it in VSCode workspace;<br/>this option is ignored if there are more then one file |
+| markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser | false | Upon successful conversion to HTML file, show it in the default Web browser |
+| markdown.extensibleMarkdown.convertToHtml.embedCss | false | Embed CSS files in an output HTML file, otherwise reference external CSS files |
+| markdown.extensibleMarkdown.convertToHtml.outputPath | `""` | Specifies output directory for HTML files, relative to workspace directory.<br/>If the path is null or empty string, write HTML in the same directory of the input file |
 
-The option "`markdown.extension.convertToHtml.showHtmlInBrowser`" is inapplicable to the command "Markdown: Convert to HTML all .md files in workspace": if a set of files is converted, none of those files is shown in a Web browser.
-
-<i id="special-markdown-extension-convertToHtml-outputPath"></i>
+<i id="markdown.extensibleMarkdown.convertToHtml.outputPath"></i>
 The option "`markdown.extension.convertToHtml.outputPath`" is ignored if its value resolves to false (empty string, `null`, `undefined`). If defined, it specifies the path relative to the current workspace directory. The effective target directory may not exist — in this case, an error message is shown. If it exists, all files are saved in the same directory. In this case, it is possible that the HTML files with identical base names but different locations may overwrite one another. The user is responsible for the suitability of the file names.
 
 ### Extensible Markdown Extension Options

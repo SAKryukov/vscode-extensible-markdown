@@ -1,13 +1,12 @@
         * { font-family: sans-serif; }
         .title { text-align: center; margin-bottom: 0; padding-bottom: 0.1em; border: none; margin-bottom: 0.4em; }
         .author { text-align: right; }
-        .demo { background-color: Cornsilk; padding-left: 1em; padding-right: 1em; border: solid thin Chocolate; }
+        .demo { background-color: Cornsilk; padding-left: 1em; padding-right: 1em;  }
         code { font-size: 120%; font-weight: bold; }
         pre, code { color: darkGreen; padding:0; font-family: sans-serif }
         pre code { color: black; font-weight: normal; font-size: 94%; }
         pre { background-color: antiqueWhite; }
         html, body, p { font-family: sans-serif; }
         .title { font-size: 140%; }
-        h2 { font-size: 120%; }
         p, h1, h2, h3, h4, h5, h6 { margin-top: 0.3em; margin-bottom: 0; border: none; }
         blockquote { border-left: solid navy 2px; padding-left: 2em; }

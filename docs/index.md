@@ -129,7 +129,7 @@ static class UtilitySet { /* ... */ }
 ~~~
 ```
 
-#### Abbreviations
+### Abbreviations
 
 This feature uses the HTML &lt;`abbr`&gt; element and the attribute `title`. Place a mouse pointer over the acronym text and see the title showing the full description of the term:
 
@@ -138,6 +138,7 @@ For example:
 ```
 *{Request for Comments}RFC*
 ```
+It renders as: *{Request for Comments}RFC*.
 
 ### Replacements
 
@@ -174,7 +175,9 @@ Dashes and minus: A -- B --- C; typographically correct minus: @minus1
 Imply: A @imply B, not: @!C
 
 Quantifiers:<br/>
-Definition of the limit of the function f(x)=b for x@rightx₀, O. L. Cauchy:<br/>
+Definition of the limit of the function f(x)=b for x@rightx₀,
+
+According to O. L. Cauchy,<br/>
 @all ε>0 @exists δ>0: @all x.<R: 0 < |x−x₀| < δ  @imply |f(x)−b| < ε
 
 Copyright (C) sign, section sign (P), registered (R) sign, trademark(TM) sign.
@@ -186,6 +189,8 @@ Typographically correct quotes: 'single', "double". Quotation characters are def
 The source markup can be found in this [demo document "replacements.md"](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/docs/vscode-workspace-sample/replacements.md), for the implementation, see [replacements.js](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/extension/replacements.js).
 
 ### Additional Custom Plugins
+
+The user can use additional "markdown-it" plug-ins by adding them using the settings element "markdown.extensibleMarkdown.options.additionalPlugins".
 
 ## Usage
 
@@ -382,7 +387,7 @@ By default, auto-numbering is not used. This is the case when both the auto-numb
 This is the representative sample of the fragment of the Markdown code using the extended syntax for passing the auto-numbering option. This is a tag that should come in the first position of the document file:
 
 ```
-&;atnumbering {
+@numbering {
     "enable": true,
     "defaultPrefix": "",
     "defaultSuffix": ". ",

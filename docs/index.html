@@ -30,41 +30,41 @@
 <p class="title">Extensible Markdown, a Visual Studio Code Extension</p><p><a href="https://www.SAKryukov.org"><em>Sergey A Kryukov</em></a></p><p>This package is the Visual Studio Code <em>extension</em> supporting <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a>. It saves Markdown as HTML and optionally provides extended Markdown syntax with the capabilities for additional user extensions.</p><p>The extension depends on the <a href="https://nodejs.org">node.js</a> Markdown parser <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> built in Visual Studio Code.</p><p>Since v. 2.0.0, the user can extend Markdown features by installing any <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> plug-ins <a href="https://www.npmjs.com/browse/keyword/markdown-it-plugin">abundantly available</a> in the <a href="https://www.npmjs.com">npm package registry</a>. All the packages can be configured from a single source: “settings.json”, <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a>.</p><h2>Contents</h2>
 <p class="toc">
 <a style="margin-left: 0em;" href="#heading-introduction-and-history">Introduction and History</a><br/>
-<a style="margin-left: 3em;" href="#heading-features">Features</a><br/>
-<a style="margin-left: 3em;" href="#heading-conversion-to-html">Conversion to HTML</a><br/>
-<a style="margin-left: 3em;" href="#heading-usage-by-plugin">Usage by Plugin</a><br/>
-<a style="margin-left: 6em;" href="#heading-includes">Includes</a><br/>
-<a style="margin-left: 6em;" href="#heading-ids-and-toc">IDs and TOC</a><br/>
-<a style="margin-left: 6em;" href="#heading-attribution">Attribution</a><br/>
-<a style="margin-left: 9em;" href="#heading-title">Title</a><br/>
-<a style="margin-left: 9em;" href="#heading-css-classes">CSS Classes</a><br/>
-<a style="margin-left: 9em;" href="#heading-arbitrary-attributes">Arbitrary Attributes</a><br/>
-<a style="margin-left: 9em;" href="#heading-abbreviations">Abbreviations</a><br/>
-<a style="margin-left: 6em;" href="#heading-replacements">Replacements</a><br/>
-<a style="margin-left: 6em;" href="#heading-additional-custom-plugins">Additional Custom Plugins</a><br/>
-<a style="margin-left: 3em;" href="#heading-usage">Usage</a><br/>
-<a style="margin-left: 6em;" href="#heading-preview">Preview</a><br/>
-<a style="margin-left: 3em;" href="#heading-extending-of-markdown-syntax">Extending of Markdown Syntax</a><br/>
-<a style="margin-left: 6em;" href="#heading-markdown-it-extensions">Markdown-it Extensions</a><br/>
-<a style="margin-left: 6em;" href="#heading-extensible-markdown-embedded-extensions">Extensible Markdown Embedded Extensions</a><br/>
-<a style="margin-left: 6em;" href="#heading-extensible-markdown-user-installed-extensions">Extensible Markdown User-Installed Extensions</a><br/>
-<a style="margin-left: 3em;" href="#heading-settings">Settings</a><br/>
-<a style="margin-left: 6em;" href="#heading-three-levels-of-settings">Three Levels of Settings</a><br/>
-<a style="margin-left: 6em;" href="#heading-general-options">General Options</a><br/>
-<a style="margin-left: 6em;" href="#heading-extensible-markdown-extension-options">Extensible Markdown Extension Options</a><br/>
-<a style="margin-left: 6em;" href="#heading-markdown-it-options">Markdown-it Options</a><br/>
-<a style="margin-left: 6em;" href="#heading-settings-sample">Settings Sample</a><br/>
-<a style="margin-left: 3em;" href="#heading-advanced-usage-and-settings">Advanced Usage and Settings</a><br/>
-<a style="margin-left: 6em;" href="#heading-typographer">Typographer</a><br/>
-<a style="margin-left: 6em;" href="#heading-detecting-document-title">Detecting Document Title</a><br/>
-<a style="margin-left: 6em;" href="#heading-file-includes">File Includes</a><br/>
-<a style="margin-left: 6em;" href="#heading-syntax-coloring">Syntax Coloring</a><br/>
-<a style="margin-left: 6em;" href="#heading-auto-numbering">Auto-Numbering</a><br/>
-<a style="margin-left: 6em;" href="#heading-simplified-auto-numbering-options-format">Simplified Auto-Numbering Options Format</a><br/>
-<a style="margin-left: 3em;" href="#heading-additional-plug-ins">Additional Plug-ins</a><br/>
-<a style="margin-left: 6em;" href="#heading-installation">Installation</a><br/>
-<a style="margin-left: 6em;" href="#heading-customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a><br/>
-</p><h1 id="heading-introduction-and-history">Introduction and History</h1>
+<a style="margin-left: 0em;" href="#heading-features">Features</a><br/>
+<a style="margin-left: 0em;" href="#heading-conversion-to-html">Conversion to HTML</a><br/>
+<a style="margin-left: 0em;" href="#heading-usage-by-plugin">Usage by Plugin</a><br/>
+<a style="margin-left: 3em;" href="#heading-includes">Includes</a><br/>
+<a style="margin-left: 3em;" href="#heading-ids-and-toc">IDs and TOC</a><br/>
+<a style="margin-left: 3em;" href="#heading-attribution">Attribution</a><br/>
+<a style="margin-left: 6em;" href="#heading-title">Title</a><br/>
+<a style="margin-left: 6em;" href="#heading-css-classes">CSS Classes</a><br/>
+<a style="margin-left: 6em;" href="#heading-arbitrary-attributes">Arbitrary Attributes</a><br/>
+<a style="margin-left: 6em;" href="#heading-abbreviations">Abbreviations</a><br/>
+<a style="margin-left: 3em;" href="#heading-replacements">Replacements</a><br/>
+<a style="margin-left: 3em;" href="#heading-additional-custom-plugins">Additional Custom Plugins</a><br/>
+<a style="margin-left: 0em;" href="#heading-usage">Usage</a><br/>
+<a style="margin-left: 3em;" href="#heading-preview">Preview</a><br/>
+<a style="margin-left: 0em;" href="#heading-extending-of-markdown-syntax">Extending of Markdown Syntax</a><br/>
+<a style="margin-left: 3em;" href="#heading-markdown-it-extensions">Markdown-it Extensions</a><br/>
+<a style="margin-left: 3em;" href="#heading-extensible-markdown-embedded-extensions">Extensible Markdown Embedded Extensions</a><br/>
+<a style="margin-left: 3em;" href="#heading-extensible-markdown-user-installed-extensions">Extensible Markdown User-Installed Extensions</a><br/>
+<a style="margin-left: 0em;" href="#heading-settings">Settings</a><br/>
+<a style="margin-left: 3em;" href="#heading-three-levels-of-settings">Three Levels of Settings</a><br/>
+<a style="margin-left: 3em;" href="#heading-general-options">General Options</a><br/>
+<a style="margin-left: 3em;" href="#heading-extensible-markdown-extension-options">Extensible Markdown Extension Options</a><br/>
+<a style="margin-left: 3em;" href="#heading-markdown-it-options">Markdown-it Options</a><br/>
+<a style="margin-left: 3em;" href="#heading-settings-sample">Settings Sample</a><br/>
+<a style="margin-left: 0em;" href="#heading-advanced-usage-and-settings">Advanced Usage and Settings</a><br/>
+<a style="margin-left: 3em;" href="#heading-typographer">Typographer</a><br/>
+<a style="margin-left: 3em;" href="#heading-detecting-document-title">Detecting Document Title</a><br/>
+<a style="margin-left: 3em;" href="#heading-file-includes">File Includes</a><br/>
+<a style="margin-left: 3em;" href="#heading-syntax-coloring">Syntax Coloring</a><br/>
+<a style="margin-left: 3em;" href="#heading-auto-numbering">Auto-Numbering</a><br/>
+<a style="margin-left: 3em;" href="#heading-simplified-auto-numbering-options-format">Simplified Auto-Numbering Options Format</a><br/>
+<a style="margin-left: 0em;" href="#heading-additional-plug-ins">Additional Plug-ins</a><br/>
+<a style="margin-left: 3em;" href="#heading-installation">Installation</a><br/>
+<a style="margin-left: 3em;" href="#heading-customization-of-additional-plug-ins">Customization of Additional Plug-Ins</a><br/>
+</p><h2 id="heading-introduction-and-history">Introduction and History</h2>
 <p>The first article on this component was published in 2017: <a href="https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode">All in One Toolchain for Article Writing with Visual Studio Code</a>.</p><p>Initially, the main reason for the creation of this tool was my desire to write CodeProject articles offline from the beginning to the end, and then post them with the help of the article submission wizard in one shot, just by a single paste of the HTML code.</p><p>The tool I wanted to use was Visual Studio Code (VSCode) and its embedded implementation of Markdown, <a href="https://github.com/markdown-it/markdown-it">markdown-it</a>. My initial problem was the export of already rendered HTML code.</p><p>It worked well for me, a lot better than any other method. First of all, it ensured internal consistency of the entire document, first of all, due to the new features I added to the “markdown-it” plugin: automatic generation of the <code>id</code> attributes of the headings and automatic generation of the Table of Contents (TOC).</p><p>However, even with this generation, my article-writing practice revealed, that this is not quite enough. I still had the submission in one shot, but I had a certain number of fragments to be written in HTML, more than I wanted to. First of all, it was related to the need to reference some elements other than headings, especially source code samples. A big annoyance was the manual correction of the TOC styles. These requirements were well beyond the standard Markdown syntax. This way, to <em>wikify</em> the source code more, I stepped on the shaky way of extending the syntax. After all, it worked out pretty well, but through some stages of development.</p><p>Since that time, the extension has changed radically, doubled the number of features, and became more regular. It requires a lot more documentation. I also collected a lot more experience.</p><p>In addition to CodeProject articles, I found that VSCode with Markdown is the best way to write all kinds of documents. It was everything from small “readme” and git comments to pretty big chunks of documentation written to several companies, and even some private letters or chat posts.</p><p>I decided to forget all kinds of Office products and never get back to them. I even created two variants of the product successfully replacing those bulky Office presentation applications and published both of them on CodeProject: <a href="https://www.codeproject.com/Articles/5286790/Web-Presentation-an-Application-in-a-Single-File">Web Presentation, an Application in a Single File</a>, and <a href="https://www.codeproject.com/Articles/5290221/Web-Presentation-the-Other-Way-Around">Web Presentation, the Other Way Around</a>.</p><p>For these reasons, I reworked my <a href="https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode">original article</a> on the toolchain into an article focused on the specific requirement of CodeProject and added the present article to serve as the product documentation.</p><p>One of the worst problems was that the VSCode extension API broke backward compatibility at least twice. My extension was published on the <a href="https://marketplace.visualstudio.com/VSCode">Microsoft Marketplace</a>, and the users started to complain. I had to remove the extension from the marketplace and started to use the product for my own needs with the obsolete VSCode versions. After two fixes related to broken backward compatibility, I reviewed all parts of the code, added a good number of features, and fixes, and published the product under a new name. Indeed, originally it was a Markdown converter to HTML, but later it grew into a feature-rich extension, with extended Markdown syntax.</p><p>More importantly, the extension is itself extensible, hence the name. With Extensible Markdown, a user can configure additional markdown-it plugins. Any existing markdown-it plugins found on node.js <a href="https://www.npmjs.com">npm</a> can be used, or the user can write some new extensions, which is not an easy task though.</p><h2 id="heading-features">Features</h2>
 <ul data-line="40" class="code-line" dir="auto">
 <li>Conversion of an individual file or all Markdown files of the current Visual Studio Code workspace;</li>

@@ -12,7 +12,7 @@ Since v.&thinsp;2.0.0, the user can extend Markdown features by installing any [
 
 @toc
 
-# Introduction and History
+## Introduction and History
 
 The first article on this component was published in 2017: [All in One Toolchain for Article Writing with Visual Studio Code](https://www.codeproject.com/Articles/1194125/Article-Writing-Toolchain-with-VSCode).
 

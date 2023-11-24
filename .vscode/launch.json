@@ -7,7 +7,7 @@
             ],
             "name": "Launch Extension",
             "request": "launch",
-            "type": "pwa-extensionHost"
+            "type": "extensionHost"
         },
     ]
 }

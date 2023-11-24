@@ -29,35 +29,32 @@ exports.activate = context => {
     const replacements = require("./replacements");
 
     const importContext = { vscode: vscode, util: util, utility: utility, fs: fs, path: path, markdownId: markdownId };
-    const lazy = { lastErrorChannel: null, markdownIt: undefined, settings: undefined, decorationTypeSet: [] };
+    const lazy = { lastErrorChannel: null, markdownIt: undefined, decorationTypeSet: [] };
 
     const htmlTemplateSet = setup.getHtmlTemplateSet(path, fs, encoding);
-    
+
     const transcodeText = (text, fileName, css, embedCss, rootPath) => {
-        let tokenList = lazy.markdownIt.parse(text, {});
-        //const imageSet = { containingImages: [] }; SA??? worked in older versions
-        const imageSet = {};
-        const options = Object.assign({}, lazy.markdownIt.options);
-        let result = lazy.markdownIt.renderer.render(tokenList, options, imageSet);
-        let style = "";
+        importContext.fileName = fileName;
+        let result = lazy.markdownIt.render(text);
+        importContext.fileName = null;
+        let style = [];
         for (let index = 0; index < css.length; ++index) {
             if (embedCss) {
                 const absolute = path.join(rootPath, css[index]);
                 let cssCode = util.format(htmlTemplateSet.notFoundCss, absolute);
                 if (fs.existsSync(absolute))
                     cssCode = fs.readFileSync(absolute, encoding);
-                style += util.format(htmlTemplateSet.embeddedStyle, cssCode);
+                style.push(util.format(htmlTemplateSet.embeddedStyle, cssCode));
             } else {
                 const relativePath = path.relative(path.dirname(fileName), rootPath);
                 const relative =  path.join(relativePath, css[index])
                     .replace(/\\/g, commonDirectorySeparator);
                 style += util.format(htmlTemplateSet.style, relative);
             } //if
-            if (index < css.length - 1) style += "\n";
         } //loop
         return util.format(htmlTemplateSet.html,
             setup.documentTitle ? setup.documentTitle : `Converted from: ${path.basename(fileName)}`,
-            style,
+            style.join("\n"),
             result);
     }; //transcodeText
 
@@ -90,6 +87,9 @@ exports.activate = context => {
             lazy.lastErrorChannel.appendLine(stringEmpty);
             if (settings.thisExtensionSettings.convertToHtml.showHtmlInBrowser)
                 childProcess.exec(outputs[index]);
+            if (settings.thisExtensionSettings.convertToHtml.openHtml && count == 1)
+                    vscode.workspace.openTextDocument(outputs[index]).then(document =>
+                        vscode.window.showTextDocument(document));
         } //loop
         if (count > 1)
             lazy.lastErrorChannel.appendLine(`${count} Markdown files files converted to HTML`);
@@ -97,7 +97,7 @@ exports.activate = context => {
     }; //successAction
 
     const command = action => {
-        try {
+        try {            
             if (!vscode.workspace.workspaceFolders) {
                 vscode.window.showWarningMessage("No workspace. Use File -> Open Folder...");
                 return;

@@ -1,1 +1,1 @@
-        // not found: "%s"
+        /* not found: "%s" */

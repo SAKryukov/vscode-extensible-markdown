@@ -2,7 +2,7 @@
     "name": "extensible-markdown",
     "displayName": "Extensible Markdown",
     "description": "Converts Markdown to HTML and saves in files, implements TOC with optional heading auto-numbering, HTML abbreviations, attributes, additional substitutions and can be extended by any of the markdown-it plug-ins",
-    "version": "8.3.1",
+    "version": "8.3.2",
     "publisher": "sakryukov",
     "homepage": "http://www.SAKryukov.org",
     "author": {
@@ -25,8 +25,7 @@
         "markdown"
     ],
     "activationEvents": [
-        "onLanguage:markdown",
-        "onCommand:extensible.markdown.convertToHtml.all"
+        "onLanguage:markdown"
     ],
     "main": "./extension/main.js",
     "contributes": {
@@ -58,6 +57,16 @@
             }
         ],
         "menus": {
+            "commandPalette": [
+                {
+                  "command": "extensible.markdown.convertToHtml",
+                  "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
+                },
+                {
+                    "command": "extensible.markdown.convertToHtml.all",
+                    "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
+                }  
+            ],
             "editor/title": [
                 {
                     "when": "resourceLangId == markdown && ExtensibleMarkdownReady",
@@ -89,6 +98,11 @@
             "type": "object",
             "title": "Extensible Markdown",
             "properties": {
+                "markdown.extensibleMarkdown.convertToHtml.openHtml": {
+                    "description": "Upon successful conversion to HTML file, open it in VSCode workspace; this option is ignored if there are more then one file",
+                    "type": "boolean",
+                    "default": false
+                },
                 "markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser": {
                     "description": "Upon successful conversion to HTML file, show it in the default Web browser",
                     "type": "boolean",

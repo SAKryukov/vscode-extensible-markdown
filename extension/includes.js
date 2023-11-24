@@ -3,6 +3,7 @@
 module.exports = (md, options) => {
 
     const locatorRegex = options.importContext.utility.createOptionalRegExp(options.includes.locatorRegex, true);
+    const importContext = options.importContext;
     if (!locatorRegex) return;
 
     const formatMessage = (formatString, text, normalizePath) =>  {
@@ -12,7 +13,10 @@ module.exports = (md, options) => {
     }; //formatMessage
 
     const readFileContent = match => {
-        const documentPath = options.importContext.path.dirname(options.importContext.vscode.window.activeTextEditor.document.fileName);
+        const sourcefileName = importContext.fileName == null
+            ? options.importContext.vscode.window.activeTextEditor.document.fileName
+            : importContext.fileName;
+        const documentPath = options.importContext.path.dirname(sourcefileName);
         const fileName = options.importContext.path.join(documentPath, match.file);
         if (! (options.importContext.fs.existsSync(fileName) && options.importContext.fs.lstatSync(fileName).isFile()))
             return formatMessage(options.includes.fileNotFoundMessageFormat, fileName, true);
@@ -38,7 +42,7 @@ module.exports = (md, options) => {
     }; //replaceIncludes
 
     md.core.ruler.before("normalize", "sourceIncludes", state => {
-        state.src = replaceIncludes(state.src); 
+        state.src = replaceIncludes(state.src);
     }); //before normalize
 
 }; //module.exports

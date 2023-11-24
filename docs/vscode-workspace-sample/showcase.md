@@ -6,7 +6,7 @@ Article Title{title}
 @toc
 ## Superscripts and Subscripts
 
-As we know, E = mc^2^
+As we know, E = mc^2^ {id=emc2}
 
 Indices: A~m,n~ = B~j,k~ 
 ## File Includes

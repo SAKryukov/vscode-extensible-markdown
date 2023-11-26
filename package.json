@@ -49,18 +49,19 @@
             {
                 "command": "extensible.markdown.convertToHtml",
                 "key": "alt+Q",
-                "when": "editorTextFocus"
+                "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
             },
             {
                 "command": "extensible.markdown.convertToHtml.all",
-                "key": "alt+A"
+                "key": "alt+A",
+                "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
             }
         ],
         "menus": {
             "commandPalette": [
                 {
-                  "command": "extensible.markdown.convertToHtml",
-                  "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
+                    "command": "extensible.markdown.convertToHtml",
+                    "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
                 },
                 {
                     "command": "extensible.markdown.convertToHtml.all",

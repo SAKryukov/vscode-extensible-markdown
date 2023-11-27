@@ -18,8 +18,6 @@ Advanced Auto-Numbering{title}{.title}
 
 @toc
 
-a -- a, b --- b, "c"
-
 @include(body.md)
 
 # Fifth Top-Level Heading: out of Chapter Names

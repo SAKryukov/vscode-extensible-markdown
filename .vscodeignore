@@ -1,0 +1,7 @@
+*.zip
+*.vsix
+.vscode
+.git
+**/.gitignore
+CHANGELOG.*
+

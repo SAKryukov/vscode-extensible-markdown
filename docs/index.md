@@ -265,7 +265,41 @@ The configuration option ["`markdown.extension.convertToHtml.options.additionalP
 
 ## Settings
 
+SA???
+General:
+convertToHtml.openHtml
+convertToHtml.showHtmlInBrowser
+convertToHtml.embedCss
+convertToHtml.outputPath
+
+Syntax and related CSS:
+titleClassName, titleLocatorRegex, titleLocatorDecoratorStyle
+abbreviationRegex, abbreviationDecoratorRegex, abbreviationDecoratorStyle
+attributeRegex, attributeDecoratorStyle, 
+cssClassRegex, cssClassDecoratorStyle,
+includes.locatorRegex, includes.locatorDecoratorStyle
+(Includes errors: includes.invalidRegexMessageFormat, includes.fileNotFoundMessageFormat, includes.fileReadFailureMessageFormat)
+TOC.regex, TOC.decoratorStyle, TOC.excludeHeaderRegex, excludeHeader.DecoratorStyle
+TOC.autoNumberingRegex, TOC.autoNumberingDecoratorStyle
+
+HTML generation:
+headingIdPrefix
+TOC.itemIndentInEm
+TOC.includeLevels
+TOC.containerClass
+TOC.autoNumbering.brokenHierarchy
+
+Control for the markdown-it options:
+options.allowHTML, options.typographer, 
+options.smartQuotes
+
+New options:
+options.typographerExtensions
+options.additionalPlugins
+
 ### Three Levels of Settings
+
+SA???
 
 There are three levels of settings. The user of this extension can control them all.
 

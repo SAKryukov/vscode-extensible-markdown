@@ -12,8 +12,6 @@ Plus/minus: 10+-0.1, 16.2-+0.1
 
 Parallel of not: v||w, a!||b
 
-Almost equal or not: d ~~ 10.4 mm, a !~~ b
-
 Strictly equivalent: f===h
 
 Identical or not: F==G but A !== B

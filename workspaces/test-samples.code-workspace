@@ -1,0 +1,42 @@
+{
+	"folders": [
+		{
+			"path": "../docs/vscode-workspace-sample"
+		}
+	],
+	"settings": {
+		"markdown.extensibleMarkdown.options.additionalPlugins": {
+			"absolutePath": "/app/Node.js/node_modules",
+			"plugins": [
+				{
+					"name": "markdown-it-sub",
+					"enable": true,
+					"syntacticDecorators": [
+						{
+							"enable": true,
+							"regexString": "\\~(.*?)\\~",
+							"tooltipFormat": "Subscript: %s",
+							"style": {
+								"backgroundColor": "lightSkyBlue"
+							}
+						}
+					]
+				},
+				{
+					"name": "markdown-it-sup",
+					"enable": true,
+					"syntacticDecorators": [
+						{
+							"enable": true,
+							"regexString": "\\^(.*?)\\^",
+							"tooltipFormat": "Superscript: %s",
+							"style": {
+								"backgroundColor": "aqua"
+							}
+						}
+					]
+				}
+			]
+		}
+	}
+}

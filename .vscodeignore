@@ -1,3 +1,5 @@
+docs
+workspaces
 *.zip
 *.vsix
 .vscode

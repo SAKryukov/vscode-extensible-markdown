@@ -4,10 +4,10 @@
     "description": "Converts Markdown to HTML and saves in files, implements TOC with optional heading auto-numbering, HTML abbreviations, attributes, and additional substitutions and can be extended by any of the markdown-it plug-ins",
     "version": "8.3.2",
     "publisher": "sakryukov",
-    "homepage": "http://www.SAKryukov.org",
+    "homepage": "https://www.SAKryukov.org",
     "author": {
         "name": "Sergey A Kryukov",
-        "url": "http://www.SAKryukov.org"
+        "url": "https://www.SAKryukov.org"
     },
     "license": "MIT",
     "icon": "images/logo.png",

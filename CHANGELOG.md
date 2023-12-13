@@ -1,10 +1,10 @@
 # Changelog
 
-Version 5.8.1
+## Version 5.8.1
 
 * Improved slugify; now all blank spaces in id values are rendered as '-'
 
-Version 5.8.0
+## Version 5.8.0
 
 * Introduced simplified new format for in-document auto-numbering options
 

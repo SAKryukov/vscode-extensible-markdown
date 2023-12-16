@@ -34,27 +34,14 @@
             {
                 "command": "extensible.markdown.convertToHtml",
                 "title": "Markdown: Convert to HTML",
-
                 "icon": {
-                    "dark": "images/logo.svg",
+                    "dark": "images/logo.png",
                     "light": "images/logo.png"
                 }
             },
             {
                 "command": "extensible.markdown.convertToHtml.all",
                 "title": "Markdown: Convert to HTML all .md files in Workspace"
-            }
-        ],
-        "keybindings": [
-            {
-                "command": "extensible.markdown.convertToHtml",
-                "key": "alt+Q",
-                "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
-            },
-            {
-                "command": "extensible.markdown.convertToHtml.all",
-                "key": "alt+A",
-                "when": "resourceLangId == markdown && ExtensibleMarkdownReady"
             }
         ],
         "menus": {
@@ -75,15 +62,17 @@
                     "group": "navigation"
                 }
             ],
+            "editor/title/context": [
+                {
+                    "when": "resourceLangId == markdown && ExtensibleMarkdownReady",
+                    "command": "extensible.markdown.convertToHtml",
+                    "group": "markdown"
+                }
+            ],
             "editor/context": [
                 {
                     "when": "editorTextFocus && resourceLangId == markdown && ExtensibleMarkdownReady",
                     "command": "extensible.markdown.convertToHtml",
-                    "group": "markdown"
-                },
-                {
-                    "when": "editorTextFocus && ExtensibleMarkdownReady",
-                    "command": "extensible.markdown.convertToHtml.all",
                     "group": "markdown"
                 }
             ],

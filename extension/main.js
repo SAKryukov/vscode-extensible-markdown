@@ -13,7 +13,6 @@ exports.activate = context => {
     const commonDirectorySeparator = "/";
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
-    const extensionManifestFileName = "package.json";
     const typographerExtensionsRule = "extended_replacements";
 
     const vscode = require("vscode");

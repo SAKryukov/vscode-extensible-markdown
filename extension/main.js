@@ -299,12 +299,7 @@ exports.activate = context => {
         }));
 
     const activationExceptionHandler = ex => {
-        const getManifest = () => {
-            const pathName = path.join(context.extensionPath, extensionManifestFileName);
-            const content = fs.readFileSync(pathName).toString();
-            return JSON.parse(content);
-        } //getManifest            
-        vscode.window.showErrorMessage(`${getManifest().displayName}: activation failed`);
+        vscode.window.showErrorMessage(`${context.extension.packageJSON.displayName}: activation failed`);
         if (lazy.lastErrorChannel)
             lazy.lastErrorChannel.clear();
         else

@@ -13,7 +13,6 @@ exports.activate = context => {
     const commonDirectorySeparator = "/";
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
-    const extensionManifestFileName = "package.json";
     const typographerExtensionsRule = "extended_replacements";
 
     const vscode = require("vscode");
@@ -299,12 +298,7 @@ exports.activate = context => {
         }));
 
     const activationExceptionHandler = ex => {
-        const getManifest = () => {
-            const pathName = path.join(context.extensionPath, extensionManifestFileName);
-            const content = fs.readFileSync(pathName).toString();
-            return JSON.parse(content);
-        } //getManifest            
-        vscode.window.showErrorMessage(`${getManifest().displayName}: activation failed`);
+        vscode.window.showErrorMessage(`${context.extension.packageJSON.displayName}: activation failed`);
         if (lazy.lastErrorChannel)
             lazy.lastErrorChannel.clear();
         else

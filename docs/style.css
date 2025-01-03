@@ -1,16 +1,1 @@
-        * { font-family: sans-serif; }
-        .title { text-align: center; margin-bottom: 1em; border-bottom: thin lightGray solid; }
-        .author { text-align: right; }
-        code { font-size: 120%; font-weight: bold; }
-        pre, code { color: darkGreen; padding:0; font-family: 'Consolas', 'Ubuntu Mono', monospace; }
-        pre code { color: black; font-weight: normal; font-size: 94%; }
-        pre { background-color: antiqueWhite; }
-        h1, h2, h3, h4, h5, h6 { border: none; margin-top: 1em; margin-bottom: 0.4em; }
-        blockquote { margin-left: 2em; }
-        p.title { font-size: 250%; }
-        h2 { font-size: 215%; }
-        h3 { font-size: 160%; }
-        h4 { font-size: 116%; }
-        table { border-collapse: collapse; }
-        td, th { border: solid thin black; padding-left: 1em; padding-right: 1em; vertical-align: top; }
-        th { background-color: lightGray; }
+        @import url(https://SAKryukov.github.io/publications/code/documentation.css);

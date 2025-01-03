@@ -1,6 +1,10 @@
 # Changelog
 
-## Version 5.8.1
+## Version 8.3.2
+
+The publication moved to GitHub (CodeProject is out of business, publications are accessible but not updateable)
+
+## Version 8.3.1
 
 * Improved slugify; now all blank spaces in id values are rendered as '-'
 

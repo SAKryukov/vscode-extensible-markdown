@@ -1,1 +1,5 @@
         @import url(https://SAKryukov.github.io/publications/code/documentation.css);
+        table, td, th { border: solid thin black; border-collapse: collapse; font-size: 120%; font-weight: normal; }
+        td, th  { vertical-align: middle; padding-left: 0.4em; padding-right: 0.4em; }
+        th { background-color: lightblue; }
+        table { width: 100% }

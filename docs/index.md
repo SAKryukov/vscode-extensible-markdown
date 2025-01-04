@@ -59,9 +59,9 @@ The embedded plugins are: "Includes", "IDs and TOC", "Attribution", and "Replace
 
 An .md file can include one or more Markdown fragments placed in separate files. The syntax is:
 
-```
-@include(file name)
-```
+~~~{lang=Markdown}
+<span class="keyword highlighter">@include</span>(file name)    
+~~~
 
 The markup should go without blank spaces, no blank spaces in the file name are accepted. If the is found, the Markdown content of the file is rendered, otherwise, the detailed error message is rendered.
 
@@ -71,23 +71,23 @@ In all cases, `id` attributes are generated for all headings (`#`, `##`, and so 
 
 This markup is the placeholder for TOC:
 
-```
-@toc
-```
+~~~{lang=Markdown}
+<span class="keyword highlighter">@toc</span>
+~~~
 
 Any heading can be excluded from TOC. Usually, it is used for the heading "Contents". To exclude a heading from TOC, the markup `{no-toc}` can be added on the same line, for example:
 
-```
-## Some Heading{no-toc}
-```
+~~~{lang=Markdown}
+<span class="keyword highlighter">##</span> Some Heading<span class="keyword highlighter">{no-toc}</span>
+~~~
 
 Also, the headings of certain *levels* can be excluded from TOC. It is useful for deeper nesting levels. For example, in this "settings.json" file only the headers of two levels are included in TOC, `##` and `###`:
 
-```
-{
-    "markdown.extensibleMarkdown.TOC.includeLevels": [ 2, 3 ]
-}
-```
+~~~{lang=JSON}
+<span class="operator highlighter">{</span>
+    <span class="property highlighter">"markdown.extensibleMarkdown.TOC.includeLevels"</span>: <span class="operator highlighter">[</span> 2, 3 <span class="operator highlighter">]</span>
+<span class="operator highlighter">}</span>
+~~~
 
 For the implementation, see [id.toc.js](https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/extension/id.toc.js).
 
@@ -99,34 +99,34 @@ For the implementation see [attribution.js](https://github.com/SAKryukov/vscode-
 
 The attribute `title` marks a paragraph playing the role of the document title. It is used to indicate the string used as the header title in the generated HTML document. Also, it sets up a special CSS class for this paragraph. The name for this class can be specified in settings: Markdown > Extensible Markdown > Title Class Name. For example:
 
-```
-My Story{title}
-```
+~~~{lang=Markdown}
+My Story<span class="keyword highlighter">{title}</span>
+~~~
 
 #### CSS Classes
 
 The attribute starting with a dot, `.class_name` can be used to add a `class` attribute to a paragraph or a header. I should be placed on the same line. A class name should not contain space characters. Multiple classes can be specified for the same element; in this case, each class should go in a separate pair of `{}` brackets.
 
 For example:
-```
-Sergey A Kryukov{.author}
+~~~{lang=Markdown}
+Sergey A Kryukov<span class="keyword highlighter">{.author}<span>
 
-Demo class{.demo}
+Demo class<span class="keyword highlighter">{.demo}<span>
 
-Multiple classes{.demo}{.author}
-```
+Multiple classes<span class="keyword highlighter">{.demo}{.author}<span>
+~~~
 
 #### Arbitrary Attributes
 
 An arbitrary attribute can be added to an element in the form `name=value`. It is especially used for the fenced code blocks. For example, CodeProject requires the attribute `lang` to be used for syntax highlighting. The `id` attribute is useful when it is required to create an anchor in the article to reference code samples or some other elements.
 
 For example:
-```
-Some paragraph {id=paragraph-of-interest}
+```{lang=Markdown}
+Some paragraph <span class="keyword highlighter">&#123;id=paragraph-of-interest&#125;</span>
 
-~~~ {lang=C#}{id=code.utilitySet}
+<span class="keyword highlighter">~~~</span> <span class="keyword highlighter">&#123;lang=C#&#125;&#123;id=code.utilitySet&#125;</span>
 static class UtilitySet { /* ... */ }
-~~~
+<span class="keyword highlighter">~~~</span>
 ```
 
 ### Abbreviations
@@ -135,10 +135,10 @@ This feature uses the HTML &lt;`abbr`&gt; element and the attribute `title`. Pla
 
 For example:
 
-```
+~~~{lang=Markdown}
 *{Request for Comments}RFC*
-```
-It renders as: *{Request for Comments}RFC*.
+~~~
+It renders as: <span class="keyword highlighter">*{</span>Request for Comments<span class="keyword highlighter">}</span>RFC*.
 
 ### Replacements
 
@@ -232,24 +232,25 @@ Document title needs detection because HTML requires a text value for the `title
 
 The default syntax for title detection is:
 
-```
-The Name of The Document{title}
-```
+~~~{lang=Markdown}
+The Name of The Document<span class="keyword highlighter">{title}</span>
+~~~
 
 In this example, the text "The Name of The Document" is copied to the HTML `title`.
 
 The default syntax for the file *include* is: {id=special.include.file}
 
-```
-@include(file-name)
-// file-name expression should come without blank space characters
-```
+~~~{lang=Markdown}
+<span class="keyword highlighter">@include</span>(file-name)
+~~~
 
-A new feature in version 5.0.0 is the "no toc" tag. It is used to exclude some headings from the TOC. It can be important for headings like "Contents" or "Table of Contents". The default syntax for this tag is:
+The `file-name` expression should come without blank space characters.
 
-```
-{notoc}
-```
+A new feature in version 5.0.0 is the `no-toc` tag. It is used to exclude some headings from the TOC. It can be important for headings like "Contents" or "Table of Contents". The default syntax for this tag is:
+
+~~~{lang=Markdown}
+<span class="keyword highlighter">{no-toc}</span>
+~~~
 
 This tag works if it is placed at the end of a heading line. 
 
@@ -265,7 +266,6 @@ The configuration option ["`markdown.extension.convertToHtml.options.additionalP
 
 ## Settings
 
-SA???
 General:
 convertToHtml.openHtml
 convertToHtml.showHtmlInBrowser
@@ -299,8 +299,6 @@ options.additionalPlugins
 
 ### Three Levels of Settings
 
-SA???
-
 There are three levels of settings. The user of this extension can control them all.
 
 1. [General options](#heading-general-options) control the behavior of command and detail of the HTML output unrelated to Markdown formatting.
@@ -332,7 +330,7 @@ The option "`markdown.extension.convertToHtml.outputPath`" is ignored if its val
 | markdown.extension.convertToHtml.options.headingId | true | Enables or the generation of the `id` attributes for `h1`.. `h6` elements |
 | markdown.extension.convertToHtml.options.headingIdPrefix | `heading.` | If the generation of the `id` attributes is enabled, the heading is added to each `id` value of each `h1`.. `h6` element |
 | markdown.extension.convertToHtml.tocRegex | `^\[\]\(toc\)` | Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed |
-| markdown.extension.convertToHtml.excludeFromTocRegex | `\\[\\]\\(notoc\\)` | Marks the heading elements to be excluded from TOC |
+| markdown.extension.convertToHtml.excludeFromTocRegex | `\\[\\]\\(no-toc\\)` | Marks the heading elements to be excluded from TOC |
 | markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle | see "settings.json" sample | CSS style for syntax coloring of the tag marking a heading to be excluded from TOC |
 | markdown.extension.convertToHtml.tocDecoratorStyle | see "settings.json" sample | CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing |
 | markdown.extension.convertToHtml.tocIncludeLevels | [1, 2, 3, 4, 5, 6] | Defines the level of the headers to be included in TOC |
@@ -369,9 +367,46 @@ The value of the option "`markdown.extension.convertToHtml.options.smartQuotes`"
 
 This is the sample fragment of the file "settings.json" file ([user or workspace settings](https://code.visualstudio.com/docs/getstarted/settings)):{id=special-settings.json}
 
-```json
-@include(vscode-workspace-sample/.vscode/settings.json)
-```
+~~~{lang=JSON}
+<span class="operator highlighter">{</span>
+    <span class="property highlighter">"markdown.preview.scrollEditorWithPreview"</span>: false,
+    <span class="property highlighter">"markdown.preview.scrollPreviewWithEditor"</span>: false,
+    <span class="property highlighter">"editor.minimap.enabled"</span>: false,
+    <span class="property highlighter">"markdown.styles"</span>: <span class="operator highlighter">[</span>
+        <span class="literal string highlighter">"style.css"</span>
+    <span class="operator highlighter">]</span>,
+    <span class="property highlighter">"markdown.extensibleMarkdown.options.additionalPlugins"</span>: <span class="operator highlighter">{</span>
+        <span class="property highlighter">"absolutePath"</span>: <span class="literal string highlighter">"/app/Node.js/node_modules"</span>,
+        <span class="property highlighter">"plugins"</span>: <span class="operator highlighter">[</span>
+            <span class="operator highlighter">{</span>
+                <span class="property highlighter">"name"</span>: <span class="literal string highlighter">"markdown-it-sub"</span>,
+                <span class="property highlighter">"enable"</span>: true,
+                <span class="property highlighter">"syntacticDecorators"</span>: <span class="operator highlighter">[</span>
+                    <span class="operator highlighter">{</span>
+                        <span class="property highlighter">"enable"</span>: true,
+                        <span class="property highlighter">"regexString"</span>: <span class="literal string highlighter">"\\~(.*?)\\~"</span>,
+                        <span class="property highlighter">"tooltipFormat"</span>: <span class="literal string highlighter">"Subscript: %s"</span>,
+                        <span class="property highlighter">"style"</span>: <span class="operator highlighter">{</span> <span class="property highlighter">"backgroundColor"</span>: <span class="literal string highlighter">"lightSkyBlue"</span> <span class="operator highlighter">}</span>
+                    <span class="operator highlighter">}</span>
+                <span class="operator highlighter">]</span>
+            <span class="operator highlighter">}</span>,
+            <span class="operator highlighter">{</span>
+                <span class="property highlighter">"name"</span>: <span class="literal string highlighter">"markdown-it-sup"</span>,
+                <span class="property highlighter">"enable"</span>: true,
+                <span class="property highlighter">"syntacticDecorators"</span>: <span class="operator highlighter">[</span>
+                    <span class="operator highlighter">{</span>
+                        <span class="property highlighter">"enable"</span>: true,
+                        <span class="property highlighter">"regexString"</span>: <span class="literal string highlighter">"\\^(.*?)\\^"</span>,
+                        <span class="property highlighter">"tooltipFormat"</span>: <span class="literal string highlighter">"Superscript: %s"</span>,
+                        <span class="property highlighter">"style"</span>: <span class="operator highlighter">{</span> <span class="property highlighter">"backgroundColor"</span>: <span class="literal string highlighter">"aqua"</span> <span class="operator highlighter">}</span>
+                    <span class="operator highlighter">}</span>
+                <span class="operator highlighter">]</span>
+            <span class="operator highlighter">}</span>
+        <span class="operator highlighter">]</span>
+    <span class="operator highlighter">}</span>,
+    <span class="property highlighter">"markdown.preview.typographer"</span>: true
+<span class="operator highlighter">}</span>
+~~~
 
 The extension also uses "`markdown.styles`" option related to the extension "VS Code Markdown".
 If one or more CSS files are defined, they are used in the generated HTML files as *external* or *embedded* style sheets, depending on the option "`markdown.extension.convertToHtml.embedCss`". The user is responsible for supplying the CSS files themselves.
@@ -420,13 +455,13 @@ By default, auto-numbering is not used. This is the case when both the auto-numb
 
 This is the representative sample of the fragment of the Markdown code using the extended syntax for passing the auto-numbering option. This is a tag that should come in the first position of the document file:
 
-```
-@numbering {
-    "enable": true,
-    "defaultPrefix": "",
-    "defaultSuffix": ". ",
-    "defaultStart": 1,
-    "defaultSeparator": ".",
+~~~{lang=Markdown}
+<span class="keyword highlighter">@numbering</span> {
+    "<span class="property highlighter">enable</span>": true,
+    "<span class="property highlighter">defaultPrefix</span>": "",
+    "<span class="property highlighter">defaultSuffix</span>": ". ",
+    "<span class="property highlighter">defaultStart</span>": 1,
+    "<span class="property highlighter">defaultSeparator</span>": ".",
     "pattern": [
         { "start": 1 },
         { "prefix": "Chapter ", "start": 1 },
@@ -435,15 +470,15 @@ This is the representative sample of the fragment of the Markdown code using the
         { "suffix": ") ", "start": "a", "separator":".", "standAlong":true }
     ]
 }
-```
+~~~
 
 With default settings, the minimum in-document content of the in-document auto-numbering specification would be:
 
-```
-@numbering {
-    "enable": true
+~~~{lang=Markdown}
+<span class="keyword highlighter">@numbering</span> {
+    "<span class="property highlighter">enable</span>": true
 }
-```
+~~~
 
 First of all, all options come on two levels: general for the entire document (named `default*`) and per heading level, described in the property `pattern`. The exclusion is the option `standAlong` which appears only in `patterns` and is only defined for individual heading levels. 
 
@@ -486,19 +521,19 @@ If a line fails to parse, it is ignored. It can be used for comments.
 
 Example of auto-numbering option in-document specifications:
 
-```
-@numbering {
-    enable: true
-    defaultSuffix: 1". "
-    h2.prefix: "Chapter "
-    h2.start: ["One", "Two", "Three", "Four"]
-    h2.suffix: ": "
-    h5.standAlong: true
-    h4.standAlong: true
-    h5.start: "a"
-    h5.suffix: ") "
+~~~{lang=Markdown}
+<span class="keyword highlighter">@numbering</span> {
+    <span class="property highlighter">enable</span>: true
+    <span class="property highlighter">defaultSuffix</span>: 1". "
+    <span class="property highlighter">h2.prefix</span>: "Chapter "
+    <span class="property highlighter">h2.start</span>: ["One", "Two", "Three", "Four"]
+    <span class="property highlighter">h2.suffix</span>: ": "
+    <span class="property highlighter">h5.standAlong</span>: true
+    <span class="property highlighter">h4.standAlong</span>: true
+    <span class="property highlighter">h5.start</span>: "a"
+    <span class="property highlighter">h5.suffix</span>: ") "
 }
-```
+~~~
 
 ## Additional Plug-ins
 
@@ -510,32 +545,35 @@ All ["markdown-it"](https://www.npmjs.com/package/markdown-it) plug-ins can be i
 
 Initial installation of plug-ins requires the installation of [node.js](https://nodejs.org), but node.js is not required after the plug-ins are installed. Plug-ins can be installed *locally* (recommended):
 
-```
+~~~
 npm install --save a-name-of-markdown-it-plug-in
-```
+~~~
 
 ### Customization of Additional Plug-Ins
 
 Additional plug-ins are set up with one single "setting.json" option: [markdown.extension.convertToHtml.options.additionalPlugins](#heading-markdown-it-options).
 
 This is how the default value is shown in "package.json":
-```Json
+~~~{lang=JSON}
 // ...
-                    "default": {
-                        "absolutePath": "",
-                        "relativePath": "",
-                        "plugins": [
-                            {
-                                "name": "",
-                                "enable": true,
-                                "options": {}
-                            }
-                        ]
-                    }
+                    <span class="property highlighter">"default"</span>: <span class="operator highlighter">{</span>
+                        <span class="property highlighter">"absolutePath"</span>: <span class="literal string highlighter">""</span>,
+                        <span class="property highlighter">"relativePath"</span>: <span class="literal string highlighter">""</span>,
+                        <span class="property highlighter">"plugins"</span>: <span class="operator highlighter">[</span>
+                            <span class="operator highlighter">{</span>
+                                <span class="property highlighter">"name"</span>: <span class="literal string highlighter">""</span>,
+                                <span class="property highlighter">"enable"</span>: true,
+                                <span class="property highlighter">"options"</span>: <span class="operator highlighter">{</span><span class="operator highlighter">}</span>
+                            <span class="operator highlighter">}</span>
+                        <span class="operator highlighter">]</span>
+                    <span class="operator highlighter">}</span>
 // ...
-```
+~~~
+
 The main purpose of a such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the "settings.json" is shown [above](#special-settings.json).
 
 First, the settings specify the path to the directory where the set of additional plug-ins is installed, either "absolutePath" or "relativePath". There is no need to include both properties, but it if happens, "absolutePath" is considered first. If it is not defined (more exactly, evaluates to "false" in a conditional expression), `relativePath` is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it's checked to see if the effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name `"node_modules"`.
 
 For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (`require`) each plugin, if its directory exists and the property "enable" is evaluates to `true`. If loading fails, the command execution continues with the next plug-in. If a plug-in is successfully loaded, it's used by markdown-it, with options specified by the "options" object, which can be omitted.
+
+<script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>

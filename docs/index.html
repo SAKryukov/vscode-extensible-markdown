@@ -90,7 +90,9 @@ static class UtilitySet { /* ... */ }
 <span class="keyword highlighter">~~~</span>
 </pre><h3 id="heading-abbreviations">Abbreviations</h3>
 <p>This feature uses the HTML &lt;<code>abbr</code>&gt; element and the attribute <code>title</code>. Place a mouse pointer over the acronym text and see the title showing the full description of the term:</p><p>For example:</p><pre lang="Markdown">*{Request for Comments}RFC*
-</pre><p>It renders as: <span class="keyword highlighter"><em>{</span>Request for Comments<span class="keyword highlighter">}</span>RFC</em>.</p><h3 id="heading-replacements">Replacements</h3>
+</pre><p>It renders in HTML as:</p><pre lang="HTML"><span class="xmltag all highlighter"><span class="xmltag all highlighter">&lt;</span><span class="xmltag name highlighter">abbr</span></span> <span class="xmltag attribute highlighter">title</span><span class="xmltag operator highlighter">=</span><span class="literal quote highlighter">"</span><span class="literal string highlighter">Request for Comments</span><span class="literal quote highlighter">"</span><span class="xmltag close highlighter">&gt;</span>RFC<span class="xmltag all highlighter"><span class="xmltag all highlighter">&lt;</span><span class="xmltag special highlighter">/</span><span class="xmltag name highlighter">abbr</span></span><span class="xmltag close highlighter">&gt;</span>
+</pre><p>Hover a mouse on <code>RFC</code> to see how <code>abbr</code> works:
+<abbr title="Request for Comments">RFC</abbr>.</p><h3 id="heading-replacements">Replacements</h3>
 <p>Some combinations of characters are replaced with important characters not represented on most keyboards.</p><p>Here are some examples:</p><p>Amount: 7÷8</p><p>Equal or not: A=B, C≠D</p><p>Order relation: z ≤ y, p ≥ f</p><p>Tilde and not tilde c~d, a≁b</p><p>Plus/minus: 10±0.1, 16.2∓0.1</p><p>Parallel of not: v∥w, a∦b</p><p>Almost equal or not: d ≈ 10.4 mm, a ≉ b</p><p>Strictly equivalent: f≣h</p><p>Identical or not: F≡G but A ≢ B</p><p>Sets: A∪B ≠ ∅, E = C∩D; n∈N but a∉A</p><p>Subset and superset: (A⊂B) ≡ (B⊃A)</p><p>Arrows: ← → ↑ ↓</p><p>Dashes and minus: A – B — C; typographically correct minus: −1</p><p>Imply: A ⇒ B, not: ¬C</p><p>Quantifiers:<br/>
 Definition of the limit of the function f(x)=b for x→x₀,</p><p>According to O. L. Cauchy,<br/>
 ∀ ε&gt;0 ∃ δ&gt;0: ∀ x∈R: 0 &lt; |x−x₀| &lt; δ  ⇒ |f(x)−b| &lt; ε</p><p>Copyright © sign, section sign §, registered ® sign, trademark™ sign.</p><p>In the escaped form, they are just letters in brackets: (C), (P), (R), (TM).</p><p>Typographically correct quotes: ‘single’, “double”. Quotation characters are defined by settings: Markdown &gt; Extensible Markdown &gt; Options: Smart Quotes.</p><p>The source markup can be found in this <a href="https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/docs/vscode-workspace-sample/replacements.md">demo document “replacements.md”</a>, for the implementation, see <a href="https://github.com/SAKryukov/vscode-extensible-markdown/blob/master/extension/replacements.js">replacements.js</a>.</p><h3 id="heading-additional-custom-plugins">Additional Custom Plugins</h3>
@@ -100,7 +102,7 @@ Definition of the limit of the function f(x)=b for x→x₀,</p><p>According to 
 Nevertheless, all the Extensible Markdown properties are used in preview, including extended systax.</p><h2 id="heading-extending-of-markdown-syntax">Extending of Markdown Syntax</h2>
 <p>Markdown syntax can be extended. With the extension “Extensible Markdown”, all of them are user-configurable. At the very minimum, each extension can be enabled and disabled, and some extensions allow for detailed configuration. All configurations can be modified <a href="https://code.visualstudio.com/docs/getstarted/settings">on the user or workspace level</a> or their combination.</p><p>They can be classified into two parts: in the first part, extensions are based on the predefined VSCode setting. They come with Visual Studio Code installation but are not fully exposed to the end user. The new “Extensible Markdown” extension exposes most of them to user-defined “settings.json” files, so they are made configurable.</p><p>In the second part, new extensions are added by Extensible Markdown. Some are embedded, others can be installed and then configured by the user.</p><h3 id="heading-markdown-it-extensions">Markdown-it Extensions</h3>
 <p>VSCode uses embedded <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> code. The extension “Extensible Markdown” exposed the following extended features: Typographer, “smart quotes” (can used when Typographer is enabled), enabled or disabled HTML formatting in an input Markdown document, “linkify”, generation of <code>br</code> attributes. The configuration parameters are described in the section <a href="#heading-markdown-it-options">Markdown-it Options</a>.</p><h3 id="heading-extensible-markdown-embedded-extensions">Extensible Markdown Embedded Extensions</h3>
-<p>Extensible Markdown adds three syntax elements to Markdown:</p><ul data-line="223" class="code-line" dir="auto">
+<p>Extensible Markdown adds three syntax elements to Markdown:</p><ul data-line="230" class="code-line" dir="auto">
 <li>Tagging for detection of the document title</li>
 <li>File include declaration</li>
 <li>Table of Contents (TOC) tag</li>
@@ -133,7 +135,7 @@ options.allowHTML, options.typographer,
 options.smartQuotes</p><p>New options:
 options.typographerExtensions
 options.additionalPlugins</p><h3 id="heading-three-levels-of-settings">Three Levels of Settings</h3>
-<p>There are three levels of settings. The user of this extension can control them all.</p><ol data-line="303" class="code-line" dir="auto">
+<p>There are three levels of settings. The user of this extension can control them all.</p><ol data-line="310" class="code-line" dir="auto">
 <li><p><a href="#heading-general-options">General options</a> control the behavior of command and detail of the HTML output unrelated to Markdown formatting.</p></li>
 <li><p>The extension is based on the <a href="https://nodejs.org">node.js</a> <em>package</em> <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a>. This module has its own options. <a href="#heading-markdown-it-options">Markdown-it options</a> define how the mark-down module should be set up before parsing.<br/>
 These options are classified into two sets: a) embedded set of options, and b) what plug-ins should be used.<br/>
@@ -141,31 +143,31 @@ Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as p
 <li><p>Some of the <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> plug-in packages have their own options. For example, see the package <a href="https://www.npmjs.com/package/markdown-it-table-of-contents">“markdown-it-table-of-contents”</a>. The example of setting its options in “settings.json” is shown in the <a href="#heading-settings-sample">settings sample</a>.</p></li>
 </ol>
 <h3 id="heading-general-options">General Options</h3>
-<table data-line="313" class="code-line" dir="auto">
-<thead data-line="313" class="code-line" dir="auto">
-<tr data-line="313" class="code-line" dir="auto">
+<table data-line="320" class="code-line" dir="auto">
+<thead data-line="320" class="code-line" dir="auto">
+<tr data-line="320" class="code-line" dir="auto">
 <th>Name</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
-<tbody data-line="315" class="code-line" dir="auto">
-<tr data-line="315" class="code-line" dir="auto">
+<tbody data-line="322" class="code-line" dir="auto">
+<tr data-line="322" class="code-line" dir="auto">
 <td>markdown.extensibleMarkdown.convertToHtml.openHtml</td>
 <td>false</td>
 <td>Upon successful conversion to HTML file, open it in VSCode workspace;<br/>this option is ignored if there are more then one file</td>
 </tr>
-<tr data-line="316" class="code-line" dir="auto">
+<tr data-line="323" class="code-line" dir="auto">
 <td>markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser</td>
 <td>false</td>
 <td>Upon successful conversion to HTML file, show it in the default Web browser</td>
 </tr>
-<tr data-line="317" class="code-line" dir="auto">
+<tr data-line="324" class="code-line" dir="auto">
 <td>markdown.extensibleMarkdown.convertToHtml.embedCss</td>
 <td>false</td>
 <td>Embed CSS files in an output HTML file, otherwise reference external CSS files</td>
 </tr>
-<tr data-line="318" class="code-line" dir="auto">
+<tr data-line="325" class="code-line" dir="auto">
 <td>markdown.extensibleMarkdown.convertToHtml.outputPath</td>
 <td><code>&quot;&quot;</code></td>
 <td>Specifies output directory for HTML files, relative to workspace directory.<br/>If the path is null or empty string, write HTML in the same directory of the input file</td>
@@ -174,121 +176,121 @@ Markdown-it can use other <a href="https://nodejs.org">node.js</a> packages as p
 </table>
 <p><i id="markdown.extensibleMarkdown.convertToHtml.outputPath"></i>
 The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ignored if its value resolves to false (empty string, <code>null</code>, <code>undefined</code>). If defined, it specifies the path relative to the current workspace directory. The effective target directory may not exist — in this case, an error message is shown. If it exists, all files are saved in the same directory. In this case, it is possible that the HTML files with identical base names but different locations may overwrite one another. The user is responsible for the suitability of the file names.</p><h3 id="heading-extensible-markdown-extension-options">Extensible Markdown Extension Options</h3>
-<table data-line="325" class="code-line" dir="auto">
-<thead data-line="325" class="code-line" dir="auto">
-<tr data-line="325" class="code-line" dir="auto">
+<table data-line="332" class="code-line" dir="auto">
+<thead data-line="332" class="code-line" dir="auto">
+<tr data-line="332" class="code-line" dir="auto">
 <th>Name</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
-<tbody data-line="327" class="code-line" dir="auto">
-<tr data-line="327" class="code-line" dir="auto">
+<tbody data-line="334" class="code-line" dir="auto">
+<tr data-line="334" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.titleLocatorRegex</td>
 <td><code>^(.*?)\[\]\(title\)</code></td>
 <td>Defines Regex pattern used to parse some fragment of Markdown text as title, to be used as HTML <code>head</code> <code>title</code> element</td>
 </tr>
-<tr data-line="328" class="code-line" dir="auto">
+<tr data-line="335" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.titleLocatorDecoratorStyle</td>
 <td>see “settings.json” sample</td>
 <td>CSS style for syntax coloring of the title extended Markdown tag element</td>
 </tr>
-<tr data-line="329" class="code-line" dir="auto">
+<tr data-line="336" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.headingId</td>
 <td>true</td>
 <td>Enables or the generation of the <code>id</code> attributes for <code>h1</code>… <code>h6</code> elements</td>
 </tr>
-<tr data-line="330" class="code-line" dir="auto">
+<tr data-line="337" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.headingIdPrefix</td>
 <td><code>heading.</code></td>
 <td>If the generation of the <code>id</code> attributes is enabled, the heading is added to each <code>id</code> value of each <code>h1</code>… <code>h6</code> element</td>
 </tr>
-<tr data-line="331" class="code-line" dir="auto">
+<tr data-line="338" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.tocRegex</td>
 <td><code>^\[\]\(toc\)</code></td>
 <td>Defines Regex pattern used to recognize the location where Table Of Contents (TOC) is placed</td>
 </tr>
-<tr data-line="332" class="code-line" dir="auto">
+<tr data-line="339" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.excludeFromTocRegex</td>
 <td><code>\\[\\]\\(no-toc\\)</code></td>
 <td>Marks the heading elements to be excluded from TOC</td>
 </tr>
-<tr data-line="333" class="code-line" dir="auto">
+<tr data-line="340" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.excludeFromTocLocatorDecoratorStyle</td>
 <td>see “settings.json” sample</td>
 <td>CSS style for syntax coloring of the tag marking a heading to be excluded from TOC</td>
 </tr>
-<tr data-line="334" class="code-line" dir="auto">
+<tr data-line="341" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.tocDecoratorStyle</td>
 <td>see “settings.json” sample</td>
 <td>CSS style for syntax coloring of the title extended Markdown tag marking the TOC placing</td>
 </tr>
-<tr data-line="335" class="code-line" dir="auto">
+<tr data-line="342" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.tocIncludeLevels</td>
 <td>[1, 2, 3, 4, 5, 6]</td>
 <td>Defines the level of the headers to be included in TOC</td>
 </tr>
-<tr data-line="336" class="code-line" dir="auto">
+<tr data-line="343" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.defaultListElement</td>
 <td><code>ul</code></td>
 <td>Default HTML element for all TOC list elements. This option is ignored if one or more elements are defined on a per-level basis (see below)</td>
 </tr>
-<tr data-line="337" class="code-line" dir="auto">
+<tr data-line="344" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.listElements</td>
 <td><code>[]</code></td>
 <td>Array of strings each defining an HTML element for a TOC list on each TOC level (see above)</td>
 </tr>
-<tr data-line="338" class="code-line" dir="auto">
+<tr data-line="345" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.defaultListElementAttributeSet</td>
 <td><code>{ &quot;style&quot;: &quot;list-style-type: none;&quot; }</code></td>
 <td>An object used to define the set of HTML attributes to be added for all TOC list elements. This option is ignored if one or more sets are defined on a per-level basis (see below)</td>
 </tr>
-<tr data-line="339" class="code-line" dir="auto">
+<tr data-line="346" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.listElementAttributeSets</td>
 <td><code>[]</code></td>
 <td>Array of sets of HTML attributes, same as above, but defining an attribute set for each TOC level</td>
 </tr>
-<tr data-line="340" class="code-line" dir="auto">
+<tr data-line="347" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.tocContainerClass</td>
 <td><code>toc</code></td>
 <td>CSS class of the TOC container (by default, <code>ul</code>)</td>
 </tr>
-<tr data-line="341" class="code-line" dir="auto">
+<tr data-line="348" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.tocListType</td>
 <td><code>ul</code></td>
 <td>HTML element representing TOC container; alternatively, can be <code>ol</code></td>
 </tr>
-<tr data-line="342" class="code-line" dir="auto">
+<tr data-line="349" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.includeLocatorRegex</td>
 <td><code>\[\]\(include\(([^\s]+?)\)\)</code></td>
 <td>Defines Regex pattern used to define file include Markdown syntax extension</td>
 </tr>
-<tr data-line="343" class="code-line" dir="auto">
+<tr data-line="350" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.includeLocatorInvalidRegexMessageFormat</td>
 <td><code>!!! invalid Regular Expression of include:  &quot;%s</code></td>
 <td>Message format for the message produced in the output HTML in case of invalid Regular Expression</td>
 </tr>
-<tr data-line="344" class="code-line" dir="auto">
+<tr data-line="351" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.includeLocatorFileReadFailureMessageFormat</td>
 <td><code>!!! failed to read file &quot;%s&quot; !!!</code></td>
 <td>Message format for the message produced in the output HTML in case of the file reading failure</td>
 </tr>
-<tr data-line="345" class="code-line" dir="auto">
+<tr data-line="352" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.includeLocatorDecoratorStyle</td>
 <td>see “settings.json” sample</td>
 <td>CSS style for syntax coloring of the file include extended Markdown tag element</td>
 </tr>
-<tr data-line="346" class="code-line" dir="auto">
+<tr data-line="353" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.autoNumbering</td>
 <td><code>{ enable: false }</code></td>
 <td>Structure of auto-numbering; see <a href="#heading-auto-numbering">Auto-Numbering</a>; with default value <code>null</code> the effective options are taken from the embedded plugin default</td>
 </tr>
-<tr data-line="347" class="code-line" dir="auto">
+<tr data-line="354" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.autoNumberingRegex</td>
 <td><code>\[\]\(\=numbering([\s\S]*?)\=\)</code></td>
 <td>Defines Regex pattern for the tag used to define the structure of auto-numbering at the document level. See <a href="#heading-auto-numbering">Auto-Numbering</a>. This tag should come at the first position of the Markdown document file.</td>
 </tr>
-<tr data-line="348" class="code-line" dir="auto">
+<tr data-line="355" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.autoNumberingDecoratorStyle</td>
 <td>see default settings</td>
 <td>CSS style for syntax coloring of the auto-numbering extended Markdown tag element (above)</td>
@@ -296,41 +298,41 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
 </tbody>
 </table>
 <h3 id="heading-markdown-it-options">Markdown-it Options</h3>
-<p>The extension is based on the node.js module <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> embedded in VSCode.Since v. 2.0.0, most of the module options are exposed to the user of the extension:</p><table data-line="354" class="code-line" dir="auto">
-<thead data-line="354" class="code-line" dir="auto">
-<tr data-line="354" class="code-line" dir="auto">
+<p>The extension is based on the node.js module <a href="https://www.npmjs.com/package/markdown-it">“markdown-it”</a> embedded in VSCode.Since v. 2.0.0, most of the module options are exposed to the user of the extension:</p><table data-line="361" class="code-line" dir="auto">
+<thead data-line="361" class="code-line" dir="auto">
+<tr data-line="361" class="code-line" dir="auto">
 <th>Name</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
-<tbody data-line="356" class="code-line" dir="auto">
-<tr data-line="356" class="code-line" dir="auto">
+<tbody data-line="363" class="code-line" dir="auto">
+<tr data-line="363" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.allowHTML</td>
 <td>true</td>
 <td>If true, allows HTML formatting, otherwise, HTML code is rendered as text</td>
 </tr>
-<tr data-line="357" class="code-line" dir="auto">
+<tr data-line="364" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.linkify</td>
 <td>false</td>
 <td>Renders “Link-like” text as link</td>
 </tr>
-<tr data-line="358" class="code-line" dir="auto">
+<tr data-line="365" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.br</td>
 <td>true</td>
 <td><a href="https://en.wikipedia.org/wiki/Newline">New line</a> handling: if true, line separators are replaced with the HTML <em>element</em> <code>br</code></td>
 </tr>
-<tr data-line="359" class="code-line" dir="auto">
+<tr data-line="366" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.typographer</td>
 <td>true</td>
 <td><a href="#heading-typographer"><em>Typographer</em></a> option is used</td>
 </tr>
-<tr data-line="360" class="code-line" dir="auto">
+<tr data-line="367" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.smartQuotes</td>
 <td><code>“”‘’</code></td>
 <td>If typographer option is true, replaces <code>&quot;&quot;</code> and <code>''</code> characters</td>
 </tr>
-<tr data-line="361" class="code-line" dir="auto">
+<tr data-line="368" class="code-line" dir="auto">
 <td>markdown.extension.convertToHtml.options.additionalPlugins</td>
 <td>see <a href="#heading-customization-of-additional-plug-ins">below</a></td>
 <td>Descriptor of <a href="#heading-additional-plug-ins">additional markdown-it plug-ins</a></td>
@@ -379,7 +381,7 @@ The option “<code>markdown.extension.convertToHtml.outputPath</code>” is ign
 </pre><p>The extension also uses “<code>markdown.styles</code>” option related to the extension “VS Code Markdown”.
 If one or more CSS files are defined, they are used in the generated HTML files as <em>external</em> or <em>embedded</em> style sheets, depending on the option “<code>markdown.extension.convertToHtml.embedCss</code>”. The user is responsible for supplying the CSS files themselves.</p><h2 id="heading-advanced-usage-and-settings">Advanced Usage and Settings</h2>
 <h3 id="heading-typographer">Typographer</h3>
-<p>To use the typographer,  <a href="#heading-markdown-it-options">“markdown-it” option</a> “<code>markdown.extension.convertToHtml.options.typographer</code>” should be set to true (default).</p><p>Typographer substitution rules:</p><ol data-line="421" class="code-line" dir="auto">
+<p>To use the typographer,  <a href="#heading-markdown-it-options">“markdown-it” option</a> “<code>markdown.extension.convertToHtml.options.typographer</code>” should be set to true (default).</p><p>Typographer substitution rules:</p><ol data-line="428" class="code-line" dir="auto">
 <li><code>+-</code> → ±</li>
 <li><code>...</code> → … (single character, <a href="https://en.wikipedia.org/wiki/Ellipsis">ellipsis</a>)</li>
 <li><code>---</code> → — (<a href="https://en.wikipedia.org/wiki/Dash#Em_dash">em dash</a>)</li>
@@ -409,36 +411,36 @@ If the pattern match is successfully found in the Markdown document, it is writt
 </pre><p>With default settings, the minimum in-document content of the in-document auto-numbering specification would be:</p><pre lang="Markdown"><span class="keyword highlighter">@numbering</span> {
     "<span class="property highlighter">enable</span>": true
 }
-</pre><p>First of all, all options come on two levels: general for the entire document (named <code>default*</code>) and per heading level, described in the property <code>pattern</code>. The exclusion is the option <code>standAlong</code> which appears only in <code>patterns</code> and is only defined for individual heading levels.</p><p>By default, a heading number is shown as a multi-component string including several upper-level headings, such as in “2.11.3”. The option <code>standAlong</code> is used to disable the upper-level part, showing, in this example, just “3”.</p><table data-line="486" class="code-line" dir="auto">
-<thead data-line="486" class="code-line" dir="auto">
-<tr data-line="486" class="code-line" dir="auto">
+</pre><p>First of all, all options come on two levels: general for the entire document (named <code>default*</code>) and per heading level, described in the property <code>pattern</code>. The exclusion is the option <code>standAlong</code> which appears only in <code>patterns</code> and is only defined for individual heading levels.</p><p>By default, a heading number is shown as a multi-component string including several upper-level headings, such as in “2.11.3”. The option <code>standAlong</code> is used to disable the upper-level part, showing, in this example, just “3”.</p><table data-line="493" class="code-line" dir="auto">
+<thead data-line="493" class="code-line" dir="auto">
+<tr data-line="493" class="code-line" dir="auto">
 <th>Property Name</th>
 <th>Default</th>
 <th>Description</th>
 </tr>
 </thead>
-<tbody data-line="488" class="code-line" dir="auto">
-<tr data-line="488" class="code-line" dir="auto">
+<tbody data-line="495" class="code-line" dir="auto">
+<tr data-line="495" class="code-line" dir="auto">
 <td>prefix<br/>defaultPrefix</td>
 <td><code>&quot;&quot;</code></td>
 <td>String which comes before the number. Typical uses include &quot;Chapter &quot;, &quot;Part &quot;</td>
 </tr>
-<tr data-line="489" class="code-line" dir="auto">
+<tr data-line="496" class="code-line" dir="auto">
 <td>suffix<br/>defaultSuffix</td>
 <td><code>&quot;. &quot;</code></td>
 <td>String which comes after the number. It is used to separate the number and the heading caption</td>
 </tr>
-<tr data-line="490" class="code-line" dir="auto">
+<tr data-line="497" class="code-line" dir="auto">
 <td>start<br/>defaultStart</td>
 <td>1</td>
 <td>Starting number in each numbered section. It can be any integer number, any string parsable to an integer number, or any character.</td>
 </tr>
-<tr data-line="491" class="code-line" dir="auto">
+<tr data-line="498" class="code-line" dir="auto">
 <td>separator<br/>defaultSeparator</td>
 <td>“.”</td>
 <td>Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character.</td>
 </tr>
-<tr data-line="492" class="code-line" dir="auto">
+<tr data-line="499" class="code-line" dir="auto">
 <td>standAlong</td>
 <td><code>undefined</code></td>
 <td>“Stand along” flag defining that for some individual levels of headings, the components of number inherited from upper-level headings are not shown</td>
@@ -446,12 +448,12 @@ If the pattern match is successfully found in the Markdown document, it is writt
 </tbody>
 </table>
 <h3 id="heading-simplified-auto-numbering-options-format">Simplified Auto-Numbering Options Format</h3>
-<p>Version 3.6.1 introduces an alternative format for the auto-numbering. The format used previously is JSON; it still can be used, but it is not very suitable for human input and is not fault-tolerant. The new parser tries to parse the content of the <code>@{ ... }</code> tag using new grammar:</p><ul data-line="498" class="code-line" dir="auto">
+<p>Version 3.6.1 introduces an alternative format for the auto-numbering. The format used previously is JSON; it still can be used, but it is not very suitable for human input and is not fault-tolerant. The new parser tries to parse the content of the <code>@{ ... }</code> tag using new grammar:</p><ul data-line="505" class="code-line" dir="auto">
 <li>Each property is placed on a separate line</li>
 <li>Leading and trailing blank spaces and spaced between syntactic elements are ignored</li>
 <li>Line syntax: <code>&lt;property&gt;: &lt;value&gt;</code></li>
 <li>Document properties:
-<ul data-line="502" class="code-line" dir="auto">
+<ul data-line="509" class="code-line" dir="auto">
 <li>enabled: true</li>
 <li>defaultStart: <code>&lt;value&gt;</code></li>
 <li>defaultSeparator: <code>&lt;value&gt;</code></li>
@@ -460,7 +462,7 @@ If the pattern match is successfully found in the Markdown document, it is writt
 </ul>
 </li>
 <li>Heading level properties:
-<ul data-line="508" class="code-line" dir="auto">
+<ul data-line="515" class="code-line" dir="auto">
 <li>h<code>&lt;level&gt;</code>.standAlong: true</li>
 <li>h<code>&lt;level&gt;</code>.start: <code>&lt;value&gt;</code></li>
 <li>h<code>&lt;level&gt;</code>.separator: <code>&lt;value&gt;</code></li>
@@ -470,7 +472,7 @@ here, <code>&lt;level&gt;</code> values 1, 2, … correspond to Markdown heading
 </ul>
 </li>
 <li>Valid values for .start, defaultStart:
-<ul data-line="515" class="code-line" dir="auto">
+<ul data-line="522" class="code-line" dir="auto">
 <li>integer number</li>
 <li>string (in this case, only the first character is used)</li>
 <li>array of strings</li>
@@ -505,7 +507,7 @@ here, <code>&lt;level&gt;</code> values 1, 2, … correspond to Markdown heading
                         <span class="operator highlighter">]</span>
                     <span class="operator highlighter">}</span>
 // ...
-</pre><p>The main purpose of a such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the “settings.json” is shown <a href="#special-settings.json">above</a>.</p><p>First, the settings specify the path to the directory where the set of additional plug-ins is installed, either “absolutePath” or “relativePath”. There is no need to include both properties, but it if happens, “absolutePath” is considered first. If it is not defined (more exactly, evaluates to “false” in a conditional expression), <code>relativePath</code> is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it’s checked to see if the effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name <code>&quot;node_modules&quot;</code>.</p><p>For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (<code>require</code>) each plugin, if its directory exists and the property “enable” is evaluates to <code>true</code>. If loading fails, the command execution continues with the next plug-in. If a plug-in is successfully loaded, it’s used by markdown-it, with options specified by the “options” object, which can be omitted.</p><div  data-line="578" class="code-line" dir="auto" ></div>
+</pre><p>The main purpose of a such default-value object is to provide the user with a placeholder for structured plug-in descriptor data. The sample of the “settings.json” is shown <a href="#special-settings.json">above</a>.</p><p>First, the settings specify the path to the directory where the set of additional plug-ins is installed, either “absolutePath” or “relativePath”. There is no need to include both properties, but it if happens, “absolutePath” is considered first. If it is not defined (more exactly, evaluates to “false” in a conditional expression), <code>relativePath</code> is considered. It is assumed to be relative to the current Visual Studio Code workspace path. Then it’s checked to see if the effective path exists. This path is assumed to be the parent path to each individual plug-in directory. Most typically, it has the name <code>&quot;node_modules&quot;</code>.</p><p>For each plug-in, its name is specified. This name is always the same as the name of a plug-in sub-directory. Then the extension tries to load (<code>require</code>) each plugin, if its directory exists and the property “enable” is evaluates to <code>true</code>. If loading fails, the command execution continues with the next plug-in. If a plug-in is successfully loaded, it’s used by markdown-it, with options specified by the “options” object, which can be omitted.</p><div  data-line="585" class="code-line" dir="auto" ></div>
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 

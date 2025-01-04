@@ -138,7 +138,14 @@ For example:
 ~~~{lang=Markdown}
 *{Request for Comments}RFC*
 ~~~
-It renders as: <span class="keyword highlighter">*{</span>Request for Comments<span class="keyword highlighter">}</span>RFC*.
+It renders in HTML as:
+
+~~~{lang=HTML}
+<span class="xmltag all highlighter"><span class="xmltag all highlighter">&lt;</span><span class="xmltag name highlighter">abbr</span></span> <span class="xmltag attribute highlighter">title</span><span class="xmltag operator highlighter">=</span><span class="literal quote highlighter">"</span><span class="literal string highlighter">Request for Comments</span><span class="literal quote highlighter">"</span><span class="xmltag close highlighter">&gt;</span>RFC<span class="xmltag all highlighter"><span class="xmltag all highlighter">&lt;</span><span class="xmltag special highlighter">/</span><span class="xmltag name highlighter">abbr</span></span><span class="xmltag close highlighter">&gt;</span>
+~~~
+
+Hover a mouse on `RFC` to see how `abbr` works:
+<abbr title="Request for Comments">RFC</abbr>.
 
 ### Replacements
 

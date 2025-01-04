@@ -57,7 +57,7 @@ module.exports = (md, options) => {
         },
         newCurrent: function(level) {
             const effectiveLevelOptions = this.getEffectiveLevelOptions(level);
-            return { level: level, indexIterator: new autoNumbering.Iterator(effectiveLevelOptions.start), parentPrefix: this.current.prefix, prefix: undefined, standAlong: false };
+            return { level: level, indexIterator: new autoNumbering.Iterator(effectiveLevelOptions.start), parentPrefix: this.current.prefix, prefix: undefined, standalone: false };
         },
         brokenContent: function() { return `${options.thisExtensionSettings.TOC.autoNumbering.brokenHierarchy}`; },
         getEffectiveLevelOptions: function(level) {
@@ -70,7 +70,7 @@ module.exports = (md, options) => {
         formPrefix: function(effectiveLevelOptions) {
             this.current.prefix = this.current.indexIterator.toString();
             this.current.indexIterator.next();
-            if (this.current.parentPrefix && (!effectiveLevelOptions.standAlong))
+            if (this.current.parentPrefix && (!effectiveLevelOptions.standalone))
             this.current.prefix = `${this.current.parentPrefix}${effectiveLevelOptions.separator}${this.current.prefix}`;
         },
         numberedContent: function(effectiveLevelOptions) {

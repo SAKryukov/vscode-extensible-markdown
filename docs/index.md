@@ -1,4 +1,4 @@
-Extensible Markdown, a Visual Studio Code Extension{title}
+﻿Extensible Markdown, a Visual Studio Code Extension{title}
 
 [*Sergey A Kryukov*](https://www.SAKryukov.org)
 
@@ -473,8 +473,8 @@ This is the representative sample of the fragment of the Markdown code using the
         { "start": 1 },
         { "prefix": "Chapter ", "start": 1 },
         { },
-        { "start": 1, "separator": ".", "standAlong": true },
-        { "suffix": ") ", "start": "a", "separator":".", "standAlong":true }
+        { "start": 1, "separator": ".", "standalone": true },
+        { "suffix": ") ", "start": "a", "separator":".", "standalone":true }
     ]
 }
 ~~~
@@ -487,9 +487,9 @@ With default settings, the minimum in-document content of the in-document auto-n
 }
 ~~~
 
-First of all, all options come on two levels: general for the entire document (named `default*`) and per heading level, described in the property `pattern`. The exclusion is the option `standAlong` which appears only in `patterns` and is only defined for individual heading levels. 
+First of all, all options come on two levels: general for the entire document (named `default*`) and per heading level, described in the property `pattern`. The exclusion is the option `standalone` which appears only in `patterns` and is only defined for individual heading levels. 
 
-By default, a heading number is shown as a multi-component string including several upper-level headings, such as in "2.11.3". The option `standAlong` is used to disable the upper-level part, showing, in this example, just "3".
+By default, a heading number is shown as a multi-component string including several upper-level headings, such as in "2.11.3". The option `standalone` is used to disable the upper-level part, showing, in this example, just "3".
 
 | Property Name | Default | Description |
 | --- | --- | --- |
@@ -497,7 +497,7 @@ By default, a heading number is shown as a multi-component string including seve
 | suffix<br/>defaultSuffix | `". "` | String which comes after the number. It is used to separate the number and the heading caption |
 | start<br/>defaultStart | 1 | Starting number in each numbered section. It can be any integer number, any string parsable to an integer number, or any character. |
 | separator<br/>defaultSeparator | "." | Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character. | . | String (most typically, as single-character string) delimiting components of number inherited from upper-level headings |
-| standAlong | `undefined`| "Stand along" flag defining that for some individual levels of headings, the components of number inherited from upper-level headings are not shown |
+| standalone | `undefined`| "Stand along" flag defining that for some individual levels of headings, the components of number inherited from upper-level headings are not shown |
 
 ### Simplified Auto-Numbering Options Format
 
@@ -513,7 +513,7 @@ Version 3.6.1 introduces an alternative format for the auto-numbering. The forma
     - defaultPrefix: `<value>`
     - defaultSuffix: `<value>`
 * Heading level properties:
-    - h`<level>`.standAlong: true
+    - h`<level>`.standalone: true
     - h`<level>`.start: `<value>`
     - h`<level>`.separator: `<value>`
     - h`<level>`.prefix: `<value>`
@@ -535,8 +535,8 @@ Example of auto-numbering option in-document specifications:
     <span class="property highlighter">h2.prefix</span>: "Chapter "
     <span class="property highlighter">h2.start</span>: ["One", "Two", "Three", "Four"]
     <span class="property highlighter">h2.suffix</span>: ": "
-    <span class="property highlighter">h5.standAlong</span>: true
-    <span class="property highlighter">h4.standAlong</span>: true
+    <span class="property highlighter">h5.standalone</span>: true
+    <span class="property highlighter">h4.standalone</span>: true
     <span class="property highlighter">h5.start</span>: "a"
     <span class="property highlighter">h5.suffix</span>: ") "
 }

@@ -1,4 +1,4 @@
-@numbering {
+﻿@numbering {
     enable: true
     defaultSeparator: "."
     defaultSuffix: " "
@@ -9,7 +9,7 @@
     h2.prefix: "Chapter "
     h2.separator: ", §"
     h2.suffix: ": "
-    h3.standAlong: true
+    h3.standalone: true
     h4.start: "a"
     h4.suffix: ") "
 }
@@ -37,7 +37,7 @@ Advanced Auto-Numbering{title}{.title}
     h2.prefix: "Chapter "
     h2.separator: ", §"
     h2.suffix: ": "
-    h3.standAlong: true
+    h3.standalone: true
     h4.start: "a"
     h4.suffix: ") "
 }

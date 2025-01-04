@@ -3,7 +3,7 @@
 const defaultKeyword = "default";
 const enableKeyword = "enable";
 const trueKeyword = "true";
-const standAlongKeyword = "standAlong";
+const standaloneKeyword = "standalone";
 const properties = [
     "Suffix",
     "Prefix",
@@ -22,7 +22,7 @@ const headingKeywords = (properties => {
     const result = [];
     for (const property of properties)
         result.push(property.toLowerCase());
-    result.push(standAlongKeyword);    
+    result.push(standaloneKeyword);    
     return result;
 })(properties);
 

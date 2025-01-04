@@ -404,14 +404,14 @@ If the pattern match is successfully found in the Markdown document, it is writt
         { "start": 1 },
         { "prefix": "Chapter ", "start": 1 },
         { },
-        { "start": 1, "separator": ".", "standAlong": true },
-        { "suffix": ") ", "start": "a", "separator":".", "standAlong":true }
+        { "start": 1, "separator": ".", "standalone": true },
+        { "suffix": ") ", "start": "a", "separator":".", "standalone":true }
     ]
 }
 </pre><p>With default settings, the minimum in-document content of the in-document auto-numbering specification would be:</p><pre lang="Markdown"><span class="keyword highlighter">@numbering</span> {
     "<span class="property highlighter">enable</span>": true
 }
-</pre><p>First of all, all options come on two levels: general for the entire document (named <code>default*</code>) and per heading level, described in the property <code>pattern</code>. The exclusion is the option <code>standAlong</code> which appears only in <code>patterns</code> and is only defined for individual heading levels.</p><p>By default, a heading number is shown as a multi-component string including several upper-level headings, such as in “2.11.3”. The option <code>standAlong</code> is used to disable the upper-level part, showing, in this example, just “3”.</p><table data-line="493" class="code-line" dir="auto">
+</pre><p>First of all, all options come on two levels: general for the entire document (named <code>default*</code>) and per heading level, described in the property <code>pattern</code>. The exclusion is the option <code>standalone</code> which appears only in <code>patterns</code> and is only defined for individual heading levels.</p><p>By default, a heading number is shown as a multi-component string including several upper-level headings, such as in “2.11.3”. The option <code>standalone</code> is used to disable the upper-level part, showing, in this example, just “3”.</p><table data-line="493" class="code-line" dir="auto">
 <thead data-line="493" class="code-line" dir="auto">
 <tr data-line="493" class="code-line" dir="auto">
 <th>Property Name</th>
@@ -441,7 +441,7 @@ If the pattern match is successfully found in the Markdown document, it is writt
 <td>Starting number in each numbered section. It can be any integer number, any string parsable to an integer number or any character.</td>
 </tr>
 <tr data-line="499" class="code-line" dir="auto">
-<td>standAlong</td>
+<td>standalone</td>
 <td><code>undefined</code></td>
 <td>“Stand along” flag defining that for some individual levels of headings, the components of number inherited from upper-level headings are not shown</td>
 </tr>
@@ -463,7 +463,7 @@ If the pattern match is successfully found in the Markdown document, it is writt
 </li>
 <li>Heading level properties:
 <ul data-line="515" class="code-line" dir="auto">
-<li>h<code>&lt;level&gt;</code>.standAlong: true</li>
+<li>h<code>&lt;level&gt;</code>.standalone: true</li>
 <li>h<code>&lt;level&gt;</code>.start: <code>&lt;value&gt;</code></li>
 <li>h<code>&lt;level&gt;</code>.separator: <code>&lt;value&gt;</code></li>
 <li>h<code>&lt;level&gt;</code>.prefix: <code>&lt;value&gt;</code></li>
@@ -485,8 +485,8 @@ here, <code>&lt;level&gt;</code> values 1, 2, … correspond to Markdown heading
     <span class="property highlighter">h2.prefix</span>: "Chapter "
     <span class="property highlighter">h2.start</span>: ["One", "Two", "Three", "Four"]
     <span class="property highlighter">h2.suffix</span>: ": "
-    <span class="property highlighter">h5.standAlong</span>: true
-    <span class="property highlighter">h4.standAlong</span>: true
+    <span class="property highlighter">h5.standalone</span>: true
+    <span class="property highlighter">h4.standalone</span>: true
     <span class="property highlighter">h5.start</span>: "a"
     <span class="property highlighter">h5.suffix</span>: ") "
 }

@@ -34,13 +34,13 @@ module.exports.getEffectiveLevelOptions = (options, level) => {
         prefix: options.autoNumbering.defaultPrefix,
         start: options.autoNumbering.defaultStart,
         separator: options.autoNumbering.defaultSeparator,
-        standAlong: false
+        standalone: false
     };
     if (!options.autoNumbering.pattern[level]) return effectiveOptions;
     if (options.autoNumbering.pattern[level].suffix != undefined) effectiveOptions.suffix = options.autoNumbering.pattern[level].suffix;
     if (options.autoNumbering.pattern[level].prefix != undefined) effectiveOptions.prefix = options.autoNumbering.pattern[level].prefix;
     if (options.autoNumbering.pattern[level].start != undefined) effectiveOptions.start = options.autoNumbering.pattern[level].start;
     if (options.autoNumbering.pattern[level].separator != undefined) effectiveOptions.separator = options.autoNumbering.pattern[level].separator;
-    if (options.autoNumbering.pattern[level].standAlong != undefined) effectiveOptions.standAlong = options.autoNumbering.pattern[level].standAlong;
+    if (options.autoNumbering.pattern[level].standalone != undefined) effectiveOptions.standalone = options.autoNumbering.pattern[level].standalone;
     return effectiveOptions;
 } //module.exports.getEffectiveLevelOptions

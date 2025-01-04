@@ -2,7 +2,8 @@
 
 ## Version 8.3.2
 
-The publication moved to GitHub (CodeProject is out of business, publications are accessible but not updateable)
+* The publication moved to GitHub (CodeProject is out of business, publications are accessible but not updateable) and improved.
+* Auto-numbering syntax fixed.
 
 ## Version 8.3.1
 

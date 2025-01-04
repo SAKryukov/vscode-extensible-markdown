@@ -5,5 +5,4 @@ workspaces
 .vscode
 .git
 **/.gitignore
-CHANGELOG.*
 

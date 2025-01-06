@@ -1,4 +1,5 @@
 {
+    "markdown.preview.typographer": true,
     "markdown.preview.scrollEditorWithPreview": false,
     "markdown.preview.scrollPreviewWithEditor": false,
     "editor.minimap.enabled": false,
@@ -34,5 +35,87 @@
             }
         ]
     },
-    "markdown.preview.typographer": true
+    "markdown.extensibleMarkdown.abbreviationDecoratorRegex": "\\*\\{(.+?)\\}.+?\\*",
+    "markdown.extensibleMarkdown.abbreviationRegex": "\\{(.+?)\\}",
+    "markdown.extensibleMarkdown.attributeRegex": "\\{([a-z]+?)\\=([^\"^\\{^\\}]+?)\\}",
+    "markdown.extensibleMarkdown.convertToHtml.embedCss": true,
+    "markdown.extensibleMarkdown.convertToHtml.openHtml": false,
+    "markdown.extensibleMarkdown.convertToHtml.outputPath": "",
+    "markdown.extensibleMarkdown.convertToHtml.showHtmlInBrowser": false,
+    "markdown.extensibleMarkdown.cssClassRegex": "\\{\\.([^\"^\\{^\\}]+?)\\}",
+    "markdown.extensibleMarkdown.headingIdPrefix": "heading-",
+    "markdown.extensibleMarkdown.includes.fileNotFoundMessageFormat": "# File \"%s\" not found",
+    "markdown.extensibleMarkdown.includes.fileReadFailureMessageFormat": "# Failed to read file \"%s\"",
+    "markdown.extensibleMarkdown.includes.invalidRegexMessageFormat": "# Invalid regular expression for includes:  \"%s\"",
+    "markdown.extensibleMarkdown.includes.locatorRegex": "\\@include\\(([^\\s]+?)\\)",
+    "markdown.extensibleMarkdown.options.allowHTML": true,
+    "markdown.extensibleMarkdown.options.smartQuotes": "“”‘’",
+    "markdown.extensibleMarkdown.options.typographer": true,
+    "markdown.extensibleMarkdown.options.typographerExtensions": true,
+    "markdown.extensibleMarkdown.titleClassName": "title",
+    "markdown.extensibleMarkdown.titleLocatorRegex": "\\{title\\}",
+    "markdown.extensibleMarkdown.TOC.autoNumbering.brokenHierarchy": "?[broken hierarchy of headings]?",
+    "markdown.extensibleMarkdown.TOC.autoNumberingRegex": "^\\@numbering\\s*?\\{([\\s\\S]*?)\\}",
+    "markdown.extensibleMarkdown.TOC.containerClass": "toc",
+    "markdown.extensibleMarkdown.TOC.excludeHeaderRegex": "\\{no-toc\\}",
+    "markdown.extensibleMarkdown.TOC.includeLevels": [1, 2, 3, 4, 5, 6],
+    "markdown.extensibleMarkdown.TOC.itemIndentInEm": null,
+    "markdown.extensibleMarkdown.TOC.regex": "^\\@toc$",
+    "markdown.extensibleMarkdown.abbreviationDecoratorStyle": {
+        "cursor": "zoom-in",
+        "borderRadius": "5px",
+        "border": "thin dashed Maroon",
+        "margin": 10,
+        "color": "Maroon",
+        "backgroundColor": "Gold"
+    },
+    "markdown.extensibleMarkdown.attributeDecoratorStyle": {
+        "cursor": "copy",
+        "border": "thin solid Indigo",
+        "borderRadius": "3px",
+        "color": "Indigo",
+        "backgroundColor": "Lavender"
+    },
+    "markdown.extensibleMarkdown.cssClassDecoratorStyle": {
+        "cursor": "default",
+        "border": "thin dotted Maroon",
+        "borderRadius": "3px",
+        "color": "Maroon",
+        "backgroundColor": "Pink"
+    },
+    "markdown.extensibleMarkdown.includes.locatorDecoratorStyle": {
+        "cursor": "copy",
+        "borderRadius": "0px",
+        "padding": "3px",
+        "border": "thin solid black",
+        "color": "black",
+        "backgroundColor": "PaleGreen"
+    },
+    "markdown.extensibleMarkdown.titleLocatorDecoratorStyle": {
+        "cursor": "grab",
+        "fontWeight": "bold",
+        "borderRadius": "5px",
+        "color": "yellow",
+        "backgroundColor": "Maroon"
+    },
+    "markdown.extensibleMarkdown.TOC.autoNumberingDecoratorStyle": {
+        "cursor": "default",
+        "color": "Maroon",
+        "backgroundColor": "Cornsilk"
+    },
+    "markdown.extensibleMarkdown.TOC.excludeHeader.DecoratorStyle": {
+        "cursor": "no-drop",
+        "border": "thin dotted black",
+        "borderRadius": "5px",
+        "color": "black",
+        "backgroundColor": "lightGoldenrodYellow"
+    },
+    "markdown.extensibleMarkdown.TOC.decoratorStyle": {
+        "letterSpacing": "1px",
+        "cursor": "context-menu",
+        "fontWeight": "bold",
+        "outline": "2px solid Indigo",
+        "color": "yellow",
+        "backgroundColor": "Indigo"
+    }
 }

@@ -18,6 +18,6 @@ See [this section](#heading-how-to-reference-a-heading) for the example of refer
 
 # Example: How to Reference a Heading
 
-[See First Section, Heading Level 3](#heading-first-section2c-heading-level-3)
+[See introduction](#heading-introduction)
 
 It is useful to generate HTML first, using the command "Markdown: Convert to HTML". Open the generated HTML document, look at the rendered TOC and find the appropriate heading reference specified by the auto-generated `id` attribute.

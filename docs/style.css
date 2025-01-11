@@ -3,3 +3,4 @@
         td, th  { vertical-align: middle; padding-left: 0.4em; padding-right: 0.4em; }
         th { background-color: lightblue; }
         table { width: 100% }
+        p.download { padding-top: 0.1em; }

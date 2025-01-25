@@ -27,10 +27,12 @@ module.exports = (md, options) => {
             buffer = options.importContext.utility.removeBOM(buffer, prefixBOMInIncludeFiles);
             return buffer.buffer.toString(buffer.encoding);
         } catch (ex) {
-            let detail = "";
-            if (ex.constructor == options.importContext.utility.BOMException)
-                detail = `<br/>${ex.message}`;
-            return `${formatMessage(options.includes.fileReadFailureMessageFormat, fileName, true)} ${detail}`;   
+            const detail = ex.constructor == options.importContext.utility.definitionSet.exceptions.BOMException
+                ? ex.message
+                : options.importContext.utility.definitionSet.stringEmpty;
+            return options.importContext.utility.definitionSet.formats.IncludeException(
+                formatMessage(options.includes.fileReadFailureMessageFormat, fileName, true),
+                detail);
         } //exception
     }; //readFileContent
 

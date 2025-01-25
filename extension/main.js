@@ -9,7 +9,6 @@ exports.activate = context => {
 
     const encoding = "utf8";
     const Utf8BOM = "\ufeff";
-    const stringEmpty = "";
     const commonDirectorySeparator = "/";
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
@@ -87,7 +86,7 @@ exports.activate = context => {
             lazy.lastErrorChannel.appendLine(`${inputs[index]}`);
             lazy.lastErrorChannel.appendLine("is converted to");
             lazy.lastErrorChannel.appendLine(`${outputs[index]}`);
-            lazy.lastErrorChannel.appendLine(stringEmpty);
+            lazy.lastErrorChannel.appendLine(utility.definitionSet.stringEmpty);
             if (settings.thisExtensionSettings.convertToHtml.showHtmlInBrowser)
                 childProcess.exec(outputs[index]);
             if (settings.thisExtensionSettings.convertToHtml.openHtml && count == 1)

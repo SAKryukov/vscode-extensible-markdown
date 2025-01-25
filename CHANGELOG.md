@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 8.4.0
+
+* Fixed marginal issue with BOM in include files: embedded CSS and the files included using `@include` feature.
+* Definitions are refactored: the object `definitionSet` is created.
+
 ## Version 8.3.2
 
 * The publication moved to GitHub (CodeProject is out of business, publications are accessible but not updateable) and improved.

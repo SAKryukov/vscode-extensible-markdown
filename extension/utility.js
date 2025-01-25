@@ -10,6 +10,30 @@ module.exports.slugify = (s, used, prefix) => {
     return slug;
 } //module.exports.slugify
 
+class BOMException extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+    } //constructor
+} //BOMException
+
+module.exports.BOMException = BOMException;
+
+module.exports.removeBOM = (buffer, prefix) => {
+    if (buffer == null) return buffer;
+    if (buffer.length < 1) return buffer;
+    if (prefix == 0) prefix = ""; //SA???
+    if (buffer.length > 2 && buffer[0] === 0xef && buffer[1] === 0xbb && buffer[2] === 0xbf) // UTF-8
+        return { buffer: buffer.slice(3), encoding: "utf8" };
+    else if (buffer.length > 1) {
+        if ((buffer[1] === 0xfe && buffer[0] === 0xff))
+            return { buffer: buffer.slice(2), encoding: "utf16le" };
+        if ((buffer[0] === 0xfe && buffer[1] === 0xff))
+            throw new BOMException(`${prefix} UTF-16BE is not supported.`)
+    } //if
+    return { buffer: buffer, encoding: "utf8" };
+} //removeBOM
+
 module.exports.populateWithDefault = (value, defaultValue) => { // special edition: it does not populate Array
     if (!defaultValue) return;
     if (!value) return;

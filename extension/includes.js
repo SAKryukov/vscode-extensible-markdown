@@ -2,6 +2,8 @@
 
 module.exports = (md, options) => {
 
+    const prefixBOMInIncludeFiles = "In included files, ";
+
     const locatorRegex = options.importContext.utility.createOptionalRegExp(options.includes.locatorRegex, true);
     const importContext = options.importContext;
     if (!locatorRegex) return;
@@ -21,9 +23,14 @@ module.exports = (md, options) => {
         if (! (options.importContext.fs.existsSync(fileName) && options.importContext.fs.lstatSync(fileName).isFile()))
             return formatMessage(options.includes.fileNotFoundMessageFormat, fileName, true);
         try {
-            return  options.importContext.fs.readFileSync(fileName, options.importContext.encoding);
-        } catch (ex) { 
-            return formatMessage(options.includes.fileReadFailureMessageFormat, fileName, true);            
+            let buffer = options.importContext.fs.readFileSync(fileName);
+            buffer = options.importContext.utility.removeBOM(buffer, prefixBOMInIncludeFiles);
+            return buffer.buffer.toString(buffer.encoding);
+        } catch (ex) {
+            let detail = "";
+            if (ex.constructor == options.importContext.utility.BOMException)
+                detail = `<br/>${ex.message}`;
+            return `${formatMessage(options.includes.fileReadFailureMessageFormat, fileName, true)} ${detail}`;   
         } //exception
     }; //readFileContent
 

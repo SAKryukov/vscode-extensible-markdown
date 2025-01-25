@@ -14,6 +14,7 @@ exports.activate = context => {
     const defaultSmartQuotes = '""' + "''";
     const markdownId = "markdown";
     const typographerExtensionsRule = "extended_replacements";
+    const prefixBOMInCss = "In CSS files, ";
 
     const vscode = require("vscode");
     const util = require("util");
@@ -41,8 +42,11 @@ exports.activate = context => {
             if (embedCss) {
                 const absolute = path.join(rootPath, css[index]);
                 let cssCode = util.format(htmlTemplateSet.notFoundCss, absolute);
-                if (fs.existsSync(absolute))
-                    cssCode = fs.readFileSync(absolute, encoding);
+                if (fs.existsSync(absolute)) {
+                    let cssCodeBuffer = fs.readFileSync(absolute);
+                    cssCodeBuffer = utility.removeBOM(cssCodeBuffer, prefixBOMInCss);
+                    cssCode = cssCodeBuffer.buffer.toString(cssCodeBuffer.encoding);
+                } //if
                 style.push(util.format(htmlTemplateSet.embeddedStyle, cssCode));
             } else {
                 const relativePath = path.relative(path.dirname(fileName), rootPath);

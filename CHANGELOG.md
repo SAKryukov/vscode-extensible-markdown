@@ -3,9 +3,7 @@
 ## Version 8.4.2
 
 * Simplified passing parameters to markdown-it plugins
-
 * Implemented unified utilization of definitionSet
-
 * Code clean-up
 
 ## Version 8.4.0

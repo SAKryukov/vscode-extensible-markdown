@@ -1,9 +1,21 @@
 # Changelog
 
+## Version 8.4.2
+
+* Simplified passing parameters to markdown-it plugins
+
+* Implemented unified utilization of definitionSet
+
+* Code clean-up
+
 ## Version 8.4.0
 
 * Fixed marginal issue with BOM in include files: embedded CSS and the files included using `@include` feature.
 * Definitions are refactored: the object `definitionSet` is created.
+
+## Version 8.3.3
+
+Included CHANGELOG
 
 ## Version 8.3.2
 

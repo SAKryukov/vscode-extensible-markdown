@@ -40,3 +40,8 @@ This feature uses the HTML &lt;`abbr`&gt; element and the attribute `title`. Pla
 Example: *{Request for Comments}RFC*
 
 *Note: abbreviations always work for the generated HTML document in a Web browser, but not always in the VSCode preview. I think this is a specific bug of VSCode or the embedded version of Markdown-it.*
+
+> My quote block{id=quote-unique-id}
+>
+> Second line
+

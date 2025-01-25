@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = (md, options) => {
+module.exports = (md, options, definitionSet) => {
 
     const path = require("path");
     const moduleName = path.basename(module.id);    
@@ -79,7 +79,7 @@ module.exports = (md, options) => {
     }; //detectAttributes
 
     const parseAttributePart = index => {
-        let attributePart = "";
+        let attributePart = definitionSet.stringEmpty;
         if (index in tokenDictionary) {
             const attributes = tokenDictionary[index];
             for (let attribute in attributes)
@@ -100,7 +100,7 @@ module.exports = (md, options) => {
 
     const previousRenderParagraphOpen = md.renderer.rules.paragraph_open;
     md.renderer.rules.paragraph_open = (tokens, index, ruleOptions, object, renderer) => {
-        if (tokens[index].hidden) return "";
+        if (tokens[index].hidden) return definitionSet.stringEmpty;
         const attributePart = parseAttributePart(index);
         if (attributePart)
             return `<p${attributePart}>`;
@@ -109,7 +109,7 @@ module.exports = (md, options) => {
     }; //md.renderer.paragraph_open
 
     md.renderer.rules.paragraph_close = (tokens, index, ruleOptions, object, renderer) => {
-        return tokens[index].hidden ? "" : "</p>";
+        return tokens[index].hidden ? definitionSet.stringEmpty : "</p>";
     }; //md.renderer.paragraph_open
 
     const previousRenderListItemOpen = md.renderer.rules.list_item_open;
@@ -135,7 +135,7 @@ module.exports = (md, options) => {
         md.renderer.rules.em_open = (tokens, index, ruleOptions, object, renderer) => {
             const text = tokens[index + 1].content;
             const match = options.abbreviationRegex.exec(text);
-            tokens[index + 1].content = text.replace(options.abbreviationRegex, "");
+            tokens[index + 1].content = text.replace(options.abbreviationRegex, definitionSet.stringEmpty);
             if (match && match[1]) {
                 tokens[index + 2].tag = "abbr";
                 return `<abbr title="${match[1]}">`;

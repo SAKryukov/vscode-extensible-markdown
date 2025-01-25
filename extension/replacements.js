@@ -1,10 +1,10 @@
 "use strict";
 
-module.exports = (md, options) => {
+module.exports = md => {
 
     const patterns = [
         { find: /!\=/g, replace: "≠" }, // != not equal
-        { find: /!\|\|/g, replace: "∦" }, // !|| not parallel
+        { find: /!\|\|/g, replace: "∦" }, // !|| not parallel""
         { find: /<\=/g, replace: "≤" }, // <= less or equal
         { find: /\>\=/g, replace: "≥" }, // >= more or equal
         { find: /!\~/g, replace: "≁" }, // !~ not tilde

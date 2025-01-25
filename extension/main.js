@@ -269,12 +269,10 @@ exports.activate = context => {
         (md => { //setup usage:
             if (!md) return;
             md.set(optionSet);
-            md.use(includes, {
-                includes: lazy.settings.thisExtensionSettings.includes,
-                importContext: importContext
-            });
-            md.use(idToc, lazy.settings);
-            md.use(attribution, lazy.settings.attribution);
+            // md.use calls main module exported function, passes md followed by any number of arguments:
+            md.use(includes, lazy.settings.thisExtensionSettings.includes, importContext);
+            md.use(idToc, lazy.settings, importContext.utility.definitionSet);
+            md.use(attribution, lazy.settings.attribution, importContext.utility.definitionSet);
             md.use(replacements);
             if (!lazy.settings.thisExtensionSettings.options.typographerExtensions)
                 md.disable(typographerExtensionsRule);

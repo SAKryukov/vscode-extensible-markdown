@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = (md, options) => {
+module.exports = (md, options, definitionSet) => {
 
     const utility = require("./utility");
     const autoNumberingParser = require("./autoNumbering.optionParser");
@@ -11,7 +11,7 @@ module.exports = (md, options) => {
             enable: false,
             pattern: [],
             defaultSuffix: ". ",
-            defaultPrefix: "",
+            defaultPrefix: definitionSet.stringEmpty,
             defaultStart: 1,
             defaultSeparator: "."
         },
@@ -52,7 +52,7 @@ module.exports = (md, options) => {
         init: function() {
             this.broken = false;
             this.stack = [];
-            this.current = { level: undefined, indexIterator: undefined, parentPrefix: "", prefix: undefined };
+            this.current = { level: undefined, indexIterator: undefined, parentPrefix: definitionSet.stringEmpty, prefix: undefined };
             this.levelOptionDictionary = {};
         },
         newCurrent: function(level) {
@@ -77,8 +77,8 @@ module.exports = (md, options) => {
             return `${effectiveLevelOptions.prefix}${this.current.prefix}${effectiveLevelOptions.suffix}`;
         },
         generate: function (tocLevel) {
-            if (!options.autoNumbering.enable) return "";
-            if (!tocIncludeLevelSet.has(tocLevel + 1)) return "";
+            if (!options.autoNumbering.enable) return definitionSet.stringEmpty;
+            if (!tocIncludeLevelSet.has(tocLevel + 1)) return definitionSet.stringEmpty;
             if (this.broken) return this.brokenContent();
             const effectiveLevelOptions = this.getEffectiveLevelOptions(tocLevel);
             if (this.current.level == undefined) {

@@ -111,7 +111,7 @@ module.exports.getSettings = importContext => { // see package.json, "configurat
     return settings;
 }; //getSettings
 
-module.exports.documentTitle = "";
+module.exports.documentTitle = utility.definitionSet.stringEmpty;
 
 module.exports.getVSCodeRange = (vscode, document, start, match) => {
     return new vscode.Range(

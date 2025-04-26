@@ -7,7 +7,7 @@ module.exports = (md, options, importContext) => {
     const locatorRegex = importContext.utility.createOptionalRegExp(options.locatorRegex, true);
     if (!locatorRegex) return;
 
-    const formatMessage = (formatString, text, normalizePath) =>  {
+    const formatMessage = (formatString, text, normalizePath) => {
         if (normalizePath)
             text = text.replace(/\\/g, "/");
         return formatString.replace("%s", text);
@@ -40,8 +40,8 @@ module.exports = (md, options, importContext) => {
         let match = true;
         while (match = locatorRegex.exec(source)) {
             if (match.length != 2)
-                return  formatMessage(options.invalidRegexMessageFormat, locatorRegex.source, true);
-            matches.push({ match: match[0], file: match[1]});
+                return formatMessage(options.invalidRegexMessageFormat, locatorRegex.source, true);
+            matches.push({ match: match[0], file: match[1] });
         } //loop
         let result = source;
         for (let match of matches)

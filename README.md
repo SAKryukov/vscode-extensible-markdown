@@ -31,4 +31,4 @@ Alternatively, open the Command Palette (`Ctrl+Shift+P`/`Cmd+Shift+P or `F1`) an
 
 ## Settings
 
-The user can set up the extension of three levels: 1) general behavior of the commands, 2) detail of Markdown parsing and HTML production rules, and 3) plug-in options. The user can install additional plug-ins. If a plug-in has its own options, they are transparently passed from the user or workspace &ldquo;settings.json&rdquo; to the plug-in. See the [documentation](https://sakryukov.github.io/vscode-extensible-markdown/Extensible-Markdown.html) page for all the details.
+The user can set up the extension of three levels: 1) general behavior of the commands, 2) detail of Markdown parsing and HTML production rules, and 3) plug-in options. The user can install additional plug-ins. If a plug-in has its own options, they are transparently passed from the user or workspace &ldquo;settings.json&rdquo; to the plug-in. See the [documentation](https://sakryukov.github.io/vscode-extensible-markdown) page for all the details.

@@ -3,7 +3,7 @@
 module.exports = (md, options, definitionSet) => {
 
     const path = require("path");
-    const moduleName = path.basename(module.id);    
+    const moduleName = path.basename(module.id);
     const setup = require("./setup");
     const utility = require("./utility");
 
@@ -141,7 +141,7 @@ module.exports = (md, options, definitionSet) => {
                 return `<abbr title="${match[1]}">`;
             } else
                 return utility.renderDefault(tokens, index, ruleOptions, object, renderer, previousRenderEmOpen, `<em>`);
-        }; //md.renderer.rules.em_open    
+        }; //md.renderer.rules.em_open
     } //if options.abbreviationRegexp
     
     detectAttributes(moduleName);

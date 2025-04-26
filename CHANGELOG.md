@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 8.4.3
+
+* README: fixed link to documentation
+
 ## Version 8.4.2
 
 * Simplified passing parameters to markdown-it plugins
